@@ -14,8 +14,9 @@
     }
 
     body {
-      background-color: #ffffff;
+      background: linear-gradient(135deg, #34a853 25%, #fbbc05 25%, #fbbc05 50%, #ea4335 50%, #ea4335 75%, #4285f4 75%);
       color: #333;
+      min-height: 100vh;
     }
 
     header {
@@ -55,18 +56,19 @@
 
     .hero {
       height: 90vh;
-      background: url('https://source.unsplash.com/1600x900/?technology,agriculture') no-repeat center center/cover;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      padding: 2rem;
     }
 
     .hero-content {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       padding: 2rem 3rem;
       border-radius: 20px;
       max-width: 700px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
     }
 
     .hero h1 {
@@ -99,7 +101,8 @@
       text-align: center;
       padding: 2rem;
       font-size: 0.9rem;
-      color: #999;
+      color: #666;
+      background: white;
     }
   </style>
 </head>
