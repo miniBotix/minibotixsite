@@ -3,29 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>miniBotix - Welcome</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <title>miniBotix - Vintage Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Playfair Display', serif;
     }
 
     body {
       min-height: 100vh;
       overflow-x: hidden;
-      background: linear-gradient(270deg, violet, blue, orange, yellow, violet);
-      background-size: 1000% 1000%;
-      animation: bgFlow 20s ease infinite;
-      color: white;
-    }
-
-    @keyframes bgFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      background: linear-gradient(to bottom right, #d2b48c, #5a3e36);
+      color: #fff8dc;
     }
 
     header {
@@ -34,8 +26,8 @@
       left: 0;
       width: 100%;
       padding: 1rem 2rem;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
+      background: rgba(90, 62, 54, 0.9);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       z-index: 1000;
       display: flex;
       justify-content: space-between;
@@ -43,9 +35,10 @@
     }
 
     .brand {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 700;
-      color: black;
+      color: #ffe4b5;
+      font-family: 'Playfair Display', serif;
     }
 
     nav ul {
@@ -56,42 +49,43 @@
 
     nav a {
       text-decoration: none;
-      color: white;
+      color: #fff8dc;
       font-weight: 500;
       transition: color 0.3s;
     }
 
     nav a:hover {
-      color: #fbbc05;
+      color: #deb887;
     }
 
     .content {
-      padding-top: 120px;
+      padding-top: 140px;
       text-align: center;
       max-width: 1000px;
       margin: auto;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       margin-bottom: 1.5rem;
-      color: black;
-      background-color: rgba(255, 255, 255, 0.6);
-      padding: 0.5rem 1.5rem;
+      color: #4b2e2e;
+      background-color: rgba(255, 248, 220, 0.85);
+      padding: 0.7rem 1.7rem;
       border-radius: 12px;
       display: inline-block;
     }
 
     .about {
-      background-color: rgba(0, 0, 0, 0.4);
-      padding: 1.5rem 2rem;
-      border-radius: 15px;
-      color: #fff;
+      background-color: rgba(255, 248, 220, 0.1);
+      padding: 2rem;
+      border: 2px solid rgba(255, 248, 220, 0.2);
+      border-radius: 20px;
+      color: #f5deb3;
       font-size: 1.1rem;
-      line-height: 1.7;
+      line-height: 1.8;
       text-align: left;
       margin: auto;
-      max-width: 700px;
+      max-width: 750px;
     }
 
     .cards {
@@ -103,55 +97,51 @@
     }
 
     .card {
-      width: 180px;
-      height: 120px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(8px);
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      width: 200px;
+      height: auto;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
+      backdrop-filter: blur(8px);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       font-weight: bold;
       font-size: 1.1rem;
-      color: white;
+      color: #ffe4c4;
       transition: transform 0.3s ease;
     }
-    <h1 style="margin-top: 3rem;">🛒 Featured Products</h1>
-<div class="cards">
-  <div class="card" style="flex-direction: column; padding: 1rem;">
-    <img src="https://via.placeholder.com/120" alt="LDR Kit" style="width: 80px; height: 80px; border-radius: 8px;">
-    <div style="margin-top: 0.5rem;">LDR Light Kit</div>
-    <div>₹399</div>
-    <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20LDR%20Kit%20from%20MiniBotix" target="_blank" style="margin-top: 5px; padding: 5px 10px; background-color: #fbbc05; color: black; border-radius: 5px; text-decoration: none;">Buy Now</a>
-  </div>
-
-  <div class="card" style="flex-direction: column; padding: 1rem;">
-    <img src="https://via.placeholder.com/120" alt="Soil Kit" style="width: 80px; height: 80px; border-radius: 8px;">
-    <div style="margin-top: 0.5rem;">Soil Moisture Kit</div>
-    <div>₹449</div>
-    <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20Soil%20Kit%20from%20MiniBotix" target="_blank" style="margin-top: 5px; padding: 5px 10px; background-color: #fbbc05; color: black; border-radius: 5px; text-decoration: none;">Buy Now</a>
-  </div>
-
-  <div class="card" style="flex-direction: column; padding: 1rem;">
-    <img src="https://via.placeholder.com/120" alt="Rain Sensor" style="width: 80px; height: 80px; border-radius: 8px;">
-    <div style="margin-top: 0.5rem;">Rain Detector</div>
-    <div>₹499</div>
-    <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20Rain%20Sensor%20from%20MiniBotix" target="_blank" style="margin-top: 5px; padding: 5px 10px; background-color: #fbbc05; color: black; border-radius: 5px; text-decoration: none;">Buy Now</a>
-  </div>
-</div>
 
     .card:hover {
       transform: translateY(-10px) scale(1.05);
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .card img {
+      width: 90px;
+      height: 90px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .card a {
+      margin-top: 8px;
+      padding: 6px 12px;
+      background-color: #deb887;
+      color: #2f1e1e;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9rem;
     }
 
     footer {
       text-align: center;
       padding: 2rem;
       font-size: 0.9rem;
-      color: #eee;
-      background: rgba(0, 0, 0, 0.2);
+      color: #ffdead;
+      background: rgba(90, 62, 54, 0.8);
       margin-top: 4rem;
     }
   </style>
@@ -162,44 +152,57 @@
     <div class="brand">miniBotix</div>
     <nav>
       <ul>
-        <li><a href="https://sites.google.com/view/minibotix/home" target="_blank" rel="noopener noreferrer">Home</a></li>
-        <li><a href="https://sites.google.com/view/minibotix/about-us" target="_blank" rel="noopener noreferrer">About Us</a></li>
-        <li><a href="https://sites.google.com/view/minibotix/projects" target="_blank" rel="noopener noreferrer">Projects</a></li>
-        <li><a href="https://sites.google.com/view/minibotix/shopping-product" target="_blank" rel="noopener noreferrer">Shopping</a></li>
-        <li><a href="https://sites.google.com/view/minibotix/team" target="_blank" rel="noopener noreferrer">Contact</a></li>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
       </ul>
     </nav>
   </header>
 
   <div class="content">
-    <h1>🚀 Empowering Innovation. Elevating Skills.</h1>
+    <h1>🛠️ Crafting Smart Projects with a Classic Touch</h1>
     <div class="about">
-      <p>We specialize in PCB design, PLC panel wiring, and custom project development. Whether you're a student, a maker, or an industry professional — we've got you covered.</p>
-      <br>
-      <strong>✨ What We Do</strong><br><br>
-      <ul style="list-style-type: disc; padding-left: 1.5rem;">
-        <li>Design and develop custom PCBs</li>
-        <li>Deliver reliable PLC automation & panel works</li>
-        <li>Teach hands-on courses to upskill learners</li>
-        <li>Help students build innovative projects</li>
-        <li>Provide and sell quality electronic components</li>
+      <p>At <strong>miniBotix</strong>, we blend innovation with tradition. Whether it's a student project, custom automation, or home-grown electronics – we offer thoughtfully designed kits and services with reliability at heart.</p>
+      <ul style="margin-top: 1rem; list-style: disc; padding-left: 1.5rem;">
+        <li>PCB Design & Embedded Development</li>
+        <li>PLC Panel Wiring & Industrial Automation</li>
+        <li>Custom IoT Projects for Students</li>
+        <li>Workshops and Training Modules</li>
+        <li>Components & DIY Kits Delivered to Your Doorstep</li>
       </ul>
-      <br>
-      <p>Join us to innovate, educate, and elevate — one project at a time.</p>
+      <p style="margin-top: 1rem;">Start your maker journey with us – where every circuit tells a story.</p>
     </div>
 
+    <h1 style="margin-top: 3rem;">🛒 Featured Products</h1>
     <div class="cards">
-      <div class="card">PCB Design</div>
-      <div class="card">PLC Work</div>
-      <div class="card">Teach</div>
-      <div class="card">Innovate</div>
-      <div class="card">Educate</div>
-      <div class="card">Elevate</div>
+      <div class="card">
+        <img src="https://via.placeholder.com/120" alt="LDR Kit">
+        <div>LDR Light Kit</div>
+        <div>₹399</div>
+        <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20LDR%20Kit%20from%20MiniBotix" target="_blank">Buy Now</a>
+      </div>
+
+      <div class="card">
+        <img src="https://via.placeholder.com/120" alt="Soil Kit">
+        <div>Soil Moisture Kit</div>
+        <div>₹449</div>
+        <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20Soil%20Moisture%20Kit%20from%20MiniBotix" target="_blank">Buy Now</a>
+      </div>
+
+      <div class="card">
+        <img src="https://via.placeholder.com/120" alt="Rain Detector">
+        <div>Rain Detector</div>
+        <div>₹499</div>
+        <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20Rain%20Detector%20from%20MiniBotix" target="_blank">Buy Now</a>
+      </div>
     </div>
   </div>
 
   <footer>
-    &copy; 2025 miniBotix. All rights reserved.
+    &copy; 2025 miniBotix. Vintage Tech. Future Ready.
   </footer>
+
 </body>
 </html>
