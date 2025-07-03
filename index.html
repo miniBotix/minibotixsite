@@ -2,31 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>miniBotix - Shop</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>minibotix store</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <!-- Header -->
   <header>
-    <img src="logo.png" alt="MiniBotix Logo" class="logo">
-    <h1>Welcome to miniBotix Shop</h1>
+    <div class="brand">miniBotix</div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <main>
-    <section id="products">
-      <div class="product">
-        <img src="images/ldr-kit.jpg" alt="LDR Kit">
-        <h3>LDR Light Kit</h3>
-        <p>₹399</p>
-        <button onclick="orderNow('LDR Light Kit', 399)">Order Now</button>
-      </div>
-      <!-- More products... -->
-    </section>
-  </main>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="search-container">
+      <input type="text" placeholder="🔍 Search components, kits or projects..." />
+    </div>
+  </section>
 
-  <footer>
-    &copy; 2025 miniBotix
-  </footer>
+  <!-- Fun Facts Section -->
+  <section class="fun-facts">
+    <h2>🔥 Trending Fun Facts</h2>
+    <div class="fun-fact-slider">
+      <div class="fact-card">🌍 Evasat – India’s student satellite reached 1200m height!</div>
+      <div class="fact-card">🚗 Water car concept from Japan runs on HHO fuel cells</div>
+      <div class="fact-card">💡 A potato can power an LED for 2 days</div>
+      <div class="fact-card">🛰️ Tiny satellites are helping farmers predict rainfall</div>
+      <div class="fact-card">🔋 Graphene batteries charge in under 5 minutes</div>
+      <div class="fact-card">📻 You can build a radio without batteries</div>
+      <div class="fact-card">🧲 Magnetic levitation used in high-speed trains</div>
+      <div class="fact-card">🌱 Solar glass can turn windows into power sources</div>
+      <div class="fact-card">📡 NASA still receives Voyager 1 signals from space</div>
+      <div class="fact-card">🧠 AI chips are smaller than a rice grain now</div>
+    </div>
+  </section>
 
-  <script src="script.js"></script>
 </body>
 </html>
