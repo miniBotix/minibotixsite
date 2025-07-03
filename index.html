@@ -2,207 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>miniBotix - Vintage Shop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Playfair Display', serif;
-    }
-
-    body {
-      min-height: 100vh;
-      overflow-x: hidden;
-      background: linear-gradient(to bottom right, #d2b48c, #5a3e36);
-      color: #fff8dc;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 1rem 2rem;
-      background: rgba(90, 62, 54, 0.9);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #ffe4b5;
-      font-family: 'Playfair Display', serif;
-    }
-
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: 1.5rem;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #fff8dc;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    nav a:hover {
-      color: #deb887;
-    }
-
-    .content {
-      padding-top: 140px;
-      text-align: center;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 1.5rem;
-      color: #4b2e2e;
-      background-color: rgba(255, 248, 220, 0.85);
-      padding: 0.7rem 1.7rem;
-      border-radius: 12px;
-      display: inline-block;
-    }
-
-    .about {
-      background-color: rgba(255, 248, 220, 0.1);
-      padding: 2rem;
-      border: 2px solid rgba(255, 248, 220, 0.2);
-      border-radius: 20px;
-      color: #f5deb3;
-      font-size: 1.1rem;
-      line-height: 1.8;
-      text-align: left;
-      margin: auto;
-      max-width: 750px;
-    }
-
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-
-    .card {
-      width: 200px;
-      height: auto;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #ffe4c4;
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-10px) scale(1.05);
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .card img {
-      width: 90px;
-      height: 90px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .card a {
-      margin-top: 8px;
-      padding: 6px 12px;
-      background-color: #deb887;
-      color: #2f1e1e;
-      border-radius: 5px;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #ffdead;
-      background: rgba(90, 62, 54, 0.8);
-      margin-top: 4rem;
-    }
-  </style>
+  <title>miniBotix - Shop</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <header>
-    <div class="brand">miniBotix</div>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
+    <img src="logo.png" alt="MiniBotix Logo" class="logo">
+    <h1>Welcome to miniBotix Shop</h1>
   </header>
 
-  <div class="content">
-    <h1>🛠️ Crafting Smart Projects with a Classic Touch</h1>
-    <div class="about">
-      <p>At <strong>miniBotix</strong>, we blend innovation with tradition. Whether it's a student project, custom automation, or home-grown electronics – we offer thoughtfully designed kits and services with reliability at heart.</p>
-      <ul style="margin-top: 1rem; list-style: disc; padding-left: 1.5rem;">
-        <li>PCB Design & Embedded Development</li>
-        <li>PLC Panel Wiring & Industrial Automation</li>
-        <li>Custom IoT Projects for Students</li>
-        <li>Workshops and Training Modules</li>
-        <li>Components & DIY Kits Delivered to Your Doorstep</li>
-      </ul>
-      <p style="margin-top: 1rem;">Start your maker journey with us – where every circuit tells a story.</p>
-    </div>
-
-    <h1 style="margin-top: 3rem;">🛒 Featured Products</h1>
-    <div class="cards">
-      <div class="card">
-        <img src="https://via.placeholder.com/120" alt="LDR Kit">
-        <div>LDR Light Kit</div>
-        <div>₹399</div>
-        <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20LDR%20Kit%20from%20MiniBotix" target="_blank">Buy Now</a>
+  <main>
+    <section id="products">
+      <div class="product">
+        <img src="images/ldr-kit.jpg" alt="LDR Kit">
+        <h3>LDR Light Kit</h3>
+        <p>₹399</p>
+        <button onclick="orderNow('LDR Light Kit', 399)">Order Now</button>
       </div>
-
-      <div class="card">
-        <img src="https://via.placeholder.com/120" alt="Soil Kit">
-        <div>Soil Moisture Kit</div>
-        <div>₹449</div>
-        <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20Soil%20Moisture%20Kit%20from%20MiniBotix" target="_blank">Buy Now</a>
-      </div>
-
-      <div class="card">
-        <img src="https://via.placeholder.com/120" alt="Rain Detector">
-        <div>Rain Detector</div>
-        <div>₹499</div>
-        <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20buy%20Rain%20Detector%20from%20MiniBotix" target="_blank">Buy Now</a>
-      </div>
-    </div>
-  </div>
+      <!-- More products... -->
+    </section>
+  </main>
 
   <footer>
-    &copy; 2025 miniBotix. Vintage Tech. Future Ready.
+    &copy; 2025 miniBotix
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
