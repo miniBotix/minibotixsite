@@ -1,20 +1,19 @@
+/* Reset + Font */
 body {
   margin: 0;
   font-family: 'Georgia', serif;
-  background-image: url("images/bg.jpg"); /* use uploaded background */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: linear-gradient(to bottom, #1c1b18, #5e4b36);
   color: #f3eacb;
 }
 
+/* Header Navigation */
 header {
-  background-color: rgba(30, 20, 10, 0.8);
+  background-color: #2d1f15;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #a88c4e;
+  border-bottom: 2px solid #d9b97a;
 }
 
 .logo {
@@ -42,15 +41,46 @@ nav ul li a:hover {
   color: #d9b97a;
 }
 
-/* Fun fact cards marquee */
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: url("images/bg.jpg") no-repeat center center/cover;
+  color: #fdf6e3;
+  border-bottom: 2px solid #d9b97a;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  background-color: #d9b97a;
+  color: black;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #b7934d;
+}
+
+/* Fun Fact Section */
 .fact-marquee {
   overflow: hidden;
   width: 100%;
-  border-top: 2px solid #d9b97a;
-  border-bottom: 2px solid #d9b97a;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(30, 20, 10, 0.9);
   padding: 1rem 0;
-  position: relative;
   margin-top: 2rem;
 }
 
@@ -62,20 +92,21 @@ nav ul li a:hover {
 }
 
 .fact-card {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #4a392b;
   color: #ffe9b1;
-  padding: 1rem;
-  border-radius: 10px;
+  padding: 1.5rem;
+  border-radius: 12px;
   min-width: 300px;
+  max-width: 300px;
   text-align: center;
   font-size: 1rem;
-  border: 1px solid #d9b97a;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  border: 2px solid #d9b97a;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
   transition: transform 0.3s;
 }
 
 .fact-card:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 @keyframes scrollFacts {
