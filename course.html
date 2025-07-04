@@ -204,40 +204,47 @@
 
   <!-- JavaScript -->
   <script>
-    let cart = [];
+  let cart = [];
 
-    function addToCart(course) {
-      if (!cart.includes(course)) {
-        cart.push(course);
-        document.getElementById('cartCount').innerText = cart.length;
-        updateCart();
-      }
+  function addToCart(course) {
+    if (!cart.includes(course)) {
+      cart.push(course);
+      updateCart();
     }
+  }
 
-    function updateCart() {
-      const cartList = document.getElementById('cartList');
-      cartList.innerHTML = "";
-      cart.forEach(course => {
-        const li = document.createElement('li');
-        li.innerText = course;
-        cartList.appendChild(li);
-      });
-      document.getElementById('totalPrice').innerText = cart.length * 150;
-    }
+  function updateCart() {
+    const cartList = document.getElementById('cartList');
+    cartList.innerHTML = "";
 
-    function toggleCart() {
-      const popup = document.getElementById('popupCart');
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-    }
+    cart.forEach((course, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `${course} <span onclick="removeFromCart(${index})" style="color: red; cursor: pointer; font-weight: bold; margin-left: 10px;">➖</span>`;
+      cartList.appendChild(li);
+    });
 
-    function purchase() {
-      if (cart.length > 0) {
-        window.open("https://forms.gle/z8a6HeZGCxqhaLDj8", "_blank");
-      } else {
-        alert("Please select at least one course.");
-      }
+    document.getElementById('cartCount').innerText = cart.length;
+    document.getElementById('totalPrice').innerText = cart.length * 150;
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+  }
+
+  function toggleCart() {
+    const popup = document.getElementById('popupCart');
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function purchase() {
+    if (cart.length > 0) {
+      window.open("https://forms.gle/z8a6HeZGCxqhaLDj8", "_blank");
+    } else {
+      alert("Please select at least one course.");
     }
-  </script>
+  }
+</script>
 
 </body>
 </html>
