@@ -1,57 +1,46 @@
-/* Reset + Font */
 body {
   margin: 0;
   font-family: 'Georgia', serif;
-  background: linear-gradient(to bottom, #1c1b18, #5e4b36);
-  color: #f3eacb;
+  background-color: #f4e4c1; /* Light sandal background */
+  color: #3e2b1f; /* Deep brown text */
 }
 
-/* Header Navigation */
 header {
-  background-color: #2d1f15;
+  background-color: #e0c49a;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #d9b97a;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .logo {
-  font-size: 2rem;
+  color: #4a321a;
+  font-size: 1.8rem;
   font-weight: bold;
-  color: #d9b97a;
-  font-family: 'Georgia', serif;
 }
 
 nav ul {
   list-style: none;
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
-nav ul li a {
+nav a {
   text-decoration: none;
-  color: #f3eacb;
+  color: #3e2b1f;
   font-weight: 600;
-  font-size: 1rem;
-  transition: color 0.3s;
 }
 
-nav ul li a:hover {
-  color: #d9b97a;
-}
-
-/* Hero Section */
 .hero {
   text-align: center;
-  padding: 4rem 2rem;
-  background: url("images/bg.jpg") no-repeat center center/cover;
-  color: #fdf6e3;
-  border-bottom: 2px solid #d9b97a;
+  padding: 5rem 2rem;
+  background: linear-gradient(135deg, #ffecc8, #f7d9a7);
+  color: #3e2b1f;
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
@@ -61,25 +50,17 @@ nav ul li a:hover {
 }
 
 .btn {
-  background-color: #d9b97a;
-  color: black;
-  padding: 0.8rem 1.5rem;
-  border: none;
+  background-color: #ffd25e;
+  color: #3e2b1f;
+  padding: 10px 20px;
+  border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
-  border-radius: 8px;
-  transition: background-color 0.3s;
 }
 
-.btn:hover {
-  background-color: #b7934d;
-}
-
-/* Fun Fact Section */
 .fact-marquee {
   overflow: hidden;
-  width: 100%;
-  background-color: rgba(30, 20, 10, 0.9);
+  background-color: #e7caa5;
   padding: 1rem 0;
   margin-top: 2rem;
 }
@@ -88,32 +69,29 @@ nav ul li a:hover {
   display: flex;
   gap: 2rem;
   animation: scrollFacts 40s linear infinite;
-  white-space: nowrap;
 }
 
 .fact-card {
-  background-color: #4a392b;
-  color: #ffe9b1;
-  padding: 1.5rem;
-  border-radius: 12px;
-  min-width: 300px;
-  max-width: 300px;
+  background: #fff8e7;
+  color: #3e2b1f;
+  padding: 1rem;
+  border-radius: 10px;
+  min-width: 250px;
+  font-weight: bold;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
   text-align: center;
-  font-size: 1rem;
-  border: 2px solid #d9b97a;
-  box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
-  transition: transform 0.3s;
-}
-
-.fact-card:hover {
-  transform: scale(1.05);
 }
 
 @keyframes scrollFacts {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+footer {
+  text-align: center;
+  background-color: #d4b185;
+  padding: 1.5rem;
+  color: #3e2b1f;
+  margin-top: 3rem;
+  font-size: 0.95rem;
 }
