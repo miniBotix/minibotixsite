@@ -1,22 +1,23 @@
 body {
   margin: 0;
   font-family: 'Georgia', serif;
-  background-color: #f4e4c1; /* Light sandal background */
-  color: #3e2b1f; /* Deep brown text */
+  background-color: #fdf6e3; /* Bright parchment / sandal vintage */
+  color: #3e2b1f;
 }
 
+/* Navbar */
 header {
-  background-color: #e0c49a;
+  background-color: #f1d8a3;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .logo {
   color: #4a321a;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
 }
 
@@ -24,6 +25,7 @@ nav ul {
   list-style: none;
   display: flex;
   gap: 1.5rem;
+  margin: 0;
 }
 
 nav a {
@@ -32,15 +34,16 @@ nav a {
   font-weight: 600;
 }
 
+/* Hero Section */
 .hero {
   text-align: center;
   padding: 5rem 2rem;
-  background: linear-gradient(135deg, #ffecc8, #f7d9a7);
+  background: linear-gradient(135deg, #fff1d0, #fbe6b3);
   color: #3e2b1f;
 }
 
 .hero h1 {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   margin-bottom: 1rem;
 }
 
@@ -50,17 +53,19 @@ nav a {
 }
 
 .btn {
-  background-color: #ffd25e;
+  background-color: #ffc857;
   color: #3e2b1f;
   padding: 10px 20px;
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
 }
 
+/* Fun Fact Marquee */
 .fact-marquee {
   overflow: hidden;
-  background-color: #e7caa5;
+  background-color: #f6e1b5;
   padding: 1rem 0;
   margin-top: 2rem;
 }
@@ -72,13 +77,13 @@ nav a {
 }
 
 .fact-card {
-  background: #fff8e7;
+  background: #fff8e1;
   color: #3e2b1f;
   padding: 1rem;
   border-radius: 10px;
   min-width: 250px;
   font-weight: bold;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
   text-align: center;
 }
 
@@ -87,11 +92,19 @@ nav a {
   100% { transform: translateX(-100%); }
 }
 
+/* Footer */
 footer {
   text-align: center;
-  background-color: #d4b185;
-  padding: 1.5rem;
+  background-color: #e6c48f;
+  padding: 1.5rem 1rem;
   color: #3e2b1f;
   margin-top: 3rem;
   font-size: 0.95rem;
+}
+
+footer .slogan {
+  font-style: italic;
+  margin-top: 5px;
+  font-size: 1rem;
+  color: #5a3a20;
 }
