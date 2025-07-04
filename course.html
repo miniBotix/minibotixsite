@@ -9,8 +9,11 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #f7e6c4, #ecd9b0);
+      background: linear-gradient(to bottom right, #fce8c6, #f1d9b5);
       color: #333;
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 80px;
     }
 
     header {
@@ -18,13 +21,15 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      background-color: #5e3c26;
+      background-color: #4e2e1e;
       color: white;
     }
 
     .logo {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: bold;
+      color: #ffd28d;
+      text-shadow: 1px 1px 2px #000;
     }
 
     nav ul {
@@ -56,31 +61,93 @@
 
     .courses-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
       margin-top: 2rem;
+      padding: 0 1rem;
     }
 
     .course-card {
-      background: #fff8e6;
-      padding: 1rem;
+      background: #fff5e0;
+      padding: 1.5rem;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
       font-weight: 600;
+      cursor: pointer;
     }
 
     .course-card:hover {
-      transform: translateY(-5px);
-      background: #ffeac0;
+      transform: scale(1.03);
+      background: #ffe6b5;
     }
 
-    footer {
+    .footer {
       text-align: center;
       padding: 1rem;
-      margin-top: 3rem;
-      background-color: #5e3c26;
+      background-color: #4e2e1e;
       color: white;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      font-weight: 500;
+    }
+
+    /* Cart Icon */
+    .cart-icon {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background-color: #4e2e1e;
+      color: white;
+      font-size: 1.2rem;
+      padding: 0.7rem 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 999;
+    }
+
+    .popup-cart {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      background-color: #fff8e6;
+      padding: 1rem;
+      border: 2px solid #4e2e1e;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 260px;
+      display: none;
+      z-index: 999;
+    }
+
+    .popup-cart h4 {
+      margin-top: 0;
+      color: #4e2e1e;
+    }
+
+    .popup-cart ul {
+      padding-left: 1rem;
+      list-style: disc;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .popup-cart button {
+      background-color: #4e2e1e;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .popup-cart button:hover {
+      background-color: #7c5034;
     }
   </style>
 </head>
@@ -103,24 +170,74 @@
   <section class="course-section">
     <h2>Our Premium Courses</h2>
     <div class="courses-grid">
-      <div class="course-card">C / C++ Programming</div>
-      <div class="course-card">Microcontroller Programming</div>
-      <div class="course-card">IoT (Internet of Things)</div>
-      <div class="course-card">RTOS</div>
-      <div class="course-card">DSP for Embedded Systems</div>
-      <div class="course-card">Hardware Interfacing</div>
-      <div class="course-card">PLC Programming (Delta)</div>
-      <div class="course-card">Unity with C++</div>
-      <div class="course-card">Arduino Master</div>
-      <div class="course-card">MCU Principles</div>
-      <div class="course-card">ML in Embedded Systems</div>
+      <div class="course-card" onclick="addToCart('C / C++ Programming')">C / C++ Programming</div>
+      <div class="course-card" onclick="addToCart('Microcontroller Programming')">Microcontroller Programming</div>
+      <div class="course-card" onclick="addToCart('IoT (Internet of Things)')">IoT (Internet of Things)</div>
+      <div class="course-card" onclick="addToCart('RTOS')">RTOS</div>
+      <div class="course-card" onclick="addToCart('DSP for Embedded Systems')">DSP for Embedded Systems</div>
+      <div class="course-card" onclick="addToCart('Hardware Interfacing')">Hardware Interfacing</div>
+      <div class="course-card" onclick="addToCart('PLC Programming (Delta)')">PLC Programming (Delta)</div>
+      <div class="course-card" onclick="addToCart('Unity with C++')">Unity with C++</div>
+      <div class="course-card" onclick="addToCart('Arduino Master')">Arduino Master</div>
+      <div class="course-card" onclick="addToCart('MCU Principles')">MCU Principles</div>
+      <div class="course-card" onclick="addToCart('ML in Embedded Systems')">ML in Embedded Systems</div>
     </div>
   </section>
 
+  <!-- Cart Button -->
+  <div class="cart-icon" onclick="toggleCart()">
+    🛒 <span id="cartCount">0</span>
+  </div>
+
+  <!-- Popup Cart -->
+  <div class="popup-cart" id="popupCart">
+    <h4>Selected Courses:</h4>
+    <ul id="cartList"></ul>
+    <div><strong>Total:</strong> ₹<span id="totalPrice">0</span></div><br>
+    <button onclick="purchase()">Purchase</button>
+  </div>
+
   <!-- Footer -->
-  <footer>
+  <div class="footer">
     © 2025 miniBotix | Learn. Build. Innovate.
-  </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    let cart = [];
+
+    function addToCart(course) {
+      if (!cart.includes(course)) {
+        cart.push(course);
+        document.getElementById('cartCount').innerText = cart.length;
+        updateCart();
+      }
+    }
+
+    function updateCart() {
+      const cartList = document.getElementById('cartList');
+      cartList.innerHTML = "";
+      cart.forEach(course => {
+        const li = document.createElement('li');
+        li.innerText = course;
+        cartList.appendChild(li);
+      });
+      document.getElementById('totalPrice').innerText = cart.length * 150;
+    }
+
+    function toggleCart() {
+      const popup = document.getElementById('popupCart');
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function purchase() {
+      if (cart.length > 0) {
+        window.open("https://forms.gle/z8a6HeZGCxqhaLDj8", "_blank");
+      } else {
+        alert("Please select at least one course.");
+      }
+    }
+  </script>
 
 </body>
 </html>
