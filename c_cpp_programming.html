@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>C/C++ Programming - miniBotix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #fce8c6, #f1d9b5);
+      color: #333;
+      padding-bottom: 100px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #4e2e1e;
+      color: white;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffd28d;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      color: #3b240e;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+    }
+
+    .pay-btn {
+      margin-top: 2rem;
+      background-color: #4e2e1e;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .pay-btn:hover {
+      background-color: #7c5034;
+    }
+
+    /* QR Popup */
+    .qr-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff8e6;
+      padding: 2rem;
+      border: 2px solid #4e2e1e;
+      border-radius: 12px;
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .qr-popup img {
+      max-width: 250px;
+      margin-bottom: 1rem;
+    }
+
+    .close-btn {
+      background: #4e2e1e;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #4e2e1e;
+      color: white;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">miniBotix</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="service.html">Service</a></li>
+        <li><a href="course.html">Course</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Course Section -->
+  <div class="container">
+    <h2>C / C++ Programming for Embedded Systems</h2>
+    <p>Learn the basics of C/C++ used in embedded programming. This 1:30 minute crash course helps you understand structure, pointers, memory, and hardware-level programming logic.</p>
+
+    <button class="pay-btn" onclick="showQR()">Pay ₹50 to Access</button>
+
+    <!-- Video access (after payment, manually unlocked) -->
+    <div id="videoAccess" style="margin-top: 2rem; display: none;">
+      <a href="course_c_cpp_video.html" target="_blank" class="pay-btn">📽️ Watch Course Now</a>
+    </div>
+  </div>
+
+  <!-- QR Code Popup -->
+  <div id="qrPopup" class="qr-popup">
+    <h3>Scan QR & Pay ₹50</h3>
+    <img src="qrcode_c_cpp.png" alt="QR Code for ₹50 Payment">
+    <p>After payment, your access will be manually activated by the admin.</p>
+    <button class="close-btn" onclick="closeQR()">Close</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    © 2025 miniBotix | Learn. Build. Innovate.
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function showQR() {
+      document.getElementById("qrPopup").style.display = "block";
+    }
+
+    function closeQR() {
+      document.getElementById("qrPopup").style.display = "none";
+    }
+
+    // For manual activation after payment
+    // You can call: document.getElementById("videoAccess").style.display = "block";
+  </script>
+</body>
+</html>
