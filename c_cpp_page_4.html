@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Embedded Quiz - C/C++ Page 4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #fce8c6, #f1d9b5);
+      padding-bottom: 100px;
+    }
+    header {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .question-block {
+      background: #fff8e6;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-left: 4px solid #4e2e1e;
+      border-radius: 8px;
+    }
+    .question-block strong {
+      font-size: 1.1rem;
+    }
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+    .answer-review {
+      background: #e6f0ff;
+      padding: 10px;
+      margin-top: 10px;
+      border-left: 4px solid #007bff;
+      border-radius: 5px;
+    }
+    #result {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: #1a1a1a;
+    }
+    button {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Embedded C++ Developer – Quiz Page 4</h2>
+  </header>
+
+  <div class="container">
+    <form id="quizForm">
+      <!-- JS inserts questions here -->
+    </form>
+
+    <div id="result"></div>
+    <div id="answers"></div>
+
+    <button onclick="submitQuiz()">Finish Quiz</button>
+  </div>
+
+  <div class="nav-buttons">
+    <a href="c_cpp_page_3.html"><button>⬅ Previous Page</button></a>
+    <a href="c_cpp_page_5.html"><button>Next Page ➡</button></a>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "1. What is a header file in Arduino programming?",
+        options: [
+          "It defines pin modes only",
+          "A file that contains prewritten functions and libraries",
+          "Stores main code logic",
+          "Contains analogRead values"
+        ],
+        answer: 1,
+        explanation: "Header files contain predefined functions and libraries like <Wire.h> and <DHT.h>."
+      },
+      {
+        question: "2. Which function is used to print to Serial Monitor?",
+        options: [
+          "Serial.begin()",
+          "Serial.end()",
+          "Serial.print()",
+          "Serial.display()"
+        ],
+        answer: 2,
+        explanation: "Serial.print() is used to print values or messages to the Serial Monitor."
+      },
+      {
+        question: "3. What does analogRead(A0) return?",
+        options: [
+          "A digital signal (0 or 1)",
+          "A string",
+          "An integer between 0 and 1023",
+          "Nothing"
+        ],
+        answer: 2,
+        explanation: "analogRead returns a number from 0 to 1023 based on input voltage."
+      },
+      {
+        question: "4. What is the purpose of delay(1000)?",
+        options: [
+          "Waits for 1 second",
+          "Stops the sensor",
+          "Prints a message",
+          "Reads digital input"
+        ],
+        answer: 0,
+        explanation: "delay(1000) pauses the code execution for 1000 milliseconds (1 second)."
+      },
+      {
+        question: "5. Which sensor is used to measure soil moisture?",
+        options: [
+          "LDR",
+          "Ultrasonic",
+          "BMP180",
+          "Soil moisture sensor"
+        ],
+        answer: 3,
+        explanation: "Soil moisture sensors detect water content in soil."
+      },
+      {
+        question: "6. Function to read temperature in DHT11 library?",
+        options: [
+          "dht.temp()",
+          "dht.readTemperature()",
+          "temperature.read()",
+          "read.temp()"
+        ],
+        answer: 1,
+        explanation: "dht.readTemperature() reads the temperature in Celsius."
+      },
+      {
+        question: "7. Which pins are used by Ultrasonic Sensor?",
+        options: [
+          "VCC and GND only",
+          "Trig and Echo",
+          "Analog and Ground",
+          "PWM pins"
+        ],
+        answer: 1,
+        explanation: "Ultrasonic sensors use Trig to send and Echo to receive signals."
+      },
+      {
+        question: "8. What value does pulseIn() return?",
+        options: [
+          "Voltage level",
+          "Duration in microseconds",
+          "Resistance value",
+          "None of these"
+        ],
+        answer: 1,
+        explanation: "pulseIn() returns time in microseconds the pin was HIGH/LOW."
+      },
+     {
+  question: "9. Which Arduino function is used to display data in the Serial Monitor?",
+  options: [
+    "show()",
+    "display()",
+    "Serial.print()",
+    "write()"
+  ],
+  answer: 2,
+  explanation: "Serial.print() is used to send text or data to the Serial Monitor."
+},
+      {
+        question: "10. Which component detects brightness of light?",
+        options: [
+          "DHT11",
+          "BMP180",
+          "LDR",
+          "Soil sensor"
+        ],
+        answer: 2,
+        explanation: "LDR changes resistance with light intensity."
+      },
+      {
+        question: "11. Which line starts serial communication?",
+        options: [
+          "Serial.print(9600);",
+          "Serial.start(9600);",
+          "Serial.begin(9600);",
+          "Serial.init();"
+        ],
+        answer: 2,
+        explanation: "Serial.begin(9600) starts communication at 9600 baud."
+      },
+      {
+        question: "12. Correct datatype for temperature value?",
+        options: [
+          "int",
+          "String",
+          "float",
+          "bool"
+        ],
+        answer: 2,
+        explanation: "Use float for decimal-based sensor readings like temperature."
+      },
+      {
+        question: "13. Which sensor detects obstacles?",
+        options: [
+          "Soil sensor",
+          "LDR",
+          "Ultrasonic sensor",
+          "DHT11"
+        ],
+        answer: 2,
+        explanation: "Ultrasonic sensor detects objects using sound waves."
+      },
+      {
+        question: "14. digitalWrite(pin, HIGH) does what?",
+        options: [
+          "Reads input",
+          "Turns pin OFF",
+          "Sends 5V to pin",
+          "Initializes pin"
+        ],
+        answer: 2,
+        explanation: "HIGH sends 5V to an output pin."
+      },
+      {
+        question: "15. Which reads analog input?",
+        options: [
+          "analogRead()",
+          "analogWrite()",
+          "digitalRead()",
+          "digitalWrite()"
+        ],
+        answer: 0,
+        explanation: "analogRead() reads analog pin voltage."
+      }
+    ];
+
+    const form = document.getElementById("quizForm");
+    const resultDiv = document.getElementById("result");
+    const answerDiv = document.getElementById("answers");
+
+    // Render questions
+    quizData.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question-block";
+      div.innerHTML = `<strong>${q.question}</strong>`;
+      q.options.forEach((opt, j) => {
+        div.innerHTML += `
+          <label>
+            <input type="radio" name="q${i}" value="${j}"> ${opt}
+          </label>`;
+      });
+      form.appendChild(div);
+    });
+
+    function submitQuiz() {
+      let score = 0;
+      let review = '';
+      quizData.forEach((q, i) => {
+        const selected = form[`q${i}`]?.value;
+        if (parseInt(selected) === q.answer) score++;
+        review += `
+          <div class="answer-review">
+            <strong>Q${i + 1}:</strong> Correct Answer: <b>${q.options[q.answer]}</b><br/>
+            <span style="color:blue;">${q.explanation}</span>
+          </div>`;
+      });
+
+      resultDiv.innerHTML = `✅ You scored <b>${score}</b> out of <b>${quizData.length}</b>`;
+      answerDiv.innerHTML = review;
+    }
+  </script>
+
+</body>
+</html>
