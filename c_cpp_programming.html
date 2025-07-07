@@ -10,7 +10,7 @@
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to bottom right, #fce8c6, #f1d9b5);
       color: #333;
-      padding-bottom: 100px;
+      padding-bottom: 40px;
     }
     header {
       display: flex;
@@ -87,10 +87,8 @@
       padding: 1rem;
       background-color: #4e2e1e;
       color: white;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
       font-weight: 500;
+      margin-top: 50px;
     }
   </style>
 </head>
@@ -149,7 +147,7 @@
   <!-- QR Code Popup -->
   <div class="qr-popup" id="qrPopup">
     <h3>Pay ₹50 via QR</h3>
-    <img src="qrcode_c_cpp.jpg" alt="QR Code" width="200" />
+    <img src="qrcode_c_cpp.png.jpg" alt="QR Code" width="200" />
     <input type="text" id="passKey" placeholder="Enter Access Key" />
     <button onclick="verifyKey()">Submit Key</button>
     <button onclick="document.getElementById('qrPopup').style.display='none'">Close</button>
