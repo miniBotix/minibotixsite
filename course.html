@@ -13,7 +13,7 @@
       color: #333;
       position: relative;
       min-height: 100vh;
-      padding-bottom: 80px;
+      padding-bottom: 100px;
     }
 
     header {
@@ -74,12 +74,17 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
       font-weight: 600;
-      cursor: pointer;
+      text-align: center;
     }
 
     .course-card:hover {
       transform: scale(1.03);
       background: #ffe6b5;
+    }
+
+    .course-card a {
+      color: #4e2e1e;
+      text-decoration: none;
     }
 
     .footer {
@@ -93,10 +98,9 @@
       font-weight: 500;
     }
 
-    /* Cart Icon */
     .cart-icon {
       position: fixed;
-      bottom: 90px;
+      bottom: 100px;
       right: 20px;
       background-color: #4e2e1e;
       color: white;
@@ -112,7 +116,7 @@
 
     .popup-cart {
       position: fixed;
-      bottom: 140px;
+      bottom: 150px;
       right: 20px;
       background-color: #fff8e6;
       padding: 1rem;
@@ -149,6 +153,17 @@
     .popup-cart button:hover {
       background-color: #7c5034;
     }
+
+    .remove-btn {
+      color: red;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    a.course-link {
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -170,21 +185,43 @@
   <section class="course-section">
     <h2>Our Premium Courses</h2>
     <div class="courses-grid">
-      <div class="course-card" onclick="addToCart('C / C++ Programming')">C / C++ Programming</div>
-      <div class="course-card" onclick="addToCart('Microcontroller Programming')">Microcontroller Programming</div>
-      <div class="course-card" onclick="addToCart('IoT (Internet of Things)')">IoT (Internet of Things)</div>
-      <div class="course-card" onclick="addToCart('RTOS')">RTOS</div>
-      <div class="course-card" onclick="addToCart('DSP for Embedded Systems')">DSP for Embedded Systems</div>
-      <div class="course-card" onclick="addToCart('Hardware Interfacing')">Hardware Interfacing</div>
-      <div class="course-card" onclick="addToCart('PLC Programming (Delta)')">PLC Programming (Delta)</div>
-      <div class="course-card" onclick="addToCart('Unity with C++')">Unity with C++</div>
-      <div class="course-card" onclick="addToCart('Arduino Master')">Arduino Master</div>
-      <div class="course-card" onclick="addToCart('MCU Principles')">MCU Principles</div>
-      <div class="course-card" onclick="addToCart('ML in Embedded Systems')">ML in Embedded Systems</div>
+      <a href="c_cpp_programming.html" class="course-link" onclick="addToCart('C / C++ Programming')">
+        <div class="course-card">C / C++ Programming</div>
+      </a>
+      <a href="microcontroller.html" class="course-link" onclick="addToCart('Microcontroller Programming')">
+        <div class="course-card">Microcontroller Programming</div>
+      </a>
+      <a href="iot.html" class="course-link" onclick="addToCart('IoT (Internet of Things)')">
+        <div class="course-card">IoT (Internet of Things)</div>
+      </a>
+      <a href="rtos.html" class="course-link" onclick="addToCart('RTOS')">
+        <div class="course-card">RTOS</div>
+      </a>
+      <a href="dsp.html" class="course-link" onclick="addToCart('DSP for Embedded Systems')">
+        <div class="course-card">DSP for Embedded Systems</div>
+      </a>
+      <a href="hardware.html" class="course-link" onclick="addToCart('Hardware Interfacing')">
+        <div class="course-card">Hardware Interfacing</div>
+      </a>
+      <a href="plc.html" class="course-link" onclick="addToCart('PLC Programming (Delta)')">
+        <div class="course-card">PLC Programming (Delta)</div>
+      </a>
+      <a href="unity_cpp.html" class="course-link" onclick="addToCart('Unity with C++')">
+        <div class="course-card">Unity with C++</div>
+      </a>
+      <a href="arduino.html" class="course-link" onclick="addToCart('Arduino Master')">
+        <div class="course-card">Arduino Master</div>
+      </a>
+      <a href="mcu.html" class="course-link" onclick="addToCart('MCU Principles')">
+        <div class="course-card">MCU Principles</div>
+      </a>
+      <a href="ml_embedded.html" class="course-link" onclick="addToCart('ML in Embedded Systems')">
+        <div class="course-card">ML in Embedded Systems</div>
+      </a>
     </div>
   </section>
 
-  <!-- Cart Button -->
+  <!-- Cart Icon -->
   <div class="cart-icon" onclick="toggleCart()">
     🛒 <span id="cartCount">0</span>
   </div>
@@ -204,47 +241,46 @@
 
   <!-- JavaScript -->
   <script>
-  let cart = [];
+    let cart = [];
 
-  function addToCart(course) {
-    if (!cart.includes(course)) {
-      cart.push(course);
+    function addToCart(course) {
+      if (!cart.includes(course)) {
+        cart.push(course);
+        updateCart();
+      }
+    }
+
+    function updateCart() {
+      const cartList = document.getElementById('cartList');
+      cartList.innerHTML = "";
+
+      cart.forEach((course, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `${course} <span class="remove-btn" onclick="removeFromCart(${index})">➖</span>`;
+        cartList.appendChild(li);
+      });
+
+      document.getElementById('cartCount').innerText = cart.length;
+      document.getElementById('totalPrice').innerText = cart.length * 150;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
       updateCart();
     }
-  }
 
-  function updateCart() {
-    const cartList = document.getElementById('cartList');
-    cartList.innerHTML = "";
-
-    cart.forEach((course, index) => {
-      const li = document.createElement('li');
-      li.innerHTML = `${course} <span onclick="removeFromCart(${index})" style="color: red; cursor: pointer; font-weight: bold; margin-left: 10px;">➖</span>`;
-      cartList.appendChild(li);
-    });
-
-    document.getElementById('cartCount').innerText = cart.length;
-    document.getElementById('totalPrice').innerText = cart.length * 150;
-  }
-
-  function removeFromCart(index) {
-    cart.splice(index, 1);
-    updateCart();
-  }
-
-  function toggleCart() {
-    const popup = document.getElementById('popupCart');
-    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-  }
-
-  function purchase() {
-    if (cart.length > 0) {
-      window.open("https://forms.gle/z8a6HeZGCxqhaLDj8", "_blank");
-    } else {
-      alert("Please select at least one course.");
+    function toggleCart() {
+      const popup = document.getElementById('popupCart');
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
-  }
-</script>
 
+    function purchase() {
+      if (cart.length > 0) {
+        window.open("https://forms.gle/z8a6HeZGCxqhaLDj8", "_blank");
+      } else {
+        alert("Please select at least one course.");
+      }
+    }
+  </script>
 </body>
 </html>
