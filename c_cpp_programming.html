@@ -37,12 +37,23 @@
     }
     .container {
       padding: 2rem;
+      max-width: 900px;
+      margin: auto;
     }
-    h2 { color: #3b240e; }
-    p { font-size: 1.1rem; margin-top: 1rem; }
-
+    h2 {
+      color: #3b240e;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    ul {
+      font-size: 1.1rem;
+      margin-left: 1.2rem;
+    }
     button {
-      margin-top: 1rem;
+      margin-top: 2rem;
       background-color: #4e2e1e;
       color: white;
       padding: 0.8rem 1.5rem;
@@ -51,7 +62,7 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    .popup, .qr-popup, .start-popup {
+    .qr-popup, .start-popup {
       display: none;
       position: fixed;
       top: 50%; left: 50%;
@@ -62,11 +73,12 @@
       border-radius: 12px;
       z-index: 999;
       width: 300px;
+      text-align: center;
     }
-    .popup input, .qr-popup input {
+    .qr-popup input {
       width: 100%;
       padding: 8px;
-      margin: 5px 0;
+      margin: 10px 0;
       border: 1px solid #aaa;
       border-radius: 6px;
     }
@@ -99,37 +111,48 @@
   <div class="container">
     <h2>Embedded C++ Developer Course</h2>
     <p>
-      Unlock your potential in embedded systems through hands-on learning. Complete 3 mini-projects to earn certification and become industry-ready.
+      Unlock your potential in the world of embedded systems with our comprehensive Embedded C++ Developer Course.
+      Whether you're a beginner in C/C++ or someone looking to apply programming to real-world hardware, this course is designed to bridge the gap between software and hardware using hands-on embedded programming.
     </p>
-    <button onclick="openLogin()">Access Course</button>
-  </div>
+    <p>
+      Through a structured learning path, you'll first master the core fundamentals of C and C++, focusing on syntax, logic building, memory usage, and control structures essential for microcontroller programming.
+      Then, dive into real-world embedded applications using Arduino, where you'll explore common I/O operations, sensor integration, and communication protocols like UART, I2C, and SPI — all explained in clear and practical C++ implementations.
+    </p>
+    <p><strong>The course includes three real-time mini-projects:</strong></p>
+    <ul>
+      <li>Smart LED Control System – Automate lighting with sensor input using C++ and Arduino.</li>
+      <li>Temperature Monitoring System – Display sensor data on an LCD using C++.</li>
+      <li>Wireless Data Logger – Send sensor data over serial/Bluetooth communication.</li>
+    </ul>
+    <p><strong>📚 What You'll Learn:</strong></p>
+    <ul>
+      <li>Fundamentals of C & C++ programming</li>
+      <li>Basic structure of Embedded C++ applications</li>
+      <li>Interfacing sensors and actuators with Arduino</li>
+      <li>Understanding communication protocols (UART, I2C, SPI)</li>
+      <li>Writing modular and reusable embedded C++ code</li>
+      <li>Project planning and implementation for embedded devices</li>
+    </ul>
+    <p><strong>🏆 Certification:</strong><br>
+      Upon completing all three mini-projects and evaluations, students will be awarded a certificate titled "Embedded C++ Developer" with a percentage-based performance score.
+    </p>
+    <p><strong>🎯 Who This Course Is For:</strong></p>
+    <ul>
+      <li>Students and beginners in electronics or computer science</li>
+      <li>Engineers and hobbyists interested in embedded systems</li>
+      <li>Anyone who wants to start a career in IoT, robotics, or microcontroller programming</li>
+    </ul>
 
-  <!-- Login Popup -->
-  <div class="popup" id="loginPopup">
-    <h3>Login</h3>
-    <input type="text" id="loginUser" placeholder="User ID or Email">
-    <input type="password" id="loginPin" placeholder="Secret Key">
-    <button onclick="handleLogin()">Login</button>
-    <p style="font-size: 0.9rem; margin-top: 10px;">New user? <a href="#" onclick="openSignup()">Sign Up</a></p>
-  </div>
-
-  <!-- Signup Popup -->
-  <div class="popup" id="signupPopup">
-    <h3>Sign Up</h3>
-    <input type="text" id="stuName" placeholder="Full Name">
-    <input type="text" id="stuPhone" placeholder="Phone Number">
-    <input type="email" id="stuEmail" placeholder="Email ID">
-    <input type="text" id="stuUserID" placeholder="Create User ID">
-    <button onclick="saveSignup()">Register</button>
+    <button onclick="document.getElementById('qrPopup').style.display='block'">Access Course</button>
   </div>
 
   <!-- QR Code Popup -->
   <div class="qr-popup" id="qrPopup">
     <h3>Pay ₹50 via QR</h3>
-    <img src="qrcode_c_cpp.jpg" alt="QR Code" width="200">
-    <input type="text" id="passKey" placeholder="Enter Pass Key">
+    <img src="qrcode_c_cpp.jpg" alt="QR Code" width="200" />
+    <input type="text" id="passKey" placeholder="Enter Access Key" />
     <button onclick="verifyKey()">Submit Key</button>
-    <button onclick="closeQR()">Close</button>
+    <button onclick="document.getElementById('qrPopup').style.display='none'">Close</button>
   </div>
 
   <!-- Course Start -->
@@ -138,82 +161,19 @@
     <button onclick="startCourse()">▶️ Start Course</button>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     © 2025 miniBotix | Learn. Build. Innovate.
   </div>
 
-  <!-- JavaScript -->
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzvqLePpZYQ0mQdNE-_mF3KkglUQzgi8R-xRou77yKBAXqedUsVPHxh7U-mguawHdBHzA/exec';
-
-    function openLogin() {
-      document.getElementById("loginPopup").style.display = "block";
-    }
-
-    function openSignup() {
-      document.getElementById("loginPopup").style.display = "none";
-      document.getElementById("signupPopup").style.display = "block";
-    }
-
-    function closeQR() {
-      document.getElementById("qrPopup").style.display = "none";
-    }
-
-    function saveSignup() {
-      const name = document.getElementById('stuName').value;
-      const phone = document.getElementById('stuPhone').value;
-      const email = document.getElementById('stuEmail').value;
-      const user = document.getElementById('stuUserID').value;
-
-      fetch(scriptURL, {
-        method: 'POST',
-        body: new URLSearchParams({
-          name: name,
-          phone: phone,
-          email: email,
-          userid: user
-        })
-      }).then(() => {
-        alert("Registered Successfully. Check your mail for secret key.");
-        document.getElementById("signupPopup").style.display = "none";
-      }).catch(err => alert("Error: " + err));
-    }
-
-    function handleLogin() {
-      const user = document.getElementById('loginUser').value;
-      const pin = document.getElementById('loginPin').value;
-
-      const url = `${scriptURL}?checkLogin=true&user=${encodeURIComponent(user)}&key=${encodeURIComponent(pin)}`;
-
-      fetch(url)
-        .then(res => res.text())
-        .then(data => {
-          if (data === "valid") {
-            document.getElementById("loginPopup").style.display = "none";
-            document.getElementById("qrPopup").style.display = "block";
-          } else {
-            alert("Invalid ID or Secret Key");
-          }
-        });
-    }
-
     function verifyKey() {
-      const key = document.getElementById('passKey').value;
-      const user = document.getElementById('loginUser').value;
-
-      const url = `${scriptURL}?checkPayment=true&user=${encodeURIComponent(user)}&pass=${encodeURIComponent(key)}`;
-
-      fetch(url)
-        .then(res => res.text())
-        .then(data => {
-          if (data === "valid") {
-            document.getElementById("qrPopup").style.display = "none";
-            document.getElementById("startPopup").style.display = "block";
-          } else {
-            alert("Invalid Pass Key");
-          }
-        });
+      const key = document.getElementById('passKey').value.trim();
+      if (key === "1835Abcd") {
+        document.getElementById("qrPopup").style.display = "none";
+        document.getElementById("startPopup").style.display = "block";
+      } else {
+        alert("Invalid Pass Key. Please check your mail or contact support.");
+      }
     }
 
     function startCourse() {
