@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Course Completion - Embedded C++ Developer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fff8e6;
+      color: #333;
+      padding-bottom: 100px;
+    }
+    header {
+      padding: 1rem 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #4e2e1e;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h2 {
+      color: #3b240e;
+      margin-top: 2rem;
+    }
+    ul {
+      margin-left: 1.5rem;
+      line-height: 1.8;
+    }
+    button {
+      margin-top: 2rem;
+      background-color: #4e2e1e;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff3db;
+      padding: 2rem;
+      border: 2px solid #4e2e1e;
+      border-radius: 12px;
+      z-index: 999;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .popup img {
+      width: 200px;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+    }
+    .popup button {
+      background: #4e2e1e;
+      color: #fff;
+      margin-top: 1rem;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #f8f4ee;
+      box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+    .nav-buttons button {
+      background-color: #3b240e;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+      transition: 0.3s;
+      min-width: 140px;
+    }
+    .nav-buttons button:hover {
+      background-color: #5b3920;
+    }
+    @media (max-width: 480px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .nav-buttons button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Embedded C++ Developer - Final Page</h1>
+  </header>
+
+  <div class="container">
+    <h2>🎓 What You’ve Learned:</h2>
+    <ul>
+      <li>Basics of C & C++ programming for embedded systems</li>
+      <li>Understanding Arduino architecture and programming</li>
+      <li>Hands-on with sensors like DHT11, BMP180, LDR, Soil Moisture, and more</li>
+      <li>Modular and clean code structure</li>
+      <li>Embedded communication protocols (UART, I2C, SPI)</li>
+      <li>Object-Oriented Programming in C++ for microcontrollers</li>
+      <li>Project development: Smart fire alarm, soil watering, etc.</li>
+      <li>Online compilation & simulation techniques</li>
+      <li>How microcontrollers are programmed & deployed</li>
+    </ul>
+
+    <button onclick="openQR()">🎖️ Generate Certificate</button>
+  </div>
+
+  <!-- QR Code Popup -->
+  <div class="popup" id="qrPopup">
+    <h3 style="color: #4e2e1e;">Pay ₹100 to Get Your Certificate</h3>
+    <p style="margin-bottom: 10px; font-size: 0.95rem;">
+      📩 Once paid, you’ll receive your certificate within <strong>12 hours</strong> via email.
+    </p>
+    <img src="qrcode_c_cpp.png.jpg" alt="QR Code" />
+    <p style="font-size: 0.9rem;">Scan with any UPI app to proceed</p>
+    <button onclick="closeQR()">Close</button>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <button onclick="window.location.href='c_cpp_page_8.html'">← Previous Page</button>
+    <button onclick="window.location.href='course.html'">🏁 Course Home</button>
+  </div>
+
+  <script>
+    function openQR() {
+      document.getElementById("qrPopup").style.display = "block";
+    }
+    function closeQR() {
+      document.getElementById("qrPopup").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
