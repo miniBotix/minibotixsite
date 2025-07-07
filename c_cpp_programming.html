@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>C/C++ Programming - miniBotix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       margin: 0;
@@ -13,7 +12,6 @@
       color: #333;
       padding-bottom: 100px;
     }
-
     header {
       display: flex;
       justify-content: space-between;
@@ -22,91 +20,56 @@
       background-color: #4e2e1e;
       color: white;
     }
-
     .logo {
       font-size: 2rem;
       font-weight: bold;
       color: #ffd28d;
-      text-shadow: 1px 1px 2px #000;
     }
-
     nav ul {
       display: flex;
       list-style: none;
       gap: 1.5rem;
     }
-
     nav a {
       color: white;
       text-decoration: none;
       font-weight: 500;
     }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
     .container {
       padding: 2rem;
-      text-align: center;
     }
+    h2 { color: #3b240e; }
+    p { font-size: 1.1rem; margin-top: 1rem; }
 
-    h2 {
-      font-size: 2.2rem;
-      color: #3b240e;
-    }
-
-    p {
-      font-size: 1.1rem;
+    button {
       margin-top: 1rem;
-    }
-
-    .pay-btn {
-      margin-top: 2rem;
       background-color: #4e2e1e;
       color: white;
       padding: 0.8rem 1.5rem;
-      font-size: 1.1rem;
+      font-size: 1rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
-
-    .pay-btn:hover {
-      background-color: #7c5034;
-    }
-
-    /* QR Popup */
-    .qr-popup {
+    .popup, .qr-popup, .start-popup {
       display: none;
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #fff8e6;
+      background: #fff8e6;
       padding: 2rem;
       border: 2px solid #4e2e1e;
       border-radius: 12px;
       z-index: 999;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      text-align: center;
+      width: 300px;
     }
-
-    .qr-popup img {
-      max-width: 250px;
-      margin-bottom: 1rem;
-    }
-
-    .close-btn {
-      background: #4e2e1e;
-      color: white;
-      border: none;
-      padding: 6px 16px;
+    .popup input, .qr-popup input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #aaa;
       border-radius: 6px;
-      cursor: pointer;
-      margin-top: 1rem;
     }
-
     .footer {
       text-align: center;
       padding: 1rem;
@@ -121,7 +84,6 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <div class="logo">miniBotix</div>
     <nav>
@@ -134,25 +96,46 @@
     </nav>
   </header>
 
-  <!-- Course Section -->
   <div class="container">
-    <h2>C / C++ Programming for Embedded Systems</h2>
-    <p>Learn the basics of C/C++ used in embedded programming. This 1:30 minute crash course helps you understand structure, pointers, memory, and hardware-level programming logic.</p>
+    <h2>Embedded C++ Developer Course</h2>
+    <p>
+      Unlock your potential in embedded systems through hands-on learning. Complete 3 mini-projects to earn certification and become industry-ready.
+    </p>
+    <button onclick="openLogin()">Access Course</button>
+  </div>
 
-    <button class="pay-btn" onclick="showQR()">Pay ₹50 to Access</button>
+  <!-- Login Popup -->
+  <div class="popup" id="loginPopup">
+    <h3>Login</h3>
+    <input type="text" id="loginUser" placeholder="User ID or Email">
+    <input type="password" id="loginPin" placeholder="Secret Key">
+    <button onclick="handleLogin()">Login</button>
+    <p style="font-size: 0.9rem; margin-top: 10px;">New user? <a href="#" onclick="openSignup()">Sign Up</a></p>
+  </div>
 
-    <!-- Video access (after payment, manually unlocked) -->
-    <div id="videoAccess" style="margin-top: 2rem; display: none;">
-      <a href="course_c_cpp_video.html" target="_blank" class="pay-btn">📽️ Watch Course Now</a>
-    </div>
+  <!-- Signup Popup -->
+  <div class="popup" id="signupPopup">
+    <h3>Sign Up</h3>
+    <input type="text" id="stuName" placeholder="Full Name">
+    <input type="text" id="stuPhone" placeholder="Phone Number">
+    <input type="email" id="stuEmail" placeholder="Email ID">
+    <input type="text" id="stuUserID" placeholder="Create User ID">
+    <button onclick="saveSignup()">Register</button>
   </div>
 
   <!-- QR Code Popup -->
-  <div id="qrPopup" class="qr-popup">
-    <h3>Scan QR & Pay ₹50</h3>
-    <img src="qrcode_c_cpp.png.jpg" alt="QR Code for ₹50 Payment">
-    <p>After payment, your access will be manually activated by the admin.</p>
-    <button class="close-btn" onclick="closeQR()">Close</button>
+  <div class="qr-popup" id="qrPopup">
+    <h3>Pay ₹50 via QR</h3>
+    <img src="qrcode_c_cpp.jpg" alt="QR Code" width="200">
+    <input type="text" id="passKey" placeholder="Enter Pass Key">
+    <button onclick="verifyKey()">Submit Key</button>
+    <button onclick="closeQR()">Close</button>
+  </div>
+
+  <!-- Course Start -->
+  <div class="start-popup" id="startPopup">
+    <h3>Ready to Start?</h3>
+    <button onclick="startCourse()">▶️ Start Course</button>
   </div>
 
   <!-- Footer -->
@@ -162,16 +145,80 @@
 
   <!-- JavaScript -->
   <script>
-    function showQR() {
-      document.getElementById("qrPopup").style.display = "block";
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwd_GBGQw8ZVONfHBFTIC6Ykj5uWEZT8xldPQJNviwc98vz3STKJGedF8XsmsJ9ZGic8Q/exec';
+
+    function openLogin() {
+      document.getElementById("loginPopup").style.display = "block";
+    }
+
+    function openSignup() {
+      document.getElementById("loginPopup").style.display = "none";
+      document.getElementById("signupPopup").style.display = "block";
     }
 
     function closeQR() {
       document.getElementById("qrPopup").style.display = "none";
     }
 
-    // For manual activation after payment
-    // You can call: document.getElementById("videoAccess").style.display = "block";
+    function saveSignup() {
+      const name = document.getElementById('stuName').value;
+      const phone = document.getElementById('stuPhone').value;
+      const email = document.getElementById('stuEmail').value;
+      const user = document.getElementById('stuUserID').value;
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: new URLSearchParams({
+          name: name,
+          phone: phone,
+          email: email,
+          userid: user
+        })
+      }).then(() => {
+        alert("Registered Successfully. Check your mail for secret key.");
+        document.getElementById("signupPopup").style.display = "none";
+      }).catch(err => alert("Error: " + err));
+    }
+
+    function handleLogin() {
+      const user = document.getElementById('loginUser').value;
+      const pin = document.getElementById('loginPin').value;
+
+      const url = `${scriptURL}?checkLogin=true&user=${encodeURIComponent(user)}&key=${encodeURIComponent(pin)}`;
+
+      fetch(url)
+        .then(res => res.text())
+        .then(data => {
+          if (data === "valid") {
+            document.getElementById("loginPopup").style.display = "none";
+            document.getElementById("qrPopup").style.display = "block";
+          } else {
+            alert("Invalid ID or Secret Key");
+          }
+        });
+    }
+
+    function verifyKey() {
+      const key = document.getElementById('passKey').value;
+      const user = document.getElementById('loginUser').value;
+
+      const url = `${scriptURL}?checkPayment=true&user=${encodeURIComponent(user)}&pass=${encodeURIComponent(key)}`;
+
+      fetch(url)
+        .then(res => res.text())
+        .then(data => {
+          if (data === "valid") {
+            document.getElementById("qrPopup").style.display = "none";
+            document.getElementById("startPopup").style.display = "block";
+          } else {
+            alert("Invalid Pass Key");
+          }
+        });
+    }
+
+    function startCourse() {
+      window.location.href = "course_c_cpp_video.html";
+    }
   </script>
 </body>
 </html>
