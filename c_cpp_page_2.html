@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Embedded C++ Course - Page 2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f1e5;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #4e2e1e;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    pre {
+      background-color: #fff4db;
+      border-left: 4px solid #d39e00;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    .output {
+      background-color: #e7f3ff;
+      border-left: 4px solid #1e90ff;
+      padding: 1rem;
+      margin-top: 10px;
+      border-radius: 8px;
+      font-family: monospace;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+    .nav-buttons button {
+      padding: 10px 20px;
+      background-color: #4e2e1e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Embedded C++ Developer Course - Page 2</h1>
+
+  <div class="section">
+    <h2>What is a Push Button?</h2>
+    <p>
+      A push button is a simple switch used to control electrical circuits. When pressed, it completes a connection; when released, it breaks the connection.
+      It’s commonly used in embedded systems to trigger actions like starting/stopping a process.
+    </p>
+    <p><strong>Connection:</strong> Connect one side to GND and the other to a digital input pin with a pull-up resistor (or use <code>INPUT_PULLUP</code> mode).</p>
+
+    <h3>Code: Push Button to Turn ON a Buzzer</h3>
+    <pre>
+#define button 2
+#define buzzer 9
+
+void setup() {
+  pinMode(button, INPUT_PULLUP);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(button) == LOW) {
+    digitalWrite(buzzer, HIGH);
+  } else {
+    digitalWrite(buzzer, LOW);
+  }
+}
+    </pre>
+    <div class="output">
+      ➤ When button is pressed → Buzzer turns ON<br>
+      ➤ When button is released → Buzzer turns OFF
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Understanding Loops in C++</h2>
+    <p>
+      Loops let you run a block of code multiple times. Common loops include:
+      <ul>
+        <li><strong>for loop</strong> – used when number of iterations is known</li>
+        <li><strong>while loop</strong> – runs as long as a condition is true</li>
+      </ul>
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>DHT11 Reading Using for Loop</h2>
+    <p><strong>Note:</strong> You need the <code>DHT.h</code> library installed.</p>
+    <pre>
+#include &lt;DHT.h&gt;
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+}
+
+void loop() {
+  for (int i = 0; i < 5; i++) {
+    float temp = dht.readTemperature();
+    float hum = dht.readHumidity();
+
+    Serial.print("Reading ");
+    Serial.print(i + 1);
+    Serial.print(": Temp = ");
+    Serial.print(temp);
+    Serial.print(" °C, Humidity = ");
+    Serial.print(hum);
+    Serial.println(" %");
+    
+    delay(2000); // wait 2 seconds
+  }
+
+  while (1); // Stop loop after 5 readings
+}
+    </pre>
+    <div class="output">
+      Reading 1: Temp = 27.00 °C, Humidity = 68 %<br>
+      Reading 2: Temp = 27.10 °C, Humidity = 67 %<br>
+      Reading 3: Temp = 27.20 °C, Humidity = 67 %<br>
+      Reading 4: Temp = 27.20 °C, Humidity = 66 %<br>
+      Reading 5: Temp = 27.30 °C, Humidity = 66 %
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Example of While Loop</h2>
+    <pre>
+int i = 0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  while (i < 3) {
+    Serial.print("Loop #");
+    Serial.println(i + 1);
+    i++;
+    delay(1000);
+  }
+}
+    </pre>
+    <div class="output">
+      Loop #1<br>
+      Loop #2<br>
+      Loop #3
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Introduction to Sensors</h2>
+    <p>Sensors are devices that detect changes in the environment and convert them into electrical signals.</p>
+
+    <h3>15 Basic Sensors, Input Voltage & Applications:</h3>
+    <ul>
+      <li><strong>DHT11</strong> – Temp & Humidity | 3.3V/5V | Weather monitoring</li>
+      <li><strong>LM35</strong> – Temperature | 5V | Room temp, fire detection</li>
+      <li><strong>PIR Sensor</strong> – Motion | 5V | Security, automation</li>
+      <li><strong>IR Sensor</strong> – Obstacle | 3.3V/5V | Line following robot</li>
+      <li><strong>Ultrasonic Sensor (HC-SR04)</strong> – Distance | 5V | Range finding</li>
+      <li><strong>LDR</strong> – Light | 5V | Auto lighting</li>
+      <li><strong>MQ-2</strong> – Gas (LPG, Smoke) | 5V | Air quality</li>
+      <li><strong>Soil Moisture</strong> – Moisture | 3.3V/5V | Smart irrigation</li>
+      <li><strong>Rain Sensor</strong> – Rain detection | 5V | Weather station</li>
+      <li><strong>Flame Sensor</strong> – Fire | 3.3V/5V | Safety systems</li>
+      <li><strong>Vibration Sensor</strong> – Motion | 3.3V/5V | Vibration monitoring</li>
+      <li><strong>Hall Effect Sensor</strong> – Magnetic field | 3.3V/5V | RPM, contactless switches</li>
+      <li><strong>Sound Sensor</strong> – Noise | 5V | Clap switch</li>
+      <li><strong>Pulse Sensor</strong> – Heartbeat | 3.3V/5V | Health monitoring</li>
+      <li><strong>UV Sensor</strong> – UV radiation | 3.3V | Sunlight detection</li>
+    </ul>
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="window.location.href='course_c_cpp_video.html'">← Previous Page</button>
+    <button onclick="window.location.href='c_cpp_page_3.html'">Next Page →</button>
+  </div>
+
+</body>
+</html>
