@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Embedded C++ Developer - Page 7</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #fff8e6, #ffe7c4);
+      color: #2f1e0c;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #4e2e1e;
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      color: #4e2e1e;
+      margin-top: 2rem;
+    }
+
+    h3 {
+      color: #3e1c10;
+      margin-top: 1.5rem;
+    }
+
+    p, li {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    ul {
+      margin-left: 20px;
+    }
+
+    .block-diagram {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      gap: 0.8rem;
+    }
+
+    .block {
+      background-color: #fff;
+      border: 2px solid #4e2e1e;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      text-align: center;
+      width: 150px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .arrow {
+      font-size: 1.5rem;
+      color: #4e2e1e;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 3rem;
+    }
+
+    .nav-buttons button {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      background-color: #4e2e1e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .nav-buttons button:hover {
+      background-color: #3a1d10;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Embedded C++ Developer - Page 7: Code Upload & Compilation Techniques</h1>
+
+  <h2>🔄 Upload Flow – Block Diagram</h2>
+  <div class="block-diagram">
+    <div class="block">Code Writing<br>(IDE)</div>
+    <div class="arrow">➡</div>
+    <div class="block">Preprocessing</div>
+    <div class="arrow">➡</div>
+    <div class="block">Compilation</div>
+    <div class="arrow">➡</div>
+    <div class="block">Assembly</div>
+    <div class="arrow">➡</div>
+    <div class="block">Linking</div>
+    <div class="arrow">➡</div>
+    <div class="block">Uploader</div>
+  </div>
+
+  <h2>⚙️ Compilation Technique – Explained Step-by-Step</h2>
+  <ul>
+    <li><strong>1. Preprocessing:</strong> Handles `#include`, `#define`, and macro expansion.</li>
+    <li><strong>2. Compilation:</strong> Converts high-level code to low-level assembly code.</li>
+    <li><strong>3. Assembling:</strong> Translates assembly into binary object code.</li>
+    <li><strong>4. Linking:</strong> Links multiple object files and libraries into a single executable.</li>
+    <li><strong>5. Uploading:</strong> Transfers executable `.hex` file into microcontroller via USB/UART.</li>
+    <li><strong>6. Execution:</strong> The controller executes instructions starting from `setup()`.</li>
+  </ul>
+
+  <h2>📦 Current vs. Old Compilation Methods</h2>
+  <ul>
+    <li><strong>Old Method:</strong> Manual compilation and hex generation using command-line tools.</li>
+    <li><strong>Current Method:</strong> Modern IDEs like Arduino, STM32CubeIDE, PlatformIO offer one-click compile/upload.</li>
+    <li><strong>Advantage:</strong> Less error-prone, faster development, easier debugging.</li>
+  </ul>
+
+  <h2>⚙️ Common Microcontrollers – Evolution, Use & Scope</h2>
+
+  <h3>🔸 ATmega328P (Arduino Uno)</h3>
+  <ul>
+    <li><strong>Evolution:</strong> Part of the AVR family from Atmel, widely used in Arduino Uno boards.</li>
+    <li><strong>Advantages:</strong> Easy-to-use with Arduino IDE, strong community support, plenty of tutorials.</li>
+    <li><strong>Applications:</strong> Used in home automation, mini robots, line followers, and student projects.</li>
+    <li><strong>Disadvantages:</strong> Limited memory (32KB Flash), no built-in WiFi or Bluetooth, slower speed.</li>
+    <li><strong>Scope:</strong> Great for beginners to learn embedded programming and prototyping.</li>
+  </ul>
+
+  <h3>🔸 ESP8266 / ESP32</h3>
+  <ul>
+    <li><strong>Evolution:</strong> Developed by Espressif, ESP8266 came first, followed by ESP32 (with dual-core).</li>
+    <li><strong>Advantages:</strong> Built-in WiFi & Bluetooth, low cost, low power consumption, multiple GPIOs.</li>
+    <li><strong>Applications:</strong> IoT, real-time data transfer, home security systems, cloud-connected sensors.</li>
+    <li><strong>Disadvantages:</strong> Complex for beginners, libraries can be heavy, less reliable on poor power sources.</li>
+    <li><strong>Scope:</strong> Ideal for professional-grade IoT systems and real-time monitoring in embedded.</li>
+  </ul>
+
+  <h3>🔸 STM32 (e.g., STM32F103)</h3>
+  <ul>
+    <li><strong>Evolution:</strong> ARM Cortex-M3 core, developed by STMicroelectronics, wide industrial adoption.</li>
+    <li><strong>Advantages:</strong> High-speed, low power, 32-bit performance, advanced peripherals.</li>
+    <li><strong>Applications:</strong> Drones, motor control, industrial automation, medical devices.</li>
+    <li><strong>Disadvantages:</strong> Requires STM32Cube IDE knowledge, debugging can be complex.</li>
+    <li><strong>Scope:</strong> Preferred in real-time embedded systems and safety-critical applications.</li>
+  </ul>
+
+  <h3>🔸 PIC Microcontrollers (e.g., PIC16F877A)</h3>
+  <ul>
+    <li><strong>Evolution:</strong> From Microchip, widely used in 90s & 2000s for consumer and automotive electronics.</li>
+    <li><strong>Advantages:</strong> Stable, power-efficient, long life in production.</li>
+    <li><strong>Applications:</strong> Washing machines, digital clocks, vehicle systems, remote controls.</li>
+    <li><strong>Disadvantages:</strong> Programming is complex, less community support than Arduino or ESP.</li>
+    <li><strong>Scope:</strong> Still used in traditional embedded systems with fixed function requirements.</li>
+  </ul>
+
+  <h3>🔸 RP2040 (Raspberry Pi Pico)</h3>
+  <ul>
+    <li><strong>Evolution:</strong> Released in 2021 by Raspberry Pi Foundation with dual-core ARM Cortex-M0+.</li>
+    <li><strong>Advantages:</strong> Dual-core, USB support, PIO for custom protocol support, affordable.</li>
+    <li><strong>Applications:</strong> Real-time signal processing, USB gadgets, wearable prototyping.</li>
+    <li><strong>Disadvantages:</strong> Newer platform, smaller ecosystem, lacks WiFi (unless externally added).</li>
+    <li><strong>Scope:</strong> Excellent for educational purposes and fast prototyping in embedded applications.</li>
+  </ul>
+
+  <!-- Navigation -->
+  <div class="nav-buttons">
+    <button onclick="window.location.href='c_cpp_page_6.html'">← Previous Page</button>
+    <button onclick="window.location.href='c_cpp_page_8.html'">Next Page →</button>
+  </div>
+
+</body>
+</html>
