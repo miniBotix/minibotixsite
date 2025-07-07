@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Embedded C++ Developer - Page 6</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #fce8c6, #f1d9b5);
+      color: #333;
+      padding: 2rem;
+    }
+    h1 {
+      color: #4e2e1e;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    h2, h3 {
+      color: #3b240e;
+    }
+    pre {
+      background: #fff8e6;
+      padding: 1rem;
+      border-left: 5px solid #4e2e1e;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+    }
+    .output {
+      background: #e4e4e4;
+      padding: 10px;
+      border-left: 4px solid #2b2b2b;
+      margin-top: 10px;
+      font-family: monospace;
+    }
+    ul {
+      margin-top: 0.3rem;
+    }
+    li span {
+      font-weight: bold;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+    }
+    .nav-buttons button {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Embedded C++ Developer - Page 6</h1>
+
+  <h2>Object-Oriented Programming (OOP) in C++</h2>
+  <p>OOP is a design approach where programs are organized around objects and data rather than logic and functions. It helps build modular, reusable, and scalable code.</p>
+
+  <h3>1. Class & Object</h3>
+  <p>A class is a template that defines properties (variables) and behaviors (functions) of an object. An object is an instance of a class.</p>
+  <pre>
+#include &lt;iostream&gt;
+using namespace std;
+
+class LED {
+public:
+    void blink() { // Method definition
+        cout &lt;&lt; "LED is blinking" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    LED led1;      // Creating object
+    led1.blink();  // Calling the method
+    return 0;
+}
+  </pre>
+  <div class="output">Output:<br>LED is blinking</div>
+  <ul>
+    <li><span>Advantages:</span> Reusability, modularity, clean organization of code</li>
+    <li><span>Disadvantages:</span> Slight memory overhead for each object</li>
+    <li><span>Applications in Embedded:</span> Represent hardware components like sensors, motors, etc.</li>
+  </ul>
+
+  <h3>2. Encapsulation</h3>
+  <p>Encapsulation restricts direct access to some components of an object, which is done using `private` and `public` access modifiers. It increases security and integrity.</p>
+  <pre>
+#include &lt;iostream&gt;
+using namespace std;
+
+class Sensor {
+private:
+    int temperature; // Private variable
+
+public:
+    void setTemp(int t) { temperature = t; }     // Setter
+    int getTemp() { return temperature; }        // Getter
+};
+
+int main() {
+    Sensor dht;
+    dht.setTemp(35);
+    cout &lt;&lt; "Temperature: " &lt;&lt; dht.getTemp();
+    return 0;
+}
+  </pre>
+  <div class="output">Output:<br>Temperature: 35</div>
+  <ul>
+    <li><span>Advantages:</span> Secure access to data, better debugging, clean APIs</li>
+    <li><span>Disadvantages:</span> More code required for getter/setters</li>
+    <li><span>Applications in Embedded:</span> Used to create sensor driver libraries</li>
+  </ul>
+
+  <h3>3. Inheritance</h3>
+  <p>Inheritance allows one class to derive properties and behavior from another, enabling code reuse and hierarchical design.</p>
+  <pre>
+#include &lt;iostream&gt;
+using namespace std;
+
+class Sensor {
+public:
+    void display() { cout &lt;&lt; "Sensor Active" &lt;&lt; endl; }
+};
+
+class TempSensor : public Sensor {
+    // Inherits display()
+};
+
+int main() {
+    TempSensor ts;
+    ts.display();  // Accessing base class method
+    return 0;
+}
+  </pre>
+  <div class="output">Output:<br>Sensor Active</div>
+  <ul>
+    <li><span>Advantages:</span> Avoids code duplication, supports hierarchy</li>
+    <li><span>Disadvantages:</span> Tight coupling, base changes affect derived</li>
+    <li><span>Applications in Embedded:</span> Base sensor class, derived for DHT11, BMP180, etc.</li>
+  </ul>
+
+  <h3>4. Polymorphism</h3>
+  <p>Polymorphism means "many forms". It lets one interface be used for different types of objects via function overriding or overloading.</p>
+  <pre>
+#include &lt;iostream&gt;
+using namespace std;
+
+class Sensor {
+public:
+    virtual void read() { cout &lt;&lt; "Reading sensor" &lt;&lt; endl; }
+};
+
+class Humidity : public Sensor {
+public:
+    void read() override { cout &lt;&lt; "Reading humidity sensor" &lt;&lt; endl; }
+};
+
+int main() {
+    Sensor* s;
+    Humidity h;
+    s = &h;
+    s-&gt;read();  // Calls derived class method
+    return 0;
+}
+  </pre>
+  <div class="output">Output:<br>Reading humidity sensor</div>
+  <ul>
+    <li><span>Advantages:</span> Code flexibility, extensibility</li>
+    <li><span>Disadvantages:</span> Increases size, needs virtual table (vtable)</li>
+    <li><span>Applications in Embedded:</span> Polymorphic drivers (e.g., `display.draw()` for LCD, OLED)</li>
+  </ul>
+
+  <h3>5. Abstraction</h3>
+  <p>Abstraction hides implementation details and shows only the relevant features of an object or function to the user.</p>
+  <pre>
+#include &lt;iostream&gt;
+using namespace std;
+
+class Motor {
+public:
+    void run() {
+        // Internally controls PWM, GPIO
+        cout &lt;&lt; "Motor running..." &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Motor m;
+    m.run();  // Abstracted internal logic
+    return 0;
+}
+  </pre>
+  <div class="output">Output:<br>Motor running...</div>
+  <ul>
+    <li><span>Advantages:</span> Hides complexity, enhances user simplicity</li>
+    <li><span>Disadvantages:</span> Makes debugging harder due to hidden logic</li>
+    <li><span>Applications in Embedded:</span> Motor drivers, sensor APIs that abstract low-level registers</li>
+  </ul>
+
+  <!-- Navigation -->
+  <div class="nav-buttons">
+    <button onclick="window.location.href='c_cpp_page_5.html'">← Previous Page</button>
+    <button onclick="window.location.href='c_cpp_page_7.html'">Next Page →</button>
+  </div>
+
+</body>
+</html>
