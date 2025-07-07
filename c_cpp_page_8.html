@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Project 001 & 002 - Embedded C++ Developer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8f4ee;
+      color: #222;
+      padding-bottom: 100px;
+    }
+    header {
+      background-color: #f8f4ee;
+      padding: 1rem 2rem;
+    }
+    h1 {
+      color: #4e2e1e;
+      font-size: 2rem;
+      margin: 0;
+    }
+    .container {
+      padding: 2rem;
+    }
+    h2, h3 {
+      color: #3b240e;
+    }
+    code {
+      display: block;
+      background: #fff8e6;
+      border-left: 4px solid #4e2e1e;
+      padding: 1rem;
+      margin: 1rem 0;
+      white-space: pre-wrap;
+      border-radius: 8px;
+      font-family: monospace;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    .output {
+      background: #e6f7ff;
+      padding: 1rem;
+      border: 1px dashed #0077cc;
+      font-family: monospace;
+      margin: 1rem 0;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      margin-top: 2rem;
+      border-radius: 12px;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #4e2e1e;
+    }
+    .nav-buttons button {
+      background-color: #ffd28d;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Embedded C++ Developer - Project Page 8</h1>
+  </header>
+
+  <div class="container">
+    <h2>🔥 Project 001: Smart Fire Alarm System</h2>
+    <p>This project detects fire using a flame sensor and triggers a buzzer alarm. It is commonly used in early fire alert systems for homes or labs.</p>
+
+    <h3>🧰 Components Used:</h3>
+    <ul>
+      <li>Flame Sensor</li>
+      <li>Buzzer</li>
+      <li>Arduino Uno</li>
+      <li>Resistors, Jumper wires</li>
+    </ul>
+
+    <h3>📦 Libraries Used:</h3>
+    <ul>
+      <li>No external libraries required – basic Arduino functions</li>
+    </ul>
+
+    <h3>🧑‍💻 Code:</h3>
+    <code>
+// Pin Definitions
+int flameSensor = 2;        // Flame sensor connected to digital pin 2
+int buzzer = 8;             // Buzzer connected to digital pin 8
+
+void setup() {
+  pinMode(flameSensor, INPUT);   // Set sensor pin as input
+  pinMode(buzzer, OUTPUT);       // Set buzzer as output
+  Serial.begin(9600);            // Begin serial communication
+}
+
+void loop() {
+  int fireState = digitalRead(flameSensor);  // Read sensor value
+
+  if (fireState == LOW) {                    // LOW means fire detected
+    Serial.println("🔥 Fire Detected!");
+    digitalWrite(buzzer, HIGH);              // Turn on buzzer
+  } else {
+    Serial.println("✅ No Fire.");
+    digitalWrite(buzzer, LOW);               // Turn off buzzer
+  }
+
+  delay(1000);                               // Wait 1 second
+}
+    </code>
+
+    <h3>🖥️ Serial Monitor Output:</h3>
+    <div class="output">
+✅ No Fire.<br>
+✅ No Fire.<br>
+🔥 Fire Detected!<br>
+🔥 Fire Detected!<br>
+    </div>
+
+    <hr>
+
+    <h2>💧 Project 002: Soil Moisture Sensor Based Watering System</h2>
+    <p>This project waters a plant automatically by checking soil dryness using a moisture sensor. If moisture is low, water is poured using a pump.</p>
+
+    <h3>🧰 Components Used:</h3>
+    <ul>
+      <li>Soil Moisture Sensor</li>
+      <li>Relay or Water Pump</li>
+      <li>Arduino Uno</li>
+      <li>Jumper wires</li>
+    </ul>
+
+    <h3>📦 Libraries Used:</h3>
+    <ul>
+      <li>No external libraries – uses analogRead and digitalWrite</li>
+    </ul>
+
+    <h3>🧑‍💻 Code:</h3>
+    <code>
+int moisturePin = A0;    // Sensor connected to A0
+int pumpPin = 7;         // Water pump or relay connected to pin 7
+int threshold = 400;     // Adjust threshold value based on testing
+
+void setup() {
+  pinMode(pumpPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int moisture = analogRead(moisturePin);
+  Serial.print("Moisture Level: ");
+  Serial.println(moisture);
+
+  if (moisture < threshold) {
+    Serial.println("💧 Soil Dry - Pump ON");
+    digitalWrite(pumpPin, HIGH);
+  } else {
+    Serial.println("🌱 Soil Moist - Pump OFF");
+    digitalWrite(pumpPin, LOW);
+  }
+
+  delay(2000);
+}
+    </code>
+
+    <h3>🖥️ Serial Monitor Output:</h3>
+    <div class="output">
+Moisture Level: 376<br>
+💧 Soil Dry - Pump ON<br><br>
+Moisture Level: 768<br>
+🌱 Soil Moist - Pump OFF
+    </div>
+
+    <h2>🛠️ Test Your Code in Online Arduino Compiler:</h2>
+    <iframe src="https://wokwi.com/projects/new/arduino-uno" title="Arduino Online Compiler"></iframe>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-buttons">
+    <button onclick="window.location.href='c_cpp_page_7.html'">← Previous Page</button>
+    <button onclick="window.location.href='c_cpp_page_9.html'">Next Page →</button>
+  </div>
+
+</body>
+</html>
