@@ -62,26 +62,6 @@
       border-radius: 8px;
       cursor: pointer;
     }
-    .qr-popup, .start-popup {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff8e6;
-      padding: 2rem;
-      border: 2px solid #4e2e1e;
-      border-radius: 12px;
-      z-index: 999;
-      width: 300px;
-      text-align: center;
-    }
-    .qr-popup input {
-      width: 100%;
-      padding: 8px;
-      margin: 10px 0;
-      border: 1px solid #aaa;
-      border-radius: 6px;
-    }
     .footer {
       text-align: center;
       padding: 1rem;
@@ -141,42 +121,12 @@
       <li>Anyone who wants to start a career in IoT, robotics, or microcontroller programming</li>
     </ul>
 
-    <button onclick="document.getElementById('qrPopup').style.display='block'">Access Course</button>
-  </div>
-
-  <!-- QR Code Popup -->
-  <div class="qr-popup" id="qrPopup">
-    <h3>Pay ₹50 via QR</h3>
-    <img src="qrcode_c_cpp.png.jpg" alt="QR Code" width="200" />
-    <input type="text" id="passKey" placeholder="Enter Access Key" />
-    <button onclick="verifyKey()">Submit Key</button>
-    <button onclick="document.getElementById('qrPopup').style.display='none'">Close</button>
-  </div>
-
-  <!-- Course Start -->
-  <div class="start-popup" id="startPopup">
-    <h3>Ready to Start?</h3>
-    <button onclick="startCourse()">▶️ Start Course</button>
+    <a href="course_c_cpp_video.html"><button>Access Course</button></a>
   </div>
 
   <div class="footer">
     © 2025 miniBotix | Learn. Build. Innovate.
   </div>
 
-  <script>
-    function verifyKey() {
-      const key = document.getElementById('passKey').value.trim();
-      if (key === "1835Abcd") {
-        document.getElementById("qrPopup").style.display = "none";
-        document.getElementById("startPopup").style.display = "block";
-      } else {
-        alert("Invalid Pass Key. Please check your mail or contact support.");
-      }
-    }
-
-    function startCourse() {
-      window.location.href = "course_c_cpp_video.html";
-    }
-  </script>
 </body>
 </html>
