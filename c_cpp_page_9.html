@@ -42,31 +42,6 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff3db;
-      padding: 2rem;
-      border: 2px solid #4e2e1e;
-      border-radius: 12px;
-      z-index: 999;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-    .popup img {
-      width: 200px;
-      margin-bottom: 1rem;
-      border-radius: 6px;
-    }
-    .popup button {
-      background: #4e2e1e;
-      color: #fff;
-      margin-top: 1rem;
-    }
     .nav-buttons {
       display: flex;
       justify-content: space-between;
@@ -125,18 +100,7 @@
       <li>How microcontrollers are programmed & deployed</li>
     </ul>
 
-    <button onclick="openQR()">🎖️ Generate Certificate</button>
-  </div>
-
-  <!-- QR Code Popup -->
-  <div class="popup" id="qrPopup">
-    <h3 style="color: #4e2e1e;">Pay ₹100 to Get Your Certificate</h3>
-    <p style="margin-bottom: 10px; font-size: 0.95rem;">
-      📩 Once paid, you’ll receive your certificate within <strong>12 hours</strong> via email.
-    </p>
-    <img src="qrcode_c_cpp.png.jpg" alt="QR Code" />
-    <p style="font-size: 0.9rem;">Scan with any UPI app to proceed</p>
-    <button onclick="closeQR()">Close</button>
+    <button onclick="goToTestPortal()">🎖️ Generate Certificate</button>
   </div>
 
   <!-- Navigation Buttons -->
@@ -146,11 +110,8 @@
   </div>
 
   <script>
-    function openQR() {
-      document.getElementById("qrPopup").style.display = "block";
-    }
-    function closeQR() {
-      document.getElementById("qrPopup").style.display = "none";
+    function goToTestPortal() {
+      window.location.href = "test_portal_for_Cpp.html";
     }
   </script>
 
