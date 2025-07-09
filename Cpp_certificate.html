@@ -151,6 +151,11 @@
     <button class="brown-btn" onclick="window.location.href='course.html'">🏠 Back to Course Home</button>
   </div>
 
+  <div id="certificate-wrapper">
+  <div id="certificate"> ... </div>
+</div>
+
+
   <script>
     function generateCertificate() {
       const name = document.getElementById("nameInput").value.trim();
@@ -173,19 +178,22 @@
     }
 
     function downloadPDF() {
-      const name = document.getElementById("studentName").textContent;
-      const element = document.getElementById("certificate");
+  const name = document.getElementById("studentName").textContent;
+  const element = document.getElementById("certificate");
+  const element = document.getElementById("certificate-wrapper");
 
-      const opt = {
-        margin: 0,
-        filename: `Certificate_${name.replace(/\s+/g, "_")}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "letter", orientation: "landscape" }
-      };
 
-      html2pdf().set(opt).from(element).save();
-    }
+  const opt = {
+    margin: 0,
+    filename: `Certificate_${name.replace(/\s+/g, "_")}.pdf`,
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: { scale: 3, scrollY: 0 },
+    jsPDF: { unit: "px", format: "a4", orientation: "landscape" }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
+
   </script>
 
 </body>
