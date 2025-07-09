@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Final Test - Embedded C++</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #fce8c6, #f1d9b5);
+      color: #222;
+    }
+
+    header {
+      background: #4e2e1e;
+      color: #fff;
+      padding: 1rem 2rem;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+      display: none;
+    }
+
+    .question {
+      margin-bottom: 1.5rem;
+    }
+
+    .question h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .options label {
+      display: block;
+      margin: 0.3rem 0;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    .timer {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #4e2e1e;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .button {
+      background-color: #4e2e1e;
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff8e6;
+      padding: 2rem;
+      border: 2px solid #4e2e1e;
+      border-radius: 12px;
+      z-index: 999;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      background: #4e2e1e;
+      padding: 1rem 2rem;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .nav-buttons button {
+      background: #ffd28d;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #finishBtn {
+      text-align: center;
+      display: none;
+      margin-bottom: 80px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 Final Test - Embedded C++ Programming</h1>
+</header>
+
+<div class="timer" id="timer">10:00</div>
+
+<div class="container" id="quizContent">
+  <!-- Questions will be inserted here -->
+</div>
+
+<div id="finishBtn">
+  <button class="button" onclick="submitTest()">✅ Finish Test</button>
+</div>
+
+<!-- Result Popup -->
+<div class="popup" id="resultPopup">
+  <h2>📊 Test Result</h2>
+  <p id="resultText"></p>
+  <button class="button" onclick="window.location.href='Cpp_certificate.html'">🎓 Get Certificate</button>
+</div>
+
+<!-- Instruction Popup -->
+<div class="popup" id="startPopup" style="display:block;">
+  <h2>🎯 Final Test Instructions</h2>
+  <p>This test includes <strong>25 questions</strong>: 20 MCQ & 5 Fill in the blanks.</p>
+  <p>You will have <strong>10 minutes</strong> to complete.</p>
+  <button class="button" onclick="startTest()">▶️ Start Test</button>
+</div>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+  <button onclick="window.location.href='c_cpp_page_9.html'">← Previous Page</button>
+  <button onclick="window.location.href='course.html'">🏠 Course Home</button>
+</div>
+
+<script>
+  const mcq = [
+    { q: "Which language is used in Arduino IDE?", o: ["Python", "C/C++", "Java", "Assembly"], a: 1 },
+    { q: "What function initializes Arduino setup?", o: ["setup()", "start()", "loop()", "init()"], a: 0 },
+    { q: "What is the baud rate for Serial.begin()?", o: ["4800", "9600", "14400", "57600"], a: 1 },
+    { q: "Which pin is used for digital output?", o: ["A0", "D1", "TX", "SDA"], a: 1 },
+    { q: "Which library is used for LCD?", o: ["LCDlib", "LiquidCrystal", "Wire", "Serial"], a: 1 },
+    { q: "How many digital pins in Arduino Uno?", o: ["8", "10", "14", "20"], a: 2 },
+    { q: "Function used to read analog pin?", o: ["analogWrite", "analogRead", "digitalRead", "readAnalog"], a: 1 },
+    { q: "EEPROM is used for?", o: ["RAM", "Storing code", "Permanent data", "Flash Memory"], a: 2 },
+    { q: "Which board has WiFi?", o: ["Nano", "Mega", "Uno", "ESP8266"], a: 3 },
+    { q: "DHT11 measures?", o: ["Light", "Moisture", "Temp & Humidity", "Pressure"], a: 2 },
+    { q: "Which protocol is used for sensor communication?", o: ["HTTP", "I2C", "FTP", "TCP"], a: 1 },
+    { q: "Which loop keeps repeating?", o: ["main()", "setup()", "loop()", "for()"], a: 2 },
+    { q: "MCU means?", o: ["Main Code Unit", "Micro Computing Unit", "Microcontroller Unit", "Machine Code Utility"], a: 2 },
+    { q: "What is PWM?", o: ["Pulse Width Modulation", "Power Wide Motion", "Periodic Wave Measurement", "Program Write Mode"], a: 0 },
+    { q: "Default analog resolution?", o: ["8-bit", "10-bit", "12-bit", "16-bit"], a: 1 },
+    { q: "Which sensor detects flame?", o: ["IR", "LDR", "Flame Sensor", "PIR"], a: 2 },
+    { q: "Which function delays?", o: ["wait()", "pause()", "hold()", "delay()"], a: 3 },
+    { q: "Voltage of logic HIGH?", o: ["0V", "1.8V", "3.3V", "5V"], a: 3 },
+    { q: "Which IDE for Arduino?", o: ["VS Code", "Arduino IDE", "Keil", "Thonny"], a: 1 },
+    { q: "Wire.begin() is used for?", o: ["Serial", "I2C", "PWM", "Analog"], a: 1 }
+  ];
+
+  const fillUps = [
+    { q: "Function used to send data to serial monitor", a: "Serial.println" },
+    { q: "GPIO stands for __________.", a: "General Purpose Input Output" },
+    { q: "Keyword to declare constant value", a: "const" },
+    { q: "Full form of IDE", a: "Integrated Development Environment" },
+    { q: "MCU core used in STM32F103", a: "Cortex-M3" }
+  ];
+
+  let timer;
+  let timeLeft = 600; // 10 minutes
+
+  function startTest() {
+    document.getElementById("startPopup").style.display = "none";
+    document.getElementById("quizContent").style.display = "block";
+    document.getElementById("timer").style.display = "block";
+    document.getElementById("finishBtn").style.display = "block";
+    generateQuiz();
+    timer = setInterval(updateTimer, 1000);
+  }
+
+  function updateTimer() {
+    const min = Math.floor(timeLeft / 60);
+    const sec = timeLeft % 60;
+    document.getElementById("timer").innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      submitTest();
+    }
+    timeLeft--;
+  }
+
+  function generateQuiz() {
+    const container = document.getElementById("quizContent");
+    container.innerHTML = "";
+
+    mcq.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.classList.add("question");
+      div.innerHTML = `<h3>Q${index + 1}: ${item.q}</h3>`;
+      const opt = item.o.map((opt, i) =>
+        `<label><input type="radio" name="mcq${index}" value="${i}"> ${opt}</label>`
+      ).join('');
+      div.innerHTML += `<div class="options">${opt}</div>`;
+      container.appendChild(div);
+    });
+
+    fillUps.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.classList.add("question");
+      div.innerHTML = `
+        <h3>Q${index + mcq.length + 1}: ${item.q}</h3>
+        <input type="text" id="fill${index}" />
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function submitTest() {
+    clearInterval(timer);
+    let score = 0;
+    let skipped = 0;
+
+    mcq.forEach((item, index) => {
+      const ans = document.querySelector(`input[name="mcq${index}"]:checked`);
+      if (!ans) skipped++;
+      if (ans && parseInt(ans.value) === item.a) score++;
+    });
+
+    fillUps.forEach((item, index) => {
+      const userAns = document.getElementById(`fill${index}`).value.trim().toLowerCase();
+      if (!userAns) skipped++;
+      if (userAns === item.a.toLowerCase()) score++;
+    });
+
+    const total = mcq.length + fillUps.length;
+    const percent = Math.round((score / total) * 100);
+
+    document.getElementById("resultText").innerHTML = `
+      ✅ Correct: ${score}/${total} <br>
+      ❌ Skipped: ${skipped} <br>
+      📈 Score: ${percent} / 100
+    `;
+    document.getElementById("resultPopup").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
