@@ -47,14 +47,17 @@
       background-color: #603a25;
     }
 
+    #certificate-wrapper {
+      display: none;
+      justify-content: center;
+    }
+
     #certificate {
       width: 800px;
       height: auto;
-      margin: 2rem auto;
-      background: #ffffff; 
+      background: #ffffff;
       border: 15px solid #aa8457;
       padding: 2rem;
-      display: none;
       position: relative;
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
       color: #333333;
@@ -89,6 +92,7 @@
 
     .footer-buttons {
       margin-top: 2rem;
+      display: none;
     }
 
     .footer-buttons button {
@@ -122,39 +126,36 @@
 </head>
 <body>
 
-  <!-- Popup input -->
+  <!-- Input Section -->
   <div class="popup">
     <h2>🎓 Generate Your Certificate</h2>
     <input type="text" id="nameInput" placeholder="Enter your full name" />
     <button onclick="generateCertificate()">Generate Certificate</button>
   </div>
 
-  <!-- Certificate Section -->
-  <div id="certificate">
-    <img src="MINIBOTIXSITE.png" alt="Company Logo" />
-    <h1>Certificate of Achievement</h1>
-    <p>This is proudly awarded to</p>
-    <div class="student-name" id="studentName">[Your Name]</div>
-    <p>for successfully completing the</p>
-    <p><strong>Embedded C++ Programming Course</strong> conducted by <strong>miniBotix</strong>.</p>
-    <p>
-      This certificate is presented in recognition of the student's excellence in microcontroller programming, 
-      real-time sensor integration, and hands-on embedded system design using the C++ language.
-    </p>
-    <p style="margin-top: 20px;">Dated: <span id="date"></span></p>
-    <p style="margin-top: 40px; font-style: italic;">Authorized by miniBotix</p>
+  <!-- Certificate Wrapper -->
+  <div id="certificate-wrapper">
+    <div id="certificate">
+      <img src="MINIBOTIXSITE.png" alt="Company Logo" />
+      <h1>Certificate of Achievement</h1>
+      <p>This is proudly awarded to</p>
+      <div class="student-name" id="studentName">[Your Name]</div>
+      <p>for successfully completing the</p>
+      <p><strong>Embedded C++ Programming Course</strong> conducted by <strong>miniBotix</strong>.</p>
+      <p>
+        This certificate is presented in recognition of the student's excellence in microcontroller programming, 
+        real-time sensor integration, and hands-on embedded system design using the C++ language.
+      </p>
+      <p style="margin-top: 20px;">Dated: <span id="date"></span></p>
+      <p style="margin-top: 40px; font-style: italic;">Authorized by miniBotix</p>
+    </div>
   </div>
 
-  <!-- Download and Back Buttons -->
-  <div class="footer-buttons" id="downloadButtons" style="display: none;">
+  <!-- Buttons -->
+  <div class="footer-buttons" id="downloadButtons">
     <button onclick="downloadPDF()">📥 Download Certificate</button>
     <button class="brown-btn" onclick="window.location.href='course.html'">🏠 Back to Course Home</button>
   </div>
-
-  <div id="certificate-wrapper">
-  <div id="certificate"> ... </div>
-</div>
-
 
   <script>
     function generateCertificate() {
@@ -165,7 +166,7 @@
       }
 
       document.getElementById("studentName").textContent = name;
-      document.getElementById("certificate").style.display = "block";
+      document.getElementById("certificate-wrapper").style.display = "flex";
       document.getElementById("downloadButtons").style.display = "block";
 
       const now = new Date();
@@ -178,22 +179,19 @@
     }
 
     function downloadPDF() {
-  const name = document.getElementById("studentName").textContent;
-  const element = document.getElementById("certificate");
-  const element = document.getElementById("certificate-wrapper");
+      const name = document.getElementById("studentName").textContent;
+      const element = document.getElementById("certificate");
 
+      const opt = {
+        margin: 0,
+        filename: `Certificate_${name.replace(/\s+/g, "_")}.pdf`,
+        image: { type: "jpeg", quality: 1 },
+        html2canvas: { scale: 3, scrollY: 0 },
+        jsPDF: { unit: "px", format: [element.offsetWidth, element.offsetHeight], orientation: "landscape" }
+      };
 
-  const opt = {
-    margin: 0,
-    filename: `Certificate_${name.replace(/\s+/g, "_")}.pdf`,
-    image: { type: "jpeg", quality: 1 },
-    html2canvas: { scale: 3, scrollY: 0 },
-    jsPDF: { unit: "px", format: "a4", orientation: "landscape" }
-  };
-
-  html2pdf().set(opt).from(element).save();
-}
-
+      html2pdf().set(opt).from(element).save();
+    }
   </script>
 
 </body>
