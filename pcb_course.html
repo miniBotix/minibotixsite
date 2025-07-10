@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Intro to PCB Design | miniBotix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fce8c6;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    header {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .container h2 {
+      color: #4e2e1e;
+      margin-top: 2rem;
+    }
+
+    .container p, .container ul {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 0.8rem 1.8rem;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #603a25;
+    }
+
+    .next-button-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+
+    .quiz-btn {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 2rem;
+    }
+
+    .quiz-btn:hover {
+      background-color: #996633;
+    }
+
+    #quizBox {
+      margin-top: 1.5rem;
+      display: none;
+      border: 2px solid #4e2e1e;
+      border-radius: 12px;
+      padding: 1rem;
+      background: #fff7ec;
+    }
+
+    #quizBox h3 {
+      margin-top: 0;
+    }
+
+    #quizBox label {
+      display: block;
+      margin: 0.5rem 0;
+      cursor: pointer;
+    }
+
+    #quizResult {
+      font-size: 1.1rem;
+      color: #4e2e1e;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>PCB Designing – Introduction</h1>
+    <p>Start your journey into professional circuit board design</p>
+  </header>
+
+  <div class="container">
+
+    <h2>🔍 What is a PCB?</h2>
+    <p>
+      A PCB (Printed Circuit Board) is a flat board made of non-conductive material with layers of copper tracks. It acts as the backbone of all modern electronics—from simple LED projects to complex microcontrollers—providing both physical mounting and electrical connectivity for components.
+    </p>
+    <p>
+      PCBs use conductive traces instead of loose wires, which reduces errors and makes designs reliable. They are essential in industries like aviation, consumer electronics, robotics, and IoT devices.
+    </p>
+
+   <h2>📂 Types of PCBs</h2>
+  <p>
+    <strong>Single-Sided:</strong> These have copper on only one side of the board. They’re ideal for low-density designs like power supply circuits, LED lights, and household electronics. Since they’re easy to manufacture, they’re also cost-effective for simple projects.
+  </p>
+  <p>
+    <strong>Double-Sided:</strong> Copper layers are available on both sides of the substrate. Vias (holes) are used to connect the two sides. Commonly used in audio amplifiers, industrial controls, and test instruments where medium complexity is needed.
+  </p>
+  <p>
+    <strong>Multi-Layer:</strong> These boards contain three or more copper layers stacked together, separated by insulation. These are used in complex applications like computers, smartphones, aerospace, and high-speed communication systems where size reduction and signal integrity are critical.
+  </p>
+  <p>
+    <strong>Rigid PCB:</strong> Made from solid substrate material (like FR4), they are strong and cannot be bent. Used in desktop PCs, medical equipment, and automotive control systems. Rigid PCBs ensure strong mounting and long-term durability.
+  </p>
+  <p>
+    <strong>Flexible PCB:</strong> Built on flexible substrates like polyimide, these can bend and fold. Perfect for wearables, mobile phones, medical sensors, and compact camera modules. Flexibility improves packaging and vibration resistance.
+  </p>
+  <p>
+    <strong>Rigid-Flex PCB:</strong> A hybrid of rigid and flexible PCBs, these are used in complex devices where both strength and flexibility are required, such as in aerospace, medical implants, and military systems.
+  </p>
+
+    <h2>📐 Layers & Copper Tracks</h2>
+  <p>
+    A PCB can have several layers, each serving a unique function:
+  </p>
+  <ul>
+    <li><strong>Top Layer:</strong> Surface-mount components are placed here.</li>
+    <li><strong>Inner Layers:</strong> Used in multi-layer boards for power and signal routing.</li>
+    <li><strong>Bottom Layer:</strong> For routing and through-hole components.</li>
+  </ul>
+  <p>
+    Copper Tracks are like highways for electrical signals. They connect components and must be carefully designed based on current, signal speed, and spacing. Power planes and ground planes help reduce noise and improve stability.
+  </p>
+
+    <h2>🧾 Gerber Files Explained</h2>
+  <p>
+    Gerber files are the output of PCB design software containing precise instructions for PCB manufacturers: board layers, drill holes, solder masks, and silk screen. Each Gerber file describes a specific layer or mask in your PCB design.
+  </p>
+  <p>
+    Think of them like architectural blueprints. You zip these files and upload them to fabrication sites like JLCPCB or PCBWay. Without accurate Gerber files, your PCB cannot be fabricated correctly.
+  </p>
+  <p>
+    Typical Gerber files include:
+    <ul>
+      <li>Top & bottom copper layer</li>
+      <li>Solder mask & silkscreen</li>
+      <li>Board outline</li>
+      <li>Drill files</li>
+    </ul>
+  </p>
+
+    <h2>⚙️ Essential PCB Layout Shortcuts</h2>
+  <ul>
+    <li><strong>Ctrl + R</strong>: Rotate selected component</li>
+    <li><strong>Del/Backspace</strong>: Remove component or wire</li>
+    <li><strong>W</strong>: Begin placing a trace/wire</li>
+    <li><strong>Ctrl + Z / Y</strong>: Undo and redo actions</li>
+    <li><strong>Ctrl + S</strong>: Save your progress</li>
+    <li><strong>Ctrl + E</strong>: Export Gerber files for manufacturing</li>
+  </ul>
+
+    <!-- Quiz Button -->
+    <button onclick="toggleQuiz()" class="quiz-btn">🤔 Try a Quick Quiz?</button>
+
+    <div id="quizBox">
+      <h3>🧠 Quiz – Check What You’ve Learned</h3>
+
+      <div>
+        <p><strong>1. Why use multiple layers in a PCB?</strong></p>
+        <label><input type="radio" name="q1" value="a" /> To reduce look of board</label>
+        <label><input type="radio" name="q1" value="b" /> To separate power and signal layers</label>
+        <label><input type="radio" name="q1" value="c" /> To make board heavier</label>
+        <label><input type="radio" name="q1" value="d" /> To use more colors</label>
+      </div>
+
+      <div>
+        <p><strong>2. Gerber files are used for:</strong></p>
+        <label><input type="radio" name="q2" value="a" /> 3D rendering</label>
+        <label><input type="radio" name="q2" value="b" /> Simulation only</label>
+        <label><input type="radio" name="q2" value="c" /> PCB fabrication instructions</label>
+        <label><input type="radio" name="q2" value="d" /> Soldering components</label>
+      </div>
+
+      <div>
+        <p><strong>3. What does DRC stand for?</strong></p>
+        <label><input type="radio" name="q3" value="a" /> Direct Route Circuit</label>
+        <label><input type="radio" name="q3" value="b" /> Design Rule Check</label>
+        <label><input type="radio" name="q3" value="c" /> Digital Routing Code</label>
+        <label><input type="radio" name="q3" value="d" /> Dual Resistive Component</label>
+      </div>
+
+      <button onclick="checkQuiz()" class="quiz-btn">Submit Answers</button>
+      <button onclick="toggleQuiz()" class="quiz-btn quiz-close">Close Quiz</button>
+      <div id="quizResult" style="margin-top: 1rem; font-weight: bold;"></div>
+    </div>
+
+    <!-- ✅ Corrected Next Button -->
+    <div class="next-button-wrapper">
+      <a href="pcb_week2.html" class="btn">➡️ Next: Tools & Setup</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleQuiz() {
+      const box = document.getElementById('quizBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+      document.getElementById('quizResult').innerText = '';
+    }
+
+    function checkQuiz() {
+      const answers = ['b', 'c', 'b'];
+      let score = 0;
+      for (let i = 1; i <= 3; i++) {
+        const val = document.querySelector(`input[name="q${i}"]:checked`)?.value;
+        if (val === answers[i - 1]) score++;
+      }
+      const res = document.getElementById('quizResult');
+      if (score === 3) res.innerText = "🎯 Perfect! You've mastered this section.";
+      else if (score === 2) res.innerText = "👍 Great! Keep it up.";
+      else if (score === 1) res.innerText = "🙂 Not bad! One correct.";
+      else res.innerText = "😓 Try again!";
+    }
+  </script>
+
+</body>
+</html>
