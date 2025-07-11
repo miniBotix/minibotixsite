@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Course Completion - PCB Designer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fff8e6;
+      color: #333;
+      padding-bottom: 100px;
+    }
+    header {
+      padding: 1rem 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #4e2e1e;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h2 {
+      color: #3b240e;
+      margin-top: 2rem;
+    }
+    ul {
+      margin-left: 1.5rem;
+      line-height: 1.8;
+    }
+    button {
+      margin-top: 2rem;
+      background-color: #4e2e1e;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #f8f4ee;
+      box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+    .nav-buttons button {
+      background-color: #3b240e;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+      transition: 0.3s;
+      min-width: 140px;
+    }
+    .nav-buttons button:hover {
+      background-color: #5b3920;
+    }
+    @media (max-width: 480px) {
+      .nav-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .nav-buttons button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>PCB Designing Course - conclusion</h1>
+  </header>
+
+  <div class="container">
+    <h2>🎓 What You’ve Learned:</h2>
+    <ul>
+      <li>Understanding of circuits and components (resistors, diodes, ICs, etc.)</li>
+      <li>Designing circuits on paper and using digital tools</li>
+      <li>Using EasyEDA to simulate and layout circuits in 2D & 3D</li>
+      <li>Learn basic PCB connection rules</li>
+      <li>Creating single and multi-layer PCB projects</li>
+      <li>Exporting Gerber files and preparing for manufacturing</li>
+      <li>Hands-on Projects: LED Blinker, Temp Sensor Module, Custom Arduino Nano Board</li>
+      <li>Exercises and Quizzes to test your knowledge</li>
+    </ul>
+
+    <button onclick="goToCertificate()">🎖️ Generate Certificate</button>
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="window.location.href='pcb_project.html'">← Previous Page</button>
+    <button onclick="window.location.href='pcb_course.html'">🏠 Course Home</button>
+  </div>
+
+  <script>
+    function goToCertificate() {
+      window.location.href = "pcb_hidden_test.html";
+    }
+  </script>
+
+</body>
+</html>
