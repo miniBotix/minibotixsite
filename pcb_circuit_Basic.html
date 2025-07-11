@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Basic Circuits | PCB Course</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fce8c6;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #4e2e1e;
+    }
+
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .section:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .section img {
+      max-width: 300px;
+      margin: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .text {
+      flex: 1;
+      padding: 1rem;
+    }
+
+    .text h2 {
+      color: #4e2e1e;
+    }
+
+    .quiz-btn {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #quizBox {
+      display: none;
+      background: #fff3e6;
+      padding: 1rem;
+      margin-top: 2rem;
+      border-radius: 10px;
+      border: 2px dashed #b08968;
+    }
+
+    #quizBox div {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-left: 1rem;
+      margin-top: 4px;
+    }
+
+    #quizResult {
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .btn-nav {
+      background-color: #4e2e1e;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn-nav:hover {
+      background-color: #603a25;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Basic Circuits in PCB Design</h1>
+
+    <!-- ✅ Extra Intro Content -->
+    <div class="text">
+      <h2>🔌 What is a Circuit?</h2>
+      <p>A circuit is a closed-loop path through which electric current flows. It consists of electrical components like resistors, LEDs, capacitors, and power sources connected with conducting wires or PCB tracks.</p>
+
+      <h2>📈 Why Do We Need Circuits?</h2>
+      <p>We need circuits to control, manipulate, and use electricity safely and efficiently. Circuits allow us to build functional electronic systems like lighting, sensors, computers, mobile phones, and more.</p>
+
+      <h2>🌍 Where Are Circuits Used?</h2>
+      <p>Circuits are everywhere—in homes, industries, vehicles, medical equipment, satellites, and even inside toys. Understanding circuit design is essential for building anything electronic or IoT-based.</p>
+    </div>
+
+    <!-- ✅ LED with Resistor -->
+    <div class="section">
+      <img src="LED.png" alt="LED Circuit" />
+      <div class="text">
+        <h2>🔋 LED with Resistor</h2>
+        <p>This is the simplest and most common circuit for learning. It connects a 9V battery to an LED through a resistor to limit the current.</p>
+        <p>The resistor prevents the LED from burning out by controlling the current. This setup is the foundation of almost all digital output indicators.</p>
+        <p>It also teaches the concept of polarity—LEDs must be connected in the right direction!</p>
+      </div>
+    </div>
+
+    <!-- ✅ Flashing LED -->
+    <div class="section">
+      <img src="Flash_LED.png" alt="Flashing LED Circuit" />
+      <div class="text">
+        <h2>⚡ Blinking LED Circuit</h2>
+        <p>This circuit uses a capacitor and an op-amp or 555 timer to create a blinking or flashing effect. It alternately charges and discharges the capacitor to switch the LED on and off.</p>
+        <p>This is a great example of a basic timing circuit. R1 and C1 determine the speed of blinking, and R2 limits the LED current.</p>
+        <p>You'll often see circuits like this in automotive indicators, toys, or signal devices.</p>
+      </div>
+    </div>
+
+    <!-- ✅ Quiz -->
+    <button onclick="toggleQuiz()" class="quiz-btn">🧠 Ready for a Quiz?</button>
+    <div id="quizBox">
+      <h3>Quick Quiz – Test Your Knowledge</h3>
+
+      <div>
+        <p><strong>1. What is the purpose of a resistor in the LED circuit?</strong></p>
+        <label><input type="radio" name="q1" value="a" /> To increase voltage</label>
+        <label><input type="radio" name="q1" value="b" /> To change LED color</label>
+        <label><input type="radio" name="q1" value="c" /> To limit current flow</label>
+        <label><input type="radio" name="q1" value="d" /> To blink the LED</label>
+      </div>
+
+      <div>
+        <p><strong>2. Which component controls blinking in a flashing LED circuit?</strong></p>
+        <label><input type="radio" name="q2" value="a" /> Battery</label>
+        <label><input type="radio" name="q2" value="b" /> Capacitor and resistor</label>
+        <label><input type="radio" name="q2" value="c" /> LED only</label>
+        <label><input type="radio" name="q2" value="d" /> Switch</label>
+      </div>
+
+      <div>
+        <p><strong>3. What happens if you connect an LED in reverse?</strong></p>
+        <label><input type="radio" name="q3" value="a" /> It glows brighter</label>
+        <label><input type="radio" name="q3" value="b" /> It won’t glow</label>
+        <label><input type="radio" name="q3" value="c" /> It flashes rapidly</label>
+        <label><input type="radio" name="q3" value="d" /> It works the same</label>
+      </div>
+
+      <button onclick="checkQuiz()" class="quiz-btn">Submit Answers</button>
+      <button onclick="toggleQuiz()" class="quiz-btn">Close Quiz</button>
+      <div id="quizResult"></div>
+    </div>
+
+    <!-- ✅ Navigation -->
+    <div class="nav-buttons">
+      <a href="pcb_course.html" class="btn-nav">⬅️ Previous</a>
+      <a href="circuit_connection.html" class="btn-nav">Next ➡️</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleQuiz() {
+      const box = document.getElementById("quizBox");
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+      document.getElementById('quizResult').innerText = '';
+    }
+
+    function checkQuiz() {
+      const answers = ['c', 'b', 'b'];
+      let score = 0;
+      for (let i = 1; i <= 3; i++) {
+        const val = document.querySelector(`input[name="q${i}"]:checked`)?.value;
+        if (val === answers[i - 1]) score++;
+      }
+      const result = document.getElementById("quizResult");
+      if (score === 3) result.innerText = "🎯 Perfect! You're ready to move on.";
+      else if (score === 2) result.innerText = "👍 Nice work! Keep going.";
+      else if (score === 1) result.innerText = "🙂 One correct, try reviewing!";
+      else result.innerText = "😅 No correct answers. Try again!";
+    }
+  </script>
+</body>
+</html>
