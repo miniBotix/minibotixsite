@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📘 Final Quiz - PCB Designing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fffaf0;
+      color: #3b240e;
+    }
+    header {
+      background: #4e2e1e;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .question {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #f9eddc;
+      border-left: 4px solid #4e2e1e;
+      border-radius: 6px;
+    }
+    .question p {
+      margin-bottom: 0.5rem;
+    }
+    .question label {
+      display: block;
+      margin-left: 1rem;
+      margin-top: 4px;
+    }
+    button {
+      background-color: #4e2e1e;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background-color: #6a3c21;
+    }
+    #resultBox {
+      background: #fff3dd;
+      border: 2px dashed #4e2e1e;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+      display: none;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 3rem;
+    }
+    #timer {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #aa8457;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📘 Final Quiz - PCB Designing Course</h1>
+  </header>
+
+  <div id="timer">10:00</div>
+
+  <div class="container">
+    <form id="quizForm"></form>
+
+    <button onclick="finishQuiz()" type="button">✅ Finish Quiz</button>
+
+    <div id="resultBox">
+      <h2>📊 Quiz Result</h2>
+      <p><strong>Questions Attempted:</strong> <span id="attempted"></span>/15</p>
+      <p><strong>Not Answered:</strong> <span id="unanswered"></span></p>
+      <p><strong>Score:</strong> <span id="scoreText"></span>/15</p>
+      <div id="resultActions"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button onclick="location.href='pcb_project.html'">← Previous Page</button>
+      <button id="certBtn" onclick="location.href='certificate_pcb.html'" style="display:none;">🎓 Generate Certificate</button>
+      <button id="retestBtn" onclick="location.reload()" style="display:none;">🔁 Retake Test</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "What is the full form of PCB?", options: ["Printed Circuit Board", "Power Circuit Board", "Primary Copper Board"], answer: "Printed Circuit Board" },
+      { q: "Which component limits current?", options: ["Resistor", "Capacitor", "Diode"], answer: "Resistor" },
+      { q: "What does LED stand for?", options: ["Light Emitting Diode", "Low Energy Device", "Linear Electric Device"], answer: "Light Emitting Diode" },
+      { q: "Which tool is used to simulate PCB?", options: ["EasyEDA", "Photoshop", "Blender"], answer: "EasyEDA" },
+      { q: "Gerber files are used for?", options: ["Manufacturing PCB", "Web Design", "Simulation only"], answer: "Manufacturing PCB" },
+      { q: "Which voltage is safe for logic circuits?", options: ["5V", "12V", "220V"], answer: "5V" },
+      { q: "What is GND in a circuit?", options: ["Ground", "Grid", "Gasket"], answer: "Ground" },
+      { q: "Which software offers 2D and 3D PCB views?", options: ["EasyEDA", "MS Paint", "Word"], answer: "EasyEDA" },
+      { q: "Which component is polarized?", options: ["LED", "Resistor", "Inductor"], answer: "LED" },
+      { q: "Which key is used to rotate in EasyEDA?", options: ["R", "W", "E"], answer: "R" },
+      { q: "What does AMS1117 do?", options: ["Voltage Regulation", "Sound Amplification", "WiFi Control"], answer: "Voltage Regulation" },
+      { q: "Which unit measures resistance?", options: ["Ohm", "Volt", "Watt"], answer: "Ohm" },
+      { q: "What color is usually GND in schematic?", options: ["Black", "Red", "Green"], answer: "Black" },
+      { q: "Which component can sense rain?", options: ["Rain Sensor", "Buzzer", "Switch"], answer: "Rain Sensor" },
+      { q: "Which is a logic level for ESP?", options: ["3.3V", "5V", "12V"], answer: "3.3V" }
+    ];
+
+    function loadQuestions() {
+      const form = document.getElementById("quizForm");
+      questions.forEach((item, index) => {
+        let block = `<div class="question"><p><b>${index + 1}.</b> ${item.q}</p>`;
+        item.options.forEach(opt => {
+          block += `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`;
+        });
+        block += "</div>";
+        form.innerHTML += block;
+      });
+    }
+
+    function finishQuiz() {
+      const total = questions.length;
+      let attempted = 0, score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+          attempted++;
+          if (selected.value === q.answer) score++;
+        }
+      });
+
+      const unanswered = total - attempted;
+
+      document.getElementById("attempted").textContent = attempted;
+      document.getElementById("unanswered").textContent = unanswered;
+      document.getElementById("scoreText").textContent = score;
+      document.getElementById("resultBox").style.display = "block";
+
+      if (score >= 14) {
+        document.getElementById("certBtn").style.display = "inline-block";
+        document.getElementById("resultActions").innerHTML = `<p style="color:green"><strong>🎉 Great Job! You passed the test!</strong></p>`;
+      } else {
+        document.getElementById("retestBtn").style.display = "inline-block";
+        document.getElementById("resultActions").innerHTML = `<p style="color:red"><strong>😔 You need at least 14/15 to pass. Try Again!</strong></p>`;
+      }
+
+      clearInterval(timer);
+    }
+
+    let timeLeft = 600;
+    let timer = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        alert("⏰ Time's up! Submitting your test.");
+        finishQuiz();
+      } else {
+        let min = Math.floor(timeLeft / 60);
+        let sec = timeLeft % 60;
+        document.getElementById("timer").innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        timeLeft--;
+      }
+    }, 1000);
+
+    loadQuestions();
+  </script>
+</body>
+</html>
