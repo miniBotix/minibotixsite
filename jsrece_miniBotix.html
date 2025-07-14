@@ -22,12 +22,35 @@
 
     header {
       background-color: #ffffff;
-      padding: 1.5rem;
-      text-align: center;
+      padding: 1.5rem 2rem;
       font-size: 2rem;
       font-weight: bold;
       color: #4e2e1e;
       box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #user-info {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #4e2e1e;
+    }
+
+    #logout-btn {
+      margin-left: 1rem;
+      background-color: #4e2e1e;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    #logout-btn:hover {
+      background-color: #603a25;
     }
 
     .main-content {
@@ -115,6 +138,11 @@
       .course-card {
         width: 90%;
       }
+
+      header {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
     }
   </style>
 </head>
@@ -123,6 +151,10 @@
   <!-- Header -->
   <header>
     📚 miniBotix | Available Courses
+    <div id="user-info">
+      Welcome, <span id="studentName">Student</span>
+      <button id="logout-btn" onclick="logout()">Logout</button>
+    </div>
   </header>
 
   <!-- Course List -->
@@ -155,6 +187,22 @@
   <footer>
     © 2025 miniBotix · Learn. Design. Innovate.
   </footer>
+
+  <!-- JavaScript to load name -->
+  <script>
+    const name = localStorage.getItem("studentName");
+    if (name) {
+      document.getElementById("studentName").innerText = name;
+    } else {
+      // Not logged in, redirect back to login
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
 
 </body>
 </html>
