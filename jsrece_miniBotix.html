@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>miniBotix | Course List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>miniBotix Courses</title>
   <style>
     * {
       margin: 0;
@@ -27,65 +27,93 @@
       font-size: 2rem;
       font-weight: bold;
       color: #4e2e1e;
-      border-bottom: 2px solid #e6d8c3;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
     }
 
     .main-content {
       flex: 1;
-      display: flex;
-      justify-content: center;
       padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .course-title {
+      font-size: 1.5rem;
+      color: #4e2e1e;
+      margin-bottom: 1rem;
+      border-left: 4px solid #4e2e1e;
+      padding-left: 10px;
     }
 
     .course-list {
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 700px;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: flex-start;
     }
 
-    .course-btn {
-      background-color: #4e2e1e;
-      color: #fff;
-      padding: 1rem 2rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 8px;
+    .course-card {
+      background-color: #fdf6ec;
+      border: 2px solid #eadac0;
+      border-radius: 10px;
+      padding: 1.5rem;
+      width: 300px;
+      transition: transform 0.3s;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.05);
       cursor: pointer;
-      text-align: left;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    .course-btn:hover {
-      background-color: #603a25;
-      transform: translateX(5px);
+    .course-card:hover {
+      transform: scale(1.05);
     }
 
-    .coming-soon {
+    .course-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #3b240e;
+    }
+
+    .course-card p {
+      font-size: 0.95rem;
+      color: #5a5a5a;
+    }
+
+    .course-card a {
+      display: inline-block;
       margin-top: 1rem;
-      font-size: 1rem;
-      color: #999;
+      padding: 0.6rem 1.2rem;
+      background-color: #4e2e1e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .course-card a:hover {
+      background-color: #603a25;
     }
 
     footer {
       text-align: center;
-      padding: 1rem;
+      padding: 1.2rem;
       background-color: #f2e7d5;
       border-top: 2px solid #e6d8c3;
       color: #4e2e1e;
       font-weight: 500;
+      margin-top: auto;
     }
 
-    @media (max-width: 600px) {
-      .course-btn {
-        font-size: 1rem;
-        padding: 0.8rem 1.2rem;
+    @media (max-width: 768px) {
+      .course-list {
+        flex-direction: column;
+        align-items: center;
       }
 
-      .main-content {
-        padding: 1rem;
+      .course-card {
+        width: 90%;
       }
     }
   </style>
@@ -94,27 +122,36 @@
 
   <!-- Header -->
   <header>
-    📘 miniBotix – Course Portal (JSR ECE)
+    📚 miniBotix | Available Courses
   </header>
 
-  <!-- Main Area -->
+  <!-- Course List -->
   <div class="main-content">
+    <div class="course-title">🎓 Your Learning Modules</div>
     <div class="course-list">
-      <!-- Course Buttons -->
-      <button class="course-btn" onclick="window.location.href='pcb_designing.html'">
-        🛠️ PCB Designing Course
-      </button>
 
-      <button class="course-btn" onclick="window.location.href='c_cpp_programming.html'">
-        💻 Embedded C/C++ Programming
-      </button>
+      <div class="course-card">
+        <h3>🔌 PCB Designing</h3>
+        <p>Learn schematic to 3D PCB & Gerber generation.</p>
+        <a href="pcb_designing.html">Start Course</a>
+      </div>
 
-      <!-- Coming Soon Notice -->
-      <div class="coming-soon">🚧 More courses coming soon...</div>
+      <div class="course-card">
+        <h3>💻 C & C++ for Embedded</h3>
+        <p>Master microcontroller coding using C++.</p>
+        <a href="c_cpp_programming.html">Start Course</a>
+      </div>
+
+      <div class="course-card">
+        <h3>📦 More Coming Soon</h3>
+        <p>Stay tuned for upcoming embedded courses!</p>
+        <a href="#">Not Available</a>
+      </div>
+
     </div>
   </div>
 
-  <!-- Footer Always at Bottom -->
+  <!-- Footer -->
   <footer>
     © 2025 miniBotix · Learn. Design. Innovate.
   </footer>
