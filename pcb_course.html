@@ -116,108 +116,187 @@
 
   <div class="container">
 
-    <h2>🔍 What is a PCB?</h2>
-    <p>
-      A PCB (Printed Circuit Board) is a flat board made of non-conductive material with layers of copper tracks. It acts as the backbone of all modern electronics—from simple LED projects to complex microcontrollers—providing both physical mounting and electrical connectivity for components.
-    </p>
-    <p>
-      PCBs use conductive traces instead of loose wires, which reduces errors and makes designs reliable. They are essential in industries like aviation, consumer electronics, robotics, and IoT devices.
-    </p>
+<h2>🔍 What is a PCB?</h2>
+<p>
+  A <strong>PCB (Printed Circuit Board)</strong> is a flat, usually green-colored board made from a non-conductive material. It has thin copper lines (called <em>traces</em>) that work like roads to connect electronic components together. 
+</p>
+<p>
+  Instead of using many loose wires, a PCB helps keep everything neat and compact. It acts as the foundation (or backbone) for almost every electronic device—from simple LED blinkers to advanced robots and computers. 
+</p>
+<p>
+  PCBs are used in everything from <strong>smartphones and TVs</strong> to <strong>cars, drones, medical tools, and satellites</strong>. They make devices more reliable, faster, and easier to fix or upgrade.
+</p>
+
 
    <h2>📂 Types of PCBs</h2>
-  <p>
-    <strong>Single-Sided:</strong> These have copper on only one side of the board. They’re ideal for low-density designs like power supply circuits, LED lights, and household electronics. Since they’re easy to manufacture, they’re also cost-effective for simple projects.
-  </p>
-  <p>
-    <strong>Double-Sided:</strong> Copper layers are available on both sides of the substrate. Vias (holes) are used to connect the two sides. Commonly used in audio amplifiers, industrial controls, and test instruments where medium complexity is needed.
-  </p>
-  <p>
-    <strong>Multi-Layer:</strong> These boards contain three or more copper layers stacked together, separated by insulation. These are used in complex applications like computers, smartphones, aerospace, and high-speed communication systems where size reduction and signal integrity are critical.
-  </p>
-  <p>
-    <strong>Rigid PCB:</strong> Made from solid substrate material (like FR4), they are strong and cannot be bent. Used in desktop PCs, medical equipment, and automotive control systems. Rigid PCBs ensure strong mounting and long-term durability.
-  </p>
-  <p>
-    <strong>Flexible PCB:</strong> Built on flexible substrates like polyimide, these can bend and fold. Perfect for wearables, mobile phones, medical sensors, and compact camera modules. Flexibility improves packaging and vibration resistance.
-  </p>
-  <p>
-    <strong>Rigid-Flex PCB:</strong> A hybrid of rigid and flexible PCBs, these are used in complex devices where both strength and flexibility are required, such as in aerospace, medical implants, and military systems.
-  </p>
+
+<p>
+  <strong>🔸 Single-Sided PCB:</strong><br>
+  This is the simplest type of PCB, where copper is placed on just one side of the board. It’s commonly used in basic circuits like <strong>LED blinkers, small battery chargers, and toys</strong>. They're affordable and easy to make — great for beginners!
+</p>
+
+<p>
+  <strong>🔸 Double-Sided PCB:</strong><br>
+  These have copper on both the top and bottom sides. Small holes (called <strong>vias</strong>) connect both layers. You’ll find these in <strong>audio systems, power supply units, and industrial control panels</strong> — ideal when you need a bit more complexity.
+</p>
+
+<p>
+  <strong>🔸 Multi-Layer PCB:</strong><br>
+  Think of this like a PCB sandwich! It has three or more layers stacked together, allowing for compact and powerful designs. These are used in <strong>smartphones, laptops, aerospace systems, and high-speed internet routers</strong>. They’re great when space is tight and performance matters.
+</p>
+
+<p>
+  <strong>🔸 Rigid PCB:</strong><br>
+  As the name says, these boards are stiff and don’t bend. They are found in everyday items like <strong>desktops, TVs, washing machines, and car dashboards</strong>. They offer long life and stable support for mounted components.
+</p>
+
+<p>
+  <strong>🔸 Flexible PCB (Flex PCB):</strong><br>
+  Made from bendable material, these PCBs can twist and fold! You’ll find them inside <strong>smartwatches, foldable phones, fitness bands, and medical sensors</strong>. They save space and are great for devices that move or flex.
+</p>
+
+<p>
+  <strong>🔸 Rigid-Flex PCB:</strong><br>
+  A clever mix of rigid and flexible sections. These are used where parts of the circuit must bend while others stay fixed — like in <strong>digital cameras, aerospace instruments, or surgical tools</strong>. They reduce the number of connectors and cables, making the device more reliable.
+</p>
+
 
     <h2>📐 Layers & Copper Tracks</h2>
-  <p>
-    A PCB can have several layers, each serving a unique function:
-  </p>
+
+<p>
+  A PCB is like a multi-story building. It has different **layers**, and each one plays a special role in helping the circuit work smoothly:
+</p>
+
+<ul>
+  <li>
+    <strong>🔹 Top Layer:</strong> This is like the roof — it holds all the **main components** like resistors, microcontrollers, and sensors. These are usually **surface-mount** parts placed directly on this top side.
+  </li>
+
+  <li>
+    <strong>🔹 Inner Layers:</strong> Imagine secret floors between the top and bottom — they carry important electrical paths like **power** and **data signals**. These layers exist only in **multi-layer PCBs** and help keep things neat and compact.
+  </li>
+
+  <li>
+    <strong>🔹 Bottom Layer:</strong> This is the base of the board, often used for extra wiring and **through-hole components** (those with pins that go through the board).
+  </li>
+</ul>
+
+<p>
+  Now let’s talk about the highways of a PCB — the <strong>copper tracks</strong> (also called traces). These tracks connect components and allow electricity to flow between them — just like roads connect cities.
+</p>
+
+<p>
+  When designing copper tracks, we consider:
   <ul>
-    <li><strong>Top Layer:</strong> Surface-mount components are placed here.</li>
-    <li><strong>Inner Layers:</strong> Used in multi-layer boards for power and signal routing.</li>
-    <li><strong>Bottom Layer:</strong> For routing and through-hole components.</li>
+    <li><strong>Width of the track</strong> — wider for more current</li>
+    <li><strong>Spacing between tracks</strong> — to prevent short circuits</li>
+    <li><strong>Signal speed</strong> — important for high-speed communication</li>
   </ul>
-  <p>
-    Copper Tracks are like highways for electrical signals. They connect components and must be carefully designed based on current, signal speed, and spacing. Power planes and ground planes help reduce noise and improve stability.
-  </p>
+
+
+<p>
+  Some PCBs also include large areas called <strong>power planes</strong> and <strong>ground planes</strong>. These work like giant expressways — they help deliver power and reduce electrical noise, keeping the circuit clean and stable.
+</p>
+
 
     <h2>🧾 Gerber Files Explained</h2>
-  <p>
-    Gerber files are the output of PCB design software containing precise instructions for PCB manufacturers: board layers, drill holes, solder masks, and silk screen. Each Gerber file describes a specific layer or mask in your PCB design.
-  </p>
-  <p>
-    Think of them like architectural blueprints. You zip these files and upload them to fabrication sites like JLCPCB or PCBWay. Without accurate Gerber files, your PCB cannot be fabricated correctly.
-  </p>
-  <p>
-    Typical Gerber files include:
-    <ul>
-      <li>Top & bottom copper layer</li>
-      <li>Solder mask & silkscreen</li>
-      <li>Board outline</li>
-      <li>Drill files</li>
-    </ul>
-  </p>
 
-    <h2>⚙️ Essential PCB Layout Shortcuts</h2>
-  <ul>
-    <li><strong>Ctrl + R</strong>: Rotate selected component</li>
-    <li><strong>Del/Backspace</strong>: Remove component or wire</li>
-    <li><strong>W</strong>: Begin placing a trace/wire</li>
-    <li><strong>Ctrl + Z / Y</strong>: Undo and redo actions</li>
-    <li><strong>Ctrl + S</strong>: Save your progress</li>
-    <li><strong>Ctrl + E</strong>: Export Gerber files for manufacturing</li>
-  </ul>
+<p>
+  **Gerber files** are like the blueprint files for your PCB. They’re generated from your PCB design software (like EasyEDA or KiCad) and tell the manufacturer exactly how to build your board — layer by layer.
+</p>
+
+<p>
+  Just like an architect provides drawings to a builder, **you provide Gerber files to a PCB manufacturer** (like <strong>JLCPCB</strong> or <strong>PCBWay</strong>) to create your physical board. Without these files, your design stays stuck on the screen — it can’t be fabricated.
+</p>
+
+<p>
+  Each Gerber file describes a specific part of your PCB. Here’s what’s usually included:
+</p>
+
+<ul>
+  <li><strong>Top & Bottom Copper Layers:</strong> These show where all the electrical connections (tracks) go.</li>
+  <li><strong>Solder Mask:</strong> These define where the green (or any color) coating goes to protect the copper and leave openings for pads.</li>
+  <li><strong>Silkscreen:</strong> This is where the text and component labels are printed (usually white).</li>
+  <li><strong>Board Outline:</strong> Defines the shape and size of your PCB — its boundary.</li>
+  <li><strong>Drill Files:</strong> Tell the machine where to make holes for components like resistors or IC sockets.</li>
+</ul>
+
+<p>
+  Once your design is ready, you <strong>export all these files</strong> from your software as a **.zip file** and upload it to the manufacturer’s website. They use it to create your custom PCB exactly as you designed.
+</p>
+
+
+   <h2>⚙️ Essential PCB Layout Shortcuts</h2>
+<p>
+  When you're designing a PCB, using keyboard shortcuts can save you a lot of time and make your workflow smoother. Here are some handy shortcuts that are commonly used in tools like <strong>EasyEDA</strong> or <strong>KiCad</strong>:
+</p>
+
+<ul>
+  <li><strong>Ctrl + R</strong>: Rotate the selected component (helps you position parts easily).</li>
+  <li><strong>Del</strong> or <strong>Backspace</strong>: Quickly delete a component or wire you no longer need.</li>
+  <li><strong>W</strong>: Start drawing a wire or trace to connect components.</li>
+  <li><strong>Ctrl + Z</strong> / <strong>Ctrl + Y</strong>: Undo or redo your last action—super helpful when you make a mistake.</li>
+  <li><strong>Ctrl + S</strong>: Save your design progress (do this often to avoid losing your work).</li>
+  <li><strong>Ctrl + E</strong>: Export your Gerber files when your design is ready for manufacturing.</li>
+</ul>
+
+<p>
+  Mastering these shortcuts will make you faster and more confident as you build your PCB projects!
+</p>
+
 
     <!-- Quiz Button -->
-    <button onclick="toggleQuiz()" class="quiz-btn">🤔 Try a Quick Quiz?</button>
+<button onclick="toggleQuiz()" class="quiz-btn">🤔 Try a Quick Quiz?</button>
 
-    <div id="quizBox">
-      <h3>🧠 Quiz – Check What You’ve Learned</h3>
+<!-- Quiz Popup -->
+<div id="quizBox" style="display: none; background-color: #fff8e6; padding: 1.5rem; border-radius: 10px; margin-top: 1rem;">
+  <h3>🧠 Quiz – Check What You’ve Learned</h3>
 
-      <div>
-        <p><strong>1. Why use multiple layers in a PCB?</strong></p>
-        <label><input type="radio" name="q1" value="a" /> To reduce look of board</label>
-        <label><input type="radio" name="q1" value="b" /> To separate power and signal layers</label>
-        <label><input type="radio" name="q1" value="c" /> To make board heavier</label>
-        <label><input type="radio" name="q1" value="d" /> To use more colors</label>
-      </div>
+  <div>
+    <p><strong>1. Why use multiple layers in a PCB?</strong></p>
+    <label><input type="radio" name="q1" value="b" /> To separate power and signal layers</label>
+    <label><input type="radio" name="q1" value="a" /> To reduce the look of the board</label>
+    <label><input type="radio" name="q1" value="d" /> To use more colors</label>
+    <label><input type="radio" name="q1" value="c" /> To make the board heavier</label>
+  </div>
 
-      <div>
-        <p><strong>2. Gerber files are used for:</strong></p>
-        <label><input type="radio" name="q2" value="a" /> 3D rendering</label>
-        <label><input type="radio" name="q2" value="b" /> Simulation only</label>
-        <label><input type="radio" name="q2" value="c" /> PCB fabrication instructions</label>
-        <label><input type="radio" name="q2" value="d" /> Soldering components</label>
-      </div>
+  <div>
+    <p><strong>2. Gerber files are used for:</strong></p>
+    <label><input type="radio" name="q2" value="c" /> PCB fabrication instructions</label>
+    <label><input type="radio" name="q2" value="a" /> 3D rendering</label>
+    <label><input type="radio" name="q2" value="b" /> Simulation only</label>
+    <label><input type="radio" name="q2" value="d" /> Soldering components</label>
+  </div>
 
-      <div>
-        <p><strong>3. What does DRC stand for?</strong></p>
-        <label><input type="radio" name="q3" value="a" /> Direct Route Circuit</label>
-        <label><input type="radio" name="q3" value="b" /> Design Rule Check</label>
-        <label><input type="radio" name="q3" value="c" /> Digital Routing Code</label>
-        <label><input type="radio" name="q3" value="d" /> Dual Resistive Component</label>
-      </div>
+  <div>
+    <p><strong>3. What does DRC stand for?</strong></p>
+    <label><input type="radio" name="q3" value="b" /> Design Rule Check</label>
+    <label><input type="radio" name="q3" value="a" /> Direct Route Circuit</label>
+    <label><input type="radio" name="q3" value="c" /> Digital Routing Code</label>
+    <label><input type="radio" name="q3" value="d" /> Dual Resistive Component</label>
+  </div>
 
-      <button onclick="checkQuiz()" class="quiz-btn">Submit Answers</button>
-      <button onclick="toggleQuiz()" class="quiz-btn quiz-close">Close Quiz</button>
-      <div id="quizResult" style="margin-top: 1rem; font-weight: bold;"></div>
-    </div>
+  <div>
+    <p><strong>4. What is the function of copper tracks?</strong></p>
+    <label><input type="radio" name="q4" value="b" /> To conduct electrical signals</label>
+    <label><input type="radio" name="q4" value="a" /> For decoration</label>
+    <label><input type="radio" name="q4" value="c" /> To support weight</label>
+    <label><input type="radio" name="q4" value="d" /> For cooling</label>
+  </div>
+
+  <div>
+    <p><strong>5. What does a Gerber drill file do?</strong></p>
+    <label><input type="radio" name="q5" value="a" /> Defines hole positions for drilling</label>
+    <label><input type="radio" name="q5" value="b" /> Generates a schematic</label>
+    <label><input type="radio" name="q5" value="c" /> Uploads design to cloud</label>
+    <label><input type="radio" name="q5" value="d" /> Makes 3D print model</label>
+  </div>
+
+  <button onclick="checkQuiz()" class="quiz-btn">Submit Answers</button>
+  <button onclick="toggleQuiz()" class="quiz-btn quiz-close">Close Quiz</button>
+  <div id="quizResult" style="margin-top: 1rem; font-weight: bold;"></div>
+</div>
+
 
     <!-- ✅ Corrected Next Button -->
     <div class="next-button-wrapper">
@@ -226,26 +305,35 @@
   </div>
 
   <script>
-    function toggleQuiz() {
-      const box = document.getElementById('quizBox');
-      box.style.display = box.style.display === 'block' ? 'none' : 'block';
-      document.getElementById('quizResult').innerText = '';
+  function toggleQuiz() {
+    const box = document.getElementById('quizBox');
+    box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    document.getElementById('quizResult').innerText = '';
+    const inputs = box.querySelectorAll("input[type='radio']");
+    inputs.forEach(r => r.checked = false);
+  }
+
+  function checkQuiz() {
+    const correctAnswers = {
+      q1: "b",
+      q2: "c",
+      q3: "b",
+      q4: "b",
+      q5: "a"
+    };
+    let score = 0;
+    for (let q in correctAnswers) {
+      const selected = document.querySelector(`input[name="${q}"]:checked`);
+      if (selected?.value === correctAnswers[q]) score++;
     }
 
-    function checkQuiz() {
-      const answers = ['b', 'c', 'b'];
-      let score = 0;
-      for (let i = 1; i <= 3; i++) {
-        const val = document.querySelector(`input[name="q${i}"]:checked`)?.value;
-        if (val === answers[i - 1]) score++;
-      }
-      const res = document.getElementById('quizResult');
-      if (score === 3) res.innerText = "🎯 Perfect! You've mastered this section.";
-      else if (score === 2) res.innerText = "👍 Great! Keep it up.";
-      else if (score === 1) res.innerText = "🙂 Not bad! One correct.";
-      else res.innerText = "😓 Try again!";
-    }
-  </script>
+    const res = document.getElementById("quizResult");
+    if (score === 5) res.innerText = "🎉 Excellent! You scored 5/5. Great job!";
+    else if (score >= 3) res.innerText = `👍 Nice work! You scored ${score}/5. Keep learning!`;
+    else res.innerText = `😓 You scored ${score}/5. Review the lesson and try again.`;
+  }
+</script>
+
 
 </body>
 </html>
