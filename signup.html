@@ -201,48 +201,36 @@
   }
 
   // Signup logic
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzjTIUlWVBOSp-UeI8dQc7hpqfyUoKawE2Bkl3e4cPzWOzCBrvXgvSFySz3BPfX6IhKHQ/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxFA3__hQ4TJeYTgV3pNkBaLVIp6XeGDw9ok6kvDVh-S8jXS45F2TeMCH_3ndx3U1hF5A/exec"; 
 
-  function signupUser() {
-    const name = document.getElementById("signupName").value.trim();
-    const email = document.getElementById("signupEmail").value.trim();
-    const password = document.getElementById("signupPassword").value;
-    const confirm = document.getElementById("signupConfirm").value;
+function signupUser() {
+  const name = document.getElementById("signupName").value;
+  const email = document.getElementById("signupEmail").value;
+  const password = document.getElementById("signupPassword").value;
+  const confirm = document.getElementById("signupConfirm").value;
 
-    if (!name || !email || !password || !confirm) {
-      alert("⚠️ Please fill all fields.");
-      return;
-    }
-
-    if (password !== confirm) {
-      alert("⚠️ Passwords do not match!");
-      return;
-    }
-
-    fetch(scriptURL + "?action=signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("✅ Signup successful! Please log in.");
-        window.location.href = "index.html";
-      } else {
-        alert("❌ " + data.message);
-      }
-    })
-    .catch(err => {
-      alert("❌ Network Error: " + err.message);
-    });
+  if (password !== confirm) {
+    alert("❌ Passwords do not match!");
+    return;
   }
+
+  fetch(scriptURL + "?action=signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert("✅ Signup successful!");
+      window.location.href = "index.html";
+    } else {
+      alert("❌ " + data.message);
+    }
+  })
+  .catch(err => alert("❌ Network Error: " + err.message));
+}
+
 </script>
 
 </body>
