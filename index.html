@@ -4,18 +4,6 @@
   <meta charset="UTF-8">
   <title>MiniBotix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- ✅ SEO: Search Description -->
-  <meta name="description" content="miniBotix is a student tech startup embedded learning platform offering certified courses in Arduino, IoT, Robotics, AI, and PCB design with real-time simulations and DIY kits">
-
-  <!-- ✅ SEO Keywords (Optional) -->
-  <meta name="keywords" content="miniBotix, embedded systems, student projects, DIY kits, electronics, IoT, robotics">
-
-  <!-- ✅ Show miniBotix as site name -->
-  <meta property="og:title" content="miniBotix" />
-  <meta property="og:description" content="Learn, build and innovate with hands-on embedded tools and electronics courses." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://minibotix.github.io" />
-  <meta property="og:image" content="MINIBOTIXSITE.png" /> <!-- Optional: Add your actual logo image -->
   <style>
     :root {
       --white: #ffffff;
@@ -40,7 +28,6 @@
       background-size: cover;
     }
 
-    /* Rain Animation */
     .rain {
       position: fixed;
       top: 0;
@@ -67,7 +54,6 @@
       }
     }
 
-    /* NAVBAR */
     .navbar {
       position: absolute;
       top: 0;
@@ -113,7 +99,6 @@
       transform: scale(1.1);
     }
 
-    /* Center Box */
     .center-box {
       width: 370px;
       height: 370px;
@@ -170,6 +155,42 @@
       text-shadow: 1px 1px #000;
       z-index: 2;
     }
+
+    /* LOGIN MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin: 100px auto;
+      text-align: center;
+    }
+
+    .modal-content input {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -201,6 +222,17 @@
   <button class="login-btn" onclick="openLogin()">Start Learning</button>
 </div>
 
+<!-- LOGIN MODAL -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <h3>🔐 Login to MiniBotix</h3>
+    <input type="email" placeholder="Email" id="loginEmail">
+    <input type="password" placeholder="Password" id="loginPassword">
+    <button onclick="loginUser()">Login</button>
+    <p style="margin-top:10px">New user? <a href="signup.html">Sign up</a></p>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <div class="footer">
   © 2025 miniBotix · Learn. Design. Innovate.
@@ -208,37 +240,48 @@
 
 <!-- JS -->
 <script>
-  function loginUser() {
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzjTIUlWVBOSp-UeI8dQc7hpqfyUoKawE2Bkl3e4cPzWOzCBrvXgvSFySz3BPfX6IhKHQ/exec";
 
-  fetch(scriptURL + "?action=login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password
+  function openLogin() {
+    document.getElementById("loginModal").style.display = "block";
+  }
+
+  window.onclick = function(e) {
+    if (e.target == document.getElementById("loginModal")) {
+      document.getElementById("loginModal").style.display = "none";
+    }
+  }
+
+  function loginUser() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    fetch(scriptURL + "?action=login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
     })
-  })
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        currentUser = data.user;
-        document.getElementById('userIcon').textContent = `👋 ${data.user.username}`;
-        document.getElementById('loginModal').style.display = 'none';
-        // Optional: save user data in localStorage/sessionStorage
+        alert("✅ Welcome " + data.username);
+        document.querySelector(".nav-links a:last-child").innerHTML = `👋 ${data.username}`;
+        document.getElementById("loginModal").style.display = "none";
       } else {
-        alert("❌ Login failed: " + data.message);
+        alert("❌ Error: " + data.message);
       }
     })
     .catch(err => {
       alert("❌ Network Error: " + err.message);
     });
-}
+  }
 
-  // Create rain drops
+  // Rain animation
   const rainContainer = document.getElementById("rainContainer");
   for (let i = 0; i < 80; i++) {
     const drop = document.createElement("div");
