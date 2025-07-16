@@ -201,34 +201,26 @@
   }
 
   // Signup logic
-  const scriptURL = "https://script.google.com/macros/s/AKfycbw_aqAkgFO1bXfGMUU1aQyDJS2nP3kYi_So2BxQ2m00M1wlT3f5taJawsbvdPNFnjrv9w/exec"; 
+  const scriptURL = "https://script.google.com/macros/s/AKfycbw_aqAkgFO1bXfGMUU1aQyDJS2nP3kYi_So2BxQ2m00M1wlT3f5taJawsbvdPNFnjrv9w/exec";
 
 function signupUser() {
-  const name = document.getElementById("signupName").value;
-  const email = document.getElementById("signupEmail").value;
-  const password = document.getElementById("signupPassword").value;
-  const confirm = document.getElementById("signupConfirm").value;
+  const name = doc('signupName');
+  const email = doc('signupEmail');
+  const pass = doc('signupPassword');
+  const conf = doc('signupConfirm');
+  if (pass !== conf) return alert("Passwords do not match");
 
-  if (password !== confirm) {
-    alert("❌ Passwords do not match!");
-    return;
-  }
-
-  fetch(scriptURL + "?action=signup", {
+  fetch(scriptURL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password })
+    body: JSON.stringify({ action:"signup", name, email, password:pass })
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert("✅ Signup successful!");
-      window.location.href = "index.html";
-    } else {
-      alert("❌ " + data.message);
-    }
+  .then(r => r.json())
+  .then(d => {
+    if (d.success) alert("Signup success");
+    else alert("❌ " + d.message);
   })
-  .catch(err => alert("❌ Network Error: " + err.message));
+  .catch(e => alert("❌ Network error: " + e));
 }
 
 </script>
