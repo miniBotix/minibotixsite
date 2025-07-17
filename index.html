@@ -1,101 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Minibotix | Login System</title>
   <style>
-    #popup {
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .top-bar {
+      background-color: #222;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .top-bar button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #0d6efd;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .popup {
       display: none;
       position: fixed;
-      top: 20%;
-      left: 35%;
-      width: 30%;
-      padding: 20px;
-      background: #111;
-      color: #fff;
-      border-radius: 15px;
-      box-shadow: 0 0 10px #00f2ff;
       z-index: 999;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      border-radius: 10px;
     }
-    input, button {
-      margin: 8px;
-      padding: 10px;
-      width: 90%;
+
+    .popup input {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      z-index: 998;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .welcome {
+      font-size: 16px;
+      font-weight: bold;
+      color: #0f0;
     }
   </style>
 </head>
-<body style="background:#000;color:#0ff;font-family:sans-serif;text-align:center;">
+<body>
 
-  <h1>Welcome to Minibotix</h1>
-  <p id="welcomeMessage">You are not logged in.</p>
+  <div class="top-bar">
+    <div id="welcomeText" class="welcome"></div>
+    <button onclick="showLogin()">Login</button>
+    <button onclick="showSignUp()">Sign Up</button>
+  </div>
 
-  <button onclick="showLogin()">Login</button>
-  <button onclick="showSignup()">Sign Up</button>
+  <div class="overlay" id="overlay" onclick="closePopups()"></div>
 
-  <div id="popup">
-    <h2 id="popupTitle">Login</h2>
-    <input type="text" id="name" placeholder="Name" style="display:none;"><br>
-    <input type="email" id="email" placeholder="Email"><br>
-    <input type="password" id="password" placeholder="Password"><br>
-    <button onclick="submitForm()">Submit</button>
-    <button onclick="hidePopup()">Cancel</button>
+  <!-- Login Popup -->
+  <div class="popup" id="loginPopup">
+    <h3>Login</h3>
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Sign Up Popup -->
+  <div class="popup" id="signupPopup">
+    <h3>Sign Up</h3>
+    <input type="text" id="signupName" placeholder="Name" required>
+    <input type="email" id="signupEmail" placeholder="Email" required>
+    <input type="password" id="signupPassword" placeholder="Password" required>
+    <button onclick="signUp()">Sign Up</button>
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxd1lMrEz_4IOiyrqInG5TfKUpA4i_nb3UGtwJiwlh0Fr5F25R5fk7YjpJwom-LzQTc/exec";
-    let mode = "login";
+    const scriptURL = 'https://script.google.com/macros/s/AKfycby6ncZa3mxXBwSEudnPmCvJG6tAiAMVuiAol9hgljBwWFK5fGslHECoWsKp3y6LYr0W/exec';
 
     function showLogin() {
-      mode = "login";
-      document.getElementById("popupTitle").innerText = "Login";
-      document.getElementById("name").style.display = "none";
-      document.getElementById("popup").style.display = "block";
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('loginPopup').style.display = 'block';
+      document.getElementById('signupPopup').style.display = 'none';
     }
 
-    function showSignup() {
-      mode = "signup";
-      document.getElementById("popupTitle").innerText = "Sign Up";
-      document.getElementById("name").style.display = "block";
-      document.getElementById("popup").style.display = "block";
+    function showSignUp() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('signupPopup').style.display = 'block';
+      document.getElementById('loginPopup').style.display = 'none';
     }
 
-    function hidePopup() {
-      document.getElementById("popup").style.display = "none";
+    function closePopups() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('loginPopup').style.display = 'none';
+      document.getElementById('signupPopup').style.display = 'none';
     }
 
-    function submitForm() {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    function login() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
 
-      const formData = new URLSearchParams();
-      formData.append("action", mode);
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("password", password);
+      fetch(`${scriptURL}?email=${email}&password=${password}&action=login`)
+        .then(res => res.text())
+        .then(data => {
+          if (data !== "INVALID") {
+            document.getElementById("welcomeText").innerText = `👋 Welcome, ${data}`;
+            closePopups();
+          } else {
+            alert("Login failed. Check your email and password.");
+          }
+        });
+    }
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: formData
-      })
-      .then(res => res.text())
-      .then(data => {
-        if (data === "INVALID") {
-          alert("Login failed. Check your email and password.");
-        } else if (data === "EXISTS") {
-          alert("Email already registered.");
-        } else if (data === "SUCCESS") {
-          alert("Signup successful! Please login.");
-          hidePopup();
-        } else {
-          // Logged in successfully, display welcome
-          document.getElementById("welcomeMessage").innerText = "Welcome, " + data + "!";
-          hidePopup();
-        }
-      })
-      .catch(err => {
-        alert("Error: " + err);
-      });
+    function signUp() {
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+
+      fetch(`${scriptURL}?name=${name}&email=${email}&password=${password}&action=signup`)
+        .then(res => res.text())
+        .then(data => {
+          alert(data); // "Signup successful" or custom message
+          closePopups();
+        });
     }
   </script>
+
 </body>
 </html>
