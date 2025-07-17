@@ -1,348 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MiniBotix</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Web App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    :root {
-      --white: #ffffff;
-      --nav-color: rgba(255, 255, 255, 0.95);
-      --text-dark: #000000;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    body, html {
-      height: 100%;
-      overflow: hidden;
-    }
-
     body {
-      background: url("05-nature-backgrounds_1491895829.jpg") no-repeat center center fixed;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("frontpage.jpeg") no-repeat center center fixed;
       background-size: cover;
+      color: white;
+      position: relative;
     }
 
+    /* Rain effect */
     .rain {
-      position: fixed;
-      top: 0;
-      left: 0;
+      position: absolute;
       width: 100%;
       height: 100%;
-      pointer-events: none;
+      overflow: hidden;
+      top: 0;
+      left: 0;
       z-index: 1;
     }
 
-    .drop {
+    .raindrop {
       position: absolute;
-      bottom: 100%;
       width: 2px;
-      height: 15px;
-      background: rgba(255, 255, 255, 0.4);
-      animation: fall linear infinite;
+      height: 10px;
+      background: #00f;
+      animation: fall 1s linear infinite;
     }
 
     @keyframes fall {
-      to {
-        transform: translateY(100vh);
+      0% {
+        top: -10px;
+      }
+      100% {
+        top: 100%;
       }
     }
 
+    /* Top black nav bar */
     .navbar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: var(--nav-color);
+      background-color: black;
+      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 30px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      z-index: 10;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--text-dark);
-    }
-
-    .logo img {
-      height: 35px;
-      margin-right: 10px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      position: relative;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      font-weight: bold;
-      color: var(--text-dark);
-      transition: transform 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      transform: scale(1.1);
-    }
-
-    .user-dropdown {
-      position: relative;
-      display: none;
-    }
-
-    .user-dropdown.show {
-      display: block;
-    }
-
-    .user-name {
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      right: 0;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-top: 10px;
-      min-width: 120px;
-      z-index: 999;
-    }
-
-    .dropdown-content a {
-      display: block;
-      padding: 10px;
-      text-decoration: none;
-      color: black;
-    }
-
-    .dropdown-content a:hover {
-      background-color: #f2f2f2;
-    }
-
-    .user-dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .center-box {
-      width: 370px;
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 20px;
-      margin: 120px auto;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
       z-index: 2;
       position: relative;
-      padding: 40px 20px;
     }
 
-    .center-box h1 {
-      color: #1e3a8a;
-      font-size: 28px;
-    }
-
-    .center-box p {
-      color: #333;
-      padding: 20px;
-      font-size: 16px;
-    }
-
-    .login-btn {
-      margin-top: 20px;
-      background-color: #2563eb;
+    .navbar h1 {
+      margin: 0;
       color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
+    }
+
+    .navbar button {
+      background: transparent;
+      color: white;
+      border: 1px solid white;
+      padding: 5px 10px;
       cursor: pointer;
     }
 
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      color: #f0f0f0;
-      font-weight: bold;
-      text-shadow: 1px 1px #000;
-      z-index: 2;
-    }
-
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
-      z-index: 2000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.5);
+      z-index: 5;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
     }
 
     .modal-content {
-      background-color: white;
+      background-color: #222;
+      margin: 15% auto;
       padding: 20px;
-      border-radius: 10px;
+      border: 1px solid #888;
       width: 300px;
-      margin: 100px auto;
-      text-align: center;
+      color: white;
+      border-radius: 5px;
     }
 
     .modal-content input {
       width: 100%;
+      padding: 8px;
       margin: 10px 0;
-      padding: 10px;
-      border: 1px solid #ccc;
+      border: none;
+      border-radius: 4px;
     }
 
     .modal-content button {
-      padding: 10px 20px;
-      background-color: #0077cc;
+      width: 100%;
+      background-color: #0d6efd;
       color: white;
       border: none;
-      border-radius: 5px;
+      padding: 10px;
       cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .loggedin-user {
+      margin-right: 10px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-
-<div class="rain" id="rainContainer"></div>
-
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="logo">
-    <img src="MINIBOTIXSITE.png" alt="MiniBotix Logo">
-    MiniBotix
-  </div>
-  <div class="nav-links">
-    <a href="about.html">About</a>
-    <a href="service.html">Services</a>
-    <a href="course.html">Courses</a>
-    <a href="college.html">College</a>
-    <div id="loginMenu">
-      <a href="#" onclick="openLogin()">👤 Sign In</a>
-    </div>
-    <div class="user-dropdown" id="userDropdown">
-      <span class="user-name" id="usernameLabel">👋 </span>
-      <div class="dropdown-content">
-        <a href="profile.html">Profile</a>
-        <a href="#" onclick="logoutUser()">Sign Out</a>
-      </div>
+  <div class="navbar">
+    <h1>My Web App</h1>
+    <div>
+      <span class="loggedin-user" id="loggedInUser"></span>
+      <button onclick="document.getElementById('loginModal').style.display='block'">Login</button>
+      <a href="signup.html" style="text-decoration:none;"><button>Signup</button></a>
     </div>
   </div>
-</div>
 
-<!-- CENTER BOX -->
-<div class="center-box">
-  <h1>🚀 Welcome to MiniBotix</h1>
-  <p>A Free Open Learning Platform<br>
-     Learn electronics, coding, robotics, IoT & more<br>
-     Built for makers, engineers, and dreamers!</p>
-  <button class="login-btn" onclick="openLogin()">Start Learning</button>
-</div>
+  <div class="rain" id="rain"></div>
 
-<!-- LOGIN MODAL -->
-<div class="modal" id="loginModal">
-  <div class="modal-content">
-    <h3>🔐 Login to MiniBotix</h3>
-    <input type="email" placeholder="Email" id="loginEmail">
-    <input type="password" placeholder="Password" id="loginPassword">
-    <button onclick="loginUser()">Login</button>
-    <p style="margin-top:10px">New user? <a href="signup.html">Sign up</a></p>
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button onclick="loginUser()">Login</button>
+    </div>
   </div>
-</div>
 
-<!-- FOOTER -->
-<div class="footer">
-  © 2025 miniBotix · Learn. Design. Innovate.
-</div>
+  <script>
+    // Replace this with your working script URL
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwtQLo_Le1jAiIidfj1mo3xhxIWTklUbV2cSFvX7_OoU4YLzwkDriaYB66OXSE5X4-vLA/exec";
 
-<!-- JS -->
-<script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxgML9db4JNwSmXs0EhO2Ugskax8E6pdW5opO2IqKhfGSMUP8Jo7oVILUXxyFOc7JdfmA/exec";
+    function loginUser() {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
-  function openLogin() {
-    document.getElementById("loginModal").style.display = "block";
-  }
+      const formData = new FormData();
+      formData.append("action", "login");
+      formData.append("email", email);
+      formData.append("password", password);
 
-  window.onclick = function(e) {
-    if (e.target == document.getElementById("loginModal")) {
-      document.getElementById("loginModal").style.display = "none";
+      fetch(scriptURL, {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          localStorage.setItem("username", data.username);
+          showLoggedInUser(data.username);
+          document.getElementById("loginModal").style.display = "none";
+        } else {
+          alert("❌ " + data.message);
+        }
+      })
+      .catch(err => {
+        alert("❌ Network Error: " + err.message);
+      });
     }
-  }
 
-  function loginUser() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
+    function showLoggedInUser(name) {
+      document.getElementById("loggedInUser").textContent = "👋 Welcome, " + name;
+    }
 
-    fetch(scriptURL + "?action=login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        localStorage.setItem("username", data.username);
-        showLoggedInUser(data.username);
-        document.getElementById("loginModal").style.display = "none";
-      } else {
-        alert("❌ " + data.message);
+    // Show logged in user if already logged in
+    window.onload = function () {
+      const username = localStorage.getItem("username");
+      if (username) showLoggedInUser(username);
+    };
+
+    // Rain effect generator
+    function createRain() {
+      const rain = document.getElementById("rain");
+      rain.innerHTML = '';
+      for (let i = 0; i < 100; i++) {
+        const drop = document.createElement("div");
+        drop.classList.add("raindrop");
+        drop.style.left = Math.random() * 100 + "vw";
+        drop.style.animationDuration = Math.random() * 1 + 0.5 + "s";
+        rain.appendChild(drop);
       }
-    })
-    .catch(err => {
-      alert("❌ Network Error: " + err.message);
-    });
-  }
-
-  function showLoggedInUser(name) {
-    document.getElementById("loginMenu").style.display = "none";
-    document.getElementById("userDropdown").style.display = "block";
-    document.getElementById("usernameLabel").innerText = "👋 " + name;
-  }
-
-  function logoutUser() {
-    localStorage.removeItem("username");
-    location.reload();
-  }
-
-  // On load, check for session
-  window.onload = function() {
-    const username = localStorage.getItem("username");
-    if (username) {
-      showLoggedInUser(username);
-    } else {
-      document.getElementById("userDropdown").style.display = "none";
     }
-
-    // Rain effect
-    const rainContainer = document.getElementById("rainContainer");
-    for (let i = 0; i < 80; i++) {
-      const drop = document.createElement("div");
-      drop.classList.add("drop");
-      drop.style.left = Math.random() * 100 + "vw";
-      drop.style.animationDuration = 0.5 + Math.random() + "s";
-      drop.style.animationDelay = Math.random() * 5 + "s";
-      rainContainer.appendChild(drop);
-    }
-  };
-</script>
-
+    createRain();
+  </script>
 </body>
 </html>
