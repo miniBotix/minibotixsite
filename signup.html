@@ -3,163 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up | miniBotix</title>
+  <title>Sign Up</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-image: url('05-nature-backgrounds_1491895829.jpg');
-      background-size: cover;
-      background-position: center;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
-      color: #000;
-      overflow: hidden;
     }
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 10px 30px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-    }
-
-    .navbar .logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .navbar .logo img {
-      height: 40px;
-      margin-right: 10px;
-    }
-
-    .navbar .logo span {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .navbar .nav-links a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #000;
-      font-weight: 500;
-      transition: transform 0.2s;
-    }
-
-    .navbar .nav-links a:hover {
-      transform: scale(1.1);
-    }
-
-    .signup-box {
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 30px 40px;
+    .container {
+      background: white;
+      padding: 30px;
       border-radius: 10px;
-      width: 350px;
-      text-align: center;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    .signup-box h2 {
-      margin-bottom: 20px;
-    }
-
-    .signup-box input {
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
       width: 100%;
-      padding: 10px;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
       margin: 10px 0;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 6px;
     }
 
-    .signup-box button {
-      padding: 10px 20px;
-      background-color: #28a745;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-    }
-
-    .signup-box button:hover {
-      background-color: #218838;
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 10px;
+    button {
       width: 100%;
-      text-align: center;
+      padding: 12px;
+      background-color: #007bff;
       color: white;
-      text-shadow: 0 0 5px black;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <div class="logo">
-      <img src="miniBotixSITE.png" alt="Logo" />
-      <span>miniBotix</span>
-    </div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="course.html">Courses</a>
-      <a href="service.html">Services</a>
-      <a href="college.html">College</a>
-    </div>
-  </div>
-
-  <div class="signup-box">
-    <h2>Sign Up</h2>
+  <div class="container">
+    <h2>Create an Account</h2>
     <form id="signupForm">
-      <input type="text" id="name" placeholder="Full Name" required />
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button type="submit">Create Account</button>
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+      <div class="message" id="msg"></div>
     </form>
-    <p id="message" style="margin-top: 15px;"></p>
-  </div>
-
-  <div class="footer">
-    © 2025 miniBotix · Learn. Design. Innovate.<br>
-    Powered by miniBotix
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxgML9db4JNwSmXs0EhO2Ugskax8E6pdW5opO2IqKhfGSMUP8Jo7oVILUXxyFOc7JdfmA/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwtQLo_Le1jAiIidfj1mo3xhxIWTklUbV2cSFvX7_OoU4YLzwkDriaYB66OXSE5X4-vLA/exec";
 
     document.getElementById("signupForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+
+      const msg = document.getElementById("msg");
+      const form = document.getElementById("signupForm");
+      const formData = new FormData(form);
+      formData.append("action", "signup");
 
       fetch(scriptURL, {
         method: "POST",
-        body: new URLSearchParams({
-          action: "signup",
-          name: name,
-          email: email,
-          password: password,
-        }),
+        body: formData
       })
-      .then((res) => res.text())
-      .then((msg) => {
-        document.getElementById("message").textContent = "✅ " + msg;
-        document.getElementById("signupForm").reset();
+      .then(response => response.text())
+      .then(result => {
+        msg.style.color = result.includes("✅") ? "green" : "red";
+        msg.textContent = result;
+        if (result.includes("✅")) form.reset();
       })
-      .catch((err) => {
-        document.getElementById("message").textContent = "❌ Error: " + err;
+      .catch(error => {
+        msg.style.color = "red";
+        msg.textContent = "❌ Network Error: " + error;
       });
     });
   </script>
