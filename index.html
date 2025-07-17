@@ -1,183 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>miniBotix</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-image: url('05-nature-backgrounds_1491895829.jpg');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<title>MiniBotix | Learning Platform</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root{
+    --nav-bg: rgba(255,255,255,0.9);
+    --text-dark:#000;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI,sans-serif;}
+  html,body{height:100%;overflow:hidden;}
+  body{background:url("05-nature-backgrounds_1491895829.jpg")center/cover fixed;}
+  .rain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+  .drop{position:absolute;bottom:100%;width:2px;height:15px;background:rgba(255,255,255,0.4);animation:fall linear infinite;}
+  @keyframes fall{to{transform:translateY(100vh);}}
 
-    /* Rain animation */
-    .rain {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background-image: url('https://i.imgur.com/NM9vM0T.png');
-      animation: rain 0.4s linear infinite;
-    }
+  .navbar{position:absolute;top:0;left:0;right:0;height:60px;background:var(--nav-bg);display:flex;justify-content:space-between;align-items:center;padding:0 30px;z-index:2;}
+  .navbar .logo{display:flex;align-items:center;font-weight:bold;color:var(--text-dark);}
+  .navbar .logo img{height:35px;margin-right:10px;}
+  .navbar .links{display:flex;gap:15px;}
+  .navbar .links a{color:var(--text-dark);text-decoration:none;font-weight:bold;cursor:pointer;}
+  
+  .center-box{position:relative;z-index:2;width:360px;padding:30px;border-radius:15px;background:rgba(255,255,255,0.85);margin:140px auto;text-align:center;box-shadow:0 0 20px rgba(0,0,0,0.2);}
+  .center-box h1{color:#1e3a8a;margin-bottom:15px;}
+  .center-box p{color:#333;margin-bottom:20px;}
+  .center-box button{padding:10px 20px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;}
+  .center-box button:hover{background:#3b82f6;}
 
-    @keyframes rain {
-      from { background-position: 0 0; }
-      to { background-position: 0 100%; }
-    }
+  .footer{position:absolute;bottom:10px;width:100%;text-align:center;color:#f0f0f0;font-weight:bold;text-shadow:1px 1px #000;z-index:2;}
 
-    header {
-      background-color: white;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    header img {
-      height: 40px;
-      margin-right: 10px;
-    }
-
-    header h1 {
-      color: black;
-      margin: 0;
-      font-size: 24px;
-      display: flex;
-      align-items: center;
-    }
-
-    .auth-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    button {
-      padding: 5px 10px;
-      border: none;
-      cursor: pointer;
-      background-color: #444;
-      color: white;
-      border-radius: 5px;
-    }
-
-    .popup {
-      position: absolute;
-      top: 80px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px;
-      border-radius: 10px;
-      display: none;
-      z-index: 100;
-    }
-
-    .popup input {
-      display: block;
-      margin-bottom: 10px;
-      padding: 5px;
-      width: 100%;
-    }
-
-    #username-display {
-      color: white;
-      font-weight: bold;
-    }
-  </style>
+  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:3;justify-content:center;align-items:center;}
+  .modal-content{background:#fff;padding:20px;border-radius:10px;width:300px;text-align:center;}
+  .modal-content input{width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:5px;}
+  .modal-content button{padding:10px 20px;margin-top:10px;background:#009578;color:#fff;border:none;border-radius:5px;cursor:pointer;}
+  .modal-content .toggle{margin-top:10px;color:#0077cc;cursor:pointer;font-size:14px;}
+</style>
 </head>
 <body>
-  <div class="rain"></div>
 
-  <header>
-    <h1><img src="MINIBOTIXSITE.png" alt="Logo"> miniBotix</h1>
-    <div class="auth-buttons">
-      <span id="username-display"></span>
-      <button onclick="toggleLogin()">Login</button>
-    </div>
-  </header>
+<div class="rain" id="rain"></div>
 
-  <!-- Login/Signup Popup -->
-  <div class="popup" id="authPopup">
-    <div id="loginForm">
-      <h3>Login</h3>
-      <input type="email" id="loginEmail" placeholder="Email">
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button onclick="login()">Login</button>
-      <p>New user? <a href="#" onclick="showSignup()">Create Account</a></p>
-    </div>
-
-    <div id="signupForm" style="display: none;">
-      <h3>Sign Up</h3>
-      <input type="text" id="signupName" placeholder="Name">
-      <input type="email" id="signupEmail" placeholder="Email">
-      <input type="password" id="signupPassword" placeholder="Password">
-      <input type="password" id="signupConfirm" placeholder="Confirm Password">
-      <button onclick="signup()">Sign Up</button>
-      <p>Already have an account? <a href="#" onclick="showLogin()">Back to Login</a></p>
-    </div>
+<div class="navbar">
+  <div class="logo"><img src="MINIBOTIXSITE.png"><span>MiniBotix</span></div>
+  <div class="links">
+    <a href="about.html">About</a>
+    <a href="service.html">Services</a>
+    <a href="course.html">Courses</a>
+    <a href="college.html">College</a>
+    <a id="authBtn">Sign In</a>
   </div>
+</div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxhX8arDi9YHcB6GeNwtQ_7sfCHUrFRpjZVBWyVvLQkd-kEDernFbYXtfGtLs058MW6ww/exec";
+<div class="center-box">
+  <h1>Welcome to MiniBotix!</h1>
+  <p>A free open learning platform<br>Electronics • Coding • Robotics • IoT</p>
+  <button id="startBtn">Start Learning</button>
+</div>
 
-    function toggleLogin() {
-      const popup = document.getElementById("authPopup");
-      popup.style.display = popup.style.display === "block" ? "none" : "block";
+<div class="footer">© 2025 MiniBotix · Learn • Design • Innovate</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content" id="modalContent">
+    <h2 id="modalTitle">Sign In</h2>
+    <input type="email" id="inEmail" placeholder="Email" required>
+    <input type="password" id="inPass" placeholder="Password" required>
+    <button id="inSubmit">Login</button>
+    <div class="toggle" id="toggleAuth">Don't have an account? Sign Up</div>
+    <div id="authMsg" style="margin-top:10px;color:red;"></div>
+  </div>
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxgML9db4JNwSmXs0EhO2Ugskax8E6pdW5opO2IqKhfGSMUP8Jo7oVILUXxyFOc7JdfmA/exec";
+
+let isSignup = false;
+
+function showModal() {
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('authMsg').innerText = '';
+}
+function hideModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+document.getElementById('authBtn').onclick = showModal;
+document.getElementById('startBtn').onclick = showModal;
+
+window.onclick = e => { if(e.target==document.getElementById('modal')) hideModal(); };
+
+document.getElementById('toggleAuth').onclick = () => {
+  isSignup = !isSignup;
+  document.getElementById('modalTitle').innerText = isSignup ? 'Sign Up' : 'Sign In';
+  document.getElementById('inSubmit').innerText = isSignup ? 'Sign Up' : 'Login';
+  document.getElementById('toggleAuth').innerText = isSignup ? 'Already have an account? Sign In' : "Don't have an account? Sign Up";
+};
+
+document.getElementById('inSubmit').onclick = async () => {
+  const email = document.getElementById('inEmail').value.trim();
+  const password = document.getElementById('inPass').value.trim();
+  const action = isSignup ? "signup" : "login";
+
+  if (!email || !password) {
+    document.getElementById('authMsg').innerText = 'Fields cannot be empty.';
+    return;
+  }
+
+  try {
+    const res = await fetch(scriptURL, {
+      method:'POST',
+      body: JSON.stringify({ action, email, password, name:isSignup? email.split('@')[0] : undefined }),
+      headers:{'Content-Type':'application/json'}
+    });
+    const data = await res.json();
+    if (data.success) {
+      const username = isSignup ? email.split('@')[0] : data.name;
+      document.getElementById('authBtn').innerText = `👋 ${username}`;
+      hideModal();
+      localStorage.setItem('mbUser', username);
+    } else {
+      document.getElementById('authMsg').innerText = data.message;
     }
+  } catch (err) {
+    document.getElementById('authMsg').innerText = 'Network error, try again.';
+  }
+};
 
-    function showSignup() {
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("signupForm").style.display = "block";
-    }
+window.onload = () => {
+  const saved = localStorage.getItem('mbUser');
+  if (saved) {
+    document.getElementById('authBtn').innerText = `👋 ${saved}`;
+  }
+  const rain = document.getElementById('rain');
+  for (let i=0;i<80;i++){
+    const d=document.createElement('div');
+    d.className='drop';
+    d.style.left=Math.random()*100+'vw';
+    d.style.animationDuration=(0.5+Math.random())+'s';
+    d.style.animationDelay=Math.random()*5+'s';
+    rain.appendChild(d);
+  }
+};
+</script>
 
-    function showLogin() {
-      document.getElementById("signupForm").style.display = "none";
-      document.getElementById("loginForm").style.display = "block";
-    }
-
-    async function signup() {
-      const name = document.getElementById("signupName").value;
-      const email = document.getElementById("signupEmail").value;
-      const password = document.getElementById("signupPassword").value;
-      const confirm = document.getElementById("signupConfirm").value;
-
-      if (password !== confirm) {
-        alert("Passwords do not match");
-        return;
-      }
-
-      const response = await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({ action: "signup", name, email, password }),
-      });
-      const result = await response.json();
-      alert(result.message);
-      if (result.status === "success") showLogin();
-    }
-
-    async function login() {
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-
-      const response = await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({ action: "login", email, password }),
-      });
-      const result = await response.json();
-      if (result.status === "success") {
-        document.getElementById("username-display").innerText = result.name;
-        toggleLogin();
-      } else {
-        alert(result.message);
-      }
-    }
-  </script>
 </body>
 </html>
