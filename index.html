@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>miniBotix</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       margin: 0;
@@ -12,148 +11,46 @@
       background-size: cover;
       color: white;
     }
-
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 40px;
-      background: rgba(0, 0, 0, 0.7);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.8);
     }
-
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo img {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
-    }
-
-    .logo h2 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-    }
-
     nav a {
       margin: 0 15px;
       color: white;
       text-decoration: none;
-      font-weight: bold;
     }
-
     .user-icon {
-      position: relative;
       cursor: pointer;
-      color: white;
     }
-
-    .cloud-tooltip {
-      position: absolute;
-      top: 45px;
-      right: 0;
-      background: white;
-      color: black;
-      padding: 10px 15px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px #000;
-      display: none;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .user-icon:hover .cloud-tooltip {
-      display: block;
-    }
-
-    .popup {
+    .popup, .overlay {
       display: none;
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      color: black;
-      padding: 25px;
-      border-radius: 10px;
-      z-index: 1000;
-      box-shadow: 0 0 20px #000;
-      width: 300px;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      justify-content: center;
+      align-items: center;
     }
-
+    .popup form {
+      background: white;
+      padding: 20px;
+      color: black;
+      border-radius: 10px;
+    }
     .popup input {
       display: block;
       width: 100%;
       margin: 10px 0;
       padding: 8px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
     }
-
     .popup button {
-      background: #28a745;
+      background: green;
       color: white;
       padding: 10px;
       border: none;
-      cursor: pointer;
-      width: 100%;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-
-    .popup p {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .popup a {
-      color: #007bff;
-      text-decoration: none;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      z-index: 999;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
-
-    #userDisplay {
-      color: lightgreen;
-      font-weight: bold;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-    #logoutBtn {
-      background: red;
-      color: white;
-      padding: 5px 10px;
-      margin-left: 10px;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
     }
   </style>
 </head>
@@ -162,93 +59,72 @@
   <div class="overlay" id="overlay"></div>
 
   <header>
-    <div class="logo">
-      <img src="MINIBOTIXSITE.png" alt="Logo">
-      <h2>miniBotix</h2>
-    </div>
+    <h2>miniBotix</h2>
     <nav>
-      <a href="#">Service</a>
-      <a href="#">Course</a>
+      <a href="#">Home</a>
+      <a href="#">Courses</a>
       <a href="#">About</a>
-      <a href="#">College</a>
-      <span class="user-icon" onclick="openPopup()">
-        <i class="fas fa-user-circle fa-2x"></i>
-        <div class="cloud-tooltip">Sign in to touch with us</div>
-      </span>
+      <span class="user-icon" onclick="openPopup()">👤 Login</span>
       <span id="userDisplay"></span>
       <button id="logoutBtn" style="display:none;" onclick="logout()">Logout</button>
     </nav>
   </header>
 
-  <!-- Popup for login/signup -->
   <div class="popup" id="popup">
-    <h3 id="formTitle">Login</h3>
-    <input type="text" id="nameField" placeholder="Name (for Sign Up)" style="display: none;">
-    <input type="email" id="emailField" placeholder="Email">
-    <input type="password" id="passwordField" placeholder="Password">
-    <button onclick="submitForm()">Login</button>
-    <p>
-      New user? <a href="#" onclick="switchToSignUp()">Sign Up</a>
-    </p>
+    <form onsubmit="submitForm(event)">
+      <h3 id="formTitle">Login</h3>
+      <input type="text" id="nameField" placeholder="Name (Sign Up Only)" style="display:none;">
+      <input type="email" id="emailField" placeholder="Email" required>
+      <input type="password" id="passwordField" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <p><a href="#" onclick="switchForm()">Switch to Sign Up</a></p>
+    </form>
   </div>
-
-  <footer>
-    <p>© 2025 miniBotix — Powered by Learning Intelligence</p>
-  </footer>
 
   <script>
     let isSignUp = false;
+    const apiUrl = "https://script.google.com/macros/s/AKfycbxaWgZE4GXr-UswgjzZ3J17JggjT4ES6Gb7W_I-94DWdv6LJJdE48yaA3Mb6zQapzPw/exec";
 
     function openPopup() {
-      document.getElementById("overlay").style.display = "block";
-      document.getElementById("popup").style.display = "block";
+      document.getElementById("overlay").style.display = "flex";
+      document.getElementById("popup").style.display = "flex";
     }
 
     function closePopup() {
       document.getElementById("overlay").style.display = "none";
       document.getElementById("popup").style.display = "none";
-      resetForm();
     }
 
     document.getElementById("overlay").addEventListener("click", closePopup);
 
-    function switchToSignUp() {
-      isSignUp = true;
-      document.getElementById("formTitle").textContent = "Sign Up";
-      document.getElementById("nameField").style.display = "block";
-      document.querySelector("#popup button").textContent = "Sign Up";
+    function switchForm() {
+      isSignUp = !isSignUp;
+      document.getElementById("formTitle").textContent = isSignUp ? "Sign Up" : "Login";
+      document.querySelector("#popup button").textContent = isSignUp ? "Sign Up" : "Login";
+      document.getElementById("nameField").style.display = isSignUp ? "block" : "none";
     }
 
-    function resetForm() {
-      isSignUp = false;
-      document.getElementById("formTitle").textContent = "Login";
-      document.getElementById("nameField").style.display = "none";
-      document.querySelector("#popup button").textContent = "Login";
-      document.getElementById("nameField").value = "";
-      document.getElementById("emailField").value = "";
-      document.getElementById("passwordField").value = "";
-    }
-
-    function submitForm() {
+    function submitForm(e) {
+      e.preventDefault();
       const name = document.getElementById("nameField").value;
       const email = document.getElementById("emailField").value;
       const password = document.getElementById("passwordField").value;
 
-      const url = "https://script.google.com/macros/s/AKfycby6ncZa3mxXBwSEudnPmCvJG6tAiAMVuiAol9hgljBwWFK5fGslHECoWsKp3y6LYr0W/exec";
       const data = {
         action: isSignUp ? "signup" : "login",
         name, email, password
       };
 
-      fetch(url, {
+      fetch(apiUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
       })
       .then(res => res.json())
       .then(response => {
         if (response.status === "success") {
-          document.getElementById("userDisplay").textContent = response.name || email;
+          alert("✅ Welcome, " + response.name);
+          document.getElementById("userDisplay").textContent = response.name;
           document.getElementById("logoutBtn").style.display = "inline-block";
           closePopup();
         } else {
