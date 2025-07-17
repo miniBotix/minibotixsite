@@ -19,6 +19,9 @@
       align-items: center;
       padding: 10px 40px;
       background: rgba(0, 0, 0, 0.7);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     .logo {
@@ -32,6 +35,16 @@
       margin-right: 10px;
     }
 
+    .logo h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
     nav a {
       margin: 0 15px;
       color: white;
@@ -42,6 +55,7 @@
     .user-icon {
       position: relative;
       cursor: pointer;
+      color: white;
     }
 
     .cloud-tooltip {
@@ -55,6 +69,7 @@
       box-shadow: 0 0 10px #000;
       display: none;
       font-size: 14px;
+      white-space: nowrap;
     }
 
     .user-icon:hover .cloud-tooltip {
@@ -64,7 +79,8 @@
     .popup {
       display: none;
       position: fixed;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
       background: white;
       color: black;
@@ -72,6 +88,7 @@
       border-radius: 10px;
       z-index: 1000;
       box-shadow: 0 0 20px #000;
+      width: 300px;
     }
 
     .popup input {
@@ -79,6 +96,8 @@
       width: 100%;
       margin: 10px 0;
       padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
 
     .popup button {
@@ -88,6 +107,18 @@
       border: none;
       cursor: pointer;
       width: 100%;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .popup p {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .popup a {
+      color: #007bff;
+      text-decoration: none;
     }
 
     .overlay {
@@ -122,6 +153,7 @@
       margin-left: 10px;
       border: none;
       cursor: pointer;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -155,7 +187,7 @@
     <input type="email" id="emailField" placeholder="Email">
     <input type="password" id="passwordField" placeholder="Password">
     <button onclick="submitForm()">Login</button>
-    <p style="text-align:center; margin-top:10px;">
+    <p>
       New user? <a href="#" onclick="switchToSignUp()">Sign Up</a>
     </p>
   </div>
@@ -175,6 +207,7 @@
     function closePopup() {
       document.getElementById("overlay").style.display = "none";
       document.getElementById("popup").style.display = "none";
+      resetForm();
     }
 
     document.getElementById("overlay").addEventListener("click", closePopup);
@@ -184,6 +217,16 @@
       document.getElementById("formTitle").textContent = "Sign Up";
       document.getElementById("nameField").style.display = "block";
       document.querySelector("#popup button").textContent = "Sign Up";
+    }
+
+    function resetForm() {
+      isSignUp = false;
+      document.getElementById("formTitle").textContent = "Login";
+      document.getElementById("nameField").style.display = "none";
+      document.querySelector("#popup button").textContent = "Login";
+      document.getElementById("nameField").value = "";
+      document.getElementById("emailField").value = "";
+      document.getElementById("passwordField").value = "";
     }
 
     function submitForm() {
@@ -199,13 +242,13 @@
 
       fetch(url, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       })
       .then(res => res.json())
       .then(response => {
         if (response.status === "success") {
-          document.getElementById("userDisplay").textContent = response.name;
+          document.getElementById("userDisplay").textContent = response.name || email;
           document.getElementById("logoutBtn").style.display = "inline-block";
           closePopup();
         } else {
@@ -213,7 +256,7 @@
         }
       })
       .catch(err => {
-        alert("Something went wrong!");
+        alert("❌ Something went wrong! Check internet or API.");
         console.error(err);
       });
     }
