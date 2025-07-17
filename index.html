@@ -2,116 +2,227 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Minibotix Login System</title>
+  <title>miniBotix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    .header {
-      background-color: #0c0c0c;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('05-nature-backgrounds_1491895829.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: white;
-      padding: 10px 20px;
-      text-align: right;
     }
-    .header button {
-      margin-left: 10px;
-      padding: 5px 10px;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      background: rgba(0, 0, 0, 0.7);
     }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .user-icon {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .cloud-tooltip {
+      position: absolute;
+      top: 45px;
+      right: 0;
+      background: white;
+      color: black;
+      padding: 10px 15px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #000;
+      display: none;
+      font-size: 14px;
+    }
+
+    .user-icon:hover .cloud-tooltip {
+      display: block;
+    }
+
     .popup {
       display: none;
       position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translate(-50%, -20%);
-      background-color: white;
-      border: 2px solid #555;
-      padding: 20px;
-      z-index: 10;
-      box-shadow: 0 0 10px black;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      color: black;
+      padding: 25px;
+      border-radius: 10px;
+      z-index: 1000;
+      box-shadow: 0 0 20px #000;
     }
+
     .popup input {
       display: block;
-      margin-bottom: 10px;
       width: 100%;
+      margin: 10px 0;
       padding: 8px;
     }
+
+    .popup button {
+      background: #28a745;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
     .overlay {
-      display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.5);
-      z-index: 5;
+      display: none;
+      z-index: 999;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+
+    #userDisplay {
+      color: lightgreen;
+      font-weight: bold;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    #logoutBtn {
+      background: red;
+      color: white;
+      padding: 5px 10px;
+      margin-left: 10px;
+      border: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <span id="welcomeMsg"></span>
-    <button onclick="showPopup('login')">Login</button>
-    <button onclick="showPopup('signup')">Sign Up</button>
-  </div>
 
-  <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+  <div class="overlay" id="overlay"></div>
 
-  <div class="popup" id="popupForm">
-    <h2 id="popupTitle">Login</h2>
-    <input type="text" id="nameField" placeholder="Name (only for signup)">
+  <header>
+    <div class="logo">
+      <img src="MINIBOTIXSITE.png" alt="Logo">
+      <h2>miniBotix</h2>
+    </div>
+    <nav>
+      <a href="#">Service</a>
+      <a href="#">Course</a>
+      <a href="#">About</a>
+      <a href="#">College</a>
+      <span class="user-icon" onclick="openPopup()">
+        <i class="fas fa-user-circle fa-2x"></i>
+        <div class="cloud-tooltip">Sign in to touch with us</div>
+      </span>
+      <span id="userDisplay"></span>
+      <button id="logoutBtn" style="display:none;" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <!-- Popup for login/signup -->
+  <div class="popup" id="popup">
+    <h3 id="formTitle">Login</h3>
+    <input type="text" id="nameField" placeholder="Name (for Sign Up)" style="display: none;">
     <input type="email" id="emailField" placeholder="Email">
     <input type="password" id="passwordField" placeholder="Password">
-    <button onclick="submitForm()">Submit</button>
-    <p id="responseMsg" style="color:red;"></p>
+    <button onclick="submitForm()">Login</button>
+    <p style="text-align:center; margin-top:10px;">
+      New user? <a href="#" onclick="switchToSignUp()">Sign Up</a>
+    </p>
   </div>
 
-  <script>
-    let currentAction = "login";
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwY5k4Cp9Anabx4A3jj6GQcps-7Xw-ZwhxK6wt0wHO3yrpS6fE792GEKrE6PUTUe34/exec";
+  <footer>
+    <p>© 2025 miniBotix — Powered by Learning Intelligence</p>
+  </footer>
 
-    function showPopup(action) {
-      currentAction = action;
-      document.getElementById("popupTitle").textContent = action === "signup" ? "Sign Up" : "Login";
-      document.getElementById("nameField").style.display = action === "signup" ? "block" : "none";
-      document.getElementById("popupForm").style.display = "block";
+  <script>
+    let isSignUp = false;
+
+    function openPopup() {
       document.getElementById("overlay").style.display = "block";
-      document.getElementById("responseMsg").textContent = "";
+      document.getElementById("popup").style.display = "block";
     }
 
-    function hidePopup() {
-      document.getElementById("popupForm").style.display = "none";
+    function closePopup() {
       document.getElementById("overlay").style.display = "none";
+      document.getElementById("popup").style.display = "none";
+    }
+
+    document.getElementById("overlay").addEventListener("click", closePopup);
+
+    function switchToSignUp() {
+      isSignUp = true;
+      document.getElementById("formTitle").textContent = "Sign Up";
+      document.getElementById("nameField").style.display = "block";
+      document.querySelector("#popup button").textContent = "Sign Up";
     }
 
     function submitForm() {
-      const name = document.getElementById("nameField").value.trim();
-      const email = document.getElementById("emailField").value.trim();
-      const password = document.getElementById("passwordField").value.trim();
+      const name = document.getElementById("nameField").value;
+      const email = document.getElementById("emailField").value;
+      const password = document.getElementById("passwordField").value;
 
-      if (!email || !password || (currentAction === "signup" && !name)) {
-        document.getElementById("responseMsg").textContent = "Please fill all fields.";
-        return;
-      }
+      const url = "https://script.google.com/macros/s/AKfycby6ncZa3mxXBwSEudnPmCvJG6tAiAMVuiAol9hgljBwWFK5fGslHECoWsKp3y6LYr0W/exec";
+      const data = {
+        action: isSignUp ? "signup" : "login",
+        name, email, password
+      };
 
-      let url = `${scriptURL}?action=${currentAction}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-      if (currentAction === "signup") {
-        url += `&name=${encodeURIComponent(name)}`;
-      }
+      fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.status === "success") {
+          document.getElementById("userDisplay").textContent = response.name;
+          document.getElementById("logoutBtn").style.display = "inline-block";
+          closePopup();
+        } else {
+          alert("❌ " + response.message);
+        }
+      })
+      .catch(err => {
+        alert("Something went wrong!");
+        console.error(err);
+      });
+    }
 
-      fetch(url)
-        .then(res => res.text())
-        .then(text => {
-          if (text === "INVALID" || text === "EXISTS" || text === "ERROR") {
-            document.getElementById("responseMsg").textContent =
-              currentAction === "login"
-              ? "❌ Login failed. Check email and password."
-              : "❌ Signup failed. Email already exists or error occurred.";
-          } else {
-            // Login/signup success
-            document.getElementById("welcomeMsg").textContent = `👋 Welcome, ${text}`;
-            hidePopup();
-          }
-        })
-        .catch(err => {
-          document.getElementById("responseMsg").textContent = "⚠️ Error connecting to server.";
-        });
+    function logout() {
+      document.getElementById("userDisplay").textContent = "";
+      document.getElementById("logoutBtn").style.display = "none";
     }
   </script>
+
 </body>
 </html>
