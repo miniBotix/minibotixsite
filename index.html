@@ -1,129 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Minibotix</title>
+  <meta charset="UTF-8">
+  <title>Minibotix Login System</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .topbar {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .header {
+      background-color: #0c0c0c;
+      color: white;
+      padding: 10px 20px;
+      text-align: right;
+    }
+    .header button {
+      margin-left: 10px;
+      padding: 5px 10px;
     }
     .popup {
       display: none;
       position: fixed;
       top: 20%;
-      left: 35%;
-      width: 300px;
-      background: #fff;
-      border: 2px solid #ccc;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      background-color: white;
+      border: 2px solid #555;
       padding: 20px;
       z-index: 10;
+      box-shadow: 0 0 10px black;
     }
-    .popup input { width: 100%; margin: 5px 0; }
+    .popup input {
+      display: block;
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 8px;
+    }
     .overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
       z-index: 5;
     }
   </style>
 </head>
 <body>
-
-<div class="topbar">
-  <span id="userName">Welcome</span>
-  <button onclick="showPopup('login')">Login</button>
-  <button onclick="showPopup('signup')">Sign Up</button>
-</div>
-
-<div class="overlay" id="overlay" onclick="hidePopup()"></div>
-
-<div class="popup" id="popup">
-  <div id="formContainer">
-    <!-- Forms will load here -->
+  <div class="header">
+    <span id="welcomeMsg"></span>
+    <button onclick="showPopup('login')">Login</button>
+    <button onclick="showPopup('signup')">Sign Up</button>
   </div>
-</div>
 
-<script>
-const scriptURL = "YOUR_SCRIPT_URL_HERE";
+  <div class="overlay" id="overlay" onclick="hidePopup()"></div>
 
-function showPopup(type) {
-  document.getElementById("overlay").style.display = "block";
-  document.getElementById("popup").style.display = "block";
+  <div class="popup" id="popupForm">
+    <h2 id="popupTitle">Login</h2>
+    <input type="text" id="nameField" placeholder="Name (only for signup)">
+    <input type="email" id="emailField" placeholder="Email">
+    <input type="password" id="passwordField" placeholder="Password">
+    <button onclick="submitForm()">Submit</button>
+    <p id="responseMsg" style="color:red;"></p>
+  </div>
 
-  let html = '';
-  if (type === "login") {
-    html = `
-      <h3>Login</h3>
-      <input type="email" id="loginEmail" placeholder="Email" required><br>
-      <input type="password" id="loginPassword" placeholder="Password" required><br>
-      <button onclick="login()">Login</button>
-    `;
-  } else {
-    html = `
-      <h3>Sign Up</h3>
-      <input type="text" id="signupName" placeholder="Full Name" required><br>
-      <input type="email" id="signupEmail" placeholder="Email" required><br>
-      <input type="password" id="signupPassword" placeholder="Password" required><br>
-      <button onclick="signup()">Sign Up</button>
-    `;
-  }
-  document.getElementById("formContainer").innerHTML = html;
-}
+  <script>
+    let currentAction = "login";
+    const scriptURL = "https://script.google.com/macros/s/AKfycby6ncZa3mxXBwSEudnPmCvJG6tAiAMVuiAol9hgljBwWFK5fGslHECoWsKp3y6LYr0W/exec";
 
-function hidePopup() {
-  document.getElementById("popup").style.display = "none";
-  document.getElementById("overlay").style.display = "none";
-}
+    function showPopup(action) {
+      currentAction = action;
+      document.getElementById("popupTitle").textContent = action === "signup" ? "Sign Up" : "Login";
+      document.getElementById("nameField").style.display = action === "signup" ? "block" : "none";
+      document.getElementById("popupForm").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById("responseMsg").textContent = "";
+    }
 
-function login() {
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
+    function hidePopup() {
+      document.getElementById("popupForm").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }
 
-  const formData = new FormData();
-  formData.append("action", "login");
-  formData.append("email", email);
-  formData.append("password", password);
+    function submitForm() {
+      const name = document.getElementById("nameField").value.trim();
+      const email = document.getElementById("emailField").value.trim();
+      const password = document.getElementById("passwordField").value.trim();
 
-  fetch(scriptURL, { method: "POST", body: formData })
-    .then(res => res.text())
-    .then(name => {
-      if (name === "INVALID") {
-        alert("❌ Login failed. Check your email or password.");
-      } else {
-        document.getElementById("userName").textContent = "Hello, " + name;
-        hidePopup();
+      if (!email || !password || (currentAction === "signup" && !name)) {
+        document.getElementById("responseMsg").textContent = "Please fill all fields.";
+        return;
       }
-    });
-}
 
-function signup() {
-  const name = document.getElementById("signupName").value;
-  const email = document.getElementById("signupEmail").value;
-  const password = document.getElementById("signupPassword").value;
-
-  const formData = new FormData();
-  formData.append("action", "signup");
-  formData.append("name", name);
-  formData.append("email", email);
-  formData.append("password", password);
-
-  fetch(scriptURL, { method: "POST", body: formData })
-    .then(res => res.text())
-    .then(response => {
-      if (response === "SUCCESS") {
-        alert("✅ Signup successful! Now log in.");
-        hidePopup();
-      } else if (response === "EMAIL_EXISTS") {
-        alert("⚠️ Email already exists. Try login.");
-      } else {
-        alert("❌ Signup failed. Try again.");
+      let url = `${scriptURL}?action=${currentAction}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+      if (currentAction === "signup") {
+        url += `&name=${encodeURIComponent(name)}`;
       }
-    });
-}
-</script>
 
+      fetch(url)
+        .then(res => res.text())
+        .then(text => {
+          if (text === "INVALID" || text === "EXISTS" || text === "ERROR") {
+            document.getElementById("responseMsg").textContent =
+              currentAction === "login"
+              ? "❌ Login failed. Check email and password."
+              : "❌ Signup failed. Email already exists or error occurred.";
+          } else {
+            // Login/signup success
+            document.getElementById("welcomeMsg").textContent = `👋 Welcome, ${text}`;
+            hidePopup();
+          }
+        })
+        .catch(err => {
+          document.getElementById("responseMsg").textContent = "⚠️ Error connecting to server.";
+        });
+    }
+  </script>
 </body>
 </html>
