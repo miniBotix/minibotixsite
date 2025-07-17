@@ -35,7 +35,6 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      background: transparent;
       z-index: 1;
     }
 
@@ -86,6 +85,7 @@
       display: flex;
       align-items: center;
       gap: 20px;
+      position: relative;
     }
 
     .nav-links a {
@@ -99,26 +99,61 @@
       transform: scale(1.1);
     }
 
+    .user-dropdown {
+      position: relative;
+      display: none;
+    }
+
+    .user-dropdown.show {
+      display: block;
+    }
+
+    .user-name {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 10px;
+      min-width: 120px;
+      z-index: 999;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f2f2f2;
+    }
+
+    .user-dropdown:hover .dropdown-content {
+      display: block;
+    }
+
     .center-box {
       width: 370px;
-      height: 370px;
       background-color: rgba(255, 255, 255, 0.85);
       border-radius: 20px;
       margin: 120px auto;
       text-align: center;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
       z-index: 2;
       position: relative;
-    }
-
-    .center-box:hover {
-      transform: scale(1.05);
+      padding: 40px 20px;
     }
 
     .center-box h1 {
       color: #1e3a8a;
-      padding-top: 60px;
       font-size: 28px;
     }
 
@@ -137,12 +172,6 @@
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .login-btn:hover {
-      transform: scale(1.1);
-      background-color: #3b82f6;
     }
 
     .footer {
@@ -156,7 +185,6 @@
       z-index: 2;
     }
 
-    /* LOGIN MODAL */
     .modal {
       display: none;
       position: fixed;
@@ -190,12 +218,10 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
   </style>
 </head>
 <body>
 
-<!-- Rain Effect -->
 <div class="rain" id="rainContainer"></div>
 
 <!-- NAVBAR -->
@@ -209,7 +235,16 @@
     <a href="service.html">Services</a>
     <a href="course.html">Courses</a>
     <a href="college.html">College</a>
-    <a href="#" onclick="openLogin()">👤 Sign In</a>
+    <div id="loginMenu">
+      <a href="#" onclick="openLogin()">👤 Sign In</a>
+    </div>
+    <div class="user-dropdown" id="userDropdown">
+      <span class="user-name" id="usernameLabel">👋 </span>
+      <div class="dropdown-content">
+        <a href="profile.html">Profile</a>
+        <a href="#" onclick="logoutUser()">Sign Out</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -240,7 +275,7 @@
 
 <!-- JS -->
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbw_aqAkgFO1bXfGMUU1aQyDJS2nP3kYi_So2BxQ2m00M1wlT3f5taJawsbvdPNFnjrv9w/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxgML9db4JNwSmXs0EhO2Ugskax8E6pdW5opO2IqKhfGSMUP8Jo7oVILUXxyFOc7JdfmA/exec";
 
   function openLogin() {
     document.getElementById("loginModal").style.display = "block";
@@ -258,22 +293,17 @@
 
     fetch(scriptURL + "?action=login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
     })
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        alert("✅ Welcome " + data.username);
-        document.querySelector(".nav-links a:last-child").innerHTML = `👋 ${data.username}`;
+        localStorage.setItem("username", data.username);
+        showLoggedInUser(data.username);
         document.getElementById("loginModal").style.display = "none";
       } else {
-        alert("❌ Error: " + data.message);
+        alert("❌ " + data.message);
       }
     })
     .catch(err => {
@@ -281,16 +311,37 @@
     });
   }
 
-  // Rain animation
-  const rainContainer = document.getElementById("rainContainer");
-  for (let i = 0; i < 80; i++) {
-    const drop = document.createElement("div");
-    drop.classList.add("drop");
-    drop.style.left = Math.random() * 100 + "vw";
-    drop.style.animationDuration = 0.5 + Math.random() + "s";
-    drop.style.animationDelay = Math.random() * 5 + "s";
-    rainContainer.appendChild(drop);
+  function showLoggedInUser(name) {
+    document.getElementById("loginMenu").style.display = "none";
+    document.getElementById("userDropdown").style.display = "block";
+    document.getElementById("usernameLabel").innerText = "👋 " + name;
   }
+
+  function logoutUser() {
+    localStorage.removeItem("username");
+    location.reload();
+  }
+
+  // On load, check for session
+  window.onload = function() {
+    const username = localStorage.getItem("username");
+    if (username) {
+      showLoggedInUser(username);
+    } else {
+      document.getElementById("userDropdown").style.display = "none";
+    }
+
+    // Rain effect
+    const rainContainer = document.getElementById("rainContainer");
+    for (let i = 0; i < 80; i++) {
+      const drop = document.createElement("div");
+      drop.classList.add("drop");
+      drop.style.left = Math.random() * 100 + "vw";
+      drop.style.animationDuration = 0.5 + Math.random() + "s";
+      drop.style.animationDelay = Math.random() * 5 + "s";
+      rainContainer.appendChild(drop);
+    }
+  };
 </script>
 
 </body>
