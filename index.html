@@ -2,204 +2,182 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Web App</title>
+  <title>miniBotix</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url("frontpage.jpeg") no-repeat center center fixed;
+      background-image: url('05-nature-backgrounds_1491895829.jpg');
       background-size: cover;
-      color: white;
+      background-position: center;
       position: relative;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    /* Rain effect */
+    /* Rain animation */
     .rain {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
       top: 0;
       left: 0;
-      z-index: 1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: url('https://i.imgur.com/NM9vM0T.png');
+      animation: rain 0.4s linear infinite;
     }
 
-    .raindrop {
-      position: absolute;
-      width: 2px;
-      height: 10px;
-      background: #00f;
-      animation: fall 1s linear infinite;
+    @keyframes rain {
+      from { background-position: 0 0; }
+      to { background-position: 0 100%; }
     }
 
-    @keyframes fall {
-      0% {
-        top: -10px;
-      }
-      100% {
-        top: 100%;
-      }
-    }
-
-    /* Top black nav bar */
-    .navbar {
-      background-color: black;
+    header {
+      background-color: white;
       padding: 10px 20px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      z-index: 2;
-      position: relative;
+      justify-content: space-between;
     }
 
-    .navbar h1 {
+    header img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    header h1 {
+      color: black;
       margin: 0;
-      color: white;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
     }
 
-    .navbar button {
-      background: transparent;
-      color: white;
-      border: 1px solid white;
+    .auth-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
       padding: 5px 10px;
+      border: none;
       cursor: pointer;
-    }
-
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 5;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.6);
-    }
-
-    .modal-content {
-      background-color: #222;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 300px;
+      background-color: #444;
       color: white;
       border-radius: 5px;
     }
 
-    .modal-content input {
-      width: 100%;
-      padding: 8px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 4px;
+    .popup {
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      z-index: 100;
     }
 
-    .modal-content button {
+    .popup input {
+      display: block;
+      margin-bottom: 10px;
+      padding: 5px;
       width: 100%;
-      background-color: #0d6efd;
+    }
+
+    #username-display {
       color: white;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .loggedin-user {
-      margin-right: 10px;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <h1>My Web App</h1>
-    <div>
-      <span class="loggedin-user" id="loggedInUser"></span>
-      <button onclick="document.getElementById('loginModal').style.display='block'">Login</button>
-      <a href="signup.html" style="text-decoration:none;"><button>Signup</button></a>
+  <div class="rain"></div>
+
+  <header>
+    <h1><img src="MINIBOTIXSITE.png" alt="Logo"> miniBotix</h1>
+    <div class="auth-buttons">
+      <span id="username-display"></span>
+      <button onclick="toggleLogin()">Login</button>
     </div>
-  </div>
+  </header>
 
-  <div class="rain" id="rain"></div>
+  <!-- Login/Signup Popup -->
+  <div class="popup" id="authPopup">
+    <div id="loginForm">
+      <h3>Login</h3>
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p>New user? <a href="#" onclick="showSignup()">Create Account</a></p>
+    </div>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
-      <h2>Login</h2>
-      <input type="email" id="loginEmail" placeholder="Email" required />
-      <input type="password" id="loginPassword" placeholder="Password" required />
-      <button onclick="loginUser()">Login</button>
+    <div id="signupForm" style="display: none;">
+      <h3>Sign Up</h3>
+      <input type="text" id="signupName" placeholder="Name">
+      <input type="email" id="signupEmail" placeholder="Email">
+      <input type="password" id="signupPassword" placeholder="Password">
+      <input type="password" id="signupConfirm" placeholder="Confirm Password">
+      <button onclick="signup()">Sign Up</button>
+      <p>Already have an account? <a href="#" onclick="showLogin()">Back to Login</a></p>
     </div>
   </div>
 
   <script>
-    // Replace this with your working script URL
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwtQLo_Le1jAiIidfj1mo3xhxIWTklUbV2cSFvX7_OoU4YLzwkDriaYB66OXSE5X4-vLA/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxhX8arDi9YHcB6GeNwtQ_7sfCHUrFRpjZVBWyVvLQkd-kEDernFbYXtfGtLs058MW6ww/exec";
 
-    function loginUser() {
+    function toggleLogin() {
+      const popup = document.getElementById("authPopup");
+      popup.style.display = popup.style.display === "block" ? "none" : "block";
+    }
+
+    function showSignup() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("signupForm").style.display = "block";
+    }
+
+    function showLogin() {
+      document.getElementById("signupForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+    }
+
+    async function signup() {
+      const name = document.getElementById("signupName").value;
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+      const confirm = document.getElementById("signupConfirm").value;
+
+      if (password !== confirm) {
+        alert("Passwords do not match");
+        return;
+      }
+
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({ action: "signup", name, email, password }),
+      });
+      const result = await response.json();
+      alert(result.message);
+      if (result.status === "success") showLogin();
+    }
+
+    async function login() {
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;
 
-      const formData = new FormData();
-      formData.append("action", "login");
-      formData.append("email", email);
-      formData.append("password", password);
-
-      fetch(scriptURL, {
+      const response = await fetch(scriptURL, {
         method: "POST",
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          localStorage.setItem("username", data.username);
-          showLoggedInUser(data.username);
-          document.getElementById("loginModal").style.display = "none";
-        } else {
-          alert("❌ " + data.message);
-        }
-      })
-      .catch(err => {
-        alert("❌ Network Error: " + err.message);
+        body: JSON.stringify({ action: "login", email, password }),
       });
-    }
-
-    function showLoggedInUser(name) {
-      document.getElementById("loggedInUser").textContent = "👋 Welcome, " + name;
-    }
-
-    // Show logged in user if already logged in
-    window.onload = function () {
-      const username = localStorage.getItem("username");
-      if (username) showLoggedInUser(username);
-    };
-
-    // Rain effect generator
-    function createRain() {
-      const rain = document.getElementById("rain");
-      rain.innerHTML = '';
-      for (let i = 0; i < 100; i++) {
-        const drop = document.createElement("div");
-        drop.classList.add("raindrop");
-        drop.style.left = Math.random() * 100 + "vw";
-        drop.style.animationDuration = Math.random() * 1 + 0.5 + "s";
-        rain.appendChild(drop);
+      const result = await response.json();
+      if (result.status === "success") {
+        document.getElementById("username-display").innerText = result.name;
+        toggleLogin();
+      } else {
+        alert(result.message);
       }
     }
-    createRain();
   </script>
 </body>
 </html>
