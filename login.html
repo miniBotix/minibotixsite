@@ -16,17 +16,21 @@
     }
 
     .login-box {
-      background(jai.jpg);
+      background: url("jai.jpg") no-repeat center center / cover;
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
       text-align: center;
       width: 300px;
+      backdrop-filter: brightness(1.1);
     }
 
     h2 {
       color: #4e2e1e;
       margin-bottom: 1.5rem;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 5px;
+      border-radius: 8px;
     }
 
     input {
@@ -89,11 +93,8 @@
       .then(res => res.json())
       .then(data => {
         if (data.status === "success") {
-          // Save name and email to localStorage
           localStorage.setItem("studentName", data.name);
           localStorage.setItem("studentEmail", username);
-
-          // Redirect to the dashboard
           window.location.href = "jsrece_miniBotix.html";
         } else {
           messageEl.innerText = "❌ Invalid email or password.";
