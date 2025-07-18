@@ -171,6 +171,44 @@
       0% { transform: translateY(-100px); }
       100% { transform: translateY(100vh); }
     }
+
+    /* ✅ Test Card Styling */
+    .test-card {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffffff;
+      border: 2px solid #4e2e1e;
+      padding: 1.2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      width: 250px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .test-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .test-card h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #4e2e1e;
+    }
+
+    .test-card p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .test-card a {
+      text-decoration: none;
+      color: #2196f3;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -212,6 +250,13 @@
     </div>
   </div>
 
+  <!-- ✅ Test Card at Bottom -->
+  <div class="test-card" onclick="goToTest()">
+    <h3>📝 JSR Test</h3>
+    <p>Take your course evaluation test here.</p>
+    <a href="#">Start Test</a>
+  </div>
+
   <!-- Footer -->
   <footer>
     © 2025 miniBotix · Learn. Design. Innovate.
@@ -219,6 +264,7 @@
 
   <!-- JavaScript -->
   <script>
+    // Load student name
     const name = localStorage.getItem("studentName");
     if (name) {
       document.getElementById("studentName").innerText = name;
@@ -226,11 +272,13 @@
       window.location.href = "login.html";
     }
 
+    // Logout
     function logout() {
       localStorage.clear();
       window.location.href = "login.html";
     }
 
+    // Popup for coming soon
     function showPopup() {
       const popup = document.getElementById("popup");
       popup.style.display = "block";
@@ -239,7 +287,7 @@
       }, 3000);
     }
 
-    // Rain Effect
+    // Rain effect
     function createRain() {
       const rain = document.getElementById("rain");
       for (let i = 0; i < 100; i++) {
@@ -252,6 +300,20 @@
       }
     }
     createRain();
+
+    // ✅ Go to Test
+    function goToTest() {
+      const name = localStorage.getItem("studentName");
+      if (name) {
+        localStorage.setItem("testUserName", name);
+        window.location.href = "jsr_test.html";
+      } else {
+        alert("No user found. Please login.");
+        window.location.href = "login.html";
+      }
+    }
   </script>
 </body>
 </html>
+
+
