@@ -5,7 +5,6 @@
   <title>Courses - miniBotix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    /* GENERAL RESET */
     * {
       margin: 0;
       padding: 0;
@@ -14,15 +13,14 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: url('hill.jpg') no-repeat center center fixed;
+      background: url("hill.jpg") no-repeat center center fixed;
       background-size: cover;
       color: #333;
-      position: relative;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* RAIN EFFECT */
+    /* Rain effect */
     .rain {
       position: fixed;
       top: 0;
@@ -30,50 +28,36 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 2;
+      background-image: url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif");
+      background-repeat: repeat;
+      opacity: 0.2;
+      z-index: 1;
     }
 
-    .drop {
-      position: absolute;
-      width: 1px;
-      height: 60px;
-      background: rgba(255, 255, 255, 0.2);
-      animation: fall 0.7s linear infinite;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
-      }
-    }
-
-    /* HEADER (TOP BAR) */
     header {
-      z-index: 3;
-      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      background-color: #4e2e1e; /* dark brown */
-      color: #ffd28d;
+      background-color: white;
+      color: #333;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #333;
     }
 
     .logo img {
       height: 40px;
-    }
-
-    .logo span {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #ffd28d;
-      text-shadow: 1px 1px 2px #000;
+      margin-right: 10px;
     }
 
     nav ul {
@@ -83,27 +67,27 @@
     }
 
     nav a {
-      color: white;
+      color: #333;
       text-decoration: none;
       font-weight: 500;
     }
 
     nav a:hover {
-      text-decoration: underline;
+      color: #ff8c00;
     }
 
-    /* COURSE SECTION */
     .course-section {
-      z-index: 3;
-      position: relative;
-      padding: 2rem;
+      padding: 3rem 2rem;
       text-align: center;
+      position: relative;
+      z-index: 2;
     }
 
     .course-section h2 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      color: #3b240e;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px #000;
     }
 
     .courses-grid {
@@ -111,23 +95,21 @@
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
-      padding: 0 1rem;
     }
 
     .course-card {
-      background: rgba(255, 245, 224, 0.95);
-      border: 2px solid #ead6b3;
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid #ddd;
       border-radius: 12px;
       padding: 1.5rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, background-color 0.3s ease;
       cursor: pointer;
     }
 
     .course-card:hover {
-      transform: scale(1.05);
-      background-color: #ffe6b5;
+      transform: scale(1.05) rotate(-1deg);
+      background-color: #fff0cc;
     }
 
     .course-card h3 {
@@ -143,31 +125,18 @@
     a.course-link {
       text-decoration: none;
     }
-
-    /* FOOTER (BOTTOM BAR) */
-    .footer {
-      z-index: 3;
-      position: relative;
-      text-align: center;
-      padding: 1rem;
-      background-color: #4e2e1e;
-      color: white;
-      font-weight: 500;
-      bottom: 0;
-      width: 100%;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Rain Animation Container -->
-  <div class="rain" id="rain"></div>
+  <!-- Rain Effect -->
+  <div class="rain"></div>
 
-  <!-- Header/Navbar -->
+  <!-- Navbar -->
   <header>
     <div class="logo">
-      <img src="MINIBOTIXSITE.png" alt="Logo" />
-      <span>miniBotix</span>
+      <img src="MINIBOTIXSITE.png" alt="miniBotix Logo" />
+      miniBotix
     </div>
     <nav>
       <ul>
@@ -180,11 +149,12 @@
     </nav>
   </header>
 
-  <!-- Courses -->
+  <!-- Course Section -->
   <section class="course-section">
     <h2>Our Premium Courses</h2>
     <div class="courses-grid">
 
+      <!-- Working Course -->
       <a href="c_cpp_programming.html" class="course-link">
         <div class="course-card">
           <h3>💻 C / C++ Programming</h3>
@@ -192,6 +162,7 @@
         </div>
       </a>
 
+      <!-- Not Available -->
       <a href="dashboard.html" class="course-link">
         <div class="course-card">
           <h3>🧠 RTOS</h3>
@@ -220,6 +191,7 @@
         </div>
       </a>
 
+      <!-- Working Course -->
       <a href="pcb_designing.html" class="course-link">
         <div class="course-card">
           <h3>🧩 PCB Designing</h3>
@@ -229,24 +201,6 @@
 
     </div>
   </section>
-
-  <!-- Footer -->
-  <div class="footer">
-    © 2025 miniBotix | Learn. Build. Innovate.
-  </div>
-
-  <!-- JS for Rain Animation -->
-  <script>
-    const rainContainer = document.getElementById('rain');
-    for (let i = 0; i < 150; i++) {
-      const drop = document.createElement('div');
-      drop.classList.add('drop');
-      drop.style.left = `${Math.random() * 100}%`;
-      drop.style.animationDuration = `${Math.random() * 0.5 + 0.7}s`;
-      drop.style.animationDelay = `${Math.random()}s`;
-      rainContainer.appendChild(drop);
-    }
-  </script>
 
 </body>
 </html>
