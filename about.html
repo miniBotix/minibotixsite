@@ -5,140 +5,149 @@
   <title>About - miniBotix</title>
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Rainfall animation style -->
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('hill.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: black;
+      background: url('hill.jpg') no-repeat center center/cover;
+      font-family: Arial, sans-serif;
+      position: relative;
+      height: 100vh;
       overflow: hidden;
     }
 
     header {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px 50px;
+      background-color: white;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 2rem;
       position: fixed;
-      width: 100%;
       top: 0;
-      z-index: 10;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #333;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 40px;
+      margin-right: 10px;
     }
 
     nav ul {
       list-style: none;
       display: flex;
-      gap: 25px;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
     }
 
     nav ul li a {
       text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
       color: #333;
+      font-weight: bold;
       transition: transform 0.3s ease;
     }
 
     nav ul li a:hover {
       transform: scale(1.1);
-      color: #007BFF;
     }
 
     main {
       max-width: 900px;
-      margin: 150px auto 40px;
+      margin: 120px auto 40px;
       padding: 2rem;
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: rgba(255, 255, 255, 0.8);
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      line-height: 1.7;
-      font-size: 1.1rem;
-      margin-top: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      color: #000;
+      z-index: 10;
+      position: relative;
     }
 
     footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
       text-align: center;
       padding: 1rem;
-      background: rgba(255, 255, 255, 0.95);
+      background-color: rgba(255, 255, 255, 0.8);
       color: #222;
-      font-weight: 500;
       font-size: 0.9rem;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
     }
 
     .slogan {
       font-style: italic;
-      font-size: 0.85rem;
     }
 
-    /* Rain Effect */
+    /* Rainfall Animation */
     .rain {
       position: fixed;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
-      z-index: 2;
+      z-index: 0;
     }
 
-    .raindrop {
+    .drop {
       position: absolute;
+      bottom: 100%;
       width: 2px;
       height: 15px;
-      background: rgba(255, 255, 255, 0.7);
-      animation: rain-fall linear infinite;
+      background: rgba(255,255,255,0.6);
+      animation: fall linear infinite;
     }
 
-    @keyframes rain-fall {
-      0% {
-        transform: translateY(-100px);
-        opacity: 0;
-      }
-      30% {
-        opacity: 1;
-      }
-      100% {
+    @keyframes fall {
+      to {
         transform: translateY(100vh);
-        opacity: 0;
       }
     }
   </style>
+
+  <!-- Rainfall generation script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const rain = document.createElement('div');
+      rain.className = 'rain';
+      document.body.appendChild(rain);
+      
+      for (let i = 0; i < 150; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'drop';
+        drop.style.left = Math.random() * 100 + 'vw';
+        drop.style.animationDuration = (0.5 + Math.random()) + 's';
+        drop.style.animationDelay = Math.random() + 's';
+        rain.appendChild(drop);
+      }
+    });
+  </script>
 </head>
 <body>
 
-  <!-- Rain Container -->
-  <div class="rain" id="rain-container"></div>
-
   <!-- Header -->
   <header>
-    <div class="logo">miniBotix</div>
+    <div class="logo">
+      <img src="MINIBOTIXSITE.png" alt="miniBotix Logo">
+      <span style="font-weight:bold; font-size: 1.2rem; color:#333;">miniBotix</span>
+    </div>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="service.html">Service</a></li>
         <li><a href="course.html">Course</a></li>
-        <li><a href="college.html">Collage</a></li>
+        <li><a href="collage.html">Collage</a></li>
+        <li><a href="about.html">About</a></li>
       </ul>
     </nav>
   </header>
@@ -146,18 +155,13 @@
   <!-- About Content -->
   <main>
     <h2>About miniBotix</h2>
-    <p>
-      <strong>miniBotix</strong> is a universal learning platform for students in all streams — including engineering, design, arts, and more. We provide high-quality courses with an interactive learning experience.
-    </p>
-    <p>
-      Students can explore a wide range of subjects, engage with real-time examples, take topic-based online tests, and complete hands-on tasks. Every course is structured for in-depth understanding and practical knowledge.
-    </p>
-    <p>
-      On course completion, students receive performance-based certifications. Our platform simulates real company interview rounds and industry projects — helping learners gain skills to meet global standards.
-    </p>
-    <p>
-      Whether you’re a beginner or advanced learner, miniBotix empowers you to grow into an innovator through interactive sessions, practice tests, and step-by-step challenges.
-    </p>
+    <p><strong>miniBotix</strong> is a one-stop learning platform offering in-depth, interactive training in all major domains — including engineering, designing, fine arts, and freelancing skills.</p>
+    
+    <p>We provide industry-level hands-on projects, interactive tests, and structured course content that enables students to build real-world applications. With top-company inspired assessments and live doubt sessions, learning here is both fun and professional.</p>
+
+    <p>Each course completion includes auto-generated certificates based on task performance and participation in mock interviews and exams, simulating real placement experiences.</p>
+    
+    <p>Whether you're preparing for college placements or want to master a field, miniBotix guides you with passion, innovation, and precision.</p>
   </main>
 
   <!-- Footer -->
@@ -165,19 +169,6 @@
     <p>© 2025 miniBotix — All Rights Reserved</p>
     <p class="slogan">“Empowering Innovators with Every Click”</p>
   </footer>
-
-  <!-- Rain Script -->
-  <script>
-    const rainContainer = document.getElementById("rain-container");
-    for (let i = 0; i < 200; i++) {
-      const drop = document.createElement("div");
-      drop.classList.add("raindrop");
-      drop.style.left = Math.random() * 100 + "vw";
-      drop.style.animationDuration = 0.3 + Math.random() * 0.7 + "s";
-      drop.style.animationDelay = Math.random() * 5 + "s";
-      rainContainer.appendChild(drop);
-    }
-  </script>
 
 </body>
 </html>
