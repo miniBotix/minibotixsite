@@ -3,137 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Services - miniBotix</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Global reset and background */
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
       background: url('hill.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #3e2b1f;
+      color: #222;
       overflow-x: hidden;
     }
 
-    /* Top Bar */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 15px 30px;
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(5px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-container img {
-      height: 36px;
-      width: 36px;
-    }
-
-    .logo-container span {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: black;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav ul li a {
-      text-decoration: none;
-      color: black;
-      font-weight: 500;
-      font-size: 1rem;
-      transition: color 0.3s;
-    }
-
-    nav ul li a:hover {
-      color: #000088;
-    }
-
-    /* Main Section */
-    main {
-      max-width: 1000px;
-      margin: 120px auto 40px;
-      padding: 2rem;
-      background-color: rgba(255, 248, 225, 0.95);
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    ul {
-      line-height: 2;
-      font-size: 1.1rem;
-      padding-left: 1.5rem;
-    }
-
-    /* Contact Section */
-    .contact-section {
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 2px solid #ccc;
-      text-align: center;
-    }
-
-    .contact-icons {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .contact-icons a {
-      text-decoration: none;
-      color: #3e2b1f;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .contact-icons img {
-      width: 24px;
-      height: 24px;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.6);
-      color: #3e2b1f;
-      margin-top: 40px;
-    }
-
-    .slogan {
-      font-style: italic;
-      font-size: 0.95rem;
-      margin-top: 5px;
-    }
-
-    /* Rain Effect */
+    /* Rain effect */
     .rain {
       position: fixed;
       top: 0;
@@ -141,84 +21,152 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
     }
 
-    .raindrop {
+    .rain i {
       position: absolute;
-      width: 1px;
-      height: 60px;
-      background: rgba(255, 255, 255, 0.3);
-      animation: fall 0.8s linear infinite;
+      display: block;
+      width: 2px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.2);
+      animation: rainAnim linear infinite;
     }
 
-    @keyframes fall {
+    @keyframes rainAnim {
       to {
         transform: translateY(100vh);
-        opacity: 0;
       }
+    }
+
+    /* Top bar */
+    header {
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .logo-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #007BFF;
+    }
+
+    /* Center box */
+    .content {
+      background: rgba(255, 255, 255, 0.9);
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 40px;
+      border-radius: 12px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .content h2 {
+      color: #4B2E1D;
+    }
+
+    .content li {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .contact {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .contact a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #000;
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
+  <!-- Rain effect container -->
+  <div class="rain" id="rain-container"></div>
+
+  <!-- Top navigation bar -->
   <header>
-    <div class="logo-container">
-      <img src="file.svg" alt="Logo">
-      <span>miniBotix</span>
+    <div class="logo">
+      <img src="MINIBOTIXSITE.png" alt="Logo">
+      <span class="logo-name">miniBotix</span>
     </div>
     <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="course.html">Course</a></li>
-        <li><a href="college.html">Collage</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
+      <a href="index.html">Home</a>
+      <a href="course.html">Course</a>
+      <a href="college.html">College</a>
+      <a href="about.html">About</a>
     </nav>
   </header>
 
-  <!-- Rain Effect -->
-  <div class="rain" id="rain"></div>
-
-  <!-- Main Content -->
-  <main>
+  <!-- Main content -->
+  <div class="content">
     <h2>Our Services</h2>
     <ul>
-      <li><strong>🛠️ Custom Embedded Projects</strong> – College, hobby, or industrial level development support</li>
-      <li><strong>📦 Electronic Kits & Tools</strong> – Pre-packed DIY kits delivered with guides</li>
-      <li><strong>🧠 1:1 Mentoring & Online Support</strong> – Concept help, debugging, and personal assistance</li>
-      <li><strong>💻 Mini Courses & Workshops</strong> – Short-term courses in Arduino, IoT, robotics, and sensors</li>
-      <li><strong>🖥️ PCB Design & Soldering</strong> – Circuit designing, fabrication, and soldering assistance</li>
-      <li><strong>🔌 Automation & Wiring</strong> – PLC control panels, motor wiring, home automation projects</li>
+      <li>🌟 <b>Custom Embedded Projects</b> – College, hobby, or industrial level development support</li>
+      <li>🛠️ <b>Electronic Kits & Tools</b> – Pre-packed DIY kits delivered with guides</li>
+      <li>👩‍🏫 <b>1:1 Mentoring & Online Support</b> – Concept help, debugging, and personal assistance</li>
+      <li>📘 <b>Mini Courses & Workshops</b> – Short-term courses in Arduino, IoT, robotics, and sensors</li>
+      <li>📘 <b>PCB Design & Soldering</b> – Circuit designing, fabrication, and soldering assistance</li>
+      <li>🔧 <b>Automation & Wiring</b> – PLC control panels, motor wiring, home automation projects</li>
     </ul>
-
-    <div class="contact-section">
-      <h3>📬 Contact Us</h3>
-      <div class="contact-icons">
-        <a href="mailto:minibotix@gmail.com"><img src="https://img.icons8.com/ios-filled/50/000000/gmail.png" alt=""> minibotix@gmail.com</a>
-        <a href="https://instagram.com/minibotix"><img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt=""> @minibotix</a>
-        <a href="https://youtube.com/@minibotix"><img src="https://img.icons8.com/ios-filled/50/000000/youtube-play.png" alt=""> YouTube Channel</a>
-        <a href="https://facebook.com/minibotix"><img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt=""> Facebook Page</a>
-      </div>
+    <hr>
+    <div class="contact">
+      <p><b>📬 Contact Us</b></p>
+      <p>
+        📧 minibotix@gmail.com &nbsp; | &nbsp;
+        💬 @minibotix &nbsp; | &nbsp;
+        ▶️ YouTube Channel &nbsp; | &nbsp;
+        👍 Facebook Page
+      </p>
     </div>
-  </main>
+  </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 miniBotix — All Rights Reserved</p>
-    <p class="slogan">“Empowering Innovators with Every Click”</p>
-  </footer>
-
-  <!-- JS for rain drops -->
+  <!-- Rain JS generator -->
   <script>
-    const rainContainer = document.getElementById('rain');
-    for (let i = 0; i < 150; i++) {
-      const drop = document.createElement('div');
-      drop.classList.add('raindrop');
-      drop.style.left = `${Math.random() * 100}%`;
+    const rainContainer = document.getElementById('rain-container');
+    for (let i = 0; i < 100; i++) {
+      const drop = document.createElement('i');
+      drop.style.left = `${Math.random() * window.innerWidth}px`;
+      drop.style.animationDuration = `${0.5 + Math.random()}s`;
       drop.style.animationDelay = `${Math.random()}s`;
-      drop.style.height = `${10 + Math.random() * 40}px`;
       rainContainer.appendChild(drop);
     }
   </script>
