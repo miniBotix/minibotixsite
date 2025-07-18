@@ -1,147 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>miniBotix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MiniBotix</title>
+  <link rel="icon" href="MINIBOTIXSITE.png">
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
-      background: url('05-nature-backgrounds_1491895829.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 40px;
-      background: rgba(0, 0, 0, 0.8);
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
     }
-    nav a {
-      margin: 0 15px;
-      color: white;
-      text-decoration: none;
+
+    body {
+      background: url('05-nature-backgrounds_1491895829.jpg') no-repeat center center/cover;
+      position: relative;
     }
-    .user-icon {
-      cursor: pointer;
-    }
-    .popup, .overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      justify-content: center;
-      align-items: center;
-    }
-    .popup form {
+
+    .navbar {
       background: white;
-      padding: 20px;
-      color: black;
-      border-radius: 10px;
-    }
-    .popup input {
-      display: block;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
       width: 100%;
-      margin: 10px 0;
-      padding: 8px;
+      z-index: 100;
     }
-    .popup button {
-      background: green;
+
+    .navbar img {
+      height: 40px;
+      vertical-align: middle;
+    }
+
+    .navbar .brand {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-left: 10px;
+    }
+
+    .navbar .nav-links a {
+      margin-left: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      color: #333;
+      transition: transform 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      transform: scale(1.2);
+    }
+
+    .center-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .center-box h1 {
+      font-size: 32px;
+      color: #1834ab;
+    }
+
+    .center-box p {
+      margin: 15px 0 30px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .center-box button {
+      background-color: #205ff5;
       color: white;
-      padding: 10px;
+      padding: 12px 25px;
+      font-size: 16px;
       border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .center-box button:hover {
+      transform: scale(1.1);
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    @keyframes rain {
+      0% { transform: translateY(-100%); opacity: 0; }
+      100% { transform: translateY(100vh); opacity: 1; }
+    }
+
+    .rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .drop {
+      position: absolute;
+      width: 2px;
+      height: 15px;
+      background: white;
+      animation: rain 1s linear infinite;
     }
   </style>
 </head>
+
 <body>
-
-  <div class="overlay" id="overlay"></div>
-
-  <header>
-    <h2>miniBotix</h2>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Courses</a>
-      <a href="#">About</a>
-      <span class="user-icon" onclick="openPopup()">👤 Login</span>
-      <span id="userDisplay"></span>
-      <button id="logoutBtn" style="display:none;" onclick="logout()">Logout</button>
-    </nav>
-  </header>
-
-  <div class="popup" id="popup">
-    <form onsubmit="submitForm(event)">
-      <h3 id="formTitle">Login</h3>
-      <input type="text" id="nameField" placeholder="Name (Sign Up Only)" style="display:none;">
-      <input type="email" id="emailField" placeholder="Email" required>
-      <input type="password" id="passwordField" placeholder="Password" required>
-      <button type="submit">Login</button>
-      <p><a href="#" onclick="switchForm()">Switch to Sign Up</a></p>
-    </form>
+  <div class="navbar">
+    <div style="display: flex; align-items: center;">
+      <img src="MINIBOTIXSITE.png" alt="Logo">
+      <span class="brand">MiniBotix</span>
+    </div>
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="service.html">Services</a>
+      <a href="course.html">Courses</a>
+      <a href="college.html">College</a>
+    </div>
   </div>
 
+  <div class="center-box">
+    <h1>🚀 Welcome to MiniBotix</h1>
+    <p>A Free Open Learning Platform<br>
+      Learn electronics, coding, robotics, IoT & more<br>
+      Built for makers, engineers, and dreamers!</p>
+    <button onclick="location.href='course.html'">Start Learning</button>
+  </div>
+
+  <div class="footer">
+    © 2025 miniBotix · Learn. Design. Innovate.
+  </div>
+
+  <div class="rain" id="rain-container"></div>
+
   <script>
-    let isSignUp = false;
-    const apiUrl = "https://script.google.com/macros/s/AKfycbzyuSsDqOD1hnQr5JQh-rO55TFHFu8IrOE3cIR5OkTUBUUPJkqB6OzhD7IlXf27iGXm/exec";
-
-    function openPopup() {
-      document.getElementById("overlay").style.display = "flex";
-      document.getElementById("popup").style.display = "flex";
-    }
-
-    function closePopup() {
-      document.getElementById("overlay").style.display = "none";
-      document.getElementById("popup").style.display = "none";
-    }
-
-    document.getElementById("overlay").addEventListener("click", closePopup);
-
-    function switchForm() {
-      isSignUp = !isSignUp;
-      document.getElementById("formTitle").textContent = isSignUp ? "Sign Up" : "Login";
-      document.querySelector("#popup button").textContent = isSignUp ? "Sign Up" : "Login";
-      document.getElementById("nameField").style.display = isSignUp ? "block" : "none";
-    }
-
-    function submitForm(e) {
-      e.preventDefault();
-      const name = document.getElementById("nameField").value;
-      const email = document.getElementById("emailField").value;
-      const password = document.getElementById("passwordField").value;
-
-      const data = {
-        action: isSignUp ? "signup" : "login",
-        name, email, password
-      };
-
-      fetch(apiUrl, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(response => {
-        if (response.status === "success") {
-          alert("✅ Welcome, " + response.name);
-          document.getElementById("userDisplay").textContent = response.name;
-          document.getElementById("logoutBtn").style.display = "inline-block";
-          closePopup();
-        } else {
-          alert("❌ " + response.message);
-        }
-      })
-      .catch(err => {
-        alert("❌ Something went wrong! Check internet or API.");
-        console.error(err);
-      });
-    }
-
-    function logout() {
-      document.getElementById("userDisplay").textContent = "";
-      document.getElementById("logoutBtn").style.display = "none";
+    // Create rain drops
+    const rainContainer = document.getElementById('rain-container');
+    for (let i = 0; i < 200; i++) {
+      const drop = document.createElement('div');
+      drop.classList.add('drop');
+      drop.style.left = `${Math.random() * 100}%`;
+      drop.style.animationDuration = `${0.5 + Math.random()}s`;
+      drop.style.opacity = Math.random();
+      drop.style.top = `${Math.random() * 100}%`;
+      rainContainer.appendChild(drop);
     }
   </script>
-
 </body>
+
 </html>
