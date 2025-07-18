@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>College Slot - miniBotix</title>
   <style>
     html, body {
@@ -10,7 +10,8 @@
       padding: 0;
       height: 100%;
       font-family: 'Poppins', sans-serif;
-      background-color: #fffaf2;
+      background: url('hill.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #3b240e;
       display: flex;
       flex-direction: column;
@@ -19,11 +20,20 @@
     header {
       background-color: #ffffff;
       padding: 1rem 2rem;
-      text-align: center;
       font-size: 1.8rem;
       font-weight: bold;
       color: #4e2e1e;
       border-bottom: 2px solid #e6d8c3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    header img {
+      position: absolute;
+      left: 1rem;
+      height: 40px;
     }
 
     main {
@@ -48,6 +58,8 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
       cursor: pointer;
       transition: transform 0.3s;
+      position: relative;
+      overflow: hidden;
     }
 
     .college-card:hover {
@@ -58,6 +70,44 @@
       margin-bottom: 0.8rem;
       color: #4e2e1e;
       font-size: 1.1rem;
+    }
+
+    /* Specific Jai Shriram College styling */
+    .college-card.jai-shriram {
+      background: url('jai.jpg') no-repeat center center;
+      background-size: cover;
+      color: white;
+    }
+
+    /* Rain animation only inside Jai Shriram card */
+    .rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .drop {
+      position: absolute;
+      width: 2px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(300px);
+        opacity: 1;
+      }
     }
 
     .popup {
@@ -104,8 +154,7 @@
     footer {
       text-align: center;
       padding: 1.2rem;
-      background-color: #f2e7d5;
-      border-top: 2px solid #e6d8c3;
+      background-color: transparent;
       color: #4e2e1e;
       font-weight: 500;
     }
@@ -121,16 +170,21 @@
 
   <!-- Header -->
   <header>
+    <img src="MINIBOTIXSITE.png" alt="Logo" />
     🎓 College Access Portal - miniBotix
   </header>
 
   <!-- Main Content -->
   <main>
     <div class="container">
-      <div class="college-card" onclick="window.location.href='login.html'">
+      <div class="college-card jai-shriram" onclick="window.location.href='login.html'">
         <h3>Jayshriram Engineering College, Avinashi [ECE]</h3>
         <p>Click to access your dashboard</p>
+        <!-- Rain Container -->
+        <div class="rain" id="rain-container"></div>
       </div>
+
+      <!-- Vacant Slots -->
       <div class="college-card" onclick="showPopup()">
         <h3>Vacant Slot</h3>
         <p>Slot not assigned</p>
@@ -178,7 +232,17 @@
       document.getElementById("popup").style.display = "none";
       document.getElementById("overlay").style.display = "none";
     }
-  </script>
 
+    // Create rain drops
+    const rainContainer = document.getElementById('rain-container');
+    for (let i = 0; i < 60; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'drop';
+      drop.style.left = `${Math.random() * 100}%`;
+      drop.style.animationDuration = `${0.5 + Math.random()}s`;
+      drop.style.animationDelay = `${Math.random()}s`;
+      rainContainer.appendChild(drop);
+    }
+  </script>
 </body>
 </html>
