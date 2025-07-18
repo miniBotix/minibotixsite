@@ -5,6 +5,7 @@
   <title>Services - miniBotix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* Global reset and background */
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -14,60 +15,69 @@
       overflow-x: hidden;
     }
 
+    /* Top Bar */
     header {
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
-      padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.7);
+      padding: 10px 30px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .logo-box {
+    .logo-container {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .logo-box img {
-      width: 40px;
-      height: 40px;
+    .logo-container img {
+      height: 36px;
+      width: 36px;
     }
 
-    .logo-box span {
-      font-size: 1.4rem;
+    .logo-container span {
+      font-size: 1.5rem;
       font-weight: bold;
-      color: #000;
+      color: black;
     }
 
     nav ul {
+      list-style: none;
       display: flex;
       gap: 20px;
-      list-style: none;
       margin: 0;
       padding: 0;
     }
 
-    nav a {
+    nav ul li a {
       text-decoration: none;
-      color: #000;
+      color: black;
       font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s;
     }
 
+    nav ul li a:hover {
+      color: #000088;
+    }
+
+    /* Main Section */
     main {
       max-width: 1000px;
-      margin: 120px auto 40px;
+      margin: 140px auto 40px;
       padding: 2rem;
       background-color: rgba(255, 248, 225, 0.95);
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
-    main h2 {
+    h2 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
@@ -78,6 +88,7 @@
       padding-left: 1.5rem;
     }
 
+    /* Contact Section */
     .contact-section {
       margin-top: 3rem;
       padding-top: 2rem;
@@ -107,36 +118,38 @@
       height: 24px;
     }
 
+    /* Footer */
     footer {
       text-align: center;
-      color: #fff;
-      margin-top: 80px;
       padding: 20px;
-      background-color: rgba(0, 0, 0, 0.5);
+      background: rgba(255, 255, 255, 0.6);
+      color: #3e2b1f;
+      margin-top: 40px;
     }
 
     .slogan {
       font-style: italic;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      margin-top: 5px;
     }
 
     /* Rain Effect */
     .rain {
       position: fixed;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
     }
 
-    .drop {
+    .raindrop {
       position: absolute;
-      width: 2px;
-      height: 15px;
-      background: rgba(255, 255, 255, 0.6);
-      animation: fall linear infinite;
+      width: 1px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: fall 0.8s linear infinite;
     }
 
     @keyframes fall {
@@ -149,18 +162,16 @@
 </head>
 <body>
 
-  <!-- Rain container -->
-  <div class="rain" id="rain"></div>
-
-  <!-- Header -->
+  <!-- Top Navigation -->
   <header>
-    <div class="logo-box">
+    <div class="logo-container">
       <img src="file.svg" alt="Logo">
       <span>miniBotix</span>
     </div>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
+        <li><a href="service.html">Service</a></li>
         <li><a href="course.html">Course</a></li>
         <li><a href="collage.html">Collage</a></li>
         <li><a href="about.html">About</a></li>
@@ -168,7 +179,10 @@
     </nav>
   </header>
 
-  <!-- Services Section -->
+  <!-- Rain Effect -->
+  <div class="rain" id="rain"></div>
+
+  <!-- Main Content -->
   <main>
     <h2>Our Services</h2>
     <ul>
@@ -180,22 +194,13 @@
       <li><strong>🔌 Automation & Wiring</strong> – PLC control panels, motor wiring, home automation projects</li>
     </ul>
 
-    <!-- Contact Section -->
     <div class="contact-section">
       <h3>📬 Contact Us</h3>
       <div class="contact-icons">
-        <a href="mailto:minibotix@gmail.com" target="_blank">
-          <img src="https://img.icons8.com/ios-filled/50/000000/gmail.png" alt="Gmail"> minibotix@gmail.com
-        </a>
-        <a href="https://instagram.com/minibotix" target="_blank">
-          <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt="Instagram"> @minibotix
-        </a>
-        <a href="https://youtube.com/@minibotix" target="_blank">
-          <img src="https://img.icons8.com/ios-filled/50/000000/youtube-play.png" alt="YouTube"> YouTube Channel
-        </a>
-        <a href="https://facebook.com/minibotix" target="_blank">
-          <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook"> Facebook Page
-        </a>
+        <a href="mailto:minibotix@gmail.com"><img src="https://img.icons8.com/ios-filled/50/000000/gmail.png" alt=""> minibotix@gmail.com</a>
+        <a href="https://instagram.com/minibotix"><img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt=""> @minibotix</a>
+        <a href="https://youtube.com/@minibotix"><img src="https://img.icons8.com/ios-filled/50/000000/youtube-play.png" alt=""> YouTube Channel</a>
+        <a href="https://facebook.com/minibotix"><img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt=""> Facebook Page</a>
       </div>
     </div>
   </main>
@@ -206,15 +211,15 @@
     <p class="slogan">“Empowering Innovators with Every Click”</p>
   </footer>
 
-  <!-- Rainfall Script -->
+  <!-- JS for rain drops -->
   <script>
     const rainContainer = document.getElementById('rain');
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 150; i++) {
       const drop = document.createElement('div');
-      drop.className = 'drop';
+      drop.classList.add('raindrop');
       drop.style.left = `${Math.random() * 100}%`;
-      drop.style.animationDuration = `${0.5 + Math.random()}s`;
       drop.style.animationDelay = `${Math.random()}s`;
+      drop.style.height = `${10 + Math.random() * 40}px`;
       rainContainer.appendChild(drop);
     }
   </script>
