@@ -13,15 +13,17 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #fffaf2;
+      background: url('jai.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #3b240e;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     header {
-      background-color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.9);
       padding: 1.5rem 2rem;
       font-size: 2rem;
       font-weight: bold;
@@ -30,6 +32,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 10;
+      position: relative;
     }
 
     #user-info {
@@ -59,13 +63,15 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      z-index: 2;
+      position: relative;
     }
 
     .course-title {
       font-size: 1.5rem;
-      color: #4e2e1e;
+      color: #fff;
       margin-bottom: 1rem;
-      border-left: 4px solid #4e2e1e;
+      border-left: 4px solid #fff;
       padding-left: 10px;
     }
 
@@ -77,14 +83,14 @@
     }
 
     .course-card {
-      background-color: #fdf6ec;
+      background-color: rgba(253, 246, 236, 0.9);
       border: 2px solid #eadac0;
       border-radius: 10px;
       padding: 1.5rem;
       width: 300px;
       transition: transform 0.3s;
       text-align: center;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
       cursor: pointer;
     }
 
@@ -122,31 +128,54 @@
     footer {
       text-align: center;
       padding: 1.2rem;
-      background-color: #f2e7d5;
-      border-top: 2px solid #e6d8c3;
-      color: #4e2e1e;
+      background-color: transparent;
+      color: #fff;
       font-weight: 500;
       margin-top: auto;
     }
 
-    @media (max-width: 768px) {
-      .course-list {
-        flex-direction: column;
-        align-items: center;
-      }
+    .popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      color: #333;
+      font-size: 1rem;
+      z-index: 999;
+      display: none;
+    }
 
-      .course-card {
-        width: 90%;
-      }
+    .rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
 
-      header {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      animation: fall 1s linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100px); }
+      100% { transform: translateY(100vh); }
     }
   </style>
 </head>
 <body>
+  <div class="popup" id="popup">🚧 Coming Soon! Please wait...</div>
+  <div class="rain" id="rain"></div>
 
   <!-- Header -->
   <header>
@@ -174,7 +203,7 @@
         <a href="c_cpp_programming.html">Start Course</a>
       </div>
 
-      <div class="course-card">
+      <div class="course-card" onclick="showPopup()">
         <h3>📦 More Coming Soon</h3>
         <p>Stay tuned for upcoming embedded courses!</p>
         <a href="#">Not Available</a>
@@ -188,13 +217,12 @@
     © 2025 miniBotix · Learn. Design. Innovate.
   </footer>
 
-  <!-- JavaScript to load name -->
+  <!-- JavaScript -->
   <script>
     const name = localStorage.getItem("studentName");
     if (name) {
       document.getElementById("studentName").innerText = name;
     } else {
-      // Not logged in, redirect back to login
       window.location.href = "login.html";
     }
 
@@ -202,7 +230,28 @@
       localStorage.clear();
       window.location.href = "login.html";
     }
-  </script>
 
+    function showPopup() {
+      const popup = document.getElementById("popup");
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 3000);
+    }
+
+    // Rain Effect
+    function createRain() {
+      const rain = document.getElementById("rain");
+      for (let i = 0; i < 100; i++) {
+        const drop = document.createElement("div");
+        drop.classList.add("raindrop");
+        drop.style.left = Math.random() * window.innerWidth + "px";
+        drop.style.animationDuration = (0.5 + Math.random()) + "s";
+        drop.style.opacity = Math.random();
+        rain.appendChild(drop);
+      }
+    }
+    createRain();
+  </script>
 </body>
 </html>
