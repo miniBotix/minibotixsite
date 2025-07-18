@@ -5,6 +5,7 @@
   <title>Courses - miniBotix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    /* Base */
     * {
       margin: 0;
       padding: 0;
@@ -13,25 +14,11 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: url("hill.jpg") no-repeat center center fixed;
+      background: url('hill.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #333;
+      position: relative;
       min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Rain effect */
-    .rain {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background-image: url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif");
-      background-repeat: repeat;
-      opacity: 0.2;
-      z-index: 1;
+      overflow: hidden;
     }
 
     header {
@@ -39,20 +26,19 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      background-color: white;
-      color: #333;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #4e2e1e;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
-      z-index: 2;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 10;
     }
 
     .logo {
+      font-size: 2rem;
+      font-weight: bold;
       display: flex;
       align-items: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #333;
     }
 
     .logo img {
@@ -67,27 +53,27 @@
     }
 
     nav a {
-      color: #333;
+      color: #4e2e1e;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     nav a:hover {
-      color: #ff8c00;
+      text-decoration: underline;
     }
 
     .course-section {
-      padding: 3rem 2rem;
+      padding: 2rem;
       text-align: center;
+      color: #fff;
       position: relative;
-      z-index: 2;
+      z-index: 1;
     }
 
     .course-section h2 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
-      color: #ffffff;
-      text-shadow: 2px 2px 4px #000;
+      color: #ffd28d;
     }
 
     .courses-grid {
@@ -95,21 +81,23 @@
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
+      padding: 0 1rem;
     }
 
     .course-card {
-      background: rgba(255, 255, 255, 0.8);
-      border: 2px solid #ddd;
+      background: rgba(255, 245, 224, 0.9);
+      border: 2px solid #ead6b3;
       border-radius: 12px;
       padding: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
       cursor: pointer;
     }
 
     .course-card:hover {
-      transform: scale(1.05) rotate(-1deg);
-      background-color: #fff0cc;
+      transform: scale(1.05);
+      background-color: #ffe6b5;
     }
 
     .course-card h3 {
@@ -122,20 +110,76 @@
       color: #5e4633;
     }
 
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #4e2e1e;
+      color: white;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+    }
+
     a.course-link {
       text-decoration: none;
+    }
+
+    /* Rain animation */
+    .rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    /* Popup */
+    #popup {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
 
-  <!-- Rain Effect -->
-  <div class="rain"></div>
+  <!-- Rain Effect Container -->
+  <div class="rain" id="rain"></div>
 
   <!-- Navbar -->
   <header>
     <div class="logo">
-      <img src="MINIBOTIXSITE.png" alt="miniBotix Logo" />
+      <img src="MINIBOTIXSITE.png" alt="Logo" />
       miniBotix
     </div>
     <nav>
@@ -143,11 +187,14 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="service.html">Service</a></li>
         <li><a href="course.html">Course</a></li>
-        <li><a href="collage.html">Collage</a></li>
+        <li><a href="college.html">Collage</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
     </nav>
   </header>
+
+  <!-- Popup -->
+  <div id="popup">🚧 This course is coming soon. Please wait!</div>
 
   <!-- Course Section -->
   <section class="course-section">
@@ -163,33 +210,25 @@
       </a>
 
       <!-- Not Available -->
-      <a href="dashboard.html" class="course-link">
-        <div class="course-card">
-          <h3>🧠 RTOS</h3>
-          <p>Coming soon: Learn Real Time Operating System for embedded.</p>
-        </div>
-      </a>
+      <div class="course-card" onclick="showPopup()">
+        <h3>🧠 RTOS</h3>
+        <p>Coming soon: Learn Real Time Operating System for embedded.</p>
+      </div>
 
-      <a href="dashboard.html" class="course-link">
-        <div class="course-card">
-          <h3>🔌 Basic Electronics</h3>
-          <p>Coming soon: Electronics foundation & circuit analysis.</p>
-        </div>
-      </a>
+      <div class="course-card" onclick="showPopup()">
+        <h3>🔌 Basic Electronics</h3>
+        <p>Coming soon: Electronics foundation & circuit analysis.</p>
+      </div>
 
-      <a href="dashboard.html" class="course-link">
-        <div class="course-card">
-          <h3>🌐 IoT (Internet of Things)</h3>
-          <p>Coming soon: Connect sensors to the cloud.</p>
-        </div>
-      </a>
+      <div class="course-card" onclick="showPopup()">
+        <h3>🌐 IoT (Internet of Things)</h3>
+        <p>Coming soon: Connect sensors to the cloud.</p>
+      </div>
 
-      <a href="dashboard.html" class="course-link">
-        <div class="course-card">
-          <h3>📚 Evolution of MCU</h3>
-          <p>Coming soon: Timeline of microcontroller technology.</p>
-        </div>
-      </a>
+      <div class="course-card" onclick="showPopup()">
+        <h3>📚 Evolution of MCU</h3>
+        <p>Coming soon: Timeline of microcontroller technology.</p>
+      </div>
 
       <!-- Working Course -->
       <a href="pcb_designing.html" class="course-link">
@@ -201,6 +240,38 @@
 
     </div>
   </section>
+
+  <!-- Footer -->
+  <div class="footer">
+    © 2025 miniBotix | Learn. Build. Innovate.
+  </div>
+
+  <script>
+    // Rain Effect Generator
+    function createRainDrop() {
+      const rain = document.getElementById('rain');
+      const drop = document.createElement('div');
+      drop.classList.add('raindrop');
+      drop.style.left = `${Math.random() * 100}%`;
+      drop.style.animationDuration = `${Math.random() * 2 + 1}s`;
+      rain.appendChild(drop);
+
+      setTimeout(() => {
+        rain.removeChild(drop);
+      }, 3000);
+    }
+
+    setInterval(createRainDrop, 100);
+
+    // Popup function
+    function showPopup() {
+      const popup = document.getElementById("popup");
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 3000);
+    }
+  </script>
 
 </body>
 </html>
