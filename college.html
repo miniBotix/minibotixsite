@@ -2,29 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>College Slot - miniBotix</title>
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
       height: 100%;
       font-family: 'Poppins', sans-serif;
-      background: url('night.jpeg') no-repeat center center fixed;
+      background: url('house.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
+      color: #3b240e;
       display: flex;
       flex-direction: column;
     }
 
     header {
-      background-color: #ffffff;
+      background-color: white;
       padding: 1rem 2rem;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #4e2e1e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 2px solid #e6d8c3;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #4e2e1e;
+      font-weight: 500;
+    }
+
+    .nav a:hover {
+      text-decoration: underline;
     }
 
     main {
@@ -44,15 +68,15 @@
       padding: 2rem;
       border-radius: 10px;
       width: 280px;
+      height: 180px;
       text-align: center;
-      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s;
       position: relative;
-      overflow: hidden;
       background-size: cover;
       background-position: center;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      transition: transform 0.3s;
+      color: white;
     }
 
     .college-card:hover {
@@ -64,30 +88,6 @@
       font-size: 1.1rem;
     }
 
-    /* Rain animation only inside Jai Shriram block */
-    .rain-container {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .raindrop {
-      position: absolute;
-      width: 2px;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.4);
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% { top: -20px; opacity: 0; }
-      30% { opacity: 1; }
-      100% { top: 100%; opacity: 0; }
-    }
-
-    /* Popup & Overlay */
     .popup {
       display: none;
       position: fixed;
@@ -101,10 +101,10 @@
       z-index: 999;
       max-width: 90%;
       text-align: center;
-      color: #000;
     }
 
     .popup h4 {
+      color: #4e2e1e;
       margin-bottom: 1rem;
     }
 
@@ -132,15 +132,45 @@
     footer {
       text-align: center;
       padding: 1.2rem;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.2);
       border-top: 2px solid #e6d8c3;
       color: #fff;
       font-weight: 500;
+      backdrop-filter: blur(5px);
+    }
+
+    .rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .drop {
+      position: absolute;
+      width: 2px;
+      height: 10px;
+      background: white;
+      animation: fall 0.8s linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(200px);
+        opacity: 0;
+      }
     }
 
     @media (max-width: 600px) {
       .college-card {
         width: 90%;
+      }
+      .nav {
+        flex-direction: column;
+        align-items: flex-end;
       }
     }
   </style>
@@ -149,22 +179,29 @@
 
   <!-- Header -->
   <header>
-    <img src="MINIBOTIXSITE.png" alt="Logo" style="height: 40px; vertical-align: middle; margin-right: 10px;">
-    College Access Portal - miniBotix
+    <div class="logo">
+      <img src="MINIBOTIXSITE.png" alt="Logo">
+      <div>📚 College Access Portal - miniBotix</div>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="courses.html">Courses</a>
+      <a href="about.html">About</a>
+    </nav>
   </header>
 
   <!-- Main Content -->
   <main>
     <div class="container">
-
-      <!-- Jai Shriram College with Rain and custom image -->
+      <!-- Jai Shriram College with Rain -->
       <div class="college-card" style="background-image: url('jai.jpg');" onclick="window.location.href='login.html'">
-        <h3>Jai ShriRam Engineering College, Avinashi [ECE]</h3>
+        <div class="rain" id="rain-container"></div>
+        <h3>Jayshriram Engineering College, Avinashi [ECE]</h3>
         <p>Click to access your dashboard</p>
-        <div class="rain-container" id="rain"></div>
       </div>
 
-      <!-- Other vacant cards without rain -->
+      <!-- Vacant Slots -->
       <div class="college-card" style="background-image: url('hill.jpg');" onclick="showPopup()">
         <h3>Vacant Slot</h3>
         <p>Slot not assigned</p>
@@ -201,7 +238,7 @@
     © 2025 miniBotix · Learn. Design. Innovate.
   </footer>
 
-  <!-- Script -->
+  <!-- Rain Script -->
   <script>
     function showPopup() {
       document.getElementById("popup").style.display = "block";
@@ -213,14 +250,14 @@
       document.getElementById("overlay").style.display = "none";
     }
 
-    // Create rain drops inside Jai Shriram card
-    const rainContainer = document.getElementById('rain');
-    for (let i = 0; i < 100; i++) {
-      const drop = document.createElement('div');
-      drop.className = 'raindrop';
-      drop.style.left = Math.random() * 100 + '%';
-      drop.style.animationDuration = 0.5 + Math.random() * 1 + 's';
-      drop.style.animationDelay = Math.random() * 2 + 's';
+    // Rain Effect inside Jai Shriram block only
+    const rainContainer = document.getElementById("rain-container");
+    for (let i = 0; i < 50; i++) {
+      const drop = document.createElement("div");
+      drop.className = "drop";
+      drop.style.left = `${Math.random() * 100}%`;
+      drop.style.animationDuration = `${Math.random() * 0.5 + 0.7}s`;
+      drop.style.opacity = Math.random();
       rainContainer.appendChild(drop);
     }
   </script>
