@@ -1,103 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MiniBotix</title>
+  <link rel="icon" href="MINIBOTIXSITE.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
+      overflow: hidden;
+      background: url('05-nature-backgrounds_1491895829.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
     }
 
-    .container {
+    .rain {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .drop {
+      position: absolute;
+      width: 1px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.3);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+    }
+
+    header {
       background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      width: 100%;
-      max-width: 400px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    h2 {
-      text-align: center;
+    header .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    header .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    header nav a {
+      margin: 0 15px;
+      text-decoration: none;
       color: #333;
+      font-weight: 500;
+      transition: transform 0.3s ease, color 0.3s ease;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+    header nav a:hover {
+      transform: scale(1.1);
+      color: #007bff;
     }
 
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
+    .center-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 15px;
+      max-width: 400px;
+      margin: 100px auto;
+      text-align: center;
+      animation: zoomIn 1.2s ease forwards;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .center-box h1 {
+      font-size: 28px;
+      color: #1e3a8a;
+      margin-bottom: 10px;
+      animation: slideDown 1s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .center-box p {
+      font-size: 16px;
+      margin-bottom: 25px;
+      color: #444;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .center-box button {
+      padding: 10px 20px;
+      background: #2563eb;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
+      animation: bounceIn 1.2s ease forwards;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.5);
+      }
+      60% {
+        transform: scale(1.2);
+      }
+      80% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
 
-    .message {
-      margin-top: 15px;
+    footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
       text-align: center;
-      font-weight: bold;
+      font-size: 14px;
+      color: white;
+      text-shadow: 0 0 3px #000;
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h2>Create an Account</h2>
-    <form id="signupForm">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <button type="submit">Sign Up</button>
-      <div class="message" id="msg"></div>
-    </form>
+  <header>
+    <div class="logo">
+      <img src="MINIBOTIXSITE.png" alt="MiniBotix Logo">
+      <h2>MiniBotix</h2>
+    </div>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="service.html">Services</a>
+      <a href="course.html">Courses</a>
+      <a href="college.html">College</a>
+    </nav>
+  </header>
+
+  <div class="center-box">
+    <h1>🚀 Welcome to MiniBotix</h1>
+    <p>A Free Open Learning Platform<br>
+      Learn electronics, coding, robotics, IoT & more<br>
+      Built for makers, engineers, and dreamers!
+    </p>
+    <button onclick="location.href='course.html'">Start Learning</button>
   </div>
 
+  <footer>
+    © 2025 miniBotix • Learn. Design. Innovate.
+  </footer>
+
+  <div class="rain" id="rain-container"></div>
+
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwtQLo_Le1jAiIidfj1mo3xhxIWTklUbV2cSFvX7_OoU4YLzwkDriaYB66OXSE5X4-vLA/exec";
-
-    document.getElementById("signupForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const msg = document.getElementById("msg");
-      const form = document.getElementById("signupForm");
-      const formData = new FormData(form);
-      formData.append("action", "signup");
-
-      fetch(scriptURL, {
-        method: "POST",
-        body: formData
-      })
-      .then(response => response.text())
-      .then(result => {
-        msg.style.color = result.includes("✅") ? "green" : "red";
-        msg.textContent = result;
-        if (result.includes("✅")) form.reset();
-      })
-      .catch(error => {
-        msg.style.color = "red";
-        msg.textContent = "❌ Network Error: " + error;
-      });
-    });
+    const rainContainer = document.getElementById('rain-container');
+    for (let i = 0; i < 100; i++) {
+      let drop = document.createElement('div');
+      drop.className = 'drop';
+      drop.style.left = Math.random() * 100 + 'vw';
+      drop.style.animationDuration = 0.5 + Math.random() * 0.5 + 's';
+      drop.style.animationDelay = Math.random() * 5 + 's';
+      rainContainer.appendChild(drop);
+    }
   </script>
 </body>
+
 </html>
+
