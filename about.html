@@ -5,8 +5,130 @@
   <title>About - miniBotix</title>
   <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('hill.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: black;
+      overflow: hidden;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+      transition: transform 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      transform: scale(1.1);
+      color: #007BFF;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 150px auto 40px;
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      line-height: 1.7;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      color: #222;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .slogan {
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+
+    /* Rain Effect */
+    .rain {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .raindrop {
+      position: absolute;
+      width: 2px;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.7);
+      animation: rain-fall linear infinite;
+    }
+
+    @keyframes rain-fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Rain Container -->
+  <div class="rain" id="rain-container"></div>
 
   <!-- Header -->
   <header>
@@ -16,23 +138,25 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="service.html">Service</a></li>
         <li><a href="course.html">Course</a></li>
-        <li><a href="collage.html">Collage</a></li>
-        <li><a href="about.html">About</a></li>
+        <li><a href="college.html">Collage</a></li>
       </ul>
     </nav>
   </header>
 
   <!-- About Content -->
-  <main style="max-width: 900px; margin: 120px auto 40px; padding: 2rem; background-color: #fff8e1; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); color: #3e2b1f;">
-    <h2 style="font-size: 2rem; margin-bottom: 1rem;">About miniBotix</h2>
-    <p style="line-height: 1.7; font-size: 1.1rem;">
-      <strong>miniBotix</strong> is a platform that delivers hands-on experience and deep knowledge in electronics and embedded systems. Our mission is to guide students from the basics of electronics to advanced embedded technologies through structured learning.
+  <main>
+    <h2>About miniBotix</h2>
+    <p>
+      <strong>miniBotix</strong> is a universal learning platform for students in all streams — including engineering, design, arts, and more. We provide high-quality courses with an interactive learning experience.
     </p>
-    <p style="line-height: 1.7; font-size: 1.1rem; margin-top: 1rem;">
-      We offer <strong>high-quality courses, materials, and real project tools</strong> to help you grow as an electronics enthusiast. With a strict but supportive educational approach, miniBotix ensures you get both skill and confidence.
+    <p>
+      Students can explore a wide range of subjects, engage with real-time examples, take topic-based online tests, and complete hands-on tasks. Every course is structured for in-depth understanding and practical knowledge.
     </p>
-    <p style="line-height: 1.7; font-size: 1.1rem; margin-top: 1rem;">
-      At the end of each course, students receive certificates based on their performance — making miniBotix a perfect learning partner for every aspiring embedded engineer.
+    <p>
+      On course completion, students receive performance-based certifications. Our platform simulates real company interview rounds and industry projects — helping learners gain skills to meet global standards.
+    </p>
+    <p>
+      Whether you’re a beginner or advanced learner, miniBotix empowers you to grow into an innovator through interactive sessions, practice tests, and step-by-step challenges.
     </p>
   </main>
 
@@ -42,6 +166,18 @@
     <p class="slogan">“Empowering Innovators with Every Click”</p>
   </footer>
 
+  <!-- Rain Script -->
+  <script>
+    const rainContainer = document.getElementById("rain-container");
+    for (let i = 0; i < 200; i++) {
+      const drop = document.createElement("div");
+      drop.classList.add("raindrop");
+      drop.style.left = Math.random() * 100 + "vw";
+      drop.style.animationDuration = 0.3 + Math.random() * 0.7 + "s";
+      drop.style.animationDelay = Math.random() * 5 + "s";
+      rainContainer.appendChild(drop);
+    }
+  </script>
+
 </body>
 </html>
-
