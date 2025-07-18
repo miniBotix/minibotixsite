@@ -5,26 +5,71 @@
   <title>Courses - miniBotix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
+    /* GENERAL RESET */
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #fce8c6, #f1d9b5);
+      background: url('hill.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #333;
       position: relative;
       min-height: 100vh;
-      padding-bottom: 60px;
+      overflow-x: hidden;
     }
 
+    /* RAIN EFFECT */
+    .rain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .drop {
+      position: absolute;
+      width: 1px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.2);
+      animation: fall 0.7s linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    /* HEADER (TOP BAR) */
     header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #4e2e1e; /* dark brown */
-  color: #ffd28d;            /* soft yellow text for contrast */
-}
+      z-index: 3;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #4e2e1e; /* dark brown */
+      color: #ffd28d;
+    }
 
     .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .logo span {
       font-size: 2rem;
       font-weight: bold;
       color: #ffd28d;
@@ -47,7 +92,10 @@
       text-decoration: underline;
     }
 
+    /* COURSE SECTION */
     .course-section {
+      z-index: 3;
+      position: relative;
       padding: 2rem;
       text-align: center;
     }
@@ -67,11 +115,11 @@
     }
 
     .course-card {
-      background: #fff5e0;
+      background: rgba(255, 245, 224, 0.95);
       border: 2px solid #ead6b3;
       border-radius: 12px;
       padding: 1.5rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
       transition: transform 0.3s ease;
       cursor: pointer;
@@ -92,27 +140,35 @@
       color: #5e4633;
     }
 
+    a.course-link {
+      text-decoration: none;
+    }
+
+    /* FOOTER (BOTTOM BAR) */
     .footer {
+      z-index: 3;
+      position: relative;
       text-align: center;
       padding: 1rem;
       background-color: #4e2e1e;
       color: white;
-      position: absolute;
+      font-weight: 500;
       bottom: 0;
       width: 100%;
-      font-weight: 500;
-    }
-
-    a.course-link {
-      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Rain Animation Container -->
+  <div class="rain" id="rain"></div>
+
+  <!-- Header/Navbar -->
   <header>
-    <div class="logo">miniBotix</div>
+    <div class="logo">
+      <img src="MINIBOTIXSITE.png" alt="Logo" />
+      <span>miniBotix</span>
+    </div>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
@@ -124,12 +180,11 @@
     </nav>
   </header>
 
-  <!-- Course Section -->
+  <!-- Courses -->
   <section class="course-section">
     <h2>Our Premium Courses</h2>
     <div class="courses-grid">
 
-      <!-- Working Course -->
       <a href="c_cpp_programming.html" class="course-link">
         <div class="course-card">
           <h3>💻 C / C++ Programming</h3>
@@ -137,7 +192,6 @@
         </div>
       </a>
 
-      <!-- Not Available -->
       <a href="dashboard.html" class="course-link">
         <div class="course-card">
           <h3>🧠 RTOS</h3>
@@ -145,7 +199,6 @@
         </div>
       </a>
 
-      <!-- Not Available -->
       <a href="dashboard.html" class="course-link">
         <div class="course-card">
           <h3>🔌 Basic Electronics</h3>
@@ -153,7 +206,6 @@
         </div>
       </a>
 
-      <!-- Not Available -->
       <a href="dashboard.html" class="course-link">
         <div class="course-card">
           <h3>🌐 IoT (Internet of Things)</h3>
@@ -161,7 +213,6 @@
         </div>
       </a>
 
-      <!-- Not Available -->
       <a href="dashboard.html" class="course-link">
         <div class="course-card">
           <h3>📚 Evolution of MCU</h3>
@@ -169,7 +220,6 @@
         </div>
       </a>
 
-      <!-- Working Course -->
       <a href="pcb_designing.html" class="course-link">
         <div class="course-card">
           <h3>🧩 PCB Designing</h3>
@@ -184,6 +234,19 @@
   <div class="footer">
     © 2025 miniBotix | Learn. Build. Innovate.
   </div>
+
+  <!-- JS for Rain Animation -->
+  <script>
+    const rainContainer = document.getElementById('rain');
+    for (let i = 0; i < 150; i++) {
+      const drop = document.createElement('div');
+      drop.classList.add('drop');
+      drop.style.left = `${Math.random() * 100}%`;
+      drop.style.animationDuration = `${Math.random() * 0.5 + 0.7}s`;
+      drop.style.animationDelay = `${Math.random()}s`;
+      rainContainer.appendChild(drop);
+    }
+  </script>
 
 </body>
 </html>
