@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circuit Master Quiz</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('jai.jpg');
+      background-size: cover;
+      color: black;
+      overflow: hidden;
+    }
+
+    #popup {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      padding: 20px;
+      background-image: url('space.jpg');
+      background-size: cover;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      animation: popup 1s ease-out;
+    }
+
+    @keyframes popup {
+      from { transform: scale(0.5) translate(-50%, -50%); opacity: 0; }
+      to { transform: scale(1) translate(-50%, -50%); opacity: 1; }
+    }
+
+    #quizContainer {
+      display: none;
+      padding: 20px;
+    }
+
+    .question-box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .question-nav {
+      position: fixed;
+      right: 10px;
+      top: 80px;
+    }
+
+    .question-nav button {
+      margin: 2px;
+      padding: 5px 10px;
+    }
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #000;
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div id="popup">
+  <h2>Enter Your Details</h2>
+  <input type="text" id="name" placeholder="Name" required><br><br>
+  <input type="email" id="email" placeholder="Mail ID" required><br><br>
+  <input type="text" id="regno" placeholder="Register Number" required><br><br>
+  <button onclick="startQuiz()">Start Test</button>
+</div>
+
+<div id="quizContainer">
+  <div id="timer">10:00</div>
+  <h2>Circuit Master Quiz</h2>
+  <div id="questions"></div>
+  <div class="question-nav" id="navButtons"></div>
+  <br>
+  <button onclick="submitQuiz()">Submit</button>
+</div>
+
+<script>
+let questions = [
+  "Ohm's Law formula is?",
+  "Unit of resistance is?",
+  "What is Kirchhoff’s first law?",
+  "Capacitance formula?",
+  "SI unit of electric charge?",
+  "Ohm's law states V = ___",
+  "What does a resistor do?",
+  "What is the symbol of current?",
+  "Voltage across an open switch?",
+  "1 kΩ = ?",
+  "Formula for Power in electrical?",
+  "Battery symbol is?",
+  "Which tool measures current?",
+  "What is AC?",
+  "Who invented the transistor?"
+];
+
+let options = [
+  ["V=IR", "I=VR", "R=VI", "V=I+R"],
+  ["Ohm", "Watt", "Ampere", "Volt"],
+  ["Current law", "Voltage sum is zero", "Loop rule", "Node rule"],
+  ["Q/V", "VQ", "Q*R", "V/I"],
+  ["Coulomb", "Volt", "Ohm", "Watt"],
+  ["IR", "RI", "I+R", "None"],
+  ["Increases voltage", "Limits current", "Stores charge", "None"],
+  ["I", "V", "R", "P"],
+  ["Full voltage", "Zero", "Depends", "Infinite"],
+  ["100", "1000", "10", "1"],
+  ["VI", "V+I", "I-V", "IR"],
+  ["--| |--", "--o o--", "--/ --", "=="],
+  ["Ammeter", "Voltmeter", "Multimeter", "Oscilloscope"],
+  ["Alternating Current", "All Current", "Advanced Current", "None"],
+  ["Bardeen", "Tesla", "Edison", "Einstein"]
+];
+
+let correctAnswers = [0,0,3,0,0,0,1,0,0,1,0,0,0,0,0];
+let userAnswers = new Array(15).fill(-1);
+let time = 600;
+let timerInterval;
+let warningCount = 0;
+
+function startQuiz() {
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let regno = document.getElementById("regno").value;
+
+  if (!name || !email || !regno) return alert("Fill all details");
+
+  google.script.run.saveUserData(name, email, regno);
+
+  document.getElementById("popup").style.display = "none";
+  document.getElementById("quizContainer").style.display = "block";
+  openFullscreen();
+  loadQuestions();
+  timerInterval = setInterval(updateTimer, 1000);
+  document.addEventListener("visibilitychange", handleTabSwitch);
+}
+
+function loadQuestions() {
+  let qDiv = document.getElementById("questions");
+  let nav = document.getElementById("navButtons");
+  for (let i = 0; i < questions.length; i++) {
+    let qBox = document.createElement("div");
+    qBox.className = "question-box";
+    qBox.id = `q${i}`;
+    qBox.innerHTML = `<b>Q${i+1}. ${questions[i]}</b><br>`;
+    options[i].forEach((opt, j) => {
+      qBox.innerHTML += `<input type='radio' name='q${i}' value='${j}' onclick='userAnswers[${i}] = ${j}'> ${opt}<br>`;
+    });
+    qDiv.appendChild(qBox);
+
+    let btn = document.createElement("button");
+    btn.innerText = i + 1;
+    btn.onclick = () => document.getElementById(`q${i}`).scrollIntoView();
+    nav.appendChild(btn);
+  }
+}
+
+function updateTimer() {
+  if (time <= 0) {
+    clearInterval(timerInterval);
+    alert("Time Up!");
+    submitQuiz();
+    return;
+  }
+  time--;
+  let min = Math.floor(time / 60);
+  let sec = time % 60;
+  document.getElementById("timer").innerText = `${min}:${sec < 10 ? "0"+sec : sec}`;
+}
+
+function submitQuiz() {
+  clearInterval(timerInterval);
+  let score = 0;
+  for (let i = 0; i < correctAnswers.length; i++) {
+    if (userAnswers[i] === correctAnswers[i]) score++;
+  }
+  let email = document.getElementById("email").value;
+  google.script.run.saveScore(email, score);
+  alert("Submitted! Your Score: " + score);
+  document.location.href = "circuitary.html";
+}
+
+function handleTabSwitch() {
+  if (document.hidden) {
+    warningCount++;
+    if (warningCount === 1) {
+      alert("Warning: Don't switch tabs or minimize window.");
+    } else {
+      alert("Test closed due to multiple tab switches.");
+      submitQuiz();
+    }
+  }
+}
+
+function openFullscreen() {
+  let elem = document.documentElement;
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) {
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+}
+</script>
+
+</body>
+</html>
