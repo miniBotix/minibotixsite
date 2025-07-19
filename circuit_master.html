@@ -1,224 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Circuit Master Quiz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuit Master Test</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      background-image: url('jai.jpg');
+      background: url('jai.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: black;
       overflow: hidden;
+      color: black;
     }
-
-    #popup {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 400px;
-      padding: 20px;
-      background-image: url('space.jpg');
+    #overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup {
+      background: url('space.jpg') no-repeat center center;
       background-size: cover;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      animation: popup 1s ease-out;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.7);
+      position: relative;
     }
-
-    @keyframes popup {
-      from { transform: scale(0.5) translate(-50%, -50%); opacity: 0; }
-      to { transform: scale(1) translate(-50%, -50%); opacity: 1; }
+    .popup input, .popup button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
     }
-
-    #quizContainer {
+    .rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: url('https://i.ibb.co/yB1bsbp/rain.gif');
+      background-size: cover;
+      z-index: -1;
+    }
+    #quiz {
       display: none;
       padding: 20px;
     }
-
-    .question-box {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 10px;
+    .question {
+      display: none;
     }
-
-    .question-nav {
-      position: fixed;
-      right: 10px;
-      top: 80px;
+    .question.active {
+      display: block;
     }
-
-    .question-nav button {
-      margin: 2px;
-      padding: 5px 10px;
+    #questionNav {
+      position: absolute;
+      top: 20%;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
     }
-
+    #questionNav button {
+      margin: 5px;
+    }
     #timer {
       position: fixed;
       top: 10px;
       right: 10px;
-      background: #000;
-      color: #fff;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: bold;
+      font-size: 20px;
     }
   </style>
 </head>
 <body>
+  <div id="overlay">
+    <div class="popup">
+      <div class="rain"></div>
+      <h2>Enter Your Details</h2>
+      <input type="text" id="name" placeholder="Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="regno" placeholder="Register Number" required>
+      <button onclick="startInstructions()">Start Test</button>
+    </div>
+  </div>
 
-<div id="popup">
-  <h2>Enter Your Details</h2>
-  <input type="text" id="name" placeholder="Name" required><br><br>
-  <input type="email" id="email" placeholder="Mail ID" required><br><br>
-  <input type="text" id="regno" placeholder="Register Number" required><br><br>
-  <button onclick="startQuiz()">Start Test</button>
-</div>
+  <div id="instructions" style="display:none; position: fixed; top: 0; left:0; width:100%; height:100%; background: url('space.jpg') no-repeat center center / cover; z-index:10; display:flex; align-items:center; justify-content:center;">
+    <div class="popup">
+      <div class="rain"></div>
+      <h2>Instructions</h2>
+      <p>No tab switch allowed. Total time: 10 minutes. Answer all questions.</p>
+      <button onclick="beginQuiz()">I'm Ready</button>
+    </div>
+  </div>
 
-<div id="quizContainer">
-  <div id="timer">10:00</div>
-  <h2>Circuit Master Quiz</h2>
-  <div id="questions"></div>
-  <div class="question-nav" id="navButtons"></div>
-  <br>
-  <button onclick="submitQuiz()">Submit</button>
-</div>
+  <div id="quiz">
+    <h1>Circuit Master Test</h1>
+    <div id="timer">Time: <span id="time">10:00</span></div>
 
-<script>
-let questions = [
-  "Ohm's Law formula is?",
-  "Unit of resistance is?",
-  "What is Kirchhoff’s first law?",
-  "Capacitance formula?",
-  "SI unit of electric charge?",
-  "Ohm's law states V = ___",
-  "What does a resistor do?",
-  "What is the symbol of current?",
-  "Voltage across an open switch?",
-  "1 kΩ = ?",
-  "Formula for Power in electrical?",
-  "Battery symbol is?",
-  "Which tool measures current?",
-  "What is AC?",
-  "Who invented the transistor?"
-];
+    <div id="questionsContainer"></div>
 
-let options = [
-  ["V=IR", "I=VR", "R=VI", "V=I+R"],
-  ["Ohm", "Watt", "Ampere", "Volt"],
-  ["Current law", "Voltage sum is zero", "Loop rule", "Node rule"],
-  ["Q/V", "VQ", "Q*R", "V/I"],
-  ["Coulomb", "Volt", "Ohm", "Watt"],
-  ["IR", "RI", "I+R", "None"],
-  ["Increases voltage", "Limits current", "Stores charge", "None"],
-  ["I", "V", "R", "P"],
-  ["Full voltage", "Zero", "Depends", "Infinite"],
-  ["100", "1000", "10", "1"],
-  ["VI", "V+I", "I-V", "IR"],
-  ["--| |--", "--o o--", "--/ --", "=="],
-  ["Ammeter", "Voltmeter", "Multimeter", "Oscilloscope"],
-  ["Alternating Current", "All Current", "Advanced Current", "None"],
-  ["Bardeen", "Tesla", "Edison", "Einstein"]
-];
+    <div id="questionNav"></div>
+    <button onclick="submitQuiz()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;">Submit</button>
+  </div>
 
-let correctAnswers = [0,0,3,0,0,0,1,0,0,1,0,0,0,0,0];
-let userAnswers = new Array(15).fill(-1);
-let time = 600;
-let timerInterval;
-let warningCount = 0;
+  <script>
+    const questions = [
+      "What is Ohm's Law?",
+      "What unit is used to measure current?",
+      "What component stores electrical energy?",
+      "Which law relates voltage and current in capacitors?",
+      "What is Kirchhoff’s Current Law?",
+      "What is the formula for power (P)?",
+      "What is the SI unit of resistance?",
+      "What device is used to convert AC to DC?",
+      "How many pins does a 555 timer have?",
+      "What does LED stand for?",
+      "Which gate gives a high output when both inputs are high?",
+      "Which sensor detects temperature?",
+      "What is the function of a diode?",
+      "What is the unit of capacitance?",
+      "Which law relates voltage, resistance and current?"
+    ];
 
-function startQuiz() {
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let regno = document.getElementById("regno").value;
+    const options = [
+      ["V=IR", "I=VR", "R=VI", "None"],
+      ["Volt", "Ohm", "Ampere", "Farad"],
+      ["Resistor", "Capacitor", "Inductor", "Transistor"],
+      ["Ohm's Law", "Capacitor Law", "Kirchhoff’s Law", "C = Q/V"],
+      ["Sum of voltage is zero", "Sum of current at node is zero", "Power is conserved", "None"],
+      ["P=VI", "P=IR", "P=V/I", "P=VR"],
+      ["Volt", "Ohm", "Watt", "Henry"],
+      ["Resistor", "Capacitor", "Diode", "Rectifier"],
+      ["6", "7", "8", "9"],
+      ["Light Emitting Device", "Light Energy Diode", "Light Emitting Diode", "None"],
+      ["AND", "OR", "XOR", "NAND"],
+      ["IR sensor", "LM35", "LDR", "MQ2"],
+      ["Passes current in both directions", "Stores voltage", "Blocks DC current", "Passes current in one direction"],
+      ["Ohm", "Farad", "Henry", "Tesla"],
+      ["Newton", "Kirchhoff’s Law", "Ohm’s Law", "Joule’s Law"]
+    ];
 
-  if (!name || !email || !regno) return alert("Fill all details");
+    let warningCount = 0;
+    let timerInterval;
+    let timeRemaining = 600;
 
-  google.script.run.saveUserData(name, email, regno);
-
-  document.getElementById("popup").style.display = "none";
-  document.getElementById("quizContainer").style.display = "block";
-  openFullscreen();
-  loadQuestions();
-  timerInterval = setInterval(updateTimer, 1000);
-  document.addEventListener("visibilitychange", handleTabSwitch);
-}
-
-function loadQuestions() {
-  let qDiv = document.getElementById("questions");
-  let nav = document.getElementById("navButtons");
-  for (let i = 0; i < questions.length; i++) {
-    let qBox = document.createElement("div");
-    qBox.className = "question-box";
-    qBox.id = `q${i}`;
-    qBox.innerHTML = `<b>Q${i+1}. ${questions[i]}</b><br>`;
-    options[i].forEach((opt, j) => {
-      qBox.innerHTML += `<input type='radio' name='q${i}' value='${j}' onclick='userAnswers[${i}] = ${j}'> ${opt}<br>`;
-    });
-    qDiv.appendChild(qBox);
-
-    let btn = document.createElement("button");
-    btn.innerText = i + 1;
-    btn.onclick = () => document.getElementById(`q${i}`).scrollIntoView();
-    nav.appendChild(btn);
-  }
-}
-
-function updateTimer() {
-  if (time <= 0) {
-    clearInterval(timerInterval);
-    alert("Time Up!");
-    submitQuiz();
-    return;
-  }
-  time--;
-  let min = Math.floor(time / 60);
-  let sec = time % 60;
-  document.getElementById("timer").innerText = `${min}:${sec < 10 ? "0"+sec : sec}`;
-}
-
-function submitQuiz() {
-  clearInterval(timerInterval);
-  let score = 0;
-  for (let i = 0; i < correctAnswers.length; i++) {
-    if (userAnswers[i] === correctAnswers[i]) score++;
-  }
-  let email = document.getElementById("email").value;
-  google.script.run.saveScore(email, score);
-  alert("Submitted! Your Score: " + score);
-  document.location.href = "circuitary.html";
-}
-
-function handleTabSwitch() {
-  if (document.hidden) {
-    warningCount++;
-    if (warningCount === 1) {
-      alert("Warning: Don't switch tabs or minimize window.");
-    } else {
-      alert("Test closed due to multiple tab switches.");
-      submitQuiz();
+    function startInstructions() {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("instructions").style.display = "flex";
     }
-  }
-}
 
-function openFullscreen() {
-  let elem = document.documentElement;
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.mozRequestFullScreen) {
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    elem.msRequestFullscreen();
-  }
-}
-</script>
+    function beginQuiz() {
+      document.getElementById("instructions").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      openFullscreen();
+      renderQuestions();
+      startTimer();
+    }
 
+    function openFullscreen() {
+      let elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      const nav = document.getElementById('questionNav');
+      questions.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        if (i === 0) div.classList.add('active');
+        div.id = `q${i}`;
+        div.innerHTML = `<h3>Q${i+1}. ${q}</h3>` + options[i].map((opt, j) => `
+          <label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label><br>`).join('');
+        container.appendChild(div);
+
+        const btn = document.createElement('button');
+        btn.textContent = i + 1;
+        btn.onclick = () => showQuestion(i);
+        nav.appendChild(btn);
+      });
+    }
+
+    function showQuestion(index) {
+      document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+      document.getElementById(`q${index}`).classList.add('active');
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        const min = Math.floor(timeRemaining / 60);
+        const sec = timeRemaining % 60;
+        document.getElementById("time").textContent = `${min}:${sec.toString().padStart(2,'0')}`;
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          alert("Time's up!");
+          submitQuiz();
+        }
+      }, 1000);
+    }
+
+    function submitQuiz() {
+      clearInterval(timerInterval);
+      const responses = questions.map((_, i) => {
+        const ans = document.querySelector(`input[name=q${i}]:checked`);
+        return ans ? ans.value : "Not answered";
+      });
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const regno = document.getElementById('regno').value;
+      fetch("https://script.google.com/macros/s/AKfycbwF5ro1yCHNYG8_SkSY26hKrzwldY9p9efVmEDR_qWqQk7xdQghRlt_O3zBzSkuFNSK2g/exec", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, email, regno,
+          answers: responses
+        })
+      });
+      alert("Test submitted!");
+      window.location.href = "circuitary.html";
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        warningCount++;
+        if (warningCount >= 2) {
+          alert("Test closed due to rule violation.");
+          window.location.href = "circuitary.html";
+        } else {
+          alert("Warning: Do not switch tabs!");
+        }
+      }
+    });
+  </script>
 </body>
 </html>
