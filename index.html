@@ -249,7 +249,7 @@
         return;
       }
 
-      const url = "YOUR_SCRIPT_URL_HERE"; // Replace with your script URL
+      const url = "https://script.google.com/macros/s/AKfycbxb59X3nJpJNx7fNYQjLVQ2nMfpDIPB3xGSnFvuviTYxqZ5QPa2r0n41AnXnLsdRckr/exec";
       const data = {
         mode: isRegister ? "register" : "login",
         name,
@@ -266,7 +266,7 @@
       .then(response => {
         if (response.success) {
           sessionStorage.setItem("user", JSON.stringify(response.user));
-          alert("Success!");
+          alert("Welcome " + response.user.name);
           closePopup();
         } else {
           alert(response.message);
