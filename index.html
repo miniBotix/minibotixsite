@@ -1,321 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>MiniBotix | Home</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
+    * {
       margin: 0;
-      background: url("jai.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
-      overflow-x: hidden;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      box-sizing: border-box;
     }
 
-    /* Top bar */
-    .topbar {
+    body, html {
+      height: 100%;
+      background: url("hill.jpg") no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      color: black;
+    }
+
+    /* Top Bar */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 30px;
-      background: rgba(0, 0, 0, 0.5);
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 99;
+      padding: 0 30px;
+      z-index: 1000;
     }
 
-    .logo img {
-      height: 60px;
+    .logo {
+      height: 40px;
     }
 
-    .user-btn {
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links button {
       background: none;
       border: none;
+      font-size: 16px;
       cursor: pointer;
-      position: relative;
+      color: black;
+      font-weight: bold;
     }
 
     .user-icon {
-      width: 40px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
-    }
-
-    .user-name {
-      color: white;
-      font-weight: bold;
+      background: url("dp.png") no-repeat center;
+      background-size: cover;
       cursor: pointer;
+      border: 2px solid black;
     }
 
-    .dropdown {
-      display: none;
-      position: absolute;
-      right: 0;
-      top: 50px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px;
-      border-radius: 6px;
-    }
-
-    .dropdown a {
-      color: white;
-      display: block;
-      padding: 5px 10px;
-      text-decoration: none;
-    }
-
-    .dropdown a:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* Popup modal */
-    .modal {
-      display: none;
+    /* Rain Animation */
+    .rain {
       position: fixed;
-      z-index: 999;
-      left: 0;
-      top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.6);
+      pointer-events: none;
+      background-image: repeating-linear-gradient(transparent, transparent 5px, rgba(255,255,255,0.1) 6px);
+      animation: rain 0.2s linear infinite;
+      z-index: 1;
     }
 
-    .modal-content {
-      background: url("jai.jpg");
-      border-radius: 8px;
-      margin: 80px auto;
+    @keyframes rain {
+      from { background-position: 0 0; }
+      to { background-position: 0 10px; }
+    }
+
+    /* Popup Container */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      background: url("jai.jpg") no-repeat center center;
+      background-size: cover;
       padding: 20px;
-      width: 320px;
+      border-radius: 10px;
       box-shadow: 0 0 10px #000;
-      position: relative;
+      display: none;
+      z-index: 1001;
     }
 
-    .modal-content h2 {
-      text-align: center;
+    .popup h2 {
       color: white;
+      text-align: center;
+      margin-bottom: 10px;
     }
 
-    .modal-content input {
+    .popup input {
       width: 100%;
       padding: 8px;
-      margin: 8px 0;
-      border-radius: 4px;
+      margin: 6px 0;
       border: none;
+      border-radius: 5px;
     }
 
-    .modal-content button {
+    .popup button {
       width: 100%;
       padding: 10px;
-      background: #00ffcc;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .modal-content button:hover {
-      transform: scale(1.05);
-    }
-
-    /* Rain effect */
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Animated Popup (bottom right) */
-    .popup-message {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.8);
-      padding: 15px;
-      border-radius: 10px;
+      margin-top: 10px;
+      background: black;
       color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Profile Dropdown */
+    .profile-dropdown {
+      position: absolute;
+      right: 10px;
+      top: 60px;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
       display: none;
-      animation: slideIn 1s ease forwards;
-      z-index: 999;
+      z-index: 1002;
+      border-radius: 5px;
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(100%); }
-      to { opacity: 1; transform: translateX(0); }
+    .profile-dropdown a {
+      text-decoration: none;
+      color: black;
+      display: block;
+      margin: 5px 0;
+      cursor: pointer;
     }
 
-    /* Zoom/shrink effect on buttons */
-    button, .btn {
-      transition: all 0.3s ease;
+    .username {
+      font-weight: bold;
+      font-size: 14px;
     }
 
-    button:hover, .btn:hover {
-      transform: scale(1.05);
-    }
   </style>
 </head>
 <body>
-
   <!-- Rain effect -->
-  <canvas id="rain"></canvas>
+  <div class="rain"></div>
 
   <!-- Top Bar -->
-  <div class="topbar">
-    <div class="logo">
-      <img src="file.svg" alt="Logo">
+  <header>
+    <img src="dp.png" class="logo">
+    <div class="nav-links">
+      <button onclick="goTo('college')">College</button>
+      <button onclick="goTo('about')">About</button>
+      <button onclick="goTo('service')">Service</button>
+      <button onclick="goTo('courses')">Courses</button>
+      <div class="username" id="username-display"></div>
+      <div class="user-icon" onclick="toggleUserPopup()"></div>
     </div>
-    <div id="user-section">
-      <button class="user-btn" onclick="toggleLogin()">
-        <img src="file.svg" alt="User" class="user-icon" />
-      </button>
-    </div>
+  </header>
+
+  <!-- Login/Register Popup -->
+  <div class="popup" id="popup">
+    <h2 id="popup-title">Login</h2>
+    <input type="text" id="popup-name" placeholder="Name" style="display:none">
+    <input type="email" id="popup-email" placeholder="Email">
+    <input type="password" id="popup-pass" placeholder="Password">
+    <input type="password" id="popup-confirm" placeholder="Confirm Password" style="display:none">
+    <button onclick="submitForm()">Save</button>
+    <button onclick="togglePopupMode()">Switch to Register/Login</button>
   </div>
 
-  <!-- Popup Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <h2 id="formTitle">Login</h2>
-      <input type="text" id="nameField" placeholder="Name" style="display: none;">
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <input type="password" id="confirmPassword" placeholder="Confirm Password" style="display: none;">
-      <button onclick="submitForm()">Submit</button>
-      <p style="text-align:center; color: white;">
-        <a href="#" onclick="toggleForm()" style="color:#00ffff;">Switch to <span id="formSwitch">Sign Up</span></a>
-      </p>
-    </div>
-  </div>
-
-  <!-- Bottom right popup -->
-  <div class="popup-message" id="popupMsg">
-    💡 Want to explore courses? <a href="course.html" style="color: #00ffcc;">Click here</a>
+  <!-- Profile dropdown -->
+  <div class="profile-dropdown" id="profile-dropdown">
+    <a onclick="window.location.href='profile.html'">Profile</a>
+    <a onclick="logout()">Logout</a>
   </div>
 
   <script>
-    // Form toggle
     let isLogin = true;
-    function toggleForm() {
-      isLogin = !isLogin;
-      document.getElementById('formTitle').innerText = isLogin ? "Login" : "Sign Up";
-      document.getElementById('formSwitch').innerText = isLogin ? "Sign Up" : "Login";
-      document.getElementById('nameField').style.display = isLogin ? "none" : "block";
-      document.getElementById('confirmPassword').style.display = isLogin ? "none" : "block";
-    }
 
-    // Show/hide modal
-    function toggleLogin() {
-      document.getElementById('loginModal').style.display = "block";
-    }
-
-    // Submit form (Login/Register)
-    async function submitForm() {
-      const name = document.getElementById('nameField').value;
-      const email = document.getElementById('email').value;
-      const pass = document.getElementById('password').value;
-      const confirm = document.getElementById('confirmPassword').value;
-
-      if (!isLogin && pass !== confirm) return alert("Passwords do not match!");
-
-      const res = await fetch('https://script.google.com/macros/s/AKfycbxJmXY5r8AuSFgzXcBMRHOA9puGB5AD1ZhfU7gVAazHxiwgWb9Z4mlYIf9JNObMIDqT/exec', {
-        method: 'POST',
-        body: JSON.stringify({
-          type: isLogin ? "login" : "register",
-          name, email, password: pass
-        }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      const result = await res.json();
-      if (result.success) {
-        sessionStorage.setItem("username", result.name || name);
-        updateUserUI();
-        document.getElementById("loginModal").style.display = "none";
+    function toggleUserPopup() {
+      const username = sessionStorage.getItem('username');
+      if (username) {
+        document.getElementById("profile-dropdown").style.display =
+          document.getElementById("profile-dropdown").style.display === "block" ? "none" : "block";
       } else {
-        alert(result.message || "Something went wrong.");
+        document.getElementById("popup").style.display = "block";
+        document.getElementById("profile-dropdown").style.display = "none";
       }
     }
 
-    // Update UI after login
-    function updateUserUI() {
-      const user = sessionStorage.getItem("username");
-      if (!user) return;
-      document.getElementById('user-section').innerHTML = `
-        <div class="user-name" onclick="toggleDropdown()">${user}</div>
-        <div class="dropdown" id="dropdownMenu">
-          <a href="profile.html">Profile</a>
-          <a href="#" onclick="logout()">Logout</a>
-        </div>
-      `;
+    function togglePopupMode() {
+      isLogin = !isLogin;
+      document.getElementById("popup-title").textContent = isLogin ? "Login" : "Register";
+      document.getElementById("popup-name").style.display = isLogin ? "none" : "block";
+      document.getElementById("popup-confirm").style.display = isLogin ? "none" : "block";
     }
 
-    // Logout
+    function submitForm() {
+      const name = document.getElementById("popup-name").value;
+      const email = document.getElementById("popup-email").value;
+      const pass = document.getElementById("popup-pass").value;
+      const confirm = document.getElementById("popup-confirm").value;
+
+      if (!email || !pass || (!isLogin && (!name || !confirm))) {
+        alert("Fill all fields.");
+        return;
+      }
+
+      if (!isLogin && pass !== confirm) {
+        alert("Passwords don't match.");
+        return;
+      }
+
+      if (isLogin) {
+        // For now, just login with any email/pass
+        sessionStorage.setItem("username", email.split("@")[0]);
+        updateUsername();
+        closePopup();
+      } else {
+        alert("Registered! Now login.");
+        togglePopupMode();
+      }
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function updateUsername() {
+      const name = sessionStorage.getItem("username");
+      document.getElementById("username-display").textContent = name ? name : "";
+    }
+
     function logout() {
       sessionStorage.removeItem("username");
-      location.reload();
+      document.getElementById("username-display").textContent = "";
+      document.getElementById("profile-dropdown").style.display = "none";
     }
 
-    // Toggle dropdown
-    function toggleDropdown() {
-      const drop = document.getElementById('dropdownMenu');
-      drop.style.display = drop.style.display === 'block' ? 'none' : 'block';
+    function goTo(page) {
+      alert(`Redirect to ${page}.html`);
     }
 
-    // Rain effect
-    const canvas = document.getElementById('rain');
-    const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const drops = Array(300).fill().map(() => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      l: Math.random() * 1.5,
-      xs: -4 + Math.random() * 4 + 2,
-      ys: Math.random() * 10 + 10
-    }));
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = 'rgba(174,194,224,0.5)';
-      ctx.lineWidth = 1;
-      ctx.lineCap = 'round';
-
-      for (let i = 0; i < drops.length; i++) {
-        const d = drops[i];
-        ctx.beginPath();
-        ctx.moveTo(d.x, d.y);
-        ctx.lineTo(d.x + d.l * d.xs, d.y + d.l * d.ys);
-        ctx.stroke();
-      }
-
-      move();
-    }
-
-    function move() {
-      for (let i = 0; i < drops.length; i++) {
-        const d = drops[i];
-        d.x += d.xs;
-        d.y += d.ys;
-        if (d.x > canvas.width || d.y > canvas.height) {
-          d.x = Math.random() * canvas.width;
-          d.y = -20;
-        }
-      }
-    }
-
-    setInterval(draw, 30);
-
-    // Popup after 20 seconds
-    setTimeout(() => {
-      document.getElementById('popupMsg').style.display = "block";
-    }, 20000);
-
-    // On load
-    window.onload = updateUserUI;
+    // Show name if logged in
+    window.onload = updateUsername;
   </script>
-
 </body>
 </html>
+
