@@ -1,180 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MiniBotix</title>
   <link rel="icon" href="MINIBOTIXSITE.png">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    body, html {
-      height: 100%;
-      overflow: hidden;
-    }
-
-    body {
-      background: url('hill.jpg') no-repeat center center/cover;
-      position: relative;
-    }
-
+    /* Reset & fonts */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+    body,html { height:100%; overflow:hidden; }
+    body { background:url('hill.jpg') center/cover fixed; position:relative; }
+    /* Top navbar */
     .navbar {
-      background: white;
-      padding: 15px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: fixed;
-      width: 100%;
-      z-index: 100;
+      position:fixed; top:0; left:0; width:100%; padding:15px 30px;
+      background:rgba(255,255,255,0.95); display:flex; align-items:center; justify-content:space-between;
+      z-index:100;
     }
-
-    .navbar img {
-      height: 40px;
-      vertical-align: middle;
-    }
-
-    .navbar .brand {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-      margin-left: 10px;
-    }
-
-    .navbar .nav-links a {
-      margin-left: 30px;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 16px;
-      color: #333;
-      transition: transform 0.3s ease;
-    }
-
-    .navbar .nav-links a:hover {
-      transform: scale(1.2);
-    }
-
+    .navbar-left { display:flex; align-items:center; }
+    .navbar-left img { height:40px; }
+    .navbar-left .brand { font-size:24px; margin-left:10px; }
+    .nav-links a { margin-left:30px; text-decoration:none; font-size:16px; color:#333; transition:.3s; }
+    .nav-links a:hover { transform:scale(1.1); }
+    .user-btn { cursor:pointer; margin-left:20px; font-size:20px; }
+    /* Center content */
     .center-box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.9);
-      padding: 40px;
-      border-radius: 20px;
-      text-align: center;
-      animation: fadeIn 2s ease-in-out;
+      position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      background:rgba(255,255,255,0.9); padding:40px;
+      border-radius:20px; text-align:center;
+      animation:fadeIn 2s ease-in;
+      z-index:10;
     }
-
-    .center-box h1 {
-      font-size: 32px;
-      color: #1834ab;
+    @keyframes fadeIn {
+      from { opacity:0; transform:translate(-50%,-60%); }
+      to { opacity:1; }
     }
-
-    .center-box p {
-      margin: 15px 0 30px;
-      font-size: 18px;
-      color: #333;
-    }
-
-    .center-box button {
-      background-color: #205ff5;
-      color: white;
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .center-box button:hover {
-      transform: scale(1.1);
-    }
-
+    .center-box h1 { font-size:32px; color:#1834ab; margin-bottom:15px; }
+    .center-box p { font-size:18px; color:#333; margin-bottom:25px; }
+    .center-box button { background:#205ff5; color:white; padding:12px 25px; border:none; border-radius:8px; font-size:16px; cursor:pointer; transition:.2s; }
+    .center-box button:hover { transform:scale(1.05); }
+    /* Footer */
     .footer {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      font-size: 14px;
-      color: white;
-      text-shadow: 1px 1px 2px black;
+      position:absolute; bottom:10px; width:100%; text-align:center;
+      font-size:14px; color:white; text-shadow:1px 1px 2px black; z-index:10;
     }
-
-    @keyframes rain {
-      0% { transform: translateY(-100%); opacity: 0; }
-      100% { transform: translateY(100vh); opacity: 1; }
-    }
-
-    .rain {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-
+    /* Rain */
+    .rain { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:hidden; z-index:1; }
     .drop {
-      position: absolute;
-      width: 2px;
-      height: 15px;
-      background: white;
-      animation: rain 1s linear infinite;
+      position:absolute; width:2px; height:15px; background:white; animation:rain 1s linear infinite;
     }
+    @keyframes rain {
+      0%   { transform:translateY(-100%); opacity:0 }
+      50%  { opacity:.5 }
+      100% { transform:translateY(100vh); opacity:0 }
+    }
+    /* Login/Register Popup */
+    .modal-bg {
+      display:none; position:fixed; top:0;left:0; width:100%;height:100%; background:rgba(0,0,0,0.6);
+      align-items:center; justify-content:center; z-index:200;
+    }
+    .modal {
+      background:white; padding:20px; border-radius:10px; width:320px; text-align:center;
+      position:relative;
+    }
+    .modal h3 { margin-bottom:15px; }
+    .modal input {
+      width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:5px;
+    }
+    .modal button {
+      width:100%; padding:10px; margin-top:10px; border:none; background:#205ff5; color:white;
+      font-size:16px; cursor:pointer; border-radius:5px;
+    }
+    .modal-close {
+      position:absolute; top:8px; right:12px; cursor:pointer; font-size:18px;
+    }
+    /* User Dropdown */
+    .user-menu {
+      position:absolute; top:60px; right:30px; background:white; border-radius:5px;
+      box-shadow:0 2px 8px rgba(0,0,0,.2); display:none; z-index:200;
+    }
+    .user-menu div {
+      padding:10px 20px; cursor:pointer; color:#333;
+    }
+    .user-menu div:hover { background:#f0f0f0; }
   </style>
 </head>
-
 <body>
+
+  <!-- Navbar -->
   <div class="navbar">
-    <div style="display: flex; align-items: center;">
-      <img src="MINIBOTIXSITE.png" alt="Logo">
-      <span class="brand">MiniBotix</span>
+    <div class="navbar-left">
+      <img src="MINIBOTIXSITE.png" alt="logo"><span class="brand">MiniBotix</span>
     </div>
-    <div class="nav-links">
-      <a href="about.html">About</a>
-      <a href="service.html">Services</a>
-      <a href="course.html">Courses</a>
-      <a href="college.html">College</a>
+    <div>
+      <span class="nav-links">
+        <a href="about.html">About</a><a href="service.html">Services</a>
+        <a href="course.html">Courses</a><a href="college.html">College</a>
+      </span>
+      <span class="user-btn" id="userBtn">&#128100;</span>
+      <span class="user-btn" id="userName" style="display:none;"></span>
+      <div class="user-menu" id="userMenu">
+        <div onclick="location.href='profile.html'">Profile</div>
+        <div onclick="logout()">Logout</div>
+      </div>
     </div>
   </div>
 
+  <!-- Center -->
   <div class="center-box">
     <h1>🚀 Welcome to MiniBotix</h1>
-    <p>A Free Open Learning Platform<br>
-      Learn electronics, coding, robotics, IoT & more<br>
-      Built for makers, engineers, and dreamers!</p>
+    <p>A Free Open Learning Platform<br>Learn electronics, coding, robotics, IoT & more</p>
     <button onclick="location.href='course.html'">Start Learning</button>
   </div>
 
-  <div class="footer">
-    © 2025 miniBotix · Learn. Design. Innovate.
+  <!-- Footer -->
+  <div class="footer">© 2025 miniBotix · Learn. Design. Innovate.</div>
+
+  <!-- Rain Effect -->
+  <div class="rain" id="rainContainer"></div>
+
+  <!-- Login/Register Modal -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal" id="modal">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <h3 id="modalTitle">Login</h3>
+      <input type="email" id="emailField" placeholder="Email">
+      <input type="password" id="passwordField" placeholder="Password">
+      <br><button onclick="submitLogin()">Login</button>
+      <p style="margin:10px 0;">New user? <a href="#" onclick="toggleMode()">Register</a></p>
+    </div>
   </div>
 
-  <div class="rain" id="rain-container"></div>
-
   <script>
-    // Create rain drops
-    const rainContainer = document.getElementById('rain-container');
-    for (let i = 0; i < 200; i++) {
+    // Rain initialization
+    const rainCont = document.getElementById('rainContainer');
+    for (let i = 0; i < 150; i++) {
       const drop = document.createElement('div');
       drop.classList.add('drop');
-      drop.style.left = `${Math.random() * 100}%`;
-      drop.style.animationDuration = `${0.5 + Math.random()}s`;
-      drop.style.opacity = Math.random();
-      drop.style.top = `${Math.random() * 100}%`;
-      rainContainer.appendChild(drop);
+      drop.style.left = Math.random() * 100 + '%';
+      drop.style.animationDuration = (0.5 + Math.random()) + 's';
+      drop.style.animationDelay = Math.random() + 's';
+      rainCont.appendChild(drop);
     }
+
+    // Modal & Login/Register Logic
+    const modalBg = document.getElementById('modalBg');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const emailField = document.getElementById('emailField');
+    const passwordField = document.getElementById('passwordField');
+
+    let isRegister = false;
+    const userBtn = document.getElementById('userBtn');
+    const userNameSpan = document.getElementById('userName');
+    const userMenu = document.getElementById('userMenu');
+
+    userBtn.addEventListener('click', () => {
+      if (sessionStorage.getItem('user')) {
+        userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+      } else {
+        openModal();
+      }
+    });
+
+    function openModal() {
+      isRegister = false;
+      modalTitle.textContent = 'Login';
+      passwordField.style.display = 'block';
+      modalBg.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modalBg.style.display = 'none';
+      emailField.value = passwordField.value = '';
+    }
+
+    function toggleMode() {
+      isRegister = !isRegister;
+      modalTitle.textContent = isRegister ? 'Register' : 'Login';
+    }
+
+    async function submitLogin() {
+      const email = emailField.value.trim();
+      const pass = btoa(passwordField.value.trim());
+
+      if (!email || !passwordField.value.trim()) return alert('Please fill all fields');
+
+      const action = isRegister ? 'register' : 'login';
+      const payload = { action, email, password: pass };
+      if (isRegister) payload.name = prompt('Enter name');
+
+      const res = await fetch('https://script.google.com/macros/s/AKfycbwNxHjYIxKqZa-Vy3qVMNjUOG1t-xPznBSQVyAvIzlkRoLCGJEIqxktcwBibPWVXGd9/exec', {
+        method:'POST',
+        body: JSON.stringify(payload),
+        headers:{ 'Content-Type':'application/json' }
+      });
+      const data = await res.json();
+
+      if (data.status === 'success') {
+        sessionStorage.setItem('user', JSON.stringify({ name:data.name||payload.name, email }));
+        closeModal();
+        updateUI();
+      } else {
+        alert(data.message);
+      }
+    }
+
+    function updateUI() {
+      const usr = JSON.parse(sessionStorage.getItem('user')||'null');
+      if (usr) {
+        userBtn.style.display = 'none';
+        userNameSpan.style.display = 'inline';
+        userNameSpan.textContent = 'Hi, ' + usr.name;
+      }
+    }
+
+    function logout() {
+      sessionStorage.clear();
+      userMenu.style.display = 'none';
+      userBtn.style.display = 'inline';
+      userNameSpan.style.display = 'none';
+    }
+
+    // Initialize on load
+    updateUI();
+    document.addEventListener('click', e => {
+      if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) userMenu.style.display = 'none';
+    });
   </script>
 </body>
-
 </html>
