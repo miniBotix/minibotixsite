@@ -1,232 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>MiniBotix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="MINIBOTIXSITE.png">
   <style>
-    /* Reset & fonts */
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-    body,html { height:100%; overflow:hidden; }
-    body { background:url('hill.jpg') center/cover fixed; position:relative; }
-    /* Top navbar */
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: url('hill.jpg') no-repeat center center/cover;
+      overflow: hidden;
+    }
+
     .navbar {
-      position:fixed; top:0; left:0; width:100%; padding:15px 30px;
-      background:rgba(255,255,255,0.95); display:flex; align-items:center; justify-content:space-between;
-      z-index:100;
+      background: white;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      width: 100%;
+      z-index: 100;
     }
-    .navbar-left { display:flex; align-items:center; }
-    .navbar-left img { height:40px; }
-    .navbar-left .brand { font-size:24px; margin-left:10px; }
-    .nav-links a { margin-left:30px; text-decoration:none; font-size:16px; color:#333; transition:.3s; }
-    .nav-links a:hover { transform:scale(1.1); }
-    .user-btn { cursor:pointer; margin-left:20px; font-size:20px; }
-    /* Center content */
+
+    .navbar img {
+      height: 40px;
+    }
+
+    .navbar .brand {
+      font-size: 24px;
+      font-weight: bold;
+      margin-left: 10px;
+      color: #333;
+    }
+
+    .navbar .nav-links a {
+      margin-left: 30px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+
     .center-box {
-      position:absolute; top:50%; left:50%;
-      transform:translate(-50%,-50%);
-      background:rgba(255,255,255,0.9); padding:40px;
-      border-radius:20px; text-align:center;
-      animation:fadeIn 2s ease-in;
-      z-index:10;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      animation: fadeIn 2s ease-in-out;
     }
-    @keyframes fadeIn {
-      from { opacity:0; transform:translate(-50%,-60%); }
-      to { opacity:1; }
+
+    .center-box h1 {
+      color: #1834ab;
     }
-    .center-box h1 { font-size:32px; color:#1834ab; margin-bottom:15px; }
-    .center-box p { font-size:18px; color:#333; margin-bottom:25px; }
-    .center-box button { background:#205ff5; color:white; padding:12px 25px; border:none; border-radius:8px; font-size:16px; cursor:pointer; transition:.2s; }
-    .center-box button:hover { transform:scale(1.05); }
-    /* Footer */
+
+    .center-box button {
+      background-color: #205ff5;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
     .footer {
-      position:absolute; bottom:10px; width:100%; text-align:center;
-      font-size:14px; color:white; text-shadow:1px 1px 2px black; z-index:10;
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      text-shadow: 1px 1px 2px black;
     }
-    /* Rain */
-    .rain { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:hidden; z-index:1; }
+
+    /* Rain Effect */
+    .rain {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
     .drop {
-      position:absolute; width:2px; height:15px; background:white; animation:rain 1s linear infinite;
+      position: absolute;
+      width: 2px;
+      height: 15px;
+      background: white;
+      animation: rain 0.5s linear infinite;
     }
+
     @keyframes rain {
-      0%   { transform:translateY(-100%); opacity:0 }
-      50%  { opacity:.5 }
-      100% { transform:translateY(100vh); opacity:0 }
+      0% { transform: translateY(-100%); opacity: 0; }
+      100% { transform: translateY(100vh); opacity: 1; }
     }
-    /* Login/Register Popup */
-    .modal-bg {
-      display:none; position:fixed; top:0;left:0; width:100%;height:100%; background:rgba(0,0,0,0.6);
-      align-items:center; justify-content:center; z-index:200;
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
     }
-    .modal {
-      background:white; padding:20px; border-radius:10px; width:320px; text-align:center;
-      position:relative;
+
+    .popup-content {
+      width: 350px;
+      padding: 30px;
+      border-radius: 15px;
+      background: url('jai.jpg') no-repeat center center/cover;
+      box-shadow: 0 0 10px black;
+      color: white;
     }
-    .modal h3 { margin-bottom:15px; }
-    .modal input {
-      width:100%; padding:10px; margin:8px 0; border:1px solid #ccc; border-radius:5px;
+
+    .popup-content h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
-    .modal button {
-      width:100%; padding:10px; margin-top:10px; border:none; background:#205ff5; color:white;
-      font-size:16px; cursor:pointer; border-radius:5px;
+
+    .popup-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
     }
-    .modal-close {
-      position:absolute; top:8px; right:12px; cursor:pointer; font-size:18px;
+
+    .popup-content button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1834ab;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
     }
-    /* User Dropdown */
-    .user-menu {
-      position:absolute; top:60px; right:30px; background:white; border-radius:5px;
-      box-shadow:0 2px 8px rgba(0,0,0,.2); display:none; z-index:200;
+
+    .popup-content .switch {
+      margin-top: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: underline;
     }
-    .user-menu div {
-      padding:10px 20px; cursor:pointer; color:#333;
-    }
-    .user-menu div:hover { background:#f0f0f0; }
   </style>
 </head>
+
 <body>
+  <!-- Rain -->
+  <div class="rain" id="rain"></div>
 
   <!-- Navbar -->
   <div class="navbar">
-    <div class="navbar-left">
-      <img src="MINIBOTIXSITE.png" alt="logo"><span class="brand">MiniBotix</span>
+    <div style="display: flex; align-items: center;">
+      <img src="MINIBOTIXSITE.png" alt="Logo">
+      <span class="brand">MiniBotix</span>
     </div>
-    <div>
-      <span class="nav-links">
-        <a href="about.html">About</a><a href="service.html">Services</a>
-        <a href="course.html">Courses</a><a href="college.html">College</a>
-      </span>
-      <span class="user-btn" id="userBtn">&#128100;</span>
-      <span class="user-btn" id="userName" style="display:none;"></span>
-      <div class="user-menu" id="userMenu">
-        <div onclick="location.href='profile.html'">Profile</div>
-        <div onclick="logout()">Logout</div>
-      </div>
+    <div class="nav-links">
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Courses</a>
+      <a href="#">College</a>
+      <a href="#" onclick="showPopup('login')">Login</a>
     </div>
   </div>
 
-  <!-- Center -->
+  <!-- Main -->
   <div class="center-box">
     <h1>🚀 Welcome to MiniBotix</h1>
-    <p>A Free Open Learning Platform<br>Learn electronics, coding, robotics, IoT & more</p>
-    <button onclick="location.href='course.html'">Start Learning</button>
+    <p>Learn electronics, coding, robotics, IoT & more!</p>
+    <button onclick="showPopup('login')">Start Learning</button>
   </div>
 
-  <!-- Footer -->
   <div class="footer">© 2025 miniBotix · Learn. Design. Innovate.</div>
 
-  <!-- Rain Effect -->
-  <div class="rain" id="rainContainer"></div>
-
-  <!-- Login/Register Modal -->
-  <div class="modal-bg" id="modalBg">
-    <div class="modal" id="modal">
-      <span class="modal-close" onclick="closeModal()">×</span>
-      <h3 id="modalTitle">Login</h3>
-      <input type="email" id="emailField" placeholder="Email">
-      <input type="password" id="passwordField" placeholder="Password">
-      <br><button onclick="submitLogin()">Login</button>
-      <p style="margin:10px 0;">New user? <a href="#" onclick="toggleMode()">Register</a></p>
+  <!-- Login/Register Popup -->
+  <div class="popup" id="popup">
+    <div class="popup-content" id="popup-content">
+      <h2 id="popup-title">Login</h2>
+      <input type="text" id="name" placeholder="Name" style="display: none;">
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <input type="password" id="confirm" placeholder="Confirm Password" style="display: none;">
+      <button onclick="submitForm()">Submit</button>
+      <div class="switch" onclick="toggleForm()">New user? Register here</div>
     </div>
   </div>
 
   <script>
-    // Rain initialization
-    const rainCont = document.getElementById('rainContainer');
-    for (let i = 0; i < 150; i++) {
+    // RAIN
+    const rain = document.getElementById('rain');
+    for (let i = 0; i < 300; i++) {
       const drop = document.createElement('div');
       drop.classList.add('drop');
-      drop.style.left = Math.random() * 100 + '%';
-      drop.style.animationDuration = (0.5 + Math.random()) + 's';
-      drop.style.animationDelay = Math.random() + 's';
-      rainCont.appendChild(drop);
+      drop.style.left = `${Math.random() * 100}%`;
+      drop.style.animationDuration = `${0.3 + Math.random()}s`;
+      drop.style.top = `${Math.random() * 100}%`;
+      rain.appendChild(drop);
     }
 
-    // Modal & Login/Register Logic
-    const modalBg = document.getElementById('modalBg');
-    const modal = document.getElementById('modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const emailField = document.getElementById('emailField');
-    const passwordField = document.getElementById('passwordField');
-
+    // TOGGLE LOGIN / REGISTER
     let isRegister = false;
-    const userBtn = document.getElementById('userBtn');
-    const userNameSpan = document.getElementById('userName');
-    const userMenu = document.getElementById('userMenu');
-
-    userBtn.addEventListener('click', () => {
-      if (sessionStorage.getItem('user')) {
-        userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
-      } else {
-        openModal();
-      }
-    });
-
-    function openModal() {
-      isRegister = false;
-      modalTitle.textContent = 'Login';
-      passwordField.style.display = 'block';
-      modalBg.style.display = 'flex';
-    }
-
-    function closeModal() {
-      modalBg.style.display = 'none';
-      emailField.value = passwordField.value = '';
-    }
-
-    function toggleMode() {
+    function toggleForm() {
       isRegister = !isRegister;
-      modalTitle.textContent = isRegister ? 'Register' : 'Login';
+      document.getElementById('popup-title').innerText = isRegister ? "Register" : "Login";
+      document.getElementById('name').style.display = isRegister ? "block" : "none";
+      document.getElementById('confirm').style.display = isRegister ? "block" : "none";
+      document.querySelector('.switch').innerText = isRegister ? "Already a user? Login here" : "New user? Register here";
     }
 
-    async function submitLogin() {
-      const email = emailField.value.trim();
-      const pass = btoa(passwordField.value.trim());
-
-      if (!email || !passwordField.value.trim()) return alert('Please fill all fields');
-
-      const action = isRegister ? 'register' : 'login';
-      const payload = { action, email, password: pass };
-      if (isRegister) payload.name = prompt('Enter name');
-
-      const res = await fetch('https://script.google.com/macros/s/AKfycbwNxHjYIxKqZa-Vy3qVMNjUOG1t-xPznBSQVyAvIzlkRoLCGJEIqxktcwBibPWVXGd9/exec', {
-        method:'POST',
-        body: JSON.stringify(payload),
-        headers:{ 'Content-Type':'application/json' }
-      });
-      const data = await res.json();
-
-      if (data.status === 'success') {
-        sessionStorage.setItem('user', JSON.stringify({ name:data.name||payload.name, email }));
-        closeModal();
-        updateUI();
-      } else {
-        alert(data.message);
+    function showPopup(type) {
+      document.getElementById('popup').style.display = "flex";
+      if (type === "login") {
+        isRegister = false;
+        toggleForm();
       }
     }
 
-    function updateUI() {
-      const usr = JSON.parse(sessionStorage.getItem('user')||'null');
-      if (usr) {
-        userBtn.style.display = 'none';
-        userNameSpan.style.display = 'inline';
-        userNameSpan.textContent = 'Hi, ' + usr.name;
+    function closePopup() {
+      document.getElementById('popup').style.display = "none";
+    }
+
+    function submitForm() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+
+      if (!email || !password || (isRegister && (!name || password !== confirm))) {
+        alert("Please fill all fields correctly.");
+        return;
       }
-    }
 
-    function logout() {
-      sessionStorage.clear();
-      userMenu.style.display = 'none';
-      userBtn.style.display = 'inline';
-      userNameSpan.style.display = 'none';
-    }
+      const url = "YOUR_SCRIPT_URL_HERE"; // Replace with your script URL
+      const data = {
+        mode: isRegister ? "register" : "login",
+        name,
+        email,
+        password
+      };
 
-    // Initialize on load
-    updateUI();
-    document.addEventListener('click', e => {
-      if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) userMenu.style.display = 'none';
-    });
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          sessionStorage.setItem("user", JSON.stringify(response.user));
+          alert("Success!");
+          closePopup();
+        } else {
+          alert(response.message);
+        }
+      })
+      .catch(() => alert("Something went wrong."));
+    }
   </script>
 </body>
 </html>
