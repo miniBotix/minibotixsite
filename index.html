@@ -19,7 +19,6 @@
       color: black;
     }
 
-    /* Top Bar */
     header {
       position: fixed;
       top: 0;
@@ -63,7 +62,6 @@
       border: 2px solid black;
     }
 
-    /* Rain Animation */
     .rain {
       position: fixed;
       width: 100%;
@@ -79,7 +77,6 @@
       to { background-position: 0 10px; }
     }
 
-    /* Popup Container */
     .popup {
       position: fixed;
       top: 50%;
@@ -120,7 +117,6 @@
       cursor: pointer;
     }
 
-    /* Profile Dropdown */
     .profile-dropdown {
       position: absolute;
       right: 10px;
@@ -145,16 +141,14 @@
       font-weight: bold;
       font-size: 14px;
     }
-
   </style>
 </head>
 <body>
-  <!-- Rain effect -->
+
   <div class="rain"></div>
 
-  <!-- Top Bar -->
   <header>
-    <img src="dp.png" class="logo">
+    <img src="dp.png" class="logo" alt="MiniBotix Logo">
     <div class="nav-links">
       <button onclick="goTo('college')">College</button>
       <button onclick="goTo('about')">About</button>
@@ -165,7 +159,6 @@
     </div>
   </header>
 
-  <!-- Login/Register Popup -->
   <div class="popup" id="popup">
     <h2 id="popup-title">Login</h2>
     <input type="text" id="popup-name" placeholder="Name" style="display:none">
@@ -176,7 +169,6 @@
     <button onclick="togglePopupMode()">Switch to Register/Login</button>
   </div>
 
-  <!-- Profile dropdown -->
   <div class="profile-dropdown" id="profile-dropdown">
     <a onclick="window.location.href='profile.html'">Profile</a>
     <a onclick="logout()">Logout</a>
@@ -188,8 +180,8 @@
     function toggleUserPopup() {
       const username = sessionStorage.getItem('username');
       if (username) {
-        document.getElementById("profile-dropdown").style.display =
-          document.getElementById("profile-dropdown").style.display === "block" ? "none" : "block";
+        const dropdown = document.getElementById("profile-dropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
       } else {
         document.getElementById("popup").style.display = "block";
         document.getElementById("profile-dropdown").style.display = "none";
@@ -220,7 +212,6 @@
       }
 
       if (isLogin) {
-        // For now, just login with any email/pass
         sessionStorage.setItem("username", email.split("@")[0]);
         updateUsername();
         closePopup();
@@ -241,7 +232,7 @@
 
     function logout() {
       sessionStorage.removeItem("username");
-      document.getElementById("username-display").textContent = "";
+      updateUsername();
       document.getElementById("profile-dropdown").style.display = "none";
     }
 
@@ -249,9 +240,14 @@
       alert(`Redirect to ${page}.html`);
     }
 
-    // Show name if logged in
     window.onload = updateUsername;
+
+    // Hide dropdown when clicking outside
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.user-icon') && !e.target.closest('#profile-dropdown')) {
+        document.getElementById("profile-dropdown").style.display = "none";
+      }
+    });
   </script>
 </body>
 </html>
-
