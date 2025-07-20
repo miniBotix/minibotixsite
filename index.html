@@ -1,149 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>MiniBotix Auth</title>
+  <title>Login/Register Popup</title>
   <style>
     body {
-      font-family: Arial;
-      background: #f0f0f0;
+      font-family: Arial, sans-serif;
     }
-    .popup {
-      width: 300px;
-      background: #fff;
-      padding: 20px;
-      margin: 100px auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      position: relative;
-    }
-    .close-btn {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      cursor: pointer;
-      color: red;
-      font-weight: bold;
-    }
-    h2 {
-      text-align: center;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-    }
-    .tabs {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 10px;
-    }
-    .tabs button {
-      width: 48%;
-      background: #eee;
-    }
-    .tabs button.active {
-      background: #007bff;
-      color: white;
-    }
-    .hidden {
+
+    #popup {
       display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 9999;
     }
-    #message {
-      text-align: center;
+
+    #popup h2 {
+      margin-top: 0;
+    }
+
+    .input-field {
+      width: 100%;
+      margin: 8px 0;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    #popup button {
+      padding: 10px 15px;
+      margin-top: 10px;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    }
+
+    #closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
       font-weight: bold;
+      cursor: pointer;
+      color: #555;
+    }
+
+    #message {
       color: green;
+      margin-top: 10px;
+    }
+
+    #error {
+      color: red;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<div class="popup" id="popup">
-  <div class="close-btn" onclick="closePopup()">X</div>
-  <h2>MiniBotix</h2>
-  <div class="tabs">
-    <button onclick="showTab('login')" id="loginTab" class="active">Login</button>
-    <button onclick="showTab('register')" id="registerTab">Register</button>
-  </div>
+<button onclick="openPopup()">Login/Register</button>
 
-  <div id="loginForm">
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPassword" placeholder="Password">
-    <button onclick="login()">Login</button>
-  </div>
+<div id="overlay"></div>
 
-  <div id="registerForm" class="hidden">
-    <input type="text" id="regName" placeholder="Full Name">
-    <input type="email" id="regEmail" placeholder="Email">
-    <input type="password" id="regPassword" placeholder="Password">
-    <button onclick="register()">Register</button>
-  </div>
+<div id="popup">
+  <span id="closeBtn" onclick="closePopup()">✖</span>
+  <h2 id="formTitle">Login</h2>
+
+  <input class="input-field" type="text" id="name" placeholder="Name (for register only)" style="display: none;">
+  <input class="input-field" type="email" id="email" placeholder="Email">
+  <input class="input-field" type="password" id="password" placeholder="Password">
+
+  <button onclick="submitForm()">Submit</button>
+  <button onclick="toggleMode()">Switch to Register</button>
 
   <div id="message"></div>
+  <div id="error"></div>
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbw7WKqqbB6XnW6hZwO34XTZ1CwECdvGyieQ1xOBo1Y8q_pWMLW2tV8iWrDF14RWVMwG/exec";
+  let isLogin = true;
 
-  function showTab(tab) {
-    document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
-    document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
-    document.getElementById('loginTab').classList.toggle('active', tab === 'login');
-    document.getElementById('registerTab').classList.toggle('active', tab === 'register');
-    document.getElementById('message').innerText = '';
+  function openPopup() {
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("message").textContent = '';
+    document.getElementById("error").textContent = '';
   }
 
   function closePopup() {
-    document.getElementById('popup').style.display = 'none';
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
   }
 
-  function login() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
+  function toggleMode() {
+    isLogin = !isLogin;
+    document.getElementById("formTitle").textContent = isLogin ? "Login" : "Register";
+    document.getElementById("name").style.display = isLogin ? "none" : "block";
+  }
 
-    fetch(scriptURL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: "login",
-        email,
-        password
-      }),
-      headers: { "Content-Type": "application/json" }
+  function submitForm() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    const url = "https://script.google.com/macros/s/AKfycbw7WKqqbB6XnW6hZwO34XTZ1CwECdvGyieQ1xOBo1Y8q_pWMLW2tV8iWrDF14RWVMwG/exec";
+
+    const payload = {
+      action: isLogin ? "login" : "register",
+      name,
+      email,
+      password
+    };
+
+    fetch(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     })
     .then(res => res.json())
     .then(data => {
       if (data.status === "success") {
-        document.getElementById('message').innerText = "Welcome, " + data.name + "!";
+        document.getElementById("message").textContent = isLogin ? `Welcome, ${data.name}!` : "Registered successfully!";
+        document.getElementById("error").textContent = "";
       } else {
-        document.getElementById('message').innerText = data.message;
+        document.getElementById("error").textContent = data.message || "Error";
+        document.getElementById("message").textContent = "";
       }
     })
     .catch(err => {
-      document.getElementById('message').innerText = "Error: " + err.message;
-    });
-  }
-
-  function register() {
-    const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const password = document.getElementById('regPassword').value.trim();
-
-    fetch(scriptURL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: "register",
-        name,
-        email,
-        password
-      }),
-      headers: { "Content-Type": "application/json" }
-    })
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('message').innerText = data.message;
-    })
-    .catch(err => {
-      document.getElementById('message').innerText = "Error: " + err.message;
+      document.getElementById("error").textContent = "Failed to connect to server.";
+      document.getElementById("message").textContent = "";
     });
   }
 </script>
