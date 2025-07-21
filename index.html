@@ -1,149 +1,325 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login/Register Popup</title>
+  <meta charset="UTF-8">
+  <title>MiniBotix</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body, html {
+      height: 100%; width: 100%; overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      color: black;
     }
 
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 300px;
-      padding: 20px;
-      background: #fff;
-      border-radius: 8px;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 9999;
-    }
-
-    #popup h2 {
-      margin-top: 0;
-    }
-
-    .input-field {
-      width: 100%;
-      margin: 8px 0;
-      padding: 8px;
-      box-sizing: border-box;
-    }
-
-    #popup button {
-      padding: 10px 15px;
-      margin-top: 10px;
-    }
-
-    #overlay {
-      display: none;
+    /* Rainfall canvas background */
+    #rain {
       position: fixed;
       top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 9998;
+      width: 100vw; height: 100vh;
+      background: url('hill.jpg') no-repeat center center/cover;
+      z-index: -2;
     }
 
-    #closeBtn {
+    /* Top Bar */
+    .top-bar {
+      position: fixed;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+
+    .logo-section {
+      display: flex; align-items: center;
+    }
+
+    .logo-section img {
+      height: 40px; margin-right: 10px;
+    }
+
+    .top-buttons {
+      display: flex; gap: 15px;
+      align-items: center;
+    }
+
+    .top-buttons a, .top-buttons span {
+      text-decoration: none;
+      color: black;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .user-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Center Box */
+    .center-box {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.8);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .center-box h1 {
+      margin-bottom: 10px;
+    }
+
+    .center-box p {
+      margin-bottom: 20px;
+    }
+
+    .center-box button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
-      color: #555;
     }
 
-    #message {
-      color: green;
-      margin-top: 10px;
+    /* Popup */
+    .popup {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: url('jai.jpg') no-repeat center/cover;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      z-index: 20;
+      display: none;
+      color: black;
     }
 
-    #error {
-      color: red;
-      margin-top: 10px;
+    .popup input {
+      width: 100%; padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .popup button {
+      width: 100%; padding: 10px;
+      background: green; color: white; border: none;
+      cursor: pointer; margin-top: 10px;
+    }
+
+    .popup a {
+      color: blue; cursor: pointer; font-size: 12px;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      top: 40px; right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      display: none;
+      z-index: 100;
+    }
+
+    .user-dropdown div {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .user-dropdown div:hover {
+      background: #eee;
     }
   </style>
 </head>
 <body>
 
-<button onclick="openPopup()">Login/Register</button>
+<canvas id="rain"></canvas>
 
-<div id="overlay"></div>
+<div class="top-bar">
+  <div class="logo-section">
+    <img src="file.svg" alt="Logo">
+    <span style="font-size: 24px; font-weight: bold;">MiniBotix</span>
+  </div>
+  <div class="top-buttons">
+    <a href="college.html">College</a>
+    <a href="about.html">About</a>
+    <a href="service.html">Services</a>
+    <a href="course.html">Courses</a>
+    <span class="user-icon" onclick="toggleLoginPopup()">👤</span>
+    <span id="username-display"></span>
+    <div class="user-dropdown" id="userDropdown">
+      <div onclick="goProfile()">Profile</div>
+      <div onclick="logout()">Logout</div>
+    </div>
+  </div>
+</div>
 
-<div id="popup">
-  <span id="closeBtn" onclick="closePopup()">✖</span>
-  <h2 id="formTitle">Login</h2>
+<!-- Login/Register Popup -->
+<div class="popup" id="loginPopup">
+  <div id="loginSection">
+    <h3>Login</h3>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button onclick="loginUser()">Login</button>
+    <a onclick="showRegister()">New User? Register</a>
+  </div>
 
-  <input class="input-field" type="text" id="name" placeholder="Name (for register only)" style="display: none;">
-  <input class="input-field" type="email" id="email" placeholder="Email">
-  <input class="input-field" type="password" id="password" placeholder="Password">
+  <div id="registerSection" style="display:none;">
+    <h3>Register</h3>
+    <input type="text" id="regName" placeholder="Name">
+    <input type="email" id="regEmail" placeholder="Email">
+    <input type="password" id="regPass" placeholder="Password">
+    <input type="password" id="regConfirm" placeholder="Confirm Password">
+    <button onclick="registerUser()">Register</button>
+    <a onclick="showLogin()">Back to Login</a>
+  </div>
+</div>
 
-  <button onclick="submitForm()">Submit</button>
-  <button onclick="toggleMode()">Switch to Register</button>
-
-  <div id="message"></div>
-  <div id="error"></div>
+<div class="center-box">
+  <h1>Welcome to MiniBotix</h1>
+  <p>Learn Robotics, Embedded Systems, and Art Courses</p>
+  <button onclick="window.location.href='course.html'">Start Learning</button>
 </div>
 
 <script>
-  let isLogin = true;
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyHJd9ngI5saNc9wskugIVWPjgqaRBxdsltSKFAPXE_daakBNhaKwWg-w2_mP0xeT24/exec';
 
-  function openPopup() {
-    document.getElementById("popup").style.display = "block";
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("message").textContent = '';
-    document.getElementById("error").textContent = '';
+  const loginPopup = document.getElementById('loginPopup');
+  const loginSection = document.getElementById('loginSection');
+  const registerSection = document.getElementById('registerSection');
+
+  const usernameDisplay = document.getElementById('username-display');
+  const userDropdown = document.getElementById('userDropdown');
+
+  function toggleLoginPopup() {
+    if (localStorage.getItem("username")) {
+      userDropdown.style.display = userDropdown.style.display === "block" ? "none" : "block";
+    } else {
+      loginPopup.style.display = "block";
+    }
   }
 
-  function closePopup() {
-    document.getElementById("popup").style.display = "none";
-    document.getElementById("overlay").style.display = "none";
+  function showRegister() {
+    loginSection.style.display = "none";
+    registerSection.style.display = "block";
   }
 
-  function toggleMode() {
-    isLogin = !isLogin;
-    document.getElementById("formTitle").textContent = isLogin ? "Login" : "Register";
-    document.getElementById("name").style.display = isLogin ? "none" : "block";
+  function showLogin() {
+    loginSection.style.display = "block";
+    registerSection.style.display = "none";
   }
 
-  function submitForm() {
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+  function loginUser() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-    const url = "https://script.google.com/macros/s/AKfycbw5I49kQLjaQHARxTf9aNv_4nt7nmvKtVbc979Mfhlh0YqbBR8h3hdicnBq3DlMhuqa/exec";
-
-    const payload = {
-      action: isLogin ? "login" : "register",
-      name,
-      email,
-      password
-    };
-
-    fetch(url, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+    fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify({ action: "login", email, password }),
+      headers: { 'Content-Type': 'application/json' }
     })
     .then(res => res.json())
     .then(data => {
       if (data.status === "success") {
-        document.getElementById("message").textContent = isLogin ? `Welcome, ${data.name}!` : "Registered successfully!";
-        document.getElementById("error").textContent = "";
+        localStorage.setItem("username", data.name);
+        localStorage.setItem("email", email);
+        usernameDisplay.innerText = data.name;
+        loginPopup.style.display = "none";
+        alert("Login Successful");
       } else {
-        document.getElementById("error").textContent = data.message || "Error";
-        document.getElementById("message").textContent = "";
+        alert("Invalid email or password");
       }
-    })
-    .catch(err => {
-      document.getElementById("error").textContent = "Failed to connect to server.";
-      document.getElementById("message").textContent = "";
     });
+  }
+
+  function registerUser() {
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPass').value;
+    const confirm = document.getElementById('regConfirm').value;
+
+    if (password !== confirm) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify({ action: "register", name, email, password }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "exists") {
+        alert("User already exists");
+      } else if (data.status === "success") {
+        alert("Registered successfully");
+        showLogin();
+      }
+    });
+  }
+
+  function logout() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+    usernameDisplay.innerText = "";
+    userDropdown.style.display = "none";
+  }
+
+  function goProfile() {
+    window.location.href = "profile.html";
+  }
+
+  // Display user on load
+  window.onload = function() {
+    const name = localStorage.getItem("username");
+    if (name) usernameDisplay.innerText = name;
+    rainfall();
+  }
+
+  // Rainfall canvas animation
+  function rainfall() {
+    const canvas = document.getElementById('rain');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let drops = [];
+
+    for (let i = 0; i < 100; i++) {
+      drops.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        length: Math.random() * 20 + 10,
+        speed: Math.random() * 5 + 2
+      });
+    }
+
+    function drawRain() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = 'rgba(173,216,230,0.5)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < drops.length; i++) {
+        let d = drops[i];
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x, d.y + d.length);
+        ctx.stroke();
+        d.y += d.speed;
+        if (d.y > canvas.height) {
+          d.y = -20;
+          d.x = Math.random() * canvas.width;
+        }
+      }
+      requestAnimationFrame(drawRain);
+    }
+    drawRain();
   }
 </script>
 
