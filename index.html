@@ -22,40 +22,6 @@
       z-index: -2;
     }
 
-    /* LOADING SCREEN */
-    #loading-screen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #5e3b1e; /* Brown */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 9999;
-      color: white;
-      font-size: 48px;
-      animation: fadeOut 1s ease forwards;
-      animation-delay: 3s;
-    }
-
-    #loading-text {
-      animation: scaleUp 2s infinite alternate;
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
-      }
-    }
-
-    @keyframes scaleUp {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.1); }
-    }
-
     /* Top Bar */
     .top-bar {
       position: fixed;
@@ -173,15 +139,8 @@
 </head>
 <body>
 
-<!-- Rainfall canvas -->
 <canvas id="rain"></canvas>
 
-<!-- LOADING SCREEN -->
-<div id="loading-screen">
-  <div id="loading-text">MiniBotix</div>
-</div>
-
-<!-- Top Navigation -->
 <div class="top-bar">
   <div class="logo-section">
     <img src="file.svg" alt="Logo">
@@ -222,7 +181,6 @@
   </div>
 </div>
 
-<!-- Main Welcome Content -->
 <div class="center-box">
   <h1>Welcome to MiniBotix</h1>
   <p>Learn Robotics, Embedded Systems, and Art Courses</p>
@@ -318,12 +276,14 @@
     window.location.href = "profile.html";
   }
 
+  // Display user on load
   window.onload = function() {
     const name = localStorage.getItem("username");
     if (name) usernameDisplay.innerText = name;
     rainfall();
   }
 
+  // Rainfall canvas animation
   function rainfall() {
     const canvas = document.getElementById('rain');
     const ctx = canvas.getContext('2d');
@@ -359,10 +319,10 @@
       }
       requestAnimationFrame(drawRain);
     }
-
     drawRain();
   }
 </script>
 
 </body>
 </html>
+
