@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MiniBotix Stores</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+  body { background: url('hill.jpg') no-repeat center/cover; min-height:100vh; color:black; }
+
+  /* Top toolbar */
+  .top-bar {
+    position: fixed; top:0; width:100%; display:flex; justify-content:space-between; align-items:center;
+    padding:10px 20px; background: rgba(255,255,255,0.5); z-index: 100;
+    border-bottom:1px solid #ccc;
+  }
+  .top-bar .left { font-weight:bold; font-size:18px; }
+  .top-bar .right a {
+    text-decoration:none; background:#007bff; color:white; padding:6px 12px; border-radius:5px; font-weight:bold;
+  }
+
+  /* App grid */
+  .app-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap:15px;
+  padding:70px 10px 20px; /* reduced top padding */
+  justify-items:center;
+}
+
+
+  .app-card {
+    background: rgba(255,255,255,0.8); border-radius:15px; padding:20px; text-align:center;
+    width:200px; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .app-card:hover {
+    transform: scale(1.05); box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  }
+  .app-card img { width:80px; height:80px; margin-bottom:10px; }
+  .app-card h3 { margin-bottom:5px; font-size:16px; }
+
+  /* Popup */
+  .popup {
+    position: fixed; top:50%; left:50%; transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.95); padding:20px; border-radius:10px;
+    width:300px; display:none; z-index:200; text-align:center;
+  }
+  .popup img { width:80px; height:80px; margin-bottom:10px; }
+  .popup h3 { margin-bottom:10px; }
+  .popup p { margin-bottom:5px; font-size:14px; }
+  .popup button {
+    margin-top:10px; padding:10px 15px; background:#007bff; color:white;
+    border:none; border-radius:5px; cursor:pointer; font-weight:bold;
+  }
+  .popup .close { position:absolute; top:5px; right:10px; cursor:pointer; font-weight:bold; font-size:18px; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="left">MiniBotix-Stores (App / Source Code)</div>
+  <div class="right">
+  <a href="index.html">Home</a>
+</div>
+
+</div>
+
+<div class="app-grid">
+  <!-- Mayilon OS Simulator -->
+  <div class="app-card" onclick="showPopup('Mayilon OS Simulator','Peacock logo','200MB','A Windows 11 simulator for learning OS basics','downloads/mayilon_os_simulator.exe','mayilon.png')">
+    <img src="mayilon.png" alt="Mayilon Logo">
+    <h3>Mayilon OS Simulator</h3>
+  </div>
+
+  <!-- Resumei -->
+  <div class="app-card" onclick="showPopup('Resumei','Resume icon','5MB','Resume analyzer source code','downloads/resumei.zip','resumei.png')">
+    <img src="resumei.png" alt="Resumei Logo">
+    <h3>Resumei</h3>
+  </div>
+
+  <!-- Coming Soon -->
+  <div class="app-card" onclick="showPopup('Coming Soon','Coming Soon','--','This app will be available soon','downloads/coming_soon.zip','coming.png')">
+    <img src="coming.png" alt="Coming Soon Logo">
+    <h3>Coming Soon</h3>
+  </div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+  <span class="close" onclick="closePopup()">×</span>
+  <img id="popupLogo" src="" alt="">
+  <h3 id="popupName"></h3>
+  <p><strong>Logo:</strong> <span id="popupLogoText"></span></p>
+  <p><strong>Storage:</strong> <span id="popupStorage"></span></p>
+  <p id="popupDesc"></p>
+  <button id="popupDownload">Download</button>
+</div>
+
+<script>
+function showPopup(name, logoText, storage, description, downloadLink, logoSrc) {
+  document.getElementById('popupName').innerText = name;
+  document.getElementById('popupLogoText').innerText = logoText;
+  document.getElementById('popupStorage').innerText = storage;
+  document.getElementById('popupDesc').innerText = description;
+  document.getElementById('popupLogo').src = logoSrc;
+  const downloadBtn = document.getElementById('popupDownload');
+  downloadBtn.onclick = () => { window.location.href = downloadLink; };
+  document.getElementById('popup').style.display = 'block';
+}
+function closePopup() { document.getElementById('popup').style.display = 'none'; }
+</script>
+
+</body>
+</html>
