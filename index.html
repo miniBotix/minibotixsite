@@ -1,103 +1,746 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MiniBotix</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="MiniBotix - Courses, Products (Agriculture & Engineering), Electronics Components, Projects & Free Source Code" />
+  <title>MiniBotix · Learn · Build · Innovate</title>
+  <link rel="icon" href="file.svg" type="image/svg+xml">
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { height: 100%; width: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif; color: black; }
+  /* ----------------- Basic reset & layout ----------------- */
+  :root{
+    --bg-dark: rgba(6,12,26,0.7);
+    --accent: linear-gradient(90deg,#007bff,#00d4ff);
+    --glass: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#071126;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
 
-    /* Rainfall canvas background */
-    #rain {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: url('hill.jpg') no-repeat center center/cover;
-      z-index: -2;
-    }
+  /* ---------- background canvas sits behind everything ---------- */
+  #rainCanvas{
+    position:fixed;inset:0;width:100%;height:100%;z-index:-10;background:url('hill.jpg') center/cover no-repeat;
+  }
+  /* subtle overlay for readability */
+  .bg-overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(3,7,15,0.55),rgba(3,7,15,0.35));z-index:-5}
 
-    /* Top Bar */
-    .top-bar {
-      position: fixed; width: 100%; display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 20px; background: rgba(255, 255, 255, 0.4); z-index: 10;
-    }
+  /* ----------------- NAVBAR ----------------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;
+    background:rgba(0,0,0,0.25);backdrop-filter:blur(6px);z-index:50;border-bottom:1px solid rgba(255,255,255,0.03)
+  }
+  .nav-left{display:flex;align-items:center;gap:12px}
+  .brand{
+    display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff
+  }
+  .brand img{height:36px;width:36px;object-fit:contain;border-radius:6px}
 
-    .logo-section { display: flex; align-items: center; }
-    .logo-section img { height: 40px; margin-right: 10px; }
+  nav.main-nav{display:flex;gap:18px;align-items:center}
+  nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.92);padding:6px 8px;border-radius:6px;transition:all .18s}
+  nav.main-nav a:hover{transform:translateY(-3px);color:#00e0ff}
 
-    .top-buttons { display: flex; gap: 15px; align-items: center; }
-    .top-buttons a {
-      text-decoration: none; color: black; cursor: pointer; font-weight: 600;
-    }
-    .top-buttons a:hover { text-decoration: underline; }
+  .user-area{display:flex;align-items:center;gap:12px}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
+  .btn-primary{background:var(--accent);padding:9px 14px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)}
 
-    /* Center Box */
-    .center-box {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,0.8);
-      padding: 30px; border-radius: 15px; text-align: center;
-    }
-    .center-box h1 { margin-bottom: 10px; }
-    .center-box p { margin-bottom: 20px; }
-    .center-box button {
-      padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px;
-      font-weight: bold; cursor: pointer;
-    }
+  /* small screens: hamburger */
+  .hamburger{display:none;width:44px;height:44px;border-radius:10px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
+  .hamburger div{width:22px;height:2px;background:#fff;border-radius:2px;position:relative}
+  .hamburger div:after,.hamburger div:before{content:'';position:absolute;width:22px;height:2px;background:#fff;border-radius:2px;left:0}
+  .hamburger div:before{top:-7px} .hamburger div:after{top:7px}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:80vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20px;text-align:center
+  }
+  .hero-card{
+    width:min(980px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03));padding:40px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 20px 60px rgba(3,7,20,.6)
+  }
+  .eyebrow{display:inline-block;background:rgba(255,255,255,0.06);padding:6px 10px;border-radius:999px;margin-bottom:12px;font-weight:600;color:#aee9ff}
+  .hero h1{font-size:40px;line-height:1.05;margin-bottom:12px}
+  .hero p{color:rgba(255,255,255,0.9);margin-bottom:20px}
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- SECTIONS ---------- */
+  .section{padding:60px 22px;background:transparent}
+  .container{max-width:1100px;margin:0 auto}
+  .section h2{font-size:24px;color:#fff;margin-bottom:12px}
+  .section p.lead{color:rgba(255,255,255,0.85);margin-bottom:18px}
+
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px
+  }
+  .card{
+    background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+    transition:transform .25s ease,box-shadow .25s;cursor:default;overflow:hidden
+  }
+  .card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+  .card h3{font-size:18px;margin-bottom:8px}
+  .card p{font-size:14px;color:rgba(255,255,255,0.85)}
+
+  /* product badges */
+  .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.2);font-weight:600;font-size:12px;margin-right:8px}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:28px 22px;background:transparent;text-align:center;color:rgba(255,255,255,0.7)}
+
+  /* ---------- AUTH MODALS ---------- */
+  .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:120;backdrop-filter:blur(3px)}
+  .modal-card{width:100%;max-width:520px;background:#0b1220;padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,.03)}
+  .modal .close{float:right;color:rgba(255,255,255,0.6);font-size:20px;cursor:pointer}
+  .form-group{margin-bottom:12px}
+  .form-group label{display:block;font-size:13px;margin-bottom:6px;color:rgba(255,255,255,0.85)}
+  .form-group input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff}
+  .small{font-size:13px;color:rgba(255,255,255,0.7)}
+
+  /* profile pill in nav */
+  .profile-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:999px;border:1px solid rgba(255,255,255,0.03)}
+  .profile-pill img{height:32px;width:32px;border-radius:50%;object-fit:cover;background:#223}
+  .settings-icon{cursor:pointer;color:rgba(255,255,255,.8)}
+
+  /* responsive adjustments */
+  @media (max-width:880px){
+    nav.main-nav{display:none}
+    .hamburger{display:flex}
+    .hero h1{font-size:28px}
+    .hero-card{padding:20px}
+  }
   </style>
 </head>
 <body>
 
-<canvas id="rain"></canvas>
+  <!-- Rain background canvas -->
+  <canvas id="rainCanvas" aria-hidden="true"></canvas>
+  <div class="bg-overlay" aria-hidden="true"></div>
 
-<div class="top-bar">
-  <div class="logo-section">
-    <img src="file.svg" alt="Logo">
-    <span style="font-size: 24px; font-weight: bold;">MiniBotix</span>
-  </div>
-  <div class="top-buttons">
-    <a href="college.html">College</a>
-    <a href="about.html">About</a>
-    <a href="service.html">Services</a>
-    <a href="course.html">Courses</a>
-    <a href="apps.html">Apps</a> <!-- Added Apps button -->
-  </div>
-</div>
+  <!-- NAV -->
+  <header class="nav" role="banner">
+    <div class="nav-left">
+      <div class="brand">
+        <img src="file.svg" alt="MiniBotix logo" loading="lazy">
+        <div>MiniBotix</div>
+      </div>
+    </div>
 
-<div class="center-box">
-  <h1>Welcome to MiniBotix</h1>
-  <p>Learn Robotics, Embedded Systems, and Art Courses</p>
-  <button onclick="window.location.href='course.html'">Start Learning</button>
-</div>
+    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#courses">Courses</a>
+      <a href="#products">Products</a>
+      <a href="#components">Components</a>
+      <a href="#projects">Projects</a>
+      <a href="#apps">Free Apps</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="user-area">
+      <div id="signedOutUI">
+        <button id="openAuth" class="btn-ghost" title="Sign in or Register">Sign In</button>
+      </div>
+      <div id="signedInUI" class="profile-pill" style="display:none">
+        <img id="profileAvatar" src="" alt="profile" onerror="this.src='file.svg'">
+        <span id="profileName">User</span>
+        <span class="settings-icon" id="openProfileSettings" title="Settings">&#9881;</span>
+      </div>
+
+      <button class="hamburger" id="mobileMenuBtn" aria-label="Open menu"><div></div></button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-card container">
+      <div class="eyebrow">MiniBotix • Courses · Products · Projects</div>
+      <h1>Learn · Build · Innovate</h1>
+      <p class="lead">Practical courses, agricultural & engineering products, tested project kits, electronic components, and free source code to start building today.</p>
+
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.location='#courses'">Explore Courses</button>
+        <button class="btn-ghost" onclick="document.location='#products'">Shop Products</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section id="courses" class="section">
+    <div class="container">
+      <h2>Courses</h2>
+      <p class="lead">From beginner embedded systems to advanced robotics — project-based learning you can finish in weeks.</p>
+
+      <div class="grid">
+        <article class="card">
+          <span class="badge">Beginner</span>
+          <h3>Embedded Systems 101</h3>
+          <p>Learn electronics basics, microcontrollers, and simple circuits — build 6 hands-on projects.</p>
+        </article>
+
+        <article class="card">
+          <span class="badge">IoT</span>
+          <h3>IoT for Agriculture</h3>
+          <p>Smart irrigation, sensor networks and data logging. Practical projects for small farms.</p>
+        </article>
+
+        <article class="card">
+          <span class="badge">Advanced</span>
+          <h3>Robotics & Automation</h3>
+          <p>Design, control and automate robotic arms and vehicles using microcontrollers and computer vision.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products" class="section">
+    <div class="container">
+      <h2>Products (Agriculture & Engineering)</h2>
+      <p class="lead">We sell tested agriculture devices, sensors, and engineering kits — shipped with documentation and support.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Auto Irrigation Kit</h3>
+          <p>Solar-powered controller, moisture sensor, and valve driver — ready to install.</p>
+        </div>
+        <div class="card">
+          <h3>Soil Health Sensor</h3>
+          <p>pH, moisture and temperature readings with calibration guide and data export.</p>
+        </div>
+        <div class="card">
+          <h3>Robotics Parts Bundle</h3>
+          <p>Motors, servos, frames and electronics for building small robots and arms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section id="components" class="section">
+    <div class="container">
+      <h2>Electronic Components</h2>
+      <p class="lead">Sensors, modules, microcontrollers, PCBs and more — buy parts for your classroom or lab.</p>
+      <div class="grid">
+        <div class="card"><h3>ESP32 / ESP8266 Modules</h3><p>Wi-Fi + Bluetooth microcontrollers, ideal for IoT.</p></div>
+        <div class="card"><h3>Sensor Modules</h3><p>DHT11/22, BMP180, MQ sensors and more.</p></div>
+        <div class="card"><h3>PCB Services</h3><p>PCB review, small-batch fabrication, and assembly guidance.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2>Projects</h2>
+      <p class="lead">Get full projects with code, wiring diagrams, and BOMs — or commission custom builds.</p>
+      <div class="grid">
+        <div class="card"><h3>Rain Detector</h3><p>Automated cover system and alerting example with code.</p></div>
+        <div class="card"><h3>Robotic Arm</h3><p>Image-detection guided pick-and-place demo with servo control.</p></div>
+        <div class="card"><h3>Satellite Simulator</h3><p>ESP32-CAM + sensors for environmental simulation & streaming.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apps & Free codes -->
+  <section id="apps" class="section">
+    <div class="container">
+      <h2>Free Apps & Source Code</h2>
+      <p class="lead">Download basic apps and example source to bootstrap learning. We share starter code for students.</p>
+      <div class="grid">
+        <div class="card"><h3>Starter Voice Assistant</h3><p>Python-based assistant template (private code available upon course purchase).</p></div>
+        <div class="card"><h3>Color Detection Example</h3><p>OpenCV example for object detection with a webcam.</p></div>
+        <div class="card"><h3>ThingSpeak Data Sender</h3><p>NodeMCU code to push environment sensor readings to ThingSpeak.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Contact & Support</h2>
+      <p class="lead">Need help? Send PCB files to <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> for a free review.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <small>© 2025 MiniBotix · Learn · Build · Innovate</small>
+    </div>
+  </footer>
+
+  <!-- AUTH MODAL (hidden) -->
+  <div id="authModal" class="modal" style="display:none" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <span class="close" id="authClose">&times;</span>
+
+      <div id="authContainer">
+        <!-- LOGIN -->
+        <div id="loginView">
+          <h3 id="authTitle">Sign In</h3>
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" type="email" required placeholder="you@domain.com">
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input id="loginPassword" type="password" required placeholder="Password">
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
+              <button class="btn-primary" type="submit">Sign In</button>
+              <a href="#" id="showRegister" class="small">New? Register</a>
+            </div>
+            <p class="small" style="margin-top:10px;color:rgba(255,255,255,0.6)"><strong>Note:</strong> For demo sites we store data locally. See settings for GitHub-backed storage options (admin).</p>
+          </form>
+        </div>
+
+        <!-- REGISTER -->
+        <div id="registerView" style="display:none">
+          <h3>Register</h3>
+          <form id="registerForm">
+            <div class="form-group">
+              <label for="regName">Full name</label>
+              <input id="regName" type="text" required placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="regPhone">Phone</label>
+              <input id="regPhone" type="tel" required placeholder="+91 9XXXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label for="regEmail">Email</label>
+              <input id="regEmail" type="email" required placeholder="you@domain.com">
+            </div>
+            <div class="form-group">
+              <label for="regPass">Password</label>
+              <input id="regPass" type="password" required placeholder="At least 6 characters">
+            </div>
+            <div class="form-group">
+              <label for="regPass2">Confirm Password</label>
+              <input id="regPass2" type="password" required placeholder="Confirm Password">
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
+              <button class="btn-primary" type="submit">Create Account</button>
+              <a href="#" id="showLogin" class="small">Have account? Sign in</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE SETTINGS MODAL -->
+  <div id="profileModal" class="modal" style="display:none" aria-hidden="true">
+    <div class="modal-card">
+      <span class="close" id="profileClose">&times;</span>
+      <h3>Profile Settings</h3>
+      <form id="profileForm">
+        <div class="form-group"><label>Name</label><input id="pfName" type="text" required></div>
+        <div class="form-group"><label>Phone</label><input id="pfPhone" type="tel" required></div>
+        <div class="form-group"><label>Email</label><input id="pfEmail" type="email" required></div>
+        <div class="form-group"><label>New Password (leave blank to keep)</label><input id="pfPass" type="password"></div>
+        <div style="display:flex;gap:12px;margin-top:12px"><button class="btn-primary" type="button" id="saveProfile">Save</button><button class="btn-ghost" id="logoutBtn" type="button">Logout</button></div>
+      </form>
+    </div>
+  </div>
 
 <script>
-  // Rainfall canvas animation
-  function rainfall() {
-    const canvas = document.getElementById('rain');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+/* =========================
+   CONFIG & HELPERS
+   ========================= */
 
-    let drops = [];
-    for (let i = 0; i < 100; i++) {
-      drops.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, length: Math.random() * 20 + 10, speed: Math.random() * 5 + 2 });
-    }
+/*
+  STORAGE modes:
+  - localStorage (default) -> safe for client-only demo & works on GitHub Pages
+  - github -> attempt to read/write user files to a GitHub repo using REST API (requires admin token)
+    WARNING: placing tokens in client-side code is insecure for public sites. Use serverless function or backend to mediate.
+*/
+const STORAGE_MODE = 'local'; // change to 'github' to enable github calls (see GITHUB_CONFIG)
+const GITHUB_CONFIG = {
+  owner: '',       // e.g. 'your-username'
+  repo: '',        // e.g. 'minibotix-users'
+  branch: 'main',  // branch to write files to
+  token: ''        // PERSONAL ACCESS TOKEN (DO NOT expose publicly). Instead use serverless backend.
+};
 
-    function drawRain() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = 'rgba(173,216,230,0.5)'; ctx.lineWidth = 2;
-      for (let d of drops) {
-        ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x, d.y + d.length); ctx.stroke();
-        d.y += d.speed;
-        if (d.y > canvas.height) { d.y = -20; d.x = Math.random() * canvas.width; }
-      }
-      requestAnimationFrame(drawRain);
+// Simple helper to show/hide
+const $ = (sel)=>document.querySelector(sel);
+const $$ = (sel)=>Array.from(document.querySelectorAll(sel));
+
+/* =========================
+   RAIN CANVAS
+   ========================= */
+(function rain(){
+  const canvas = document.getElementById('rainCanvas');
+  const ctx = canvas.getContext('2d');
+  let W=canvas.width=innerWidth, H=canvas.height=innerHeight;
+  window.addEventListener('resize',()=>{W=canvas.width=innerWidth;H=canvas.height=innerHeight; initDrops();});
+  let drops=[];
+  function initDrops(n=140){
+    drops=[];
+    for(let i=0;i<n;i++){
+      drops.push({
+        x:Math.random()*W,
+        y:Math.random()*H,
+        len:Math.random()*25+8,
+        sp:Math.random()*3+1.8,
+        sw:Math.random()*1.4+0.6
+      });
     }
-    drawRain();
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // subtle shimmer lines
+    for(let d of drops){
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(170,220,255,${0.12 + Math.random()*0.12})`;
+      ctx.lineWidth = d.sw;
+      ctx.moveTo(d.x,d.y);
+      ctx.lineTo(d.x+1,d.y+d.len);
+      ctx.stroke();
+      d.y += d.sp;
+      d.x += Math.sin(d.y/50)*0.5;
+      if (d.y > H + 20){ d.y = -20; d.x = Math.random()*W; }
+    }
+    requestAnimationFrame(draw);
+  }
+  initDrops();
+  draw();
+})();
+
+/* =========================
+   MOBILE MENU (toggle)
+   ========================= */
+const mobileBtn = document.getElementById('mobileMenuBtn');
+mobileBtn.addEventListener('click', ()=>{
+  const nav = document.querySelector('nav.main-nav');
+  if(nav.style.display === 'flex'){ nav.style.display='none'; mobileBtn.classList.remove('open'); }
+  else { nav.style.display='flex'; nav.style.flexDirection='column'; nav.style.position='absolute'; nav.style.top='64px'; nav.style.right='20px'; nav.style.background='rgba(5,8,15,0.9)'; nav.style.padding='12px'; nav.style.borderRadius='10px'; mobileBtn.classList.add('open'); }
+});
+
+/* =========================
+   AUTH UI logic
+   ========================= */
+const authModal = document.getElementById('authModal');
+const profileModal = document.getElementById('profileModal');
+const openAuth = document.getElementById('openAuth');
+const authClose = document.getElementById('authClose');
+const showRegister = document.getElementById('showRegister');
+const showLogin = document.getElementById('showLogin');
+const loginView = document.getElementById('loginView');
+const registerView = document.getElementById('registerView');
+
+openAuth.addEventListener('click', ()=>{ authModal.style.display='flex'; loginView.style.display='block'; registerView.style.display='none'; });
+authClose.addEventListener('click', ()=>{ authModal.style.display='none'; });
+showRegister.addEventListener('click', (e)=>{ e.preventDefault(); loginView.style.display='none'; registerView.style.display='block'; });
+showLogin.addEventListener('click', (e)=>{ e.preventDefault(); loginView.style.display='block'; registerView.style.display='none'; });
+window.addEventListener('click', (e)=>{ if(e.target===authModal) authModal.style.display='none'; if(e.target===profileModal) profileModal.style.display='none'; });
+
+/* =========================
+   Simple client-side 'database'
+   - We keep users as objects in localStorage under 'mb_users' (key: email)
+   - For 'github' mode we call helper writeUserToGithub/readUserFromGithub
+   ========================= */
+
+function usersLoad(){
+  if(STORAGE_MODE==='local'){
+    const raw = localStorage.getItem('mb_users') || '{}';
+    try{return JSON.parse(raw);}catch(e){return {}}
+  } else {
+    // for demo we still return local storage if github not configured
+    const raw = localStorage.getItem('mb_users') || '{}';
+    try{return JSON.parse(raw);}catch(e){return {}}
+  }
+}
+function usersSave(obj){
+  if(STORAGE_MODE==='local'){
+    localStorage.setItem('mb_users', JSON.stringify(obj));
+  } else {
+    // write to localStorage also as fallback
+    localStorage.setItem('mb_users', JSON.stringify(obj));
+  }
+}
+
+/* ========== GitHub file helpers (optional) ==========
+  NOTE: This uses GitHub REST API v3 to create/update files.
+  You MUST provide a personal access token with 'repo' scope to write to repository.
+  DO NOT embed a token in client-side code for public sites.
+  Instead build a serverless endpoint that accepts user data and writes files server-side.
+====================================================== */
+
+async function githubGetFile(path){
+  if(!GITHUB_CONFIG.owner || !GITHUB_CONFIG.repo || !GITHUB_CONFIG.token) throw new Error('GitHub config incomplete');
+  const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${encodeURIComponent(path)}`;
+  const res = await fetch(url, { headers:{ Authorization:`token ${GITHUB_CONFIG.token}`, Accept:'application/vnd.github.v3+json' } });
+  if(res.status===404) return null;
+  if(!res.ok) throw new Error('GitHub GET failed: '+res.status);
+  const data = await res.json();
+  const content = atob(data.content.replace(/\n/g,'')); // decode
+  return { content, sha: data.sha, file: data };
+}
+
+async function githubPutFile(path, content, message='Add user file'){
+  if(!GITHUB_CONFIG.owner || !GITHUB_CONFIG.repo || !GITHUB_CONFIG.token) throw new Error('GitHub config incomplete');
+  // check existing
+  let sha = undefined;
+  try{
+    const existing = await githubGetFile(path);
+    if(existing) sha = existing.sha;
+  }catch(e){
+    // ignore
+  }
+  const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${encodeURIComponent(path)}`;
+  const body = {
+    message,
+    content: btoa(content),
+    branch: GITHUB_CONFIG.branch
+  };
+  if(sha) body.sha = sha;
+  const res = await fetch(url, { method:'PUT', headers:{ Authorization:`token ${GITHUB_CONFIG.token}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify(body) });
+  if(!res.ok) {
+    const txt = await res.text();
+    throw new Error('GitHub PUT failed: '+res.status + ' ' + txt);
+  }
+  return await res.json();
+}
+
+/* =========================
+   AUTH form handlers
+   ========================= */
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+
+loginForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPassword').value;
+
+  const users = usersLoad();
+  if(users[email] && users[email].password === pass){
+    // success
+    localSignIn(users[email]);
+    authModal.style.display='none';
+    showToast('Signed in successfully');
+  } else {
+    showToast('Invalid credentials', true);
+  }
+});
+
+registerForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const p1 = document.getElementById('regPass').value;
+  const p2 = document.getElementById('regPass2').value;
+
+  if(p1.length < 6){ showToast('Password must be at least 6 chars', true); return; }
+  if(p1 !== p2){ showToast('Passwords do not match', true); return; }
+
+  const users = usersLoad();
+  if(users[email]){ showToast('Email already registered', true); return; }
+
+  const userObj = { name, phone, email, password: p1, created: new Date().toISOString() };
+
+  // Save locally
+  users[email] = userObj;
+  usersSave(users);
+
+  // Optionally: write individual file to GitHub repo (unsafe on client)
+  if(STORAGE_MODE === 'github'){
+    try{
+      const path = `users/${email}.txt`;
+      const content = `name:${name}\nphone:${phone}\nemail:${email}\ncreated:${userObj.created}`;
+      await githubPutFile(path, content, `Create user ${email}`);
+      // we won't store password in repo; keep in localStorage (demo)
+    }catch(err){
+      console.warn('GitHub write failed:', err);
+    }
   }
 
-  window.onload = rainfall;
-</script>
+  localSignIn(userObj);
+  authModal.style.display='none';
+  showToast('Account created! Signed in.');
+});
 
+/* =========================
+   Sign-in display & Profile
+   ========================= */
+
+function localSignIn(user){
+  // show profile in nav
+  $('#signedOutUI').style.display='none';
+  $('#signedInUI').style.display='flex';
+  $('#profileName').textContent = user.name.split(' ')[0] || user.email.split('@')[0];
+  $('#profileAvatar').src = genAvatarUrl(user.email);
+  currentUser = user;
+  // persist session locally
+  localStorage.setItem('mb_current', user.email);
+  // fill profile modal
+  $('#pfName').value = user.name;
+  $('#pfPhone').value = user.phone;
+  $('#pfEmail').value = user.email;
+}
+
+function signOut(){
+  $('#signedOutUI').style.display='flex';
+  $('#signedInUI').style.display='none';
+  localStorage.removeItem('mb_current');
+  currentUser = null;
+  showToast('Signed out');
+}
+
+/* quick avatar generator (gravatar-like fallback) */
+function genAvatarUrl(email){
+  try{
+    const hash = md5((email||'').trim().toLowerCase());
+    return `https://www.gravatar.com/avatar/${hash}?d=identicon&s=80`;
+  }catch(e){
+    return 'file.svg';
+  }
+}
+
+/* load session on page start */
+let currentUser = null;
+(function tryResume(){
+  const cur = localStorage.getItem('mb_current');
+  const users = usersLoad();
+  if(cur && users[cur]) localSignIn(users[cur]);
+})();
+
+/* profile settings open */
+document.getElementById('openProfileSettings').addEventListener('click', ()=>{
+  profileModal.style.display='flex';
+});
+document.getElementById('profileClose').addEventListener('click', ()=>profileModal.style.display='none');
+
+/* save profile */
+document.getElementById('saveProfile').addEventListener('click', ()=>{
+  const name = $('#pfName').value.trim();
+  const phone = $('#pfPhone').value.trim();
+  const email = $('#pfEmail').value.trim().toLowerCase();
+  const newPass = $('#pfPass').value;
+
+  if(!currentUser){ showToast('No user signed in', true); return; }
+
+  const users = usersLoad();
+  const user = users[currentUser.email || currentUser];
+  if(!user){ showToast('User not found', true); return; }
+
+  user.name = name; user.phone = phone; user.email = email;
+  if(newPass && newPass.length >= 6) user.password = newPass;
+
+  // update key if email changed
+  if(email !== (currentUser.email || currentUser)){
+    delete users[currentUser.email];
+    users[email] = user;
+    localStorage.setItem('mb_current', email);
+  } else {
+    users[email] = user;
+  }
+
+  usersSave(users);
+  currentUser = user;
+  localSignIn(user);
+  profileModal.style.display='none';
+  showToast('Profile updated');
+});
+
+/* logout */
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  signOut();
+  profileModal.style.display='none';
+});
+
+/* =========================
+   TOAST (simple)
+   ========================= */
+function showToast(msg, isErr=false){
+  let toast = document.createElement('div');
+  toast.textContent = msg;
+  toast.style.position='fixed';toast.style.bottom='28px';toast.style.left='50%';toast.style.transform='translateX(-50%)';
+  toast.style.background = isErr?'#ff4d4f':'#00c2ff';toast.style.color='#021';toast.style.padding='10px 16px';
+  toast.style.borderRadius='8px';toast.style.boxShadow='0 8px 30px rgba(0,0,0,.4)';toast.style.zIndex='9999';
+  document.body.appendChild(toast);
+  setTimeout(()=>{ toast.style.transition='all .4s'; toast.style.opacity='0'; toast.style.transform='translateX(-50%) translateY(10px)'; },2200);
+  setTimeout(()=>toast.remove(),2600);
+}
+
+/* =========================
+   Utility: md5 (simple) - used only for gravatar style avatar generation
+   Source: tiny MD5 implementation (public domain)
+   ========================= */
+function md5(s){ // minimal MD5 implementation for avatar hashing
+  // ... tiny md5 implementation (compact) ...
+  // For brevity, we use a small implementation. If you prefer, remove gravatar and use file.svg.
+  // Implementation below is a small adapted function:
+  function L(k,d){return (k<<d)|(k>>>(32-d))}
+  function K(G,k){var I=(G&65535)+(k&65535);var H=(G>>>16)+(k>>>16)+(I>>>16);return (H<<16)|(I&65535)}
+  function r(a,b,c,d,e,f,g){a=K(a,K(K((b&c)|((~b)&d),e),g));return K(L(a,f),b)}
+  function o(a,b,c,d,e,f,g){a=K(a,K(K((b&d)|(c&(~d)),e),g));return K(L(a,f),b)}
+  function q(a,b,c,d,e,f,g){a=K(a,K(K(b^c^d,e),g));return K(L(a,f),b)}
+  function p(a,b,c,d,e,f,g){a=K(a,K(K(c^(b|(~d)),e),g));return K(L(a,f),b)}
+  function s(s){var n=[],b=(1<<8)-1;for(var i=0;i<s.length*8;i+=8)n[i>>5]|=(s.charCodeAt(i/8)&b)<<(i%32);return n}
+  function t(l){var a='',b=32;for(var i=0;i<4;i++)for(var j=0;j<8;j++){a+=((l>>>(i*8+j*4))&15).toString(16)}return a}
+  var x=s(unescape(encodeURIComponent(s||'')));
+  var a=1732584193,b=-271733879,c=-1732584194,d=271733878;
+  x[x.length>>0]=x.length*8;
+  for(var i=0;i<x.length;i+=16){
+    var olda=a,oldb=b,oldc=c,oldd=d;
+    a=r(a,b,c,d,x[i+0],7,-680876936);d=r(d,a,b,c,x[i+1],12,-389564586);
+    c=r(c,d,a,b,x[i+2],17,606105819);b=r(b,c,d,a,x[i+3],22,-1044525330);
+    a=r(a,b,c,d,x[i+4],7,-176418897);d=r(d,a,b,c,x[i+5],12,1200080426);
+    c=r(c,d,a,b,x[i+6],17,-1473231341);b=r(b,c,d,a,x[i+7],22,-45705983);
+    a=r(a,b,c,d,x[i+8],7,1770035416);d=r(d,a,b,c,x[i+9],12,-1958414417);
+    c=r(c,d,a,b,x[i+10],17,-42063);b=r(b,c,d,a,x[i+11],22,-1990404162);
+    a=r(a,b,c,d,x[i+12],7,1804603682);d=r(d,a,b,c,x[i+13],12,-40341101);
+    c=r(c,d,a,b,x[i+14],17,-1502002290);b=r(b,c,d,a,x[i+15],22,1236535329);
+    a=o(a,b,c,d,x[i+1],5,-165796510);d=o(d,a,b,c,x[i+6],9,-1069501632);
+    c=o(c,d,a,b,x[i+11],14,643717713);b=o(b,c,d,a,x[i+0],20,-373897302);
+    a=o(a,b,c,d,x[i+5],5,-701558691);d=o(d,a,b,c,x[i+10],9,38016083);
+    c=o(c,d,a,b,x[i+15],14,-660478335);b=o(b,c,d,a,x[i+4],20,-405537848);
+    a=o(a,b,c,d,x[i+9],5,568446438);d=o(d,a,b,c,x[i+14],9,-1019803690);
+    c=o(c,d,a,b,x[i+3],14,-187363961);b=o(b,c,d,a,x[i+8],20,1163531501);
+    a=o(a,b,c,d,x[i+13],5,-1444681467);d=o(d,a,b,c,x[i+2],9,-51403784);
+    c=o(c,d,a,b,x[i+7],14,1735328473);b=o(b,c,d,a,x[i+12],20,-1926607734);
+    a=q(a,b,c,d,x[i+5],4,-378558);d=q(d,a,b,c,x[i+8],11,-2022574463);
+    c=q(c,d,a,b,x[i+11],16,1839030562);b=q(b,c,d,a,x[i+14],23,-35309556);
+    a=q(a,b,c,d,x[i+1],4,-1530992060);d=q(d,a,b,c,x[i+4],11,1272893353);
+    c=q(c,d,a,b,x[i+7],16,-155497632);b=q(b,c,d,a,x[i+10],23,-1094730640);
+    a=q(a,b,c,d,x[i+13],4,681279174);d=q(d,a,b,c,x[i+0],11,-358537222);
+    c=q(c,d,a,b,x[i+3],16,-722521979);b=q(b,c,d,a,x[i+6],23,76029189);
+    a=q(a,b,c,d,x[i+9],4,-640364487);d=q(d,a,b,c,x[i+12],11,-421815835);
+    c=q(c,d,a,b,x[i+15],16,530742520);b=q(b,c,d,a,x[i+2],23,-995338651);
+    a=p(a,b,c,d,x[i+0],6,-198630844);d=p(d,a,b,c,x[i+7],10,1126891415);
+    c=p(c,d,a,b,x[i+14],15,-1416354905);b=p(b,c,d,a,x[i+5],21,-57434055);
+    a=p(a,b,c,d,x[i+12],6,1700485571);d=p(d,a,b,c,x[i+3],10,-1894986606);
+    c=p(c,d,a,b,x[i+10],15,-1051523);b=p(b,c,d,a,x[i+1],21,-2054922799);
+    a=p(a,b,c,d,x[i+8],6,1873313359);d=p(d,a,b,c,x[i+15],10,-30611744);
+    c=p(c,d,a,b,x[i+6],15,-1560198380);b=p(b,c,d,a,x[i+13],21,1309151649);
+    a=p(a,b,c,d,x[i+4],6,-145523070);d=p(d,a,b,c,x[i+11],10,-1120210379);
+    c=p(c,d,a,b,x[i+2],15,718787259);b=p(b,c,d,a,x[i+9],21,-343485551);
+    a=K(a,olda);b=K(b,oldb);c=K(c,oldc);d=K(d,oldd);
+  }
+  // combine little-endian words to hex
+  function toHex(n){return ('00000000'+(n>>>0).toString(16)).slice(-8)}
+  return toHex(a)+toHex(b)+toHex(c)+toHex(d);
+}
+
+/* =========================
+   Mobile nav: close when clicking link
+   ========================= */
+$$('nav.main-nav a').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    const nav = document.querySelector('nav.main-nav');
+    if(window.innerWidth < 880) nav.style.display='none';
+  });
+});
+
+/* =========================
+   End of script
+   ========================= */
+</script>
 </body>
 </html>
 
