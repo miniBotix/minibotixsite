@@ -1,123 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MiniBotix</title>
   <style>
-    /* ===== Reset & Theme ===== */
+    /* ===== Reset ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { background: #0d1117; color: #e6edf3; line-height: 1.6; }
 
-    /* ===== Header ===== */
-    header { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: #161b22; position: sticky; top: 0; z-index: 100; }
-    header h1 { font-size: 24px; color: #1e90ff; }
-    nav ul { list-style: none; display: flex; gap: 20px; }
-    nav ul li a { color: #e6edf3; text-decoration: none; font-weight: bold; transition: 0.3s; }
-    nav ul li a:hover { color: #1e90ff; }
+    body {
+      background: #0d1117;
+      color: #e6edf3;
+      line-height: 1.6;
+    }
 
-    /* ===== User Menu ===== */
-    #userMenu { position: relative; display: flex; align-items: center; gap: 10px; }
-    #loginBtn { background: #1e90ff; border: none; color: white; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
-    #userBtn { display: none; background: #1e90ff; border: none; color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-    #userDropdown { display: none; position: absolute; top: 50px; right: 0; background: #161b22; border: 1px solid #30363d; border-radius: 6px; min-width: 180px; }
-    #userDropdown a { display: block; padding: 10px; text-decoration: none; color: #e6edf3; }
-    #userDropdown a:hover { background: #1e90ff; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
 
-    #userAvatar { width: 28px; height: 28px; border-radius: 50%; }
+    /* ===== Navbar ===== */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #161b22;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-    /* ===== Hero ===== */
-    .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(120deg, #0d1117, #161b22); padding: 20px; }
-    .hero h2 { font-size: 40px; margin-bottom: 15px; color: #1e90ff; }
-    .hero p { font-size: 18px; margin-bottom: 25px; }
-    .btn { display: inline-block; padding: 12px 25px; border-radius: 6px; background: #1e90ff; color: white; text-decoration: none; transition: 0.3s; }
-    .btn:hover { background: #3399ff; }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #58a6ff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: #58a6ff; }
+
+    .auth-btn {
+      background: #21262d;
+      color: #e6edf3;
+      padding: 0.5rem 1rem;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .auth-btn:hover {
+      background: #58a6ff;
+      color: #fff;
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: linear-gradient(145deg, #0d1117, #161b22);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: fadeInDown 1s ease;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: auto;
+      margin-bottom: 2rem;
+      color: #8b949e;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      background: #238636;
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: transform 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      background: #2ea043;
+    }
 
     /* ===== Sections ===== */
-    section { padding: 60px 40px; text-align: center; }
-    section h3 { font-size: 28px; margin-bottom: 20px; color: #1e90ff; }
-    section p { max-width: 700px; margin: auto; margin-bottom: 20px; }
-    section .btn { margin-top: 15px; }
+    section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: #161b22;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: #1f2937;
+    }
+
+    .card h3 {
+      margin-bottom: 1rem;
+      color: #58a6ff;
+    }
+
+    .card p { color: #8b949e; margin-bottom: 1rem; }
+
+    .card a {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: #238636;
+      color: #fff;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .card a:hover { background: #2ea043; }
 
     /* ===== Footer ===== */
-    footer { background: #161b22; text-align: center; padding: 20px; font-size: 14px; border-top: 1px solid #30363d; }
+    footer {
+      background: #161b22;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+      color: #8b949e;
+    }
 
-    /* ===== Form Modal ===== */
-    #loginModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); justify-content:center; align-items:center; }
-    #loginForm { background: #161b22; padding: 30px; border-radius: 8px; width: 300px; text-align: center; }
-    #loginForm input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: 1px solid #30363d; background: #0d1117; color: #e6edf3; }
-    #loginForm button { padding: 10px 20px; border-radius: 6px; border: none; background: #1e90ff; color: white; cursor: pointer; margin-top: 10px; }
-    #loginForm button:hover { background: #3399ff; }
-    #closeModal { cursor: pointer; color: #ff4c4c; float: right; font-weight: bold; }
+    /* ===== Modal ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #0d1117;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 400px;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .modal-content h2 { margin-bottom: 1.5rem; }
+
+    .modal-content input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      background: #161b22;
+      color: #e6edf3;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 0.8rem;
+      background: #238636;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .close {
+      float: right;
+      cursor: pointer;
+      font-size: 1.5rem;
+      margin-top: -10px;
+      margin-right: -10px;
+      color: #e6edf3;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .nav-links { display: none; }
+    }
   </style>
 </head>
 <body>
-  <!-- ===== Header ===== -->
-  <header>
-    <h1>MiniBotix</h1>
-    <nav>
-      <ul>
-        <li><a href="college.html">College</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="courses.html">Courses</a></li>
-        <li><a href="services.html">Services</a></li>
-      </ul>
-    </nav>
-    <div id="userMenu">
-      <button id="loginBtn">Sign In</button>
-      <button id="userBtn"><img id="userAvatar" src="" alt="avatar"> User ▼</button>
-      <div id="userDropdown">
-        <a id="profileInfo" href="#">Profile</a>
-        <a href="#" id="logoutBtn">Logout</a>
+  <!-- ===== Navbar ===== -->
+  <nav>
+    <div class="logo">MiniBotix</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="courses.html">Courses</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="components.html">Components</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="apps.html">Free Apps</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="auth-btn" id="signInBtn">Sign In</button>
+    <div id="userInfo" style="display:none;">
+      <span id="userName"></span>
+      <button class="auth-btn" id="settingsBtn">⚙</button>
+      <button class="auth-btn" id="logoutBtn">Logout</button>
+    </div>
+  </nav>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <h1>Learn • Build • Innovate</h1>
+    <p>Practical courses, agricultural & engineering products, tested project kits, electronic components, and free source code to start building today.</p>
+    <div class="btn-group">
+      <a href="courses.html" class="btn">Explore Courses</a>
+      <a href="products.html" class="btn">Shop Products</a>
+    </div>
+  </section>
+
+  <!-- ===== Sections ===== -->
+  <section>
+    <h2>Courses</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Embedded Systems</h3>
+        <p>Learn microcontrollers, sensors, IoT with hands-on projects.</p>
+        <a href="courses.html">View Courses</a>
+      </div>
+      <div class="card">
+        <h3>Robotics</h3>
+        <p>Build and program robots step by step.</p>
+        <a href="courses.html">View Courses</a>
       </div>
     </div>
-  </header>
-
-  <!-- ===== Hero Section ===== -->
-  <section class="hero">
-    <h2>Welcome to MiniBotix</h2>
-    <p>Empowering students with technology, innovation, and creativity.</p>
-    <a href="courses.html" class="btn">Explore Courses</a>
   </section>
 
-  <!-- ===== About ===== -->
   <section>
-    <h3>About Us</h3>
-    <p>MiniBotix is a platform designed to help students and professionals explore the world of robotics, IoT, and AI. Learn, build, and innovate with us.</p>
-    <a href="about.html" class="btn">Learn More</a>
+    <h2>Products</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Agricultural Tools</h3>
+        <p>Innovative smart farming kits and devices.</p>
+        <a href="products.html">Shop Now</a>
+      </div>
+      <div class="card">
+        <h3>Engineering Kits</h3>
+        <p>Ready-to-use project kits for students and professionals.</p>
+        <a href="products.html">Shop Now</a>
+      </div>
+    </div>
   </section>
 
-  <!-- ===== Courses ===== -->
   <section>
-    <h3>Our Courses</h3>
-    <p>From beginner to advanced, explore structured courses in robotics, coding, and electronics.</p>
-    <a href="courses.html" class="btn">View Courses</a>
+    <h2>Components</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Low-Cost Electronics</h3>
+        <p>Affordable, high-quality components for your projects.</p>
+        <a href="componentshop.html">Component Store</a>
+      </div>
+    </div>
   </section>
 
-  <!-- ===== Services ===== -->
   <section>
-    <h3>Services</h3>
-    <p>We provide hands-on training, workshops, and project support for students and colleges.</p>
-    <a href="services.html" class="btn">Our Services</a>
+    <h2>Projects</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>IoT Projects</h3>
+        <p>Real-world Internet of Things projects with tutorials.</p>
+        <a href="projects.html">See Projects</a>
+      </div>
+      <div class="card">
+        <h3>Robotic Arms</h3>
+        <p>Control robotic arms using vision and sensors.</p>
+        <a href="projects.html">See Projects</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Free Apps</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Source Codes</h3>
+        <p>Get free app and project source codes to start learning fast.</p>
+        <a href="apps.html">Download Free Apps</a>
+      </div>
+    </div>
   </section>
 
   <!-- ===== Footer ===== -->
   <footer>
-    <p>© 2025 MiniBotix. All Rights Reserved.</p>
+    <p>&copy; 2025 MiniBotix. All Rights Reserved.</p>
   </footer>
 
-  <!-- ===== Login Modal ===== -->
-  <div id="loginModal">
-    <div id="loginForm">
-      <span id="closeModal">✖</span>
-      <h3>Sign In / Sign Up</h3>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button id="emailLoginBtn">Sign In / Sign Up</button>
+  <!-- ===== Login/Register Modal ===== -->
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2 id="modalTitle">Sign In</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button id="authActionBtn">Sign In</button>
+      <p id="toggleText">New user? <a href="#" id="toggleAuth">Register</a></p>
     </div>
   </div>
 
-  <!-- ===== Firebase Auth ===== -->
+  <!-- ===== Firebase SDKs ===== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
@@ -126,83 +353,80 @@
       apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
       authDomain: "minibotix-a1b9a.firebaseapp.com",
       projectId: "minibotix-a1b9a",
-      storageBucket: "minibotix-a1b9a.appspot.com",
+      storageBucket: "minibotix-a1b9a.firebasestorage.app",
       messagingSenderId: "771169717230",
       appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
+      measurementId: "G-JQKFSBN4WP"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
     // Elements
-    const loginBtn = document.getElementById("loginBtn");
-    const userBtn = document.getElementById("userBtn");
-    const userDropdown = document.getElementById("userDropdown");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const userAvatar = document.getElementById("userAvatar");
-    const profileInfo = document.getElementById("profileInfo");
-
-    const loginModal = document.getElementById("loginModal");
+    const signInBtn = document.getElementById("signInBtn");
+    const authModal = document.getElementById("authModal");
     const closeModal = document.getElementById("closeModal");
-    const emailLoginBtn = document.getElementById("emailLoginBtn");
+    const modalTitle = document.getElementById("modalTitle");
+    const authActionBtn = document.getElementById("authActionBtn");
+    const toggleText = document.getElementById("toggleText");
+    const toggleAuth = document.getElementById("toggleAuth");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
+    const userInfo = document.getElementById("userInfo");
+    const userName = document.getElementById("userName");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-    // Open login modal
-    loginBtn.addEventListener("click", () => loginModal.style.display = "flex");
-    closeModal.addEventListener("click", () => loginModal.style.display = "none");
+    let isRegister = false;
 
-    // Sign in / Sign up
-    emailLoginBtn.addEventListener("click", async () => {
-      const email = emailInput.value;
-      const password = passwordInput.value;
-      if(!email || !password) { alert("Enter email and password"); return; }
+    // Open modal
+    signInBtn.addEventListener("click", () => { authModal.style.display = "flex"; });
 
-      try {
-        // Try to create user
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account created and signed in!");
-      } catch (err) {
-        if (err.code === "auth/email-already-in-use") {
-          // If exists, sign in
-          try {
-            await signInWithEmailAndPassword(auth, email, password);
-            alert("Signed in successfully!");
-          } catch (e) {
-            alert("Login failed: " + e.message);
-          }
-        } else {
-          alert("Error: " + err.message);
-        }
-      }
-      loginModal.style.display = "none";
-      emailInput.value = "";
-      passwordInput.value = "";
+    // Close modal
+    closeModal.addEventListener("click", () => { authModal.style.display = "none"; });
+
+    // Toggle SignIn/Register
+    toggleAuth.addEventListener("click", (e) => {
+      e.preventDefault();
+      isRegister = !isRegister;
+      modalTitle.textContent = isRegister ? "Register" : "Sign In";
+      authActionBtn.textContent = isRegister ? "Register" : "Sign In";
+      toggleText.innerHTML = isRegister ? 'Already have an account? <a href="#">Sign In</a>' : 'New user? <a href="#">Register</a>';
     });
 
-    // Toggle dropdown
-    userBtn.addEventListener("click", () => {
-      userDropdown.style.display = userDropdown.style.display === "block" ? "none" : "block";
+    // Handle Auth
+    authActionBtn.addEventListener("click", async () => {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      try {
+        if (isRegister) {
+          await createUserWithEmailAndPassword(auth, email, password);
+          alert("Registration Successful!");
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+          alert("Login Successful!");
+        }
+        authModal.style.display = "none";
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // Auth state observer
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        signInBtn.style.display = "none";
+        userInfo.style.display = "inline-block";
+        userName.textContent = user.email;
+      } else {
+        signInBtn.style.display = "inline-block";
+        userInfo.style.display = "none";
+      }
     });
 
     // Logout
     logoutBtn.addEventListener("click", async () => {
       await signOut(auth);
-      userDropdown.style.display = "none";
-    });
-
-    // Auth state
-    onAuthStateChanged(auth, user => {
-      if(user){
-        loginBtn.style.display = "none";
-        userBtn.style.display = "flex";
-        userBtn.innerHTML = `<img id="userAvatar" src="${user.photoURL || 'https://via.placeholder.com/28'}" alt="avatar"> ${user.displayName || user.email} ▼`;
-        profileInfo.textContent = `${user.displayName || "User"} - ${user.email}`;
-      } else {
-        loginBtn.style.display = "inline-block";
-        userBtn.style.display = "none";
-        userDropdown.style.display = "none";
-      }
+      alert("Logged out successfully");
     });
   </script>
 </body>
