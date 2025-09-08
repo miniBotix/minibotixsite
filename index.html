@@ -1,354 +1,382 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MiniBotix</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="MiniBotix - Courses, Products (Agriculture & Engineering), Electronics Components, Projects & Free Source Code" />
+  <title>MiniBotix · Learn · Build · Innovate</title>
+  <link rel="icon" href="file.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* ===== Reset ===== */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    /* ----------------- Basic reset & layout ----------------- */
+    :root{
+      --bg-dark: rgba(6,12,26,0.7);
+      --accent-start: #007bff;
+      --accent-end: #00d4ff;
+      --glass: rgba(255,255,255,0.06);
+      --card-bg: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#071126;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
 
-    body {
-      background: #0d1117;
-      color: #e6edf3;
-      line-height: 1.6;
+    /* ---------- background canvas sits behind everything ---------- */
+    #rainCanvas{
+      position:fixed;inset:0;width:100%;height:100%;z-index:-10;background:url('hill.jpg') center/cover no-repeat;
+    }
+    /* subtle overlay for readability */
+    .bg-overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(3,7,15,0.55),rgba(3,7,15,0.35));z-index:-5}
+
+    /* ----------------- NAVBAR ----------------- */
+    header.nav{
+      position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;
+      background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:50;border-bottom:1px solid rgba(255,255,255,0.03)
+    }
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .brand{
+      display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff
+    }
+    .brand img{height:36px;width:36px;object-fit:contain;border-radius:6px}
+
+    nav.main-nav{display:flex;gap:18px;align-items:center}
+    nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.92);padding:6px 8px;border-radius:6px;transition:all .18s}
+    nav.main-nav a:hover{transform:translateY(-3px);color:#00e0ff}
+
+    .user-area{display:flex;align-items:center;gap:12px}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
+    .btn-primary{
+      background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
+      padding:9px 14px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)
     }
 
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
+    /* small screens: hamburger */
+    .hamburger{display:none;width:44px;height:44px;border-radius:10px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
+    .hamburger div{width:22px;height:2px;background:#fff;border-radius:2px;position:relative}
+    .hamburger div:after,.hamburger div:before{content:'';position:absolute;width:22px;height:2px;background:#fff;border-radius:2px;left:0}
+    .hamburger div:before{top:-7px} .hamburger div:after{top:7px}
 
-    /* ===== Navbar ===== */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: #161b22;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+    /* ---------- HERO ---------- */
+    .hero{
+      min-height:80vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20px;text-align:center
     }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #58a6ff;
+    .hero-card{
+      width:min(980px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));padding:40px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 30px 80px rgba(3,7,20,.6)
     }
+    .eyebrow{display:inline-block;background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:999px;margin-bottom:12px;font-weight:600;color:#aee9ff}
+    .hero h1{font-size:48px;line-height:1.05;margin-bottom:12px}
+    .hero p{color:rgba(255,255,255,0.85);margin-bottom:20px}
+    .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
+    /* ---------- SECTIONS ---------- */
+    .section{padding:60px 22px;background:transparent}
+    .container{max-width:1100px;margin:0 auto}
+    .section h2{font-size:24px;color:#fff;margin-bottom:12px}
+    .section p.lead{color:rgba(255,255,255,0.85);margin-bottom:18px}
+
+    .grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px
     }
-
-    .nav-links a {
-      font-size: 1rem;
-      transition: color 0.3s;
+    .card{
+      background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+      transition:transform .25s ease,box-shadow .25s;cursor:default;overflow:hidden
     }
+    .card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+    .card h3{font-size:18px;margin-bottom:8px}
+    .card p{font-size:14px;color:rgba(255,255,255,0.85)}
 
-    .nav-links a:hover { color: #58a6ff; }
+    /* product badges */
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.2);font-weight:600;font-size:12px;margin-right:8px}
 
-    .auth-btn {
-      background: #21262d;
-      color: #e6edf3;
-      padding: 0.5rem 1rem;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
+    /* ---------- FOOTER ---------- */
+    footer{padding:28px 22px;background:transparent;text-align:center;color:rgba(255,255,255,0.7)}
 
-    .auth-btn:hover {
-      background: #58a6ff;
-      color: #fff;
-    }
+    /* ---------- AUTH & PROFILE MODALS ---------- */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:120;backdrop-filter:blur(3px)}
+    .modal-card{width:100%;max-width:520px;background:#0b1220;padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,.03)}
+    .modal .close{float:right;color:rgba(255,255,255,0.6);font-size:20px;cursor:pointer}
+    .form-group{margin-bottom:12px}
+    .form-group label{display:block;font-size:13px;margin-bottom:6px;color:rgba(255,255,255,0.85)}
+    .form-group input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff}
+    .small{font-size:13px;color:rgba(255,255,255,0.7)}
 
-    /* ===== Hero Section ===== */
-    .hero {
-      text-align: center;
-      padding: 5rem 2rem;
-      background: linear-gradient(145deg, #0d1117, #161b22);
-    }
+    /* profile pill in nav */
+    .profile-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:999px;border:1px solid rgba(255,255,255,0.03)}
+    .profile-pill img{height:32px;width:32px;border-radius:50%;object-fit:cover;background:#223}
+    .settings-icon{cursor:pointer;color:rgba(255,255,255,.8)}
 
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      animation: fadeInDown 1s ease;
-    }
-
-    .hero p {
-      max-width: 700px;
-      margin: auto;
-      margin-bottom: 2rem;
-      color: #8b949e;
-    }
-
-    .btn-group {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .btn {
-      background: #238636;
-      color: #fff;
-      padding: 0.8rem 1.5rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: transform 0.3s;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      background: #2ea043;
-    }
-
-    /* ===== Sections ===== */
-    section {
-      padding: 4rem 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    section h2 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: 2rem;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-
-    .card {
-      background: #161b22;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-      transition: transform 0.3s, background 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      background: #1f2937;
-    }
-
-    .card h3 {
-      margin-bottom: 1rem;
-      color: #58a6ff;
-    }
-
-    .card p { color: #8b949e; margin-bottom: 1rem; }
-
-    .card a {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      background: #238636;
-      color: #fff;
-      border-radius: 6px;
-      transition: background 0.3s;
-    }
-
-    .card a:hover { background: #2ea043; }
-
-    /* ===== Footer ===== */
-    footer {
-      background: #161b22;
-      text-align: center;
-      padding: 2rem;
-      margin-top: 3rem;
-      color: #8b949e;
-    }
-
-    /* ===== Modal ===== */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 2000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background: #0d1117;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 400px;
-      max-width: 90%;
-      text-align: center;
-    }
-
-    .modal-content h2 { margin-bottom: 1.5rem; }
-
-    .modal-content input {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      background: #161b22;
-      color: #e6edf3;
-    }
-
-    .modal-content button {
-      width: 100%;
-      padding: 0.8rem;
-      background: #238636;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .close {
-      float: right;
-      cursor: pointer;
-      font-size: 1.5rem;
-      margin-top: -10px;
-      margin-right: -10px;
-      color: #e6edf3;
-    }
-
-    /* ===== Animations ===== */
-    @keyframes fadeInDown {
-      0% { opacity: 0; transform: translateY(-20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 2rem; }
-      .nav-links { display: none; }
+    /* small screen */
+    @media (max-width:880px){
+      nav.main-nav{display:none}
+      .hamburger{display:flex}
+      .hero h1{font-size:28px}
+      .hero-card{padding:20px}
     }
   </style>
 </head>
 <body>
-  <!-- ===== Navbar ===== -->
-  <nav>
-    <div class="logo">MiniBotix</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="courses.html">Courses</a></li>
-      <li><a href="products.html">Products</a></li>
-      <li><a href="components.html">Components</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="apps.html">Free Apps</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-    <button class="auth-btn" id="signInBtn">Sign In</button>
-    <div id="userInfo" style="display:none;">
-      <span id="userName"></span>
-      <button class="auth-btn" id="settingsBtn">⚙</button>
-      <button class="auth-btn" id="logoutBtn">Logout</button>
-    </div>
-  </nav>
 
-  <!-- ===== Hero ===== -->
-  <section class="hero">
-    <h1>Learn • Build • Innovate</h1>
-    <p>Practical courses, agricultural & engineering products, tested project kits, electronic components, and free source code to start building today.</p>
-    <div class="btn-group">
-      <a href="courses.html" class="btn">Explore Courses</a>
-      <a href="products.html" class="btn">Shop Products</a>
-    </div>
-  </section>
+  <!-- Rain background canvas -->
+  <canvas id="rainCanvas" aria-hidden="true"></canvas>
+  <div class="bg-overlay" aria-hidden="true"></div>
 
-  <!-- ===== Sections ===== -->
-  <section>
-    <h2>Courses</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Embedded Systems</h3>
-        <p>Learn microcontrollers, sensors, IoT with hands-on projects.</p>
-        <a href="courses.html">View Courses</a>
-      </div>
-      <div class="card">
-        <h3>Robotics</h3>
-        <p>Build and program robots step by step.</p>
-        <a href="courses.html">View Courses</a>
+  <!-- NAV -->
+  <header class="nav" role="banner">
+    <div class="nav-left">
+      <div class="brand">
+        <img src="file.svg" alt="MiniBotix logo" loading="lazy">
+        <div>MiniBotix</div>
       </div>
     </div>
-  </section>
 
-  <section>
-    <h2>Products</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Agricultural Tools</h3>
-        <p>Innovative smart farming kits and devices.</p>
-        <a href="products.html">Shop Now</a>
+    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#courses">Courses</a>
+      <a href="#products">Products</a>
+      <a href="#components">Components</a>
+      <a href="#projects">Projects</a>
+      <a href="#apps">Free Apps</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="user-area" id="userArea">
+      <!-- Signed out UI -->
+      <div id="signedOutUI">
+        <button id="openAuth" class="btn-ghost" title="Sign in or Register">Sign In</button>
       </div>
-      <div class="card">
-        <h3>Engineering Kits</h3>
-        <p>Ready-to-use project kits for students and professionals.</p>
-        <a href="products.html">Shop Now</a>
+
+      <!-- Signed in UI -->
+      <div id="signedInUI" class="profile-pill" style="display:none">
+        <img id="profileAvatar" src="" alt="profile" onerror="this.src='file.svg'">
+        <span id="profileName">User</span>
+        <span class="settings-icon" id="openProfileSettings" title="Settings">&#9881;</span>
+      </div>
+
+      <button class="hamburger" id="mobileMenuBtn" aria-label="Open menu"><div></div></button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-card container">
+      <div class="eyebrow">MiniBotix • Courses · Products · Projects</div>
+      <h1>Learn · Build · Innovate</h1>
+      <p class="lead">Practical courses, agricultural & engineering products, tested project kits, electronic components, and free source code to start building today.</p>
+
+      <div class="hero-actions">
+        <button class="btn-primary" id="toCourses">Explore Courses</button>
+        <button class="btn-ghost" id="toProducts">Shop Products</button>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>Components</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Low-Cost Electronics</h3>
-        <p>Affordable, high-quality components for your projects.</p>
-        <a href="componentshop.html">Component Store</a>
+  <!-- COURSES -->
+  <section id="courses" class="section">
+    <div class="container">
+      <h2>Courses</h2>
+      <p class="lead">From beginner embedded systems to advanced robotics — project-based learning you can finish in weeks.</p>
+      <div class="grid">
+        <article class="card">
+          <span class="badge">Beginner</span>
+          <h3>Embedded Systems 101</h3>
+          <p>Learn electronics basics, microcontrollers, and simple circuits — build 6 hands-on projects.</p>
+          <a href="courses.html">Open Course</a>
+        </article>
+
+        <article class="card">
+          <span class="badge">IoT</span>
+          <h3>IoT for Agriculture</h3>
+          <p>Smart irrigation, sensor networks and data logging. Practical projects for small farms.</p>
+          <a href="courses.html">Open Course</a>
+        </article>
+
+        <article class="card">
+          <span class="badge">Advanced</span>
+          <h3>Robotics & Automation</h3>
+          <p>Design, control and automate robotic arms and vehicles using microcontrollers and computer vision.</p>
+          <a href="courses.html">Open Course</a>
+        </article>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>Projects</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>IoT Projects</h3>
-        <p>Real-world Internet of Things projects with tutorials.</p>
-        <a href="projects.html">See Projects</a>
-      </div>
-      <div class="card">
-        <h3>Robotic Arms</h3>
-        <p>Control robotic arms using vision and sensors.</p>
-        <a href="projects.html">See Projects</a>
+  <!-- PRODUCTS -->
+  <section id="products" class="section">
+    <div class="container">
+      <h2>Products (Agriculture & Engineering)</h2>
+      <p class="lead">We sell tested agriculture devices, sensors, and engineering kits — shipped with documentation and support.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Auto Irrigation Kit</h3>
+          <p>Solar-powered controller, moisture sensor, and valve driver — ready to install.</p>
+          <a href="products.html">Shop Product</a>
+        </div>
+        <div class="card">
+          <h3>Soil Health Sensor</h3>
+          <p>pH, moisture and temperature readings with calibration guide and data export.</p>
+          <a href="products.html">Shop Product</a>
+        </div>
+        <div class="card">
+          <h3>Robotics Parts Bundle</h3>
+          <p>Motors, servos, frames and electronics for building small robots and arms.</p>
+          <a href="products.html">Shop Product</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>Free Apps</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Source Codes</h3>
-        <p>Get free app and project source codes to start learning fast.</p>
-        <a href="apps.html">Download Free Apps</a>
+  <!-- Components -->
+  <section id="components" class="section">
+    <div class="container">
+      <h2>Electronic Components</h2>
+      <p class="lead">Sensors, modules, microcontrollers, PCBs and more — buy parts for your classroom or lab.</p>
+      <div class="grid">
+        <div class="card"><h3>ESP32 / ESP8266 Modules</h3><p>Wi-Fi + Bluetooth microcontrollers, ideal for IoT.</p><a href="componentshop.html">Component Store</a></div>
+        <div class="card"><h3>Sensor Modules</h3><p>DHT11/22, BMP180, MQ sensors and more.</p><a href="componentshop.html">Component Store</a></div>
+        <div class="card"><h3>PCB Services</h3><p>PCB review, small-batch fabrication, and assembly guidance.</p><a href="componentshop.html">Component Store</a></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Footer ===== -->
+  <!-- Projects -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2>Projects</h2>
+      <p class="lead">Get full projects with code, wiring diagrams, and BOMs — or commission custom builds.</p>
+      <div class="grid">
+        <div class="card"><h3>Rain Detector</h3><p>Automated cover system and alerting example with code.</p><a href="projects.html">See Projects</a></div>
+        <div class="card"><h3>Robotic Arm</h3><p>Image-detection guided pick-and-place demo with servo control.</p><a href="projects.html">See Projects</a></div>
+        <div class="card"><h3>Satellite Simulator</h3><p>ESP32-CAM + sensors for environmental simulation & streaming.</p><a href="projects.html">See Projects</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apps & Free codes -->
+  <section id="apps" class="section">
+    <div class="container">
+      <h2>Free Apps & Source Code</h2>
+      <p class="lead">Download basic apps and example source to bootstrap learning. We share starter code for students.</p>
+      <div class="grid">
+        <div class="card"><h3>Starter Voice Assistant</h3><p>Python-based assistant template (private code available upon course purchase).</p><a href="apps.html">Open</a></div>
+        <div class="card"><h3>Color Detection Example</h3><p>OpenCV example for object detection with a webcam.</p><a href="apps.html">Open</a></div>
+        <div class="card"><h3>ThingSpeak Data Sender</h3><p>NodeMCU code to push environment sensor readings to ThingSpeak.</p><a href="apps.html">Open</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Contact & Support</h2>
+      <p class="lead">Need help? Send PCB files to <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> for a free review.</p>
+    </div>
+  </section>
+
   <footer>
-    <p>&copy; 2025 MiniBotix. All Rights Reserved.</p>
+    <div class="container">
+      <small>© 2025 MiniBotix · Learn · Build · Innovate</small>
+    </div>
   </footer>
 
-  <!-- ===== Login/Register Modal ===== -->
-  <div class="modal" id="authModal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <h2 id="modalTitle">Sign In</h2>
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
-      <button id="authActionBtn">Sign In</button>
-      <p id="toggleText">New user? <a href="#" id="toggleAuth">Register</a></p>
+  <!-- AUTH MODAL (hidden) -->
+  <div id="authModal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <span class="close" id="authClose">&times;</span>
+
+      <div id="authContainer">
+        <!-- NAV TOGGLE -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;justify-content:center">
+          <button id="tabEmail" class="btn-primary" style="padding:8px 12px">Email</button>
+          <button id="tabGoogle" class="btn-ghost" style="padding:8px 12px">Google</button>
+        </div>
+
+        <!-- EMAIL LOGIN -->
+        <div id="emailView">
+          <h3 id="authTitle">Sign In / Register</h3>
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" type="email" required placeholder="you@domain.com">
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input id="loginPassword" type="password" required placeholder="Password">
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
+              <button class="btn-primary" id="emailSignIn" type="button">Sign In</button>
+              <button class="btn-ghost" id="showRegister" type="button">New? Register</button>
+            </div>
+            <p class="small" style="margin-top:10px;color:rgba(255,255,255,0.6)">We store profile data in Firebase Firestore (secure).</p>
+          </form>
+        </div>
+
+        <!-- EMAIL REGISTER -->
+        <div id="registerView" style="display:none">
+          <h3>Create Account</h3>
+          <form id="registerForm">
+            <div class="form-group">
+              <label for="regName">Full name</label>
+              <input id="regName" type="text" required placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label for="regPhone">Phone</label>
+              <input id="regPhone" type="tel" required placeholder="+91 9XXXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label for="regEmail">Email</label>
+              <input id="regEmail" type="email" required placeholder="you@domain.com">
+            </div>
+            <div class="form-group">
+              <label for="regPass">Password</label>
+              <input id="regPass" type="password" required placeholder="At least 6 characters">
+            </div>
+            <div class="form-group">
+              <label for="regPass2">Confirm Password</label>
+              <input id="regPass2" type="password" required placeholder="Confirm Password">
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
+              <button class="btn-primary" id="createAccount" type="button">Create Account</button>
+              <button class="btn-ghost" id="showLogin" type="button">Have account? Sign in</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- GOOGLE SIGN IN -->
+        <div id="googleView" style="display:none;text-align:center;margin-top:12px">
+          <p class="small" style="margin-bottom:12px;color:rgba(255,255,255,0.7)">Sign in with Google</p>
+          <button id="googleSignIn" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="height:18px"> Sign in with Google</button>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <!-- ===== Firebase SDKs ===== -->
+  <!-- PROFILE SETTINGS MODAL -->
+  <div id="profileModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <span class="close" id="profileClose">&times;</span>
+      <h3>Profile Settings</h3>
+      <form id="profileForm">
+        <div class="form-group"><label>Name</label><input id="pfName" type="text" required></div>
+        <div class="form-group"><label>Phone</label><input id="pfPhone" type="tel" required></div>
+        <div class="form-group"><label>Delivery Area</label><input id="pfArea" type="text" required></div>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button class="btn-primary" id="saveProfile" type="button">Save</button>
+          <button class="btn-ghost" id="logoutBtn" type="button">Logout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (modular v12.2.1) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
+    // ---------- Paste your Firebase config here (from console) ----------
     const firebaseConfig = {
       apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
       authDomain: "minibotix-a1b9a.firebaseapp.com",
@@ -359,74 +387,361 @@
       measurementId: "G-JQKFSBN4WP"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
+    const googleProvider = new GoogleAuthProvider();
 
-    // Elements
-    const signInBtn = document.getElementById("signInBtn");
-    const authModal = document.getElementById("authModal");
-    const closeModal = document.getElementById("closeModal");
-    const modalTitle = document.getElementById("modalTitle");
-    const authActionBtn = document.getElementById("authActionBtn");
-    const toggleText = document.getElementById("toggleText");
-    const toggleAuth = document.getElementById("toggleAuth");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const userInfo = document.getElementById("userInfo");
-    const userName = document.getElementById("userName");
-    const logoutBtn = document.getElementById("logoutBtn");
+    // ---------- DOM REFERENCES ----------
+    const openAuth = document.getElementById('openAuth');
+    const authModal = document.getElementById('authModal');
+    const authClose = document.getElementById('authClose');
+    const tabEmail = document.getElementById('tabEmail');
+    const tabGoogle = document.getElementById('tabGoogle');
+    const emailView = document.getElementById('emailView');
+    const googleView = document.getElementById('googleView');
+    const registerView = document.getElementById('registerView');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+    const emailSignIn = document.getElementById('emailSignIn');
+    const createAccount = document.getElementById('createAccount');
+    const googleSignIn = document.getElementById('googleSignIn');
 
-    let isRegister = false;
+    const signedOutUI = document.getElementById('signedOutUI');
+    const signedInUI = document.getElementById('signedInUI');
+    const profileName = document.getElementById('profileName');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const openProfileSettings = document.getElementById('openProfileSettings');
 
-    // Open modal
-    signInBtn.addEventListener("click", () => { authModal.style.display = "flex"; });
+    const profileModal = document.getElementById('profileModal');
+    const profileClose = document.getElementById('profileClose');
+    const pfName = document.getElementById('pfName');
+    const pfPhone = document.getElementById('pfPhone');
+    const pfArea = document.getElementById('pfArea');
+    const saveProfile = document.getElementById('saveProfile');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-    // Close modal
-    closeModal.addEventListener("click", () => { authModal.style.display = "none"; });
+    const toCourses = document.getElementById('toCourses');
+    const toProducts = document.getElementById('toProducts');
 
-    // Toggle SignIn/Register
-    toggleAuth.addEventListener("click", (e) => {
-      e.preventDefault();
-      isRegister = !isRegister;
-      modalTitle.textContent = isRegister ? "Register" : "Sign In";
-      authActionBtn.textContent = isRegister ? "Register" : "Sign In";
-      toggleText.innerHTML = isRegister ? 'Already have an account? <a href="#">Sign In</a>' : 'New user? <a href="#">Register</a>';
-    });
+    // quick helper
+    const $ = s => document.querySelector(s);
 
-    // Handle Auth
-    authActionBtn.addEventListener("click", async () => {
-      const email = emailInput.value;
-      const password = passwordInput.value;
-      try {
-        if (isRegister) {
-          await createUserWithEmailAndPassword(auth, email, password);
-          alert("Registration Successful!");
-        } else {
-          await signInWithEmailAndPassword(auth, email, password);
-          alert("Login Successful!");
+    // ---------- Rain canvas (from your old code, fixed) ----------
+    (function rain(){
+      const canvas = document.getElementById('rainCanvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = innerWidth, H = canvas.height = innerHeight;
+      window.addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; initDrops(); });
+
+      let drops = [];
+      function initDrops(n=140){
+        drops = [];
+        for(let i=0;i<n;i++){
+          drops.push({
+            x: Math.random()*W,
+            y: Math.random()*H,
+            len: Math.random()*25+8,
+            sp: Math.random()*3+1.8,
+            sw: Math.random()*1.4+0.6,
+            alpha: 0.12 + Math.random()*0.12
+          });
         }
-        authModal.style.display = "none";
-      } catch (err) {
-        alert(err.message);
+      }
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        for(let d of drops){
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(170,220,255,${d.alpha})`;
+          ctx.lineWidth = d.sw;
+          ctx.moveTo(d.x, d.y);
+          ctx.lineTo(d.x+1, d.y + d.len);
+          ctx.stroke();
+          d.y += d.sp;
+          d.x += Math.sin(d.y/50)*0.5;
+          if(d.y > H + 20){ d.y = -20; d.x = Math.random()*W; }
+          d.alpha = 0.12 + Math.random()*0.12;
+        }
+        requestAnimationFrame(draw);
+      }
+      initDrops();
+      draw();
+    })();
+
+    // ---------- Mobile menu toggle ----------
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    mobileBtn && mobileBtn.addEventListener('click', ()=>{
+      const nav = document.querySelector('nav.main-nav');
+      if(!nav) return;
+      if(nav.style.display === 'flex'){ nav.style.display='none'; mobileBtn.classList.remove('open'); }
+      else { nav.style.display='flex'; nav.style.flexDirection='column'; nav.style.position='absolute'; nav.style.top='64px'; nav.style.right='20px'; nav.style.background='rgba(5,8,15,0.95)'; nav.style.padding='12px'; nav.style.borderRadius='10px'; mobileBtn.classList.add('open'); }
+    });
+
+    // ---------- AUTH modal controls ----------
+    openAuth.addEventListener('click', ()=>{ authModal.style.display = 'flex'; showEmailTab(); });
+    authClose.addEventListener('click', ()=>{ authModal.style.display = 'none'; });
+
+    tabEmail.addEventListener('click', showEmailTab);
+    tabGoogle.addEventListener('click', showGoogleTab);
+
+    function showEmailTab(){
+      emailView.style.display = 'block';
+      googleView.style.display = 'none';
+      registerView.style.display = 'none';
+      tabEmail.classList.add('btn-primary'); tabGoogle.classList.remove('btn-primary');
+      tabGoogle.classList.add('btn-ghost'); tabEmail.classList.remove('btn-ghost');
+    }
+    function showGoogleTab(){
+      emailView.style.display = 'none';
+      googleView.style.display = 'block';
+      registerView.style.display = 'none';
+      tabGoogle.classList.add('btn-primary'); tabEmail.classList.remove('btn-primary');
+    }
+
+    showRegister.addEventListener('click', ()=>{
+      emailView.style.display = 'none';
+      registerView.style.display = 'block';
+    });
+    showLogin.addEventListener('click', ()=>{
+      registerView.style.display = 'none';
+      emailView.style.display = 'block';
+    });
+
+    // ---------- AUTH actions ----------
+    googleSignIn.addEventListener('click', async ()=>{
+      try{
+        const result = await signInWithPopup(auth, googleProvider);
+        // user signed in, we will handle Firestore creation in onAuthStateChanged
+        authModal.style.display = 'none';
+      }catch(e){
+        alert('Google sign-in failed: ' + e.message);
       }
     });
 
-    // Auth state observer
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        signInBtn.style.display = "none";
-        userInfo.style.display = "inline-block";
-        userName.textContent = user.email;
-      } else {
-        signInBtn.style.display = "inline-block";
-        userInfo.style.display = "none";
+    createAccount.addEventListener('click', async ()=>{
+      const name = $('#regName').value.trim();
+      const phone = $('#regPhone').value.trim();
+      const email = $('#regEmail').value.trim().toLowerCase();
+      const pass = $('#regPass').value;
+      const pass2 = $('#regPass2').value;
+      if(pass.length < 6){ alert('Password must be at least 6 characters'); return; }
+      if(pass !== pass2){ alert('Passwords do not match'); return; }
+      try{
+        const userCred = await createUserWithEmailAndPassword(auth, email, pass);
+        // update displayName
+        await updateProfile(userCred.user, { displayName: name });
+        // create Firestore profile doc
+        await setDoc(doc(db, 'users', userCred.user.uid), {
+          name: name, phone: phone, email: email, createdAt: serverTimestamp()
+        });
+        authModal.style.display = 'none';
+      }catch(e){
+        alert('Register failed: ' + e.message);
       }
     });
 
-    // Logout
-    logoutBtn.addEventListener("click", async () => {
-      await signOut(auth);
-      alert("Logged out successfully");
+    emailSignIn.addEventListener('click', async ()=>{
+      const email = $('#loginEmail').value.trim().toLowerCase();
+      const pass = $('#loginPassword').value;
+      try{
+        await signInWithEmailAndPassword(auth, email, pass);
+        authModal.style.display = 'none';
+      }catch(e){
+        alert('Sign in failed: ' + e.message);
+      }
+    });
+
+    // ---------- AUTH state observer & Firestore profile load ----------
+    let currentUser = null;
+    onAuthStateChanged(auth, async (user) => {
+      if(user){
+        currentUser = user;
+        // Ensure profile doc exists and fetch it
+        const userDocRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userDocRef);
+        if(!snap.exists()){
+          // create default profile
+          await setDoc(userDocRef, {
+            name: user.displayName || '',
+            phone: '',
+            area: '',
+            email: user.email || '',
+            createdAt: serverTimestamp()
+          });
+        }
+        const userData = (await getDoc(userDocRef)).data();
+
+        // Update nav UI
+        $('#signedOutUI').style.display = 'none';
+        $('#signedInUI').style.display = 'flex';
+        $('#profileName').textContent = userData.name ? userData.name.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
+        profileAvatar.src = user.photoURL || gravatarFallback(user.email);
+
+        // fill profile modal
+        pfName.value = userData.name || '';
+        pfPhone.value = userData.phone || '';
+        pfArea.value = userData.area || '';
+
+        // log page visit activity
+        try{
+          await addDoc(collection(db, 'users', user.uid, 'activity'), {
+            action: 'page_view',
+            page: window.location.pathname,
+            ts: serverTimestamp()
+          });
+        }catch(e){ console.warn('Activity log failed', e); }
+
+      }else{
+        currentUser = null;
+        $('#signedOutUI').style.display = 'flex';
+        $('#signedInUI').style.display = 'none';
+      }
+    });
+
+    // ---------- Profile settings ----------
+    openProfileSettings.addEventListener('click', ()=>{ profileModal.style.display = 'flex'; });
+    profileClose.addEventListener('click', ()=>{ profileModal.style.display = 'none'; });
+
+    saveProfile.addEventListener('click', async ()=>{
+      if(!currentUser){ alert('No user'); return; }
+      const name = pfName.value.trim();
+      const phone = pfPhone.value.trim();
+      const area = pfArea.value.trim();
+      try{
+        // update Firestore doc
+        await updateDoc(doc(db, 'users', currentUser.uid), { name, phone, area, updatedAt: serverTimestamp() });
+        // update Firebase Auth displayName too
+        await updateProfile(currentUser, { displayName: name });
+        // update nav name
+        profileName.textContent = name ? name.split(' ')[0] : (currentUser.email ? currentUser.email.split('@')[0] : 'User');
+        profileModal.style.display = 'none';
+
+        // log activity
+        await addDoc(collection(db, 'users', currentUser.uid, 'activity'), {
+          action: 'update_profile',
+          fields: ['name','phone','area'],
+          ts: serverTimestamp()
+        });
+        showToast('Profile saved');
+      }catch(e){
+        alert('Save failed: ' + e.message);
+      }
+    });
+
+    logoutBtn.addEventListener('click', async ()=>{
+      if(!currentUser) return;
+      try{
+        await signOut(auth);
+        profileModal.style.display = 'none';
+        showToast('Signed out');
+      }catch(e){
+        alert('Logout failed: ' + e.message);
+      }
+    });
+
+    // helper: gravatar-like fallback url (uses md5 hash)
+    function gravatarFallback(email){
+      try{
+        const hash = md5((email||'').trim().toLowerCase());
+        return `https://www.gravatar.com/avatar/${hash}?d=identicon&s=80`;
+      }catch(e){
+        return 'file.svg';
+      }
+    }
+
+    // ---------- Basic navigation buttons ----------
+    toCourses.addEventListener('click', ()=>{ location.href = 'courses.html'; });
+    toProducts.addEventListener('click', ()=>{ location.href = 'products.html'; });
+
+    // ---------- Simple toast ----------
+    function showToast(msg, err=false){
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.position = 'fixed';
+      t.style.bottom = '28px';
+      t.style.left = '50%';
+      t.style.transform = 'translateX(-50%)';
+      t.style.background = err ? '#ff4d4f' : '#00c2ff';
+      t.style.color = '#021';
+      t.style.padding = '10px 16px';
+      t.style.borderRadius = '8px';
+      t.style.zIndex = '9999';
+      document.body.appendChild(t);
+      setTimeout(()=>{ t.style.transition='all .4s'; t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; },2200);
+      setTimeout(()=>t.remove(),2600);
+    }
+
+    // ---------- Small utilities ----------
+    function $(sel){ return document.querySelector(sel); }
+    function $$(sel){ return Array.from(document.querySelectorAll(sel)); }
+
+    // ---------- md5 (compact) for gravatar fallback ----------
+    function md5(s){ // compact MD5 - public domain style
+      function L(k,d){return (k<<d)|(k>>>(32-d))}
+      function K(G,k){var I=(G&65535)+(k&65535);var H=(G>>>16)+(k>>>16)+(I>>>16);return (H<<16)|(I&65535)}
+      function r(a,b,c,d,e,f,g){a=K(a,K(K((b&c)|((~b)&d),e),g));return K(L(a,f),b)}
+      function o(a,b,c,d,e,f,g){a=K(a,K(K((b&d)|(c&(~d)),e),g));return K(L(a,f),b)}
+      function q(a,b,c,d,e,f,g){a=K(a,K(K(b^c^d,e),g));return K(L(a,f),b)}
+      function p(a,b,c,d,e,f,g){a=K(a,K(K(c^(b|(~d)),e),g));return K(L(a,f),b)}
+      function s(s){var n=[],b=(1<<8)-1;for(var i=0;i<s.length*8;i+=8)n[i>>5]|=(s.charCodeAt(i/8)&b)<<(i%32);return n}
+      function t(l){var a='',b=32;for(var i=0;i<4;i++)for(var j=0;j<8;j++){a+=((l>>>(i*8+j*4))&15).toString(16)}return a}
+      var x=s(unescape(encodeURIComponent(s||'')));
+      var a=1732584193,b=-271733879,c=-1732584194,d=271733878;
+      x[x.length>>0]=x.length*8;
+      for(var i=0;i<x.length;i+=16){
+        var olda=a,oldb=b,oldc=c,oldd=d;
+        a=r(a,b,c,d,x[i+0],7,-680876936);d=r(d,a,b,c,x[i+1],12,-389564586);
+        c=r(c,d,a,b,x[i+2],17,606105819);b=r(b,c,d,a,x[i+3],22,-1044525330);
+        a=r(a,b,c,d,x[i+4],7,-176418897);d=r(d,a,b,c,x[i+5],12,1200080426);
+        c=r(c,d,a,b,x[i+6],17,-1473231341);b=r(b,c,d,a,x[i+7],22,-45705983);
+        a=r(a,b,c,d,x[i+8],7,1770035416);d=r(d,a,b,c,x[i+9],12,-1958414417);
+        c=r(c,d,a,b,x[i+10],17,-42063);b=r(b,c,d,a,x[i+11],22,-1990404162);
+        a=r(a,b,c,d,x[i+12],7,1804603682);d=r(d,a,b,c,x[i+13],12,-40341101);
+        c=r(c,d,a,b,x[i+14],17,-1502002290);b=r(b,c,d,a,x[i+15],22,1236535329);
+        a=o(a,b,c,d,x[i+1],5,-165796510);d=o(d,a,b,c,x[i+6],9,-1069501632);
+        c=o(c,d,a,b,x[i+11],14,643717713);b=o(b,c,d,a,x[i+0],20,-373897302);
+        a=o(a,b,c,d,x[i+5],5,-701558691);d=o(d,a,b,c,x[i+10],9,38016083);
+        c=o(c,d,a,b,x[i+15],14,-660478335);b=o(b,c,d,a,x[i+4],20,-405537848);
+        a=o(a,b,c,d,x[i+9],5,568446438);d=o(d,a,b,c,x[i+14],9,-1019803690);
+        c=o(c,d,a,b,x[i+3],14,-187363961);b=o(b,c,d,a,x[i+8],20,1163531501);
+        a=o(a,b,c,d,x[i+13],5,-1444681467);d=o(d,a,b,c,x[i+2],9,-51403784);
+        c=o(c,d,a,b,x[i+7],14,1735328473);b=o(b,c,d,a,x[i+12],20,-1926607734);
+        a=q(a,b,c,d,x[i+5],4,-378558);d=q(d,a,b,c,x[i+8],11,-2022574463);
+        c=q(c,d,a,b,x[i+11],16,1839030562);b=q(b,c,d,a,x[i+14],23,-35309556);
+        a=q(a,b,c,d,x[i+1],4,-1530992060);d=q(d,a,b,c,x[i+4],11,1272893353);
+        c=q(c,d,a,b,x[i+7],16,-155497632);b=q(b,c,d,a,x[i+10],23,-1094730640);
+        a=q(a,b,c,d,x[i+13],4,681279174);d=q(d,a,b,c,x[i+0],11,-358537222);
+        c=q(c,d,a,b,x[i+3],16,-722521979);b=q(b,c,d,a,x[i+6],23,76029189);
+        a=q(a,b,c,d,x[i+9],4,-640364487);d=q(d,a,b,c,x[i+12],11,-421815835);
+        c=q(c,d,a,b,x[i+15],16,530742520);b=q(b,c,d,a,x[i+2],23,-995338651);
+        a=p(a,b,c,d,x[i+0],6,-198630844);d=p(d,a,b,c,x[i+7],10,1126891415);
+        c=p(c,d,a,b,x[i+14],15,-1416354905);b=p(b,c,d,a,x[i+5],21,-57434055);
+        a=p(a,b,c,d,x[i+12],6,1700485571);d=p(d,a,b,c,x[i+3],10,-1894986606);
+        c=p(c,d,a,b,x[i+10],15,-1051523);b=p(b,c,d,a,x[i+1],21,-2054922799);
+        a=p(a,b,c,d,x[i+8],6,1873313359);d=p(d,a,b,c,x[i+15],10,-30611744);
+        c=p(c,d,a,b,x[i+6],15,-1560198380);b=p(b,c,d,a,x[i+13],21,1309151649);
+        a=p(a,b,c,d,x[i+4],6,-145523070);d=p(d,a,b,c,x[i+11],10,-1120210379);
+        c=p(c,d,a,b,x[i+2],15,718787259);b=p(b,c,d,a,x[i+9],21,-343485551);
+        a=K(a,olda);b=K(b,oldb);c=K(c,oldc);d=K(d,oldd);
+      }
+      function toHex(n){return ('00000000'+(n>>>0).toString(16)).slice(-8)}
+      return toHex(a)+toHex(b)+toHex(c)+toHex(d);
+    }
+
+    // close modals by clicking outside
+    window.addEventListener('click', (e)=>{
+      if(e.target === authModal) authModal.style.display = 'none';
+      if(e.target === profileModal) profileModal.style.display = 'none';
+    });
+
+    // when navigation links clicked on mobile, close nav (small)
+    $$('nav.main-nav a').forEach(a=>{
+      a.addEventListener('click', ()=>{
+        const nav = document.querySelector('nav.main-nav');
+        if(window.innerWidth < 880) nav.style.display='none';
+      });
     });
   </script>
 </body>
