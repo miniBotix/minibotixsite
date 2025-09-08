@@ -11,11 +11,11 @@
   <style>
     /* ----------------- Basic reset & layout ----------------- */
     :root{
-      --bg-dark: rgba(6,12,26,0.7);
-      --accent-start: #007bff;
-      --accent-end: #00d4ff;
+      --accent-start:#007bff;
+      --accent-end:#00d4ff;
       --glass: rgba(255,255,255,0.06);
       --card-bg: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.75);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#071126;overflow-x:hidden}
@@ -25,7 +25,6 @@
     #rainCanvas{
       position:fixed;inset:0;width:100%;height:100%;z-index:-10;background:url('hill.jpg') center/cover no-repeat;
     }
-    /* subtle overlay for readability */
     .bg-overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(3,7,15,0.55),rgba(3,7,15,0.35));z-index:-5}
 
     /* ----------------- NAVBAR ----------------- */
@@ -34,35 +33,24 @@
       background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:50;border-bottom:1px solid rgba(255,255,255,0.03)
     }
     .nav-left{display:flex;align-items:center;gap:12px}
-    .brand{
-      display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff
-    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff}
     .brand img{height:36px;width:36px;object-fit:contain;border-radius:6px}
-
     nav.main-nav{display:flex;gap:18px;align-items:center}
     nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.92);padding:6px 8px;border-radius:6px;transition:all .18s}
     nav.main-nav a:hover{transform:translateY(-3px);color:#00e0ff}
-
     .user-area{display:flex;align-items:center;gap:12px}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
-    .btn-primary{
-      background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
-      padding:9px 14px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)
-    }
 
-    /* small screens: hamburger */
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));padding:9px 14px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+
     .hamburger{display:none;width:44px;height:44px;border-radius:10px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
     .hamburger div{width:22px;height:2px;background:#fff;border-radius:2px;position:relative}
     .hamburger div:after,.hamburger div:before{content:'';position:absolute;width:22px;height:2px;background:#fff;border-radius:2px;left:0}
     .hamburger div:before{top:-7px} .hamburger div:after{top:7px}
 
     /* ---------- HERO ---------- */
-    .hero{
-      min-height:80vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20px;text-align:center
-    }
-    .hero-card{
-      width:min(980px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));padding:40px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 30px 80px rgba(3,7,20,.6)
-    }
+    .hero{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20px;text-align:center}
+    .hero-card{width:min(980px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));padding:40px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 30px 80px rgba(3,7,20,.6)}
     .eyebrow{display:inline-block;background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:999px;margin-bottom:12px;font-weight:600;color:#aee9ff}
     .hero h1{font-size:48px;line-height:1.05;margin-bottom:12px}
     .hero p{color:rgba(255,255,255,0.85);margin-bottom:20px}
@@ -74,21 +62,13 @@
     .section h2{font-size:24px;color:#fff;margin-bottom:12px}
     .section p.lead{color:rgba(255,255,255,0.85);margin-bottom:18px}
 
-    .grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px
-    }
-    .card{
-      background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
-      transition:transform .25s ease,box-shadow .25s;cursor:default;overflow:hidden
-    }
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px}
+    .card{background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .25s ease,box-shadow .25s;cursor:default;overflow:hidden}
     .card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
     .card h3{font-size:18px;margin-bottom:8px}
     .card p{font-size:14px;color:rgba(255,255,255,0.85)}
-
-    /* product badges */
     .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.2);font-weight:600;font-size:12px;margin-right:8px}
 
-    /* ---------- FOOTER ---------- */
     footer{padding:28px 22px;background:transparent;text-align:center;color:rgba(255,255,255,0.7)}
 
     /* ---------- AUTH & PROFILE MODALS ---------- */
@@ -100,18 +80,19 @@
     .form-group input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff}
     .small{font-size:13px;color:rgba(255,255,255,0.7)}
 
-    /* profile pill in nav */
     .profile-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:999px;border:1px solid rgba(255,255,255,0.03)}
     .profile-pill img{height:32px;width:32px;border-radius:50%;object-fit:cover;background:#223}
     .settings-icon{cursor:pointer;color:rgba(255,255,255,.8)}
 
-    /* small screen */
     @media (max-width:880px){
       nav.main-nav{display:none}
       .hamburger{display:flex}
       .hero h1{font-size:28px}
       .hero-card{padding:20px}
     }
+
+    /* small toast */
+    .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);padding:10px 14px;border-radius:8px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.4)}
   </style>
 </head>
 <body>
@@ -140,12 +121,10 @@
     </nav>
 
     <div class="user-area" id="userArea">
-      <!-- Signed out UI -->
       <div id="signedOutUI">
         <button id="openAuth" class="btn-ghost" title="Sign in or Register">Sign In</button>
       </div>
 
-      <!-- Signed in UI -->
       <div id="signedInUI" class="profile-pill" style="display:none">
         <img id="profileAvatar" src="" alt="profile" onerror="this.src='file.svg'">
         <span id="profileName">User</span>
@@ -205,23 +184,10 @@
     <div class="container">
       <h2>Products (Agriculture & Engineering)</h2>
       <p class="lead">We sell tested agriculture devices, sensors, and engineering kits — shipped with documentation and support.</p>
-
       <div class="grid">
-        <div class="card">
-          <h3>Auto Irrigation Kit</h3>
-          <p>Solar-powered controller, moisture sensor, and valve driver — ready to install.</p>
-          <a href="products.html">Shop Product</a>
-        </div>
-        <div class="card">
-          <h3>Soil Health Sensor</h3>
-          <p>pH, moisture and temperature readings with calibration guide and data export.</p>
-          <a href="products.html">Shop Product</a>
-        </div>
-        <div class="card">
-          <h3>Robotics Parts Bundle</h3>
-          <p>Motors, servos, frames and electronics for building small robots and arms.</p>
-          <a href="products.html">Shop Product</a>
-        </div>
+        <div class="card"><h3>Auto Irrigation Kit</h3><p>Solar-powered controller, moisture sensor, and valve driver — ready to install.</p><a href="products.html">Shop Product</a></div>
+        <div class="card"><h3>Soil Health Sensor</h3><p>pH, moisture and temperature readings with calibration guide and data export.</p><a href="products.html">Shop Product</a></div>
+        <div class="card"><h3>Robotics Parts Bundle</h3><p>Motors, servos, frames and electronics for building small robots and arms.</p><a href="products.html">Shop Product</a></div>
       </div>
     </div>
   </section>
@@ -279,22 +245,20 @@
     </div>
   </footer>
 
-  <!-- AUTH MODAL (hidden) -->
+  <!-- AUTH MODAL -->
   <div id="authModal" class="modal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
       <span class="close" id="authClose">&times;</span>
 
       <div id="authContainer">
-        <!-- NAV TOGGLE -->
         <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;justify-content:center">
           <button id="tabEmail" class="btn-primary" style="padding:8px 12px">Email</button>
           <button id="tabGoogle" class="btn-ghost" style="padding:8px 12px">Google</button>
         </div>
 
-        <!-- EMAIL LOGIN -->
         <div id="emailView">
           <h3 id="authTitle">Sign In / Register</h3>
-          <form id="loginForm">
+          <form id="loginForm" onsubmit="return false;">
             <div class="form-group">
               <label for="loginEmail">Email</label>
               <input id="loginEmail" type="email" required placeholder="you@domain.com">
@@ -307,14 +271,13 @@
               <button class="btn-primary" id="emailSignIn" type="button">Sign In</button>
               <button class="btn-ghost" id="showRegister" type="button">New? Register</button>
             </div>
-            <p class="small" style="margin-top:10px;color:rgba(255,255,255,0.6)">We store profile data in Firebase Firestore (secure).</p>
+            <p class="small" style="margin-top:10px;color:rgba(255,255,255,0.6)">We store profile data in Firestore.</p>
           </form>
         </div>
 
-        <!-- EMAIL REGISTER -->
         <div id="registerView" style="display:none">
           <h3>Create Account</h3>
-          <form id="registerForm">
+          <form id="registerForm" onsubmit="return false;">
             <div class="form-group">
               <label for="regName">Full name</label>
               <input id="regName" type="text" required placeholder="Your name">
@@ -343,7 +306,6 @@
           </form>
         </div>
 
-        <!-- GOOGLE SIGN IN -->
         <div id="googleView" style="display:none;text-align:center;margin-top:12px">
           <p class="small" style="margin-bottom:12px;color:rgba(255,255,255,0.7)">Sign in with Google</p>
           <button id="googleSignIn" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="height:18px"> Sign in with Google</button>
@@ -358,7 +320,7 @@
     <div class="modal-card">
       <span class="close" id="profileClose">&times;</span>
       <h3>Profile Settings</h3>
-      <form id="profileForm">
+      <form id="profileForm" onsubmit="return false;">
         <div class="form-group"><label>Name</label><input id="pfName" type="text" required></div>
         <div class="form-group"><label>Phone</label><input id="pfPhone" type="tel" required></div>
         <div class="form-group"><label>Delivery Area</label><input id="pfArea" type="text" required></div>
@@ -370,13 +332,34 @@
     </div>
   </div>
 
+  <!-- Toast container injected by JS -->
+
   <!-- Firebase SDKs (modular v12.2.1) -->
   <script type="module">
+    // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      updateDoc,
+      collection,
+      addDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-    // ---------- Paste your Firebase config here (from console) ----------
+    // ---------- FIREBASE CONFIG ----------
     const firebaseConfig = {
       apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
       authDomain: "minibotix-a1b9a.firebaseapp.com",
@@ -425,10 +408,11 @@
     const toCourses = document.getElementById('toCourses');
     const toProducts = document.getElementById('toProducts');
 
-    // quick helper
+    // helpers
     const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
 
-    // ---------- Rain canvas (from your old code, fixed) ----------
+    // ---------- Rain canvas ----------
     (function rain(){
       const canvas = document.getElementById('rainCanvas');
       if(!canvas) return;
@@ -480,23 +464,18 @@
     });
 
     // ---------- AUTH modal controls ----------
-    openAuth.addEventListener('click', ()=>{ authModal.style.display = 'flex'; showEmailTab(); });
-    authClose.addEventListener('click', ()=>{ authModal.style.display = 'none'; });
+    openAuth && openAuth.addEventListener('click', ()=>{ authModal.style.display = 'flex'; showEmailTab(); });
+    authClose && authClose.addEventListener('click', ()=>{ authModal.style.display = 'none'; });
 
     tabEmail.addEventListener('click', showEmailTab);
     tabGoogle.addEventListener('click', showGoogleTab);
 
     function showEmailTab(){
-      emailView.style.display = 'block';
-      googleView.style.display = 'none';
-      registerView.style.display = 'none';
+      emailView.style.display = 'block'; googleView.style.display = 'none'; registerView.style.display = 'none';
       tabEmail.classList.add('btn-primary'); tabGoogle.classList.remove('btn-primary');
-      tabGoogle.classList.add('btn-ghost'); tabEmail.classList.remove('btn-ghost');
     }
     function showGoogleTab(){
-      emailView.style.display = 'none';
-      googleView.style.display = 'block';
-      registerView.style.display = 'none';
+      emailView.style.display = 'none'; googleView.style.display = 'block'; registerView.style.display = 'none';
       tabGoogle.classList.add('btn-primary'); tabEmail.classList.remove('btn-primary');
     }
 
@@ -513,10 +492,9 @@
     googleSignIn.addEventListener('click', async ()=>{
       try{
         const result = await signInWithPopup(auth, googleProvider);
-        // user signed in, we will handle Firestore creation in onAuthStateChanged
         authModal.style.display = 'none';
       }catch(e){
-        alert('Google sign-in failed: ' + e.message);
+        showToast('Google sign-in failed: ' + (e.message || e), true);
       }
     });
 
@@ -526,19 +504,24 @@
       const email = $('#regEmail').value.trim().toLowerCase();
       const pass = $('#regPass').value;
       const pass2 = $('#regPass2').value;
-      if(pass.length < 6){ alert('Password must be at least 6 characters'); return; }
-      if(pass !== pass2){ alert('Passwords do not match'); return; }
+      if(pass.length < 6){ showToast('Password must be at least 6 characters', true); return; }
+      if(pass !== pass2){ showToast('Passwords do not match', true); return; }
       try{
         const userCred = await createUserWithEmailAndPassword(auth, email, pass);
         // update displayName
         await updateProfile(userCred.user, { displayName: name });
         // create Firestore profile doc
         await setDoc(doc(db, 'users', userCred.user.uid), {
-          name: name, phone: phone, email: email, createdAt: serverTimestamp()
+          name: name,
+          phone: phone,
+          area: '',
+          email: email,
+          createdAt: serverTimestamp()
         });
         authModal.style.display = 'none';
+        showToast('Account created');
       }catch(e){
-        alert('Register failed: ' + e.message);
+        showToast('Register failed: ' + (e.message || e), true);
       }
     });
 
@@ -548,21 +531,20 @@
       try{
         await signInWithEmailAndPassword(auth, email, pass);
         authModal.style.display = 'none';
+        showToast('Signed in');
       }catch(e){
-        alert('Sign in failed: ' + e.message);
+        showToast('Sign in failed: ' + (e.message || e), true);
       }
     });
 
-    // ---------- AUTH state observer & Firestore profile load ----------
+    // ---------- Auth state observer & Firestore profile load ----------
     let currentUser = null;
     onAuthStateChanged(auth, async (user) => {
       if(user){
         currentUser = user;
-        // Ensure profile doc exists and fetch it
         const userDocRef = doc(db, 'users', user.uid);
         const snap = await getDoc(userDocRef);
         if(!snap.exists()){
-          // create default profile
           await setDoc(userDocRef, {
             name: user.displayName || '',
             phone: '',
@@ -574,9 +556,9 @@
         const userData = (await getDoc(userDocRef)).data();
 
         // Update nav UI
-        $('#signedOutUI').style.display = 'none';
-        $('#signedInUI').style.display = 'flex';
-        $('#profileName').textContent = userData.name ? userData.name.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
+        signedOutUI.style.display = 'none';
+        signedInUI.style.display = 'flex';
+        profileName.textContent = userData.name ? userData.name.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
         profileAvatar.src = user.photoURL || gravatarFallback(user.email);
 
         // fill profile modal
@@ -584,7 +566,7 @@
         pfPhone.value = userData.phone || '';
         pfArea.value = userData.area || '';
 
-        // log page visit activity
+        // log page view activity
         try{
           await addDoc(collection(db, 'users', user.uid, 'activity'), {
             action: 'page_view',
@@ -592,41 +574,31 @@
             ts: serverTimestamp()
           });
         }catch(e){ console.warn('Activity log failed', e); }
-
       }else{
         currentUser = null;
-        $('#signedOutUI').style.display = 'flex';
-        $('#signedInUI').style.display = 'none';
+        signedOutUI.style.display = 'flex';
+        signedInUI.style.display = 'none';
       }
     });
 
     // ---------- Profile settings ----------
-    openProfileSettings.addEventListener('click', ()=>{ profileModal.style.display = 'flex'; });
-    profileClose.addEventListener('click', ()=>{ profileModal.style.display = 'none'; });
+    openProfileSettings && openProfileSettings.addEventListener('click', ()=>{ profileModal.style.display = 'flex'; });
+    profileClose && profileClose.addEventListener('click', ()=>{ profileModal.style.display = 'none'; });
 
     saveProfile.addEventListener('click', async ()=>{
-      if(!currentUser){ alert('No user'); return; }
+      if(!currentUser){ showToast('No user signed in', true); return; }
       const name = pfName.value.trim();
       const phone = pfPhone.value.trim();
       const area = pfArea.value.trim();
       try{
-        // update Firestore doc
         await updateDoc(doc(db, 'users', currentUser.uid), { name, phone, area, updatedAt: serverTimestamp() });
-        // update Firebase Auth displayName too
         await updateProfile(currentUser, { displayName: name });
-        // update nav name
         profileName.textContent = name ? name.split(' ')[0] : (currentUser.email ? currentUser.email.split('@')[0] : 'User');
         profileModal.style.display = 'none';
-
-        // log activity
-        await addDoc(collection(db, 'users', currentUser.uid, 'activity'), {
-          action: 'update_profile',
-          fields: ['name','phone','area'],
-          ts: serverTimestamp()
-        });
+        await addDoc(collection(db, 'users', currentUser.uid, 'activity'), { action: 'update_profile', fields: ['name','phone','area'], ts: serverTimestamp() });
         showToast('Profile saved');
       }catch(e){
-        alert('Save failed: ' + e.message);
+        showToast('Save failed: ' + (e.message || e), true);
       }
     });
 
@@ -637,11 +609,28 @@
         profileModal.style.display = 'none';
         showToast('Signed out');
       }catch(e){
-        alert('Logout failed: ' + e.message);
+        showToast('Logout failed: ' + (e.message || e), true);
       }
     });
 
-    // helper: gravatar-like fallback url (uses md5 hash)
+    // ---------- Navigation helpers ----------
+    toCourses.addEventListener('click', ()=>{ location.href = 'courses.html'; });
+    toProducts.addEventListener('click', ()=>{ location.href = 'products.html'; });
+
+    // ---------- Simple toast ----------
+    function showToast(msg, error=false){
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      t.style.background = error ? '#ff4d4f' : '#00c2ff';
+      t.style.color = error ? '#fff' : '#021';
+      t.style.padding = '10px 14px';
+      document.body.appendChild(t);
+      setTimeout(()=>{ t.style.transition='all .4s'; t.style.opacity='0'; t.style.transform='translateY(10px)'; },2200);
+      setTimeout(()=>t.remove(),2600);
+    }
+
+    // ---------- gravatar fallback (md5) ----------
     function gravatarFallback(email){
       try{
         const hash = md5((email||'').trim().toLowerCase());
@@ -651,34 +640,8 @@
       }
     }
 
-    // ---------- Basic navigation buttons ----------
-    toCourses.addEventListener('click', ()=>{ location.href = 'courses.html'; });
-    toProducts.addEventListener('click', ()=>{ location.href = 'products.html'; });
-
-    // ---------- Simple toast ----------
-    function showToast(msg, err=false){
-      const t = document.createElement('div');
-      t.textContent = msg;
-      t.style.position = 'fixed';
-      t.style.bottom = '28px';
-      t.style.left = '50%';
-      t.style.transform = 'translateX(-50%)';
-      t.style.background = err ? '#ff4d4f' : '#00c2ff';
-      t.style.color = '#021';
-      t.style.padding = '10px 16px';
-      t.style.borderRadius = '8px';
-      t.style.zIndex = '9999';
-      document.body.appendChild(t);
-      setTimeout(()=>{ t.style.transition='all .4s'; t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; },2200);
-      setTimeout(()=>t.remove(),2600);
-    }
-
-    // ---------- Small utilities ----------
-    function $(sel){ return document.querySelector(sel); }
-    function $$(sel){ return Array.from(document.querySelectorAll(sel)); }
-
-    // ---------- md5 (compact) for gravatar fallback ----------
-    function md5(s){ // compact MD5 - public domain style
+    // ---------- md5 (compact) ----------
+    function md5(s){
       function L(k,d){return (k<<d)|(k>>>(32-d))}
       function K(G,k){var I=(G&65535)+(k&65535);var H=(G>>>16)+(k>>>16)+(I>>>16);return (H<<16)|(I&65535)}
       function r(a,b,c,d,e,f,g){a=K(a,K(K((b&c)|((~b)&d),e),g));return K(L(a,f),b)}
@@ -730,19 +693,20 @@
       return toHex(a)+toHex(b)+toHex(c)+toHex(d);
     }
 
-    // close modals by clicking outside
+    // Close modals by clicking outside
     window.addEventListener('click', (e)=>{
       if(e.target === authModal) authModal.style.display = 'none';
       if(e.target === profileModal) profileModal.style.display = 'none';
     });
 
-    // when navigation links clicked on mobile, close nav (small)
+    // Mobile nav close on link
     $$('nav.main-nav a').forEach(a=>{
       a.addEventListener('click', ()=>{
         const nav = document.querySelector('nav.main-nav');
         if(window.innerWidth < 880) nav.style.display='none';
       });
     });
+
   </script>
 </body>
 </html>
