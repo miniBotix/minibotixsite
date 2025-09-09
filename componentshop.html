@@ -1,602 +1,225 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MiniBotix · Components Shop</title>
-<link rel="icon" href="file.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#071126;
-    --card: rgba(255,255,255,0.04);
-    --glass: rgba(255,255,255,0.03);
-    --accent1: #007bff;
-    --accent2: #00d4ff;
-    --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MiniBotix Components Shop</title>
+  <link rel="stylesheet" href="styles.css" />
 
-  /* header */
-  header.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);z-index:90;box-shadow:0 2px 12px rgba(0,0,0,0.6)}
-  .nav-left{display:flex;align-items:center;gap:12px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
-  .brand img{height:36px;width:36px;border-radius:6px}
-  nav.main-nav{display:flex;gap:22px;align-items:center}
-  nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.9);padding:6px 6px}
-  .back-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.9);cursor:pointer}
-  .user-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
-  .avatar{height:36px;width:36px;border-radius:50%;background:#223;display:inline-flex;align-items:center;justify-content:center}
-
-  /* hero */
-  .hero{padding:110px 22px 40px 22px}
-  .hero-card{max-width:1100px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:44px;border-radius:14px;box-shadow:0 30px 60px rgba(3,7,20,0.6)}
-  .eyebrow{display:inline-block;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;margin-bottom:16px;color:#aee9ff;font-weight:600}
-  .hero h1{font-size:44px;margin:6px 0 12px;line-height:1.03}
-  .hero p{color:rgba(255,255,255,0.85);margin-bottom:18px;max-width:900px}
-
-  .hero-actions{display:flex;gap:14px}
-  .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
-
-  /* products grid */
-  .section{padding:40px 22px 90px}
-  .container{max-width:1100px;margin:0 auto}
-  h2{font-size:24px;margin-bottom:10px}
-  .lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
-
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-  .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s, box-shadow .22s}
-  .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.5)}
-  .card .img{height:140px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-  .price{font-weight:700;color:var(--accent2);margin-right:12px}
-  .card-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
-
-  /* cart modal */
-  .cart-bubble{position:relative}
-  .cart-count{position:absolute;right:-8px;top:-8px;background:#ff5c5c;color:#fff;height:20px;width:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
-
-  /* order summary */
-  .orders-list{margin-top:18px}
-  .order-row{background:rgba(255,255,255,0.02);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
-
-  /* footer */
-  footer{padding:26px 22px;background:transparent;text-align:center;color:rgba(255,255,255,0.6)}
-
-  /* responsive */
-  @media (max-width:880px){
-    nav.main-nav{display:none}
-    .hero h1{font-size:28px}
-  }
-
-  /* small helper */
-  .muted{color:rgba(255,255,255,0.7);font-size:14px}
-  .small{font-size:13px;color:rgba(255,255,255,0.7)}
-</style>
+  <style>
+    body {
+      background: #0d1117;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #161b22;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    .container {
+      padding: 20px;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: #161b22;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .product img {
+      width: 100%;
+      max-height: 150px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .product h3 {
+      font-size: 18px;
+    }
+    .product p {
+      font-size: 14px;
+      color: #aaa;
+    }
+    .product .price {
+      margin: 10px 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .btn {
+      background: #007bff;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    #cart {
+      margin-top: 30px;
+      padding: 20px;
+      background: #161b22;
+      border-radius: 8px;
+    }
+    #cart h2 {
+      margin-bottom: 15px;
+    }
+    #cart-items {
+      list-style: none;
+      padding: 0;
+    }
+    #cart-items li {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
-
-<!-- HEADER -->
-<header class="nav">
-  <div style="display:flex;align-items:center;gap:18px">
-    <div class="back-btn" onclick="location.href='index.html'">← Back</div>
-    <div class="brand">
-      <img src="file.svg" alt="MiniBotix">
-      <div style="line-height:1">
-        <div style="font-weight:700">MiniBotix</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.6)">Components Shop</div>
-      </div>
+  <header>
+    <div class="logo">MiniBotix Components Shop</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Products</a>
+      <a href="#">Components</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div>
+      <span id="cart-count">0</span> 🛒
     </div>
-  </div>
+  </header>
 
-  <nav class="main-nav">
-    <a href="index.html">Home</a>
-    <a href="courses.html">Courses</a>
-    <a href="products.html">Products</a>
-    <a href="componentshop.html" style="text-decoration:underline">Components</a>
-    <a href="projects.html">Projects</a>
-    <a href="apps.html">Free Apps</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-
-  <div style="display:flex;align-items:center;gap:12px">
-    <div id="userArea" class="user-pill">
-      <div id="signedOut" style="display:flex;gap:8px;align-items:center">
-        <button id="openAuth" class="btn-ghost">Sign In</button>
-      </div>
-      <div id="signedIn" style="display:none;align-items:center;gap:10px">
-        <div id="profileName" style="font-weight:600"></div>
-        <div class="avatar" id="avatar">M</div>
-        <div class="cart-bubble" title="Cart">
-          <button id="openCart" class="btn-ghost">🛒</button>
-          <div id="cartCount" class="cart-count" style="display:none">0</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-card container">
-    <div class="eyebrow">MiniBotix · Components · Quality Parts</div>
-    <h1>Quality Components — Low Cost, High Reliability</h1>
-    <p class="lead">Browse our curated selection of electronics components for agriculture and engineering projects. Add to cart and place an order — we deliver and support you along the way.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Shop All Components</button>
-      <button class="btn-ghost" onclick="location.href='contact.html'">Contact Support</button>
-    </div>
-  </div>
-</section>
-
-<!-- PRODUCTS -->
-<section id="productsSection" class="section">
   <div class="container">
-    <h2>Available Components</h2>
-    <p class="lead">Click Add to Cart to collect parts. We persist your cart to your account so it follows you across pages.</p>
-
-    <div id="productsGrid" class="grid">
-      <!-- populated by JS -->
+    <h1>Available Components</h1>
+    <div class="products" id="product-list">
+      <!-- Products will load here -->
     </div>
 
-    <h2 style="margin-top:40px">Your Orders</h2>
-    <div id="orderSummary" class="small muted">Last order: <span id="lastOrderSummary">—</span></div>
-    <div id="ordersList" class="orders-list"></div>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <div style="margin-bottom:8px">MiniBotix · Learn · Build · Innovate</div>
-    <small>© 2025 MiniBotix</small>
-  </div>
-</footer>
-
-<!-- AUTH Modal (simple) -->
-<div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999">
-  <div style="width:100%;max-width:420px;background:#071126;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <strong>Sign In / Register</strong>
-      <button onclick="authClose()" style="background:transparent;border:none;color:#fff;font-size:18px">✕</button>
-    </div>
-
-    <div id="authTabs">
-      <div style="display:flex;gap:8px;margin-bottom:12px">
-        <button onclick="showLogin()" class="btn-ghost">Login</button>
-        <button onclick="showRegister()" class="btn-ghost">Register</button>
-        <button id="googleSignBtn" class="btn-primary" style="margin-left:auto">Sign in with Google</button>
-      </div>
-
-      <div id="loginView">
-        <div class="form-group"><label class="small">Email</label><input id="loginEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Password</label><input id="loginPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-          <button class="btn-primary" onclick="emailLogin()">Sign In</button>
-        </div>
-      </div>
-
-      <div id="registerView" style="display:none">
-        <div class="form-group"><label class="small">Full name</label><input id="regName" type="text" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Phone</label><input id="regPhone" type="tel" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Email</label><input id="regEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Password</label><input id="regPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-          <button class="btn-primary" onclick="emailRegister()">Create account</button>
-        </div>
-      </div>
+    <div id="cart">
+      <h2>Your Cart</h2>
+      <ul id="cart-items"></ul>
+      <button class="btn" id="checkout">Place Order</button>
     </div>
   </div>
-</div>
 
-<!-- CART Modal -->
-<div id="cartModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999">
-  <div style="width:100%;max-width:720px;background:#071126;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <strong>Your Cart</strong>
-      <div>
-        <button class="btn-ghost" onclick="cartClose()">Close</button>
-        <button class="btn-primary" id="placeOrderBtn" style="margin-left:8px">Place Order</button>
-      </div>
-    </div>
-    <div id="cartItemsContainer" style="max-height:400px;overflow:auto"></div>
-    <div style="display:flex;justify-content:space-between;margin-top:12px;align-items:center">
-      <div class="muted">Total:</div>
-      <div id="cartTotal" style="font-weight:700;font-size:18px">₹0</div>
-    </div>
-    <div id="checkoutForm" style="margin-top:12px;display:none">
-      <div style="margin-top:12px">
-        <label class="small">Delivery Address</label>
-        <input id="deliveryAddress" placeholder="Address, area, city, pin" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
-      </div>
-    </div>
-  </div>
-</div>
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-<!-- Firebase & EmailJS (modules) -->
-<script type="module">
-  // ------------- CONFIG - set these first -------------
-  // Firebase config (you provided earlier)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
-    authDomain: "minibotix-a1b9a.firebaseapp.com",
-    projectId: "minibotix-a1b9a",
-    storageBucket: "minibotix-a1b9a.firebasestorage.app",
-    messagingSenderId: "771169717230",
-    appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
-    measurementId: "G-JQKFSBN4WP"
-  };
-
-  // EmailJS - create account and fill these values
-  // If you don't want EmailJS, leave blank and emails won't be sent from client.
-  const EMAILJS_USER_ID = "";     // e.g. 'user_xxx'  (Public key)
-  const EMAILJS_SERVICE_ID = "";  // e.g. 'service_xxx'
-  const EMAILJS_TEMPLATE_ID = ""; // e.g. 'template_xxx'
-  // ----------------------------------------------------
-
-  // Firebase imports
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc, addDoc, collection, query, where, getDocs, orderBy, serverTimestamp, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-  // Initialize
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // Load EmailJS if configured
-  if(EMAILJS_USER_ID){
-    // emailjs library
-    const s = document.createElement('script');
-    s.src = "https://cdn.emailjs.com/dist/email.min.js";
-    s.onload = ()=>{ emailjs.init(EMAILJS_USER_ID); console.log('EmailJS loaded')};
-    document.head.appendChild(s);
-  }
-
-  // UI refs
-  const openAuthBtn = document.getElementById('openAuth');
-  const authModal = document.getElementById('authModal');
-  const signedOut = document.getElementById('signedOut');
-  const signedIn = document.getElementById('signedIn');
-  const profileName = document.getElementById('profileName');
-  const avatar = document.getElementById('avatar');
-  const cartCount = document.getElementById('cartCount');
-  const openCart = document.getElementById('openCart');
-  const cartModal = document.getElementById('cartModal');
-  const cartItemsContainer = document.getElementById('cartItemsContainer');
-  const cartTotalEl = document.getElementById('cartTotal');
-  const placeOrderBtn = document.getElementById('placeOrderBtn');
-  const deliveryAddress = document.getElementById('deliveryAddress');
-
-  // Auth flow helpers
-  function authOpen(){ authModal.style.display='flex' }
-  function authClose(){ authModal.style.display='none' }
-  function showRegister(){ document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block' }
-  function showLogin(){ document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none' }
-
-  openAuthBtn.addEventListener('click', authOpen);
-  document.getElementById('googleSignBtn').addEventListener('click', googleSignIn);
-
-  // CART state
-  let products = [];        // loaded from products.json
-  let cart = [];            // {id, title, price, qty, img}
-  let currentUser = null;   // firebase user
-
-  // Load products.json (must exist in same folder)
-  async function loadProducts(){
-    try{
-      const res = await fetch('products.json');
-      products = await res.json();
-    }catch(e){
-      console.warn('products.json load failed, using fallback', e);
-      // fallback sample
-      products = [
-        { id:'esp32', title:'ESP32 Dev Module', price:550, img:'', desc:'ESP32-WROOM module — WiFi & Bluetooth microcontroller for IoT projects.' },
-        { id:'ldr', title:'LDR Photoresistor', price:15, img:'', desc:'Light-dependent resistor for simple light sensing projects.' },
-        { id:'dht22', title:'DHT22 Temperature & Humidity', price:120, img:'', desc:'Accurate temperature and humidity sensor.' }
-      ];
-    }
-    renderProducts();
-  }
-
-  // Render products
-  function renderProducts(){
-    const grid = document.getElementById('productsGrid');
-    grid.innerHTML = '';
-    products.forEach(p=>{
-      const card = document.createElement('div'); card.className='card';
-      card.innerHTML = `
-        <div class="img"><img src="${p.img||'https://via.placeholder.com/320x140?text='+encodeURIComponent(p.title)}" alt="${p.title}" style="max-width:100%;max-height:100%;object-fit:contain"></div>
-        <div style="font-weight:700;font-size:16px;margin-bottom:6px">${p.title}</div>
-        <div class="small muted" style="margin-bottom:8px">${p.desc || ''}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div class="price">₹${Number(p.price).toLocaleString()}</div>
-          <div class="card-actions">
-            <button class="btn-ghost" onclick="viewDetails('${p.id}')">Details</button>
-            <button class="btn-primary" onclick="addToCart('${p.id}')">Add to Cart</button>
-          </div>
-        </div>`;
-      grid.appendChild(card);
-    });
-  }
-
-  // Details placeholder
-  window.viewDetails = (id)=>{
-    const p = products.find(x=>x.id===id);
-    if(!p) return alert('Product not found');
-    alert(`${p.title}\n\n${p.desc}\n\nPrice: ₹${p.price}`);
-  };
-
-  // Add to cart
-  window.addToCart = (id)=>{
-    const p = products.find(x=>x.id===id);
-    if(!p) return;
-    const existing = cart.find(c=>c.id===p.id);
-    if(existing){ existing.qty++; }
-    else cart.push({ id:p.id, title:p.title, price:p.price, qty:1, img:p.img });
-    saveCartLocally();
-    renderCartCount();
-    showToast('Added '+p.title);
-    // persist to firestore if logged in
-    if(currentUser) persistCartToFirestore();
-  };
-
-  // cart UI
-  function renderCartUI(){
-    cartItemsContainer.innerHTML = '';
-    if(cart.length===0){ cartItemsContainer.innerHTML = '<div class="muted">Your cart is empty</div>'; cartTotalEl.textContent='₹0'; return; }
-    let total = 0;
-    cart.forEach(it=>{
-      total += it.price * it.qty;
-      const el = document.createElement('div'); el.className='order-row';
-      el.innerHTML = `
-        <div style="display:flex;gap:12px;align-items:center">
-          <div style="width:48px;height:48px;border-radius:8px;background:#0b1220;display:flex;align-items:center;justify-content:center">${it.img?'<img src="'+it.img+'" style="max-height:40px"/>':'<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#0f1724"/></svg>'}</div>
-          <div style="flex:1">
-            <div style="font-weight:700">${it.title}</div>
-            <div class="small muted">₹${it.price} × ${it.qty}</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="btn-ghost" onclick="decreaseQty('${it.id}')">−</button>
-            <button class="btn-ghost" onclick="increaseQty('${it.id}')">+</button>
-            <button class="btn-ghost" onclick="removeItem('${it.id}')">Remove</button>
-          </div>
-        </div>`;
-      cartItemsContainer.appendChild(el);
-    });
-    cartTotalEl.textContent = '₹' + total.toLocaleString();
-  }
-
-  window.increaseQty = (id)=>{ const it = cart.find(x=>x.id===id); if(it){ it.qty++; saveCartLocally(); renderCartUI(); renderCartCount(); if(currentUser) persistCartToFirestore(); } };
-  window.decreaseQty = (id)=>{ const it = cart.find(x=>x.id===id); if(it){ it.qty = Math.max(1,it.qty-1); saveCartLocally(); renderCartUI(); renderCartCount(); if(currentUser) persistCartToFirestore(); } };
-  window.removeItem = (id)=>{ cart = cart.filter(x=>x.id!==id); saveCartLocally(); renderCartUI(); renderCartCount(); if(currentUser) persistCartToFirestore(); };
-
-  function renderCartCount(){
-    const count = cart.reduce((s,i)=>s+i.qty,0);
-    if(count>0){ cartCount.style.display='flex'; cartCount.textContent = count; }
-    else cartCount.style.display='none';
-  }
-
-  function saveCartLocally(){ localStorage.setItem('mb_cart', JSON.stringify(cart)); renderCartUI(); renderCartCount(); }
-  function loadCartLocally(){ const raw = localStorage.getItem('mb_cart'); if(raw){ try{ cart = JSON.parse(raw) }catch(e){ cart = [] } } renderCartCount(); renderCartUI(); }
-
-  // Firestore: persist cart to users/{uid}/cart
-  async function persistCartToFirestore(){
-    try{
-      if(!currentUser) return;
-      const userRef = doc(db,'users', currentUser.uid);
-      await setDoc(doc(userRef,'meta','cartSnapshot'), { cart, total: cart.reduce((s,i)=>s+i.price*i.qty,0), updatedAt: serverTimestamp() }, { merge:true });
-      // also set top-level users/{uid} basic info if not present
-      await setDoc(userRef, { name: currentUser.displayName || currentUser.email.split('@')[0], email: currentUser.email }, { merge:true });
-    }catch(e){ console.warn('persistCartToFirestore failed', e); }
-  }
-
-  // AUTH: Email login
-  async function emailLogin(){
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass = document.getElementById('loginPass').value;
-    try{
-      await signInWithEmailAndPassword(auth, email, pass);
-      authClose();
-      showToast('Signed in');
-    }catch(e){ console.error(e); showToast('Login failed: '+e.message, true) }
-  }
-
-  // AUTH: Email register
-  async function emailRegister(){
-    const name = document.getElementById('regName').value.trim();
-    const phone = document.getElementById('regPhone').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const pass = document.getElementById('regPass').value;
-    if(pass.length < 6){ showToast('Password must be at least 6 chars', true); return; }
-    try{
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      // update profile display name
-      await updateProfile(cred.user, { displayName: name });
-      // create user doc
-      await setDoc(doc(db,'users',cred.user.uid), { name, email, phone, createdAt: serverTimestamp() }, { merge:true });
-      authClose(); showToast('Account created');
-    }catch(e){ console.error(e); showToast('Register failed: '+e.message, true) }
-  }
-
-  // AUTH: Google sign-in
-  async function googleSignIn(){
-    const provider = new GoogleAuthProvider();
-    try{
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      // create/update user doc
-      await setDoc(doc(db,'users',user.uid), { name: user.displayName, email: user.email, photoURL: user.photoURL, lastSignIn: serverTimestamp() }, { merge:true });
-      authClose(); showToast('Signed in with Google');
-    }catch(e){ console.error(e); showToast('Google sign-in failed: '+e.message, true) }
-  }
-
-  // sign out
-  async function doSignOut(){
-    try{ await signOut(auth); showToast('Signed out'); }catch(e){ console.warn(e); }
-  }
-
-  // onAuth change
-  onAuthStateChanged(auth, async (user)=>{
-    currentUser = user || null;
-    if(user){
-      signedOut.style.display='none'; signedIn.style.display='flex';
-      profileName.textContent = (user.displayName || user.email.split('@')[0]);
-      avatar.textContent = (user.displayName ? user.displayName[0].toUpperCase() : (user.email ? user.email[0].toUpperCase() : 'U'));
-      // load user cart from Firestore if exists
-      try{
-        const cartSnap = await getDoc(doc(db,'users', user.uid, 'meta', 'cartSnapshot'));
-        if(cartSnap && cartSnap.exists()){
-          const data = cartSnap.data();
-          if(data && data.cart) { cart = data.cart; saveCartLocally(); }
-        }
-      }catch(e){ console.warn('Error loading user cart', e); }
-      // load order summary
-      loadOrderSummary();
-    } else {
-      signedOut.style.display='flex'; signedIn.style.display='none';
-      profileName.textContent=''; avatar.textContent='M';
-      // keep local cart
-    }
-    renderCartCount();
-  });
-
-  // Open/close cart modal
-  openCart.addEventListener('click', ()=>{ cartModal.style.display='flex'; renderCartUI(); });
-  function cartClose(){ cartModal.style.display='none'; }
-
-  // Place Order
-  placeOrderBtn.addEventListener('click', placeOrder);
-  async function placeOrder(){
-    if(!currentUser){ showToast('Please sign in to place an order', true); return; }
-    if(cart.length===0){ showToast('Cart empty', true); return; }
-
-    // build order
-    const order = {
-      uid: currentUser.uid,
-      userName: currentUser.displayName || currentUser.email.split('@')[0],
-      userEmail: currentUser.email,
-      items: cart,
-      total: cart.reduce((s,i)=>s + (i.price * i.qty), 0),
-      deliveryAddress: deliveryAddress.value || '',
-      status: 'pending',
-      createdAt: serverTimestamp()
+    // 🔹 Replace with your Firebase Config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
-    try{
-      // write to orders
-      const docRef = await addDoc(collection(db,'orders'), order);
-      showToast('Order placed');
-      // update user's meta: lastOrderDate and count
-      const userRef = doc(db,'users', currentUser.uid);
-      const userDoc = await getDoc(userRef);
-      let count = 1;
-      if(userDoc.exists()){
-        const ud = userDoc.data();
-        count = (ud.orderCount || 0) + 1;
-      }
-      await setDoc(userRef, { lastOrderDate: serverTimestamp(), orderCount: count }, { merge:true });
-      // clear cart after order
-      cart = [];
-      saveCartLocally();
-      await persistCartToFirestore();
-      cartClose();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-      // Send email via EmailJS if configured
-      if(EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && window.emailjs){
-        try{
-          const templateParams = {
-            order_id: docRef.id,
-            user_name: order.userName,
-            user_email: order.userEmail,
-            user_phone: (userDoc.exists() && userDoc.data().phone) ? userDoc.data().phone : '',
-            delivery_address: order.deliveryAddress,
-            order_total: '₹' + order.total.toLocaleString(),
-            order_items: order.items.map(it => `${it.title} x ${it.qty} (${it.price})`).join('\n'),
-            admin_email: 'minibotix@gmail.com'
-          };
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-          showToast('Confirmation email sent');
-        }catch(e){ console.warn('EmailJS send failed', e); showToast('Email send failed', true); }
-      } else {
-        console.log('EmailJS not configured - skip sending email');
-      }
+    // Cart array
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-      // reload order summary
-      await loadOrderSummary();
+    // Load products.json
+    async function loadProducts() {
+      const res = await fetch("products.json");
+      const products = await res.json();
+      const list = document.getElementById("product-list");
+      list.innerHTML = "";
 
-    }catch(e){
-      console.error('Place order error', e);
-      showToast('Order failed: '+e.message, true);
-    }
-  }
-
-  // Load order summary & list
-  async function loadOrderSummary(){
-    if(!currentUser){ document.getElementById('lastOrderSummary').textContent='—'; document.getElementById('ordersList').innerHTML=''; return; }
-    try{
-      const q = query(collection(db,'orders'), where('uid','==', currentUser.uid), orderBy('createdAt','desc'));
-      const snap = await getDocs(q);
-      const orders = [];
-      snap.forEach(d=>{ orders.push({ id: d.id, ...d.data() }); });
-      // show last order
-      if(orders.length > 0){
-        const o = orders[0];
-        const date = o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toLocaleString() : (o.createdAt || '—');
-        document.getElementById('lastOrderSummary').textContent = `${date} · ₹${o.total}`;
-      } else {
-        document.getElementById('lastOrderSummary').textContent = '—';
-      }
-      // render orders list
-      const list = document.getElementById('ordersList');
-      list.innerHTML = '';
-      orders.forEach(o=>{
-        const row = document.createElement('div'); row.className='order-row';
-        const date = o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toLocaleString() : (o.createdAt || '—');
-        row.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-weight:700">Order ${o.id}</div>
-              <div class="small muted">${date} • ${o.items.length} items</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:700">₹${o.total}</div>
-              <div class="small muted">${o.status}</div>
-            </div>
-        </div>
-        <div style="margin-top:10px" id="orderItems_${o.id}">${o.items.map(it=>`<div>${it.title} × ${it.qty} — ₹${it.price}</div>`).join('')}</div>`;
-        list.appendChild(row);
+      products.forEach(prod => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="${prod.image}" alt="${prod.name}">
+          <h3>${prod.name}</h3>
+          <p>${prod.description}</p>
+          <div class="price">₹${prod.price}</div>
+          <button class="btn" onclick="addToCart('${prod.id}','${prod.name}','${prod.price}','${prod.image}')">Add to Cart</button>
+        `;
+        list.appendChild(div);
       });
+    }
 
-    }catch(e){ console.warn('loadOrderSummary error', e); }
-  }
+    // Add to cart
+    window.addToCart = function(id, name, price, image) {
+      const item = { id, name, price: Number(price), image };
+      cart.push(item);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
 
-  // Toast
-  function showToast(msg, err=false){
-    const toast = document.createElement('div');
-    toast.textContent = msg;
-    toast.style.position='fixed'; toast.style.bottom='22px'; toast.style.left='50%'; toast.style.transform='translateX(-50%)';
-    toast.style.background = err ? '#ff6b6b' : '#00c2ff'; toast.style.color = err ? '#fff' : '#021';
-    toast.style.padding='10px 14px'; toast.style.borderRadius='8px'; toast.style.zIndex=9999;
-    document.body.appendChild(toast);
-    setTimeout(()=>{ toast.style.transition='all .4s'; toast.style.opacity='0'; toast.style.transform='translateX(-50%) translateY(8px)'; },2200);
-    setTimeout(()=>toast.remove(),2600);
-  }
+    // Render cart
+    function renderCart() {
+      const cartList = document.getElementById("cart-items");
+      const cartCount = document.getElementById("cart-count");
+      cartList.innerHTML = "";
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span>${item.name} - ₹${item.price}</span>
+          <button class="btn" onclick="removeFromCart(${index})">Remove</button>
+        `;
+        cartList.appendChild(li);
+      });
+      cartCount.textContent = cart.length;
+    }
 
-  // Init
-  loadCartLocally();
-  loadProducts();
+    // Remove from cart
+    window.removeFromCart = function(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
 
-  // expose for debugging
-  window.emailLogin = emailLogin;
-  window.emailRegister = emailRegister;
-  window.googleSignIn = googleSignIn;
-  window.authClose = authClose;
-  window.showRegister = showRegister;
-  window.showLogin = showLogin;
-  window.addToCart = addToCart;
-  window.viewDetails = viewDetails;
+    // Place order
+    document.getElementById("checkout").addEventListener("click", async () => {
+      if (cart.length === 0) {
+        alert("Cart is empty!");
+        return;
+      }
 
-</script>
+      try {
+        await addDoc(collection(db, "orders"), {
+          items: cart,
+          total: cart.reduce((sum, item) => sum + item.price, 0),
+          createdAt: new Date()
+        });
+        alert("Order placed successfully!");
+        cart = [];
+        localStorage.removeItem("cart");
+        renderCart();
+      } catch (error) {
+        console.error("Order failed:", error);
+        alert("Order failed: " + error.message);
+      }
+    });
+
+    // Init
+    loadProducts();
+    renderCart();
+  </script>
 </body>
 </html>
+
