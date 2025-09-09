@@ -1,225 +1,258 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MiniBotix Components Shop</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MiniBotix · Components Shop</title>
+<link rel="icon" href="file.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#071126;
+  --card: rgba(255,255,255,0.04);
+  --glass: rgba(255,255,255,0.03);
+  --accent1: #007bff;
+  --accent2: #00d4ff;
+  --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
 
-  <style>
-    body {
-      background: #0d1117;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #161b22;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    nav a {
-      color: #fff;
-      margin: 0 10px;
-      text-decoration: none;
-    }
-    .container {
-      padding: 20px;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-    .product {
-      background: #161b22;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-    }
-    .product img {
-      width: 100%;
-      max-height: 150px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-    .product h3 {
-      font-size: 18px;
-    }
-    .product p {
-      font-size: 14px;
-      color: #aaa;
-    }
-    .product .price {
-      margin: 10px 0;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .btn {
-      background: #007bff;
-      color: white;
-      padding: 8px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: #0056b3;
-    }
-    #cart {
-      margin-top: 30px;
-      padding: 20px;
-      background: #161b22;
-      border-radius: 8px;
-    }
-    #cart h2 {
-      margin-bottom: 15px;
-    }
-    #cart-items {
-      list-style: none;
-      padding: 0;
-    }
-    #cart-items li {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-  </style>
+/* HEADER */
+header.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);z-index:90;box-shadow:0 2px 12px rgba(0,0,0,0.6)}
+.nav-left{display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.brand img{height:36px;width:36px;border-radius:6px}
+nav.main-nav{display:flex;gap:22px;align-items:center}
+nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.9);padding:6px 6px}
+.back-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.9);cursor:pointer}
+.user-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+.avatar{height:36px;width:36px;border-radius:50%;background:#223;display:inline-flex;align-items:center;justify-content:center}
+
+/* HERO */
+.hero{padding:110px 22px 40px 22px}
+.hero-card{max-width:1100px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:44px;border-radius:14px;box-shadow:0 30px 60px rgba(3,7,20,0.6)}
+.eyebrow{display:inline-block;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;margin-bottom:16px;color:#aee9ff;font-weight:600}
+.hero h1{font-size:44px;margin:6px 0 12px;line-height:1.03}
+.hero p{color:rgba(255,255,255,0.85);margin-bottom:18px;max-width:900px}
+
+.hero-actions{display:flex;gap:14px}
+.btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
+
+/* PRODUCTS GRID */
+.section{padding:40px 22px 90px}
+.container{max-width:1100px;margin:0 auto}
+h2{font-size:24px;margin-bottom:10px}
+.lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s, box-shadow .22s}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.5)}
+.card .img{height:140px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.price{font-weight:700;color:var(--accent2);margin-right:12px}
+.card-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
+
+/* CART MODAL */
+.cart-bubble{position:relative}
+.cart-count{position:absolute;right:-8px;top:-8px;background:#ff5c5c;color:#fff;height:20px;width:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
+
+/* ORDER SUMMARY */
+.orders-list{margin-top:18px}
+.order-row{background:rgba(255,255,255,0.02);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
+
+/* FOOTER */
+footer{padding:26px 22px;background:transparent;text-align:center;color:rgba(255,255,255,0.6)}
+
+/* RESPONSIVE */
+@media (max-width:880px){
+  nav.main-nav{display:none}
+  .hero h1{font-size:28px}
+}
+
+/* helper */
+.muted{color:rgba(255,255,255,0.7);font-size:14px}
+.small{font-size:13px;color:rgba(255,255,255,0.7)}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">MiniBotix Components Shop</div>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Products</a>
-      <a href="#">Components</a>
-      <a href="#">Contact</a>
-    </nav>
-    <div>
-      <span id="cart-count">0</span> 🛒
-    </div>
-  </header>
 
-  <div class="container">
-    <h1>Available Components</h1>
-    <div class="products" id="product-list">
-      <!-- Products will load here -->
-    </div>
-
-    <div id="cart">
-      <h2>Your Cart</h2>
-      <ul id="cart-items"></ul>
-      <button class="btn" id="checkout">Place Order</button>
+<header class="nav">
+  <div style="display:flex;align-items:center;gap:18px">
+    <div class="back-btn" onclick="location.href='index.html'">← Back</div>
+    <div class="brand">
+      <img src="file.svg" alt="MiniBotix">
+      <div style="line-height:1">
+        <div style="font-weight:700">MiniBotix</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6)">Components Shop</div>
+      </div>
     </div>
   </div>
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+  <nav class="main-nav">
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="componentshop.html" style="text-decoration:underline">Components</a>
+    <a href="projects.html">Projects</a>
+    <a href="apps.html">Free Apps</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
-    // 🔹 Replace with your Firebase Config
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+  <div style="display:flex;align-items:center;gap:12px">
+    <div id="userArea" class="user-pill">
+      <div id="signedOut" style="display:flex;gap:8px;align-items:center">
+        <button id="openAuth" class="btn-ghost">Sign In</button>
+      </div>
+      <div id="signedIn" style="display:none;align-items:center;gap:10px">
+        <div id="profileName" style="font-weight:600"></div>
+        <div class="avatar" id="avatar">M</div>
+        <div class="cart-bubble" title="Cart">
+          <button id="openCart" class="btn-ghost">🛒</button>
+          <div id="cartCount" class="cart-count" style="display:none">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+<section class="hero">
+  <div class="hero-card container">
+    <div class="eyebrow">MiniBotix · Components · Quality Parts</div>
+    <h1>Quality Components — Low Cost, High Reliability</h1>
+    <p class="lead">Browse our curated selection of electronics components for agriculture and engineering projects. Add to cart and place an order — we deliver and support you along the way.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Shop All Components</button>
+      <button class="btn-ghost" onclick="location.href='contact.html'">Contact Support</button>
+    </div>
+  </div>
+</section>
 
-    // Cart array
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<section id="productsSection" class="section">
+  <div class="container">
+    <h2>Available Components</h2>
+    <p class="lead">Click Add to Cart to collect parts. We persist your cart to your account so it follows you across pages.</p>
+    <div id="productsGrid" class="grid"></div>
 
-    // Load products.json
-    async function loadProducts() {
-      const res = await fetch("products.json");
-      const products = await res.json();
-      const list = document.getElementById("product-list");
-      list.innerHTML = "";
+    <h2 style="margin-top:40px">Your Orders</h2>
+    <div id="orderSummary" class="small muted">Last order: <span id="lastOrderSummary">—</span></div>
+    <div id="ordersList" class="orders-list"></div>
+  </div>
+</section>
 
-      products.forEach(prod => {
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-          <img src="${prod.image}" alt="${prod.name}">
-          <h3>${prod.name}</h3>
-          <p>${prod.description}</p>
-          <div class="price">₹${prod.price}</div>
-          <button class="btn" onclick="addToCart('${prod.id}','${prod.name}','${prod.price}','${prod.image}')">Add to Cart</button>
-        `;
-        list.appendChild(div);
-      });
-    }
+<footer>
+  <div class="container">
+    <div style="margin-bottom:8px">MiniBotix · Learn · Build · Innovate</div>
+    <small>© 2025 MiniBotix</small>
+  </div>
+</footer>
 
-    // Add to cart
-    window.addToCart = function(id, name, price, image) {
-      const item = { id, name, price: Number(price), image };
-      cart.push(item);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
-    }
+<script type="module">
+// Firebase Config
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, addDoc, collection, query, where, getDocs, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-    // Render cart
-    function renderCart() {
-      const cartList = document.getElementById("cart-items");
-      const cartCount = document.getElementById("cart-count");
-      cartList.innerHTML = "";
-      cart.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-          <span>${item.name} - ₹${item.price}</span>
-          <button class="btn" onclick="removeFromCart(${index})">Remove</button>
-        `;
-        cartList.appendChild(li);
-      });
-      cartCount.textContent = cart.length;
-    }
+const firebaseConfig = {
+  apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
+  authDomain: "minibotix-a1b9a.firebaseapp.com",
+  projectId: "minibotix-a1b9a",
+  storageBucket: "minibotix-a1b9a.firebasestorage.app",
+  messagingSenderId: "771169717230",
+  appId: "1:771169717230:web:44848d73e548d0e0f8dcff"
+};
 
-    // Remove from cart
-    window.removeFromCart = function(index) {
-      cart.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
-    }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    // Place order
-    document.getElementById("checkout").addEventListener("click", async () => {
-      if (cart.length === 0) {
-        alert("Cart is empty!");
-        return;
-      }
+// UI Refs
+const openAuthBtn = document.getElementById('openAuth');
+const signedOut = document.getElementById('signedOut');
+const signedIn = document.getElementById('signedIn');
+const profileName = document.getElementById('profileName');
+const avatar = document.getElementById('avatar');
+const openCart = document.getElementById('openCart');
+const cartCount = document.getElementById('cartCount');
 
-      try {
-        await addDoc(collection(db, "orders"), {
-          items: cart,
-          total: cart.reduce((sum, item) => sum + item.price, 0),
-          createdAt: new Date()
-        });
-        alert("Order placed successfully!");
-        cart = [];
-        localStorage.removeItem("cart");
-        renderCart();
-      } catch (error) {
-        console.error("Order failed:", error);
-        alert("Order failed: " + error.message);
-      }
-    });
+let products = [];
+let cart = [];
+let currentUser = null;
 
-    // Init
-    loadProducts();
-    renderCart();
-  </script>
+// Load products.json
+async function loadProducts(){
+  try{
+    const res = await fetch('program.json');
+    products = await res.json();
+  }catch(e){
+    console.error('Failed to load program.json', e);
+  }
+  renderProducts();
+}
+
+function renderProducts(){
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML='';
+  products.forEach(p=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `
+      <div class="img"><img src="${p.image}" alt="${p.name}" style="max-width:100%;max-height:100%;object-fit:contain"></div>
+      <div style="font-weight:700;font-size:16px;margin-bottom:6px">${p.name}</div>
+      <div class="small muted" style="margin-bottom:8px">${p.description}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div class="price">₹${p.price.toLocaleString()}</div>
+        <div class="card-actions">
+          <button class="btn-ghost" onclick="viewDetails('${p.id}')">Details</button>
+          <button class="btn-primary" onclick="addToCart('${p.id}')">Add to Cart</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+window.viewDetails = (id)=>{
+  const p = products.find(x=>x.id===id);
+  if(p) alert(`${p.name}\n\n${p.description}\n\nPrice: ₹${p.price}`);
+};
+
+window.addToCart = (id)=>{
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const existing = cart.find(c=>c.id===id);
+  if(existing) existing.qty++;
+  else cart.push({...p, qty:1});
+  renderCartCount();
+};
+
+function renderCartCount(){
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  if(count>0){ cartCount.style.display='flex'; cartCount.textContent = count; }
+  else cartCount.style.display='none';
+}
+
+onAuthStateChanged(auth,user=>{
+  currentUser = user;
+  if(user){
+    signedOut.style.display='none';
+    signedIn.style.display='flex';
+    profileName.textContent = user.displayName || user.email.split('@')[0];
+    avatar.textContent = profileName.textContent[0].toUpperCase();
+  } else {
+    signedOut.style.display='flex';
+    signedIn.style.display='none';
+  }
+});
+
+openAuthBtn.addEventListener('click',()=>{
+  const email = prompt('Enter email'); 
+  const pass = prompt('Enter password');
+  if(email && pass){
+    signInWithEmailAndPassword(auth,email,pass).then(()=>alert('Signed in'));
+  }
+});
+
+loadProducts();
+</script>
 </body>
 </html>
-
