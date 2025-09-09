@@ -1,6 +1,16 @@
 [
-  { "id":"esp32", "title":"ESP32 Dev Module", "price":550, "img":"images/esp32.png", "desc":"ESP32-WROOM — WiFi & Bluetooth microcontroller" },
-  { "id":"ldr", "title":"LDR Photoresistor", "price":15, "img":"images/ldr.png", "desc":"Light-dependent resistor for light sensing" },
-  { "id":"dht22", "title":"DHT22 Temperature & Humidity", "price":120, "img":"images/dht22.png", "desc":"Temperature & humidity sensor" },
-  { "id":"relay5v", "title":"5V Relay Module", "price":75, "img":"images/relay5v.png", "desc":"Single-channel relay module" }
+  {
+    "id": "p1",
+    "name": "ESP32 Dev Module",
+    "price": 550,
+    "description": "ESP32-WROOM module with WiFi & Bluetooth",
+    "image": "images/esp32.jpg"
+  },
+  {
+    "id": "p2",
+    "name": "LDR Photoresistor",
+    "price": 15,
+    "description": "Light-dependent resistor for light sensing",
+    "image": "images/ldr.jpg"
+  }
 ]
