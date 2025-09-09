@@ -1,0 +1,30 @@
+[
+  {
+    "id": "esp32-01",
+    "name": "ESP32 Dev Module",
+    "price": 550,
+    "description": "ESP32-WROOM module — WiFi & Bluetooth microcontroller for IoT projects.",
+    "image": "https://raw.githubusercontent.com/yourusername/yourrepo/main/images/esp32.jpg"
+  },
+  {
+    "id": "ldr-01",
+    "name": "LDR Photoresistor",
+    "price": 15,
+    "description": "Light-dependent resistor for simple light sensing projects.",
+    "image": "https://raw.githubusercontent.com/yourusername/yourrepo/main/images/ldr.jpg"
+  },
+  {
+    "id": "dht22-01",
+    "name": "DHT22 Temperature & Humidity",
+    "price": 120,
+    "description": "Accurate temperature and humidity sensor with simple digital interface.",
+    "image": "https://raw.githubusercontent.com/yourusername/yourrepo/main/images/dht22.jpg"
+  },
+  {
+    "id": "relay-01",
+    "name": "5V Relay Module",
+    "price": 75,
+    "description": "Single-channel relay module for switching high-current devices from microcontrollers.",
+    "image": "https://raw.githubusercontent.com/yourusername/yourrepo/main/images/relay.jpg"
+  }
+]
