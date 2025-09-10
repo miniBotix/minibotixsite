@@ -1,37 +1,82 @@
 [
   {
-    "id": "course1",
+    "id": "python-beginners",
     "name": "Python for Beginners",
-    "description": "Learn Python from scratch with hands-on examples.",
+    "description": "Learn Python basics, variables, loops, functions and file I/O. Hands-on examples and exercises.",
     "image": "images/python_course.png",
-    "top": true
+    "top": true,
+    "page": "python-for-beginners.html"
   },
   {
-    "id": "course2",
+    "id": "iot-nodemcu",
     "name": "IoT with NodeMCU",
-    "description": "Build IoT projects using ESP8266 and sensors.",
+    "description": "Build IoT projects using ESP8266/NodeMCU, sensors and Firebase integration.",
     "image": "images/iot_course.png",
-    "top": true
+    "top": true,
+    "page": "iot-with-nodemcu.html"
   },
   {
-    "id": "course3",
+    "id": "web-dev",
     "name": "Web Development",
-    "description": "Learn HTML, CSS, JS and build responsive websites.",
+    "description": "HTML, CSS, JavaScript and modern workflows. Build responsive websites and small apps.",
     "image": "images/webdev_course.png",
-    "top": false
+    "top": false,
+    "page": "web-development.html"
   },
   {
-    "id": "course4",
-    "name": "Machine Learning",
-    "description": "Build ML models with Scikit-learn and Python.",
+    "id": "ml-intro",
+    "name": "Machine Learning Intro",
+    "description": "Intro to ML using scikit-learn and Python. Build simple models and evaluate them.",
     "image": "images/ml_course.png",
-    "top": true
+    "top": true,
+    "page": "machine-learning-intro.html"
   },
   {
-    "id": "course5",
+    "id": "data-viz",
     "name": "Data Visualization",
-    "description": "Learn matplotlib, seaborn, and dashboard creation.",
+    "description": "Matplotlib, Plotly and Seaborn to build visualizations and dashboards.",
     "image": "images/visualization_course.png",
-    "top": false
+    "top": false,
+    "page": "data-visualization.html"
+  },
+  {
+    "id": "agri-sensors",
+    "name": "Agriculture Sensor Systems",
+    "description": "Design sensor networks for agriculture monitoring: soil moisture, temp, and actuators.",
+    "image": "images/agri_sensors.png",
+    "top": false,
+    "page": "agriculture-sensor-systems.html"
+  },
+  {
+    "id": "raspberrypi",
+    "name": "Raspberry Pi Projects",
+    "description": "Real-world projects with Raspberry Pi: camera, automation, and small server setups.",
+    "image": "images/raspberrypi.png",
+    "top": false,
+    "page": "raspberry-pi-projects.html"
+  },
+  {
+    "id": "opencv",
+    "name": "Computer Vision with OpenCV",
+    "description": "Image processing and CV basics with OpenCV and Python for agriculture & automation.",
+    "image": "images/opencv.png",
+    "top": false,
+    "page": "computer-vision-opencv.html"
+  },
+  {
+    "id": "dl-intro",
+    "name": "Deep Learning Basics",
+    "description": "Intro to neural networks and TensorFlow/Keras. Train models on small datasets.",
+    "image": "images/deeplearning.png",
+    "top": false,
+    "page": "deep-learning-basics.html"
+  },
+  {
+    "id": "dashboarding",
+    "name": "Dashboards & Visualization",
+    "description": "Build interactive dashboards for monitoring farm data and IoT streams.",
+    "image": "images/dashboard.png",
+    "top": false,
+    "page": "dashboards-visualization.html"
   }
 ]
