@@ -4,7 +4,7 @@
     "name": "Arduino UNO R3",
     "price": 450,
     "description": "Popular microcontroller board for beginners and prototyping.",
-    "image": "images/arduino-uno.jpg"
+    "image": "https://images.unsplash.com/photo-1553406830-ef2513450d76?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXJkdWlubyUyMHVub3xlbnwwfHwwfHx8MA%3D%3D"
   },
   {
     "id": "c2",
