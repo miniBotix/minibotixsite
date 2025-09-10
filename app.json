@@ -3,21 +3,21 @@
     "id": "app1",
     "name": "MiniBotix Controller",
     "description": "Control your robotic arm directly from your mobile or PC with real-time updates.",
-    "image": "images/minibotix_app.png",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0IzZWLYNLRo5FnmsqFFYRvCKgKn2TEpdSTGAdMMGnEV2wi2-aqKy7SIxWt8cRrWoJG28&usqp=CAU",
     "download_link": "downloads/minibotix_app.apk"
   },
   {
     "id": "app2",
     "name": "Weather Monitor",
     "description": "Track temperature, humidity, and pressure with IoT sensors and ESP modules.",
-    "image": "images/weather_app.png",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq8a5t4LDpAOQGXeWF200-aEwgDt3FlslOmw&s",
     "download_link": "downloads/weather_app.apk"
   },
   {
     "id": "app3",
     "name": "Smart Irrigation",
     "description": "Automated irrigation app with soil moisture monitoring and scheduling.",
-    "image": "images/irrigation_app.png",
+    "image": "https://cdsentec.com/wp-content/uploads/2022/08/smart-irrigation-system-project.png",
     "download_link": "downloads/irrigation_app.apk"
   }
 ]
