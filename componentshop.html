@@ -1,12 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MiniBotix · Components Shop</title>
-<link rel="icon" href="file.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MiniBotix · Components Shop</title>
+  <link rel="icon" href="file.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+  /* ---------- THEME & LAYOUT ---------- */
   :root{
     --bg:#071126;
     --card: rgba(255,255,255,0.04);
@@ -14,6 +15,7 @@
     --accent1: #007bff;
     --accent2: #00d4ff;
     --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
+    --muted: rgba(255,255,255,0.65);
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
@@ -36,7 +38,6 @@
   .eyebrow{display:inline-block;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;margin-bottom:16px;color:#aee9ff;font-weight:600}
   .hero h1{font-size:44px;margin:6px 0 12px;line-height:1.03}
   .hero p{color:rgba(255,255,255,0.85);margin-bottom:18px;max-width:900px}
-
   .hero-actions{display:flex;gap:14px}
   .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
   .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
@@ -46,7 +47,6 @@
   .container{max-width:1100px;margin:0 auto}
   h2{font-size:24px;margin-bottom:10px}
   .lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
-
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
   .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s, box-shadow .22s}
   .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.5)}
@@ -54,15 +54,15 @@
   .price{font-weight:700;color:var(--accent2);margin-right:12px}
   .card-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
 
-  /* cart modal */
+  /* cart */
   .cart-bubble{position:relative}
   .cart-count{position:absolute;right:-8px;top:-8px;background:#ff5c5c;color:#fff;height:20px;width:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
 
-  /* order summary */
+  /* orders */
   .orders-list{margin-top:18px}
   .order-row{background:rgba(255,255,255,0.02);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
 
-  /* small screens */
+  /* responsive */
   @media (max-width:880px){
     nav.main-nav{display:none}
     .hero h1{font-size:28px}
@@ -74,7 +74,11 @@
 
   /* toast */
   .mini-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 22px; padding: 10px 14px; border-radius: 8px; z-index: 9999; font-weight:600 }
-</style>
+
+  /* input */
+  .input { width:100%; padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff }
+  .label { font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:6px;display:block }
+  </style>
 </head>
 <body>
 
@@ -135,7 +139,7 @@
 <section id="productsSection" class="section">
   <div class="container">
     <h2>Available Components</h2>
-    <p class="lead">Click Add to Cart to collect parts. We persist your cart to your account so it follows you across pages.</p>
+    <p class="lead">Click "Add to Cart" to collect parts. Cart persists to your account and follows you across pages when signed in.</p>
     <div id="productsGrid" class="grid" aria-live="polite"></div>
 
     <h2 style="margin-top:40px">Your Orders</h2>
@@ -145,13 +149,13 @@
 </section>
 
 <footer>
-  <div class="container">
+  <div class="container" style="text-align:center;padding:28px 0 80px 0">
     <div style="margin-bottom:8px">MiniBotix · Learn · Build · Innovate</div>
     <small>© 2025 MiniBotix</small>
   </div>
 </footer>
 
-<!-- AUTH Modal (simple) -->
+<!-- AUTH Modal -->
 <div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999">
   <div style="width:100%;max-width:420px;background:#071126;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
@@ -159,29 +163,27 @@
       <button onclick="authClose()" style="background:transparent;border:none;color:#fff;font-size:18px">✕</button>
     </div>
 
-    <div id="authTabs">
-      <div style="display:flex;gap:8px;margin-bottom:12px">
-        <button onclick="showLogin()" class="btn-ghost">Login</button>
-        <button onclick="showRegister()" class="btn-ghost">Register</button>
-        <button id="googleSignBtn" class="btn-primary" style="margin-left:auto">Sign in with Google</button>
-      </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button onclick="showLogin()" class="btn-ghost">Login</button>
+      <button onclick="showRegister()" class="btn-ghost">Register</button>
+      <button id="googleSignBtn" class="btn-primary" style="margin-left:auto">Sign in with Google</button>
+    </div>
 
-      <div id="loginView">
-        <div class="form-group"><label class="small">Email</label><input id="loginEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Password</label><input id="loginPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-          <button class="btn-primary" id="loginBtn">Sign In</button>
-        </div>
+    <div id="loginView">
+      <div class="form-group"><label class="label">Email</label><input id="loginEmail" type="email" class="input"></div>
+      <div class="form-group"><label class="label">Password</label><input id="loginPass" type="password" class="input"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn-primary" id="loginBtn">Sign In</button>
       </div>
+    </div>
 
-      <div id="registerView" style="display:none">
-        <div class="form-group"><label class="small">Full name</label><input id="regName" type="text" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Phone</label><input id="regPhone" type="tel" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Email</label><input id="regEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div class="form-group"><label class="small">Password</label><input id="regPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-          <button class="btn-primary" id="registerBtn">Create account</button>
-        </div>
+    <div id="registerView" style="display:none">
+      <div class="form-group"><label class="label">Full name</label><input id="regName" type="text" class="input"></div>
+      <div class="form-group"><label class="label">Phone</label><input id="regPhone" type="tel" class="input"></div>
+      <div class="form-group"><label class="label">Email</label><input id="regEmail" type="email" class="input"></div>
+      <div class="form-group"><label class="label">Password</label><input id="regPass" type="password" class="input"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn-primary" id="registerBtn">Create account</button>
       </div>
     </div>
   </div>
@@ -202,361 +204,426 @@
       <div class="muted">Total:</div>
       <div id="cartTotal" style="font-weight:700;font-size:18px">₹0</div>
     </div>
-    <div id="checkoutForm" style="margin-top:12px;display:none">
+    <div id="checkoutForm" style="margin-top:12px;">
       <div style="margin-top:12px">
-        <label class="small">Delivery Address</label>
-        <input id="deliveryAddress" placeholder="Address, area, city, pin" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
+        <label class="label">Delivery Address</label>
+        <input id="deliveryAddress" placeholder="Address, area, city, pin" class="input">
       </div>
     </div>
   </div>
 </div>
 
-<!-- Toast container (none in DOM, created by JS) -->
-
-<!-- Firebase + EmailJS + App Script -->
+<!-- ====== SCRIPTS: Firebase, EmailJS, App logic ====== -->
 <script type="module">
-  // ========== CONFIG ==========
-  const firebaseConfig = {
-    apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
-    authDomain: "minibotix-a1b9a.firebaseapp.com",
-    projectId: "minibotix-a1b9a",
-    storageBucket: "minibotix-a1b9a.firebasestorage.app",
-    messagingSenderId: "771169717230",
-    appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
-    measurementId: "G-JQKFSBN4WP"
-  };
+/* =========================
+   CONFIG (replace only if needed)
+   ========================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
+  authDomain: "minibotix-a1b9a.firebaseapp.com",
+  projectId: "minibotix-a1b9a",
+  storageBucket: "minibotix-a1b9a.firebasestorage.app",
+  messagingSenderId: "771169717230",
+  appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
+  measurementId: "G-JQKFSBN4WP"
+};
 
-  // EmailJS config (you gave these)
-  const EMAILJS_SERVICE_ID = 'service_geicmxo';
-  const EMAILJS_TEMPLATE_ID = 'tempelate_q886qzl';
-  const EMAILJS_PUBLIC_KEY = '6jnsqmIDaM3AdPsvC';
+// EmailJS settings (you already provided)
+const EMAILJS_SERVICE_ID = 'service_oy9d8gj';
+const EMAILJS_TEMPLATE_ID = 'template_8bg1wwd';
+const EMAILJS_PUBLIC_KEY = '6jnsqmIDaM3AdPsvC';
 
-  // ========== IMPORTS ==========
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc, addDoc, collection, query, where, getDocs, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+// ===== IMPORT FIREBASE MODULES =====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+// initialize firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  // Load EmailJS SDK & init
+// load emailjs library
+(function loadEmailJs(){
   const s = document.createElement('script');
   s.src = "https://cdn.emailjs.com/dist/email.min.js";
   s.onload = () => {
-    if(window.emailjs) {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-      console.log('EmailJS initialized');
+    if(window.emailjs){
+      try{ emailjs.init(EMAILJS_PUBLIC_KEY); console.log('EmailJS initialized'); }
+      catch(e){ console.warn('EmailJS init failed', e); }
     }
   };
   document.head.appendChild(s);
+})();
 
-  // ========== UI REFS ==========
-  const openAuthBtn = document.getElementById('openAuth');
-  const authModal = document.getElementById('authModal');
-  const signedOut = document.getElementById('signedOut');
-  const signedIn = document.getElementById('signedIn');
-  const profileName = document.getElementById('profileName');
-  const avatar = document.getElementById('avatar');
-  const cartCount = document.getElementById('cartCount');
-  const openCart = document.getElementById('openCart');
-  const cartModal = document.getElementById('cartModal');
-  const cartItemsContainer = document.getElementById('cartItemsContainer');
-  const cartTotalEl = document.getElementById('cartTotal');
-  const placeOrderBtn = document.getElementById('placeOrderBtn');
-  const deliveryAddress = document.getElementById('deliveryAddress');
+/* =========================
+   UI element refs
+   ========================= */
+const openAuthBtn = document.getElementById('openAuth');
+const authModal = document.getElementById('authModal');
+const signedOut = document.getElementById('signedOut');
+const signedIn = document.getElementById('signedIn');
+const profileName = document.getElementById('profileName');
+const avatar = document.getElementById('avatar');
+const cartCount = document.getElementById('cartCount');
+const openCart = document.getElementById('openCart');
+const cartModal = document.getElementById('cartModal');
+const cartItemsContainer = document.getElementById('cartItemsContainer');
+const cartTotalEl = document.getElementById('cartTotal');
+const placeOrderBtn = document.getElementById('placeOrderBtn');
+const deliveryAddress = document.getElementById('deliveryAddress');
+const toProductsBtn = document.getElementById('toProductsBtn');
+const contactBtn = document.getElementById('contactBtn');
 
-  const toProductsBtn = document.getElementById('toProductsBtn');
-  const contactBtn = document.getElementById('contactBtn');
+toProductsBtn.addEventListener('click', ()=>{ document.getElementById('productsSection').scrollIntoView({behavior:'smooth'}); });
+contactBtn.addEventListener('click', ()=>{ window.location.href = 'contact.html'; });
 
-  toProductsBtn.addEventListener('click', ()=>{ document.getElementById('productsSection').scrollIntoView({behavior:'smooth'}); });
-  contactBtn.addEventListener('click', ()=>{ window.location.href = 'contact.html'; });
+// auth modal actions
+document.getElementById('loginBtn').addEventListener('click', emailLogin);
+document.getElementById('registerBtn').addEventListener('click', emailRegister);
+document.getElementById('googleSignBtn').addEventListener('click', googleSignIn);
+openAuthBtn.addEventListener('click', ()=> authOpen());
 
-  // auth modal buttons
-  document.getElementById('loginBtn').addEventListener('click', emailLogin);
-  document.getElementById('registerBtn').addEventListener('click', emailRegister);
-  document.getElementById('googleSignBtn').addEventListener('click', googleSignIn);
+function authOpen(){ authModal.style.display = 'flex'; }
+function authClose(){ authModal.style.display = 'none'; }
+function showRegister(){ document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; }
+function showLogin(){ document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none'; }
 
-  // open auth
-  openAuthBtn.addEventListener('click', ()=>{ authOpen(); });
+/* =========================
+   STATE
+   ========================= */
+let products = [];
+let cart = [];          // items = { id, title, price, qty, img }
+let currentUser = null;
+const PENDING_KEY = 'mb_pending_orders';
 
-  function authOpen(){ authModal.style.display = 'flex'; }
-  function authClose(){ authModal.style.display = 'none'; }
-  function showRegister(){ document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; }
-  function showLogin(){ document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none'; }
+/* =========================
+   HELPERS
+   ========================= */
+function showToast(msg, isErr=false){
+  const div = document.createElement('div');
+  div.className = 'mini-toast';
+  div.style.background = isErr ? '#ff6b6b' : 'linear-gradient(90deg,#00c6ff,#0066ff)';
+  div.style.color = isErr ? '#fff' : '#021';
+  div.textContent = msg;
+  document.body.appendChild(div);
+  setTimeout(()=>{ div.style.transition='all .4s'; div.style.opacity='0'; div.style.transform='translateY(8px)'; }, 2600);
+  setTimeout(()=>div.remove(),3000);
+}
+function safeStr(v){ return (v===null || v===undefined) ? '' : String(v); }
 
-  // ========== STATE ==========
-  let products = []; // loaded from program.json
-  let cart = [];     // {id, title, price, qty, img}
-  let currentUser = null;
-
-  // ========== UTIL ==========
-  function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-  function showToast(msg, isErr=false){
-    const div = document.createElement('div');
-    div.className = 'mini-toast';
-    div.style.background = isErr ? '#ff6b6b' : 'linear-gradient(90deg,#00c6ff,#0066ff)';
-    div.style.color = isErr ? '#fff' : '#021';
-    div.textContent = msg;
-    document.body.appendChild(div);
-    setTimeout(()=>{ div.style.transition='all .4s'; div.style.opacity='0'; div.style.transform='translateY(8px)'; }, 2600);
-    setTimeout(()=>div.remove(),3000);
+/* =========================
+   PRODUCT LOADING (products.json)
+   ========================= */
+async function loadProducts(){
+  try{
+    const res = await fetch('products.json', { cache: 'no-store' });
+    if(!res.ok) throw new Error('products.json not found');
+    const data = await res.json();
+    // normalize — ensure each product has id,name,price,description,image
+    products = data.map(p=>{
+      return {
+        id: safeStr(p.id || p.productId || p.sku),
+        name: safeStr(p.name || p.title || p.productName),
+        price: Number(p.price || 0),
+        description: safeStr(p.description || p.desc || ''),
+        image: safeStr(p.image || p.img || '')
+      };
+    });
+  }catch(e){
+    console.warn('loadProducts failed, using fallback', e);
+    products = [
+      { id:'p_esp32', name:'ESP32 Dev Module', price:550, image:'images/esp32.jpg', description:'ESP32-WROOM module with WiFi & Bluetooth' },
+      { id:'p_ldr', name:'LDR Photoresistor', price:15, image:'images/ldr.jpg', description:'Light-dependent resistor for light sensing' }
+    ];
   }
+  renderProducts();
+}
 
-  // ========== LOAD PRODUCTS ==========
-  async function loadProducts(){
-    try{
-      const res = await fetch('program.json', { cache: 'no-store' });
-      if(!res.ok) throw new Error('program.json not found');
-      products = await res.json();
-    }catch(e){
-      console.warn('program.json load failed, using fallback', e);
-      products = [
-        { id:'p_esp32', title:'ESP32 Dev Module', price:550, img:'', desc:'ESP32-WROOM module with WiFi & Bluetooth' },
-        { id:'p_ldr', title:'LDR Photoresistor', price:15, img:'', desc:'Light-dependent resistor for light sensing' },
-        { id:'p_dht', title:'DHT11 Sensor', price:120, img:'', desc:'Temperature & humidity sensor' }
-      ];
-    }
-    renderProducts();
+/* Render the product cards using createElement (safer than innerHTML) */
+function renderProducts(){
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = '';
+  products.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const imgWrap = document.createElement('div'); imgWrap.className='img';
+    const imgEl = document.createElement('img');
+    imgEl.alt = p.name;
+    imgEl.style.maxWidth = '100%';
+    imgEl.style.maxHeight = '100%';
+    imgEl.style.objectFit = 'contain';
+    imgEl.src = p.image || ('https://via.placeholder.com/320x140?text=' + encodeURIComponent(p.name));
+    imgWrap.appendChild(imgEl);
+
+    const title = document.createElement('div'); title.style.fontWeight='700'; title.style.fontSize='16px'; title.style.marginBottom='6px'; title.textContent = p.name;
+    const desc = document.createElement('div'); desc.className='small muted'; desc.style.marginBottom='8px'; desc.textContent = p.description;
+    const row = document.createElement('div'); row.style.display='flex'; row.style.alignItems='center'; row.style.justifyContent='space-between';
+    const price = document.createElement('div'); price.className='price'; price.textContent = '₹' + (Number(p.price).toLocaleString());
+    const actions = document.createElement('div'); actions.className = 'card-actions';
+    const detailsBtn = document.createElement('button'); detailsBtn.className='btn-ghost'; detailsBtn.textContent='Details'; detailsBtn.dataset.id = p.id;
+    const addBtn = document.createElement('button'); addBtn.className='btn-primary'; addBtn.textContent='Add to Cart'; addBtn.dataset.id = p.id;
+
+    detailsBtn.addEventListener('click', ()=> { alert(`${p.name}\n\nPrice: ₹${p.price}\n\n${p.description}`); });
+    addBtn.addEventListener('click', ()=> { addToCart(p.id); });
+
+    actions.appendChild(detailsBtn); actions.appendChild(addBtn);
+    row.appendChild(price); row.appendChild(actions);
+
+    card.appendChild(imgWrap);
+    card.appendChild(title);
+    card.appendChild(desc);
+    card.appendChild(row);
+    grid.appendChild(card);
+  });
+}
+
+/* =========================
+   CART: local storage & UI
+   ========================= */
+function saveCartLocally(){ localStorage.setItem('mb_cart', JSON.stringify(cart)); renderCartUI(); renderCartCount(); }
+function loadCartLocally(){ const raw = localStorage.getItem('mb_cart'); if(raw){ try{ cart = JSON.parse(raw); }catch(e){ cart=[]; } } renderCartUI(); renderCartCount(); }
+
+function addToCart(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) { showToast('Product not found', true); return; }
+  const existing = cart.find(c=>c.id === id);
+  if(existing) existing.qty++;
+  else cart.push({ id: p.id, title: p.name, price: Number(p.price||0), qty: 1, img: p.image || '' });
+  saveCartLocally();
+  showToast('Added ' + p.name);
+  if(currentUser) persistCartToFirestore(); // sync
+}
+
+function renderCartUI(){
+  cartItemsContainer.innerHTML = '';
+  if(cart.length === 0){
+    cartItemsContainer.innerHTML = '<div class="muted">Your cart is empty</div>';
+    cartTotalEl.textContent = '₹0';
+    return;
   }
-
-  function renderProducts(){
-    const grid = document.getElementById('productsGrid');
-    grid.innerHTML = '';
-    products.forEach(p=>{
-      const card = document.createElement('div');
-      card.className = 'card';
-      const imgSrc = p.image || p.img || ('https://via.placeholder.com/320x140?text='+encodeURIComponent(p.name||p.title));
-      const title = p.name || p.title || 'Unknown';
-      const price = Number(p.price || p.price === 0 ? p.price : (p.price || 0));
-      const desc = p.description || p.desc || '';
-      card.innerHTML = `
-        <div class="img"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(title)}" style="max-width:100%;max-height:100%;object-fit:contain"></div>
-        <div style="font-weight:700;font-size:16px;margin-bottom:6px">${escapeHtml(title)}</div>
-        <div class="small muted" style="margin-bottom:8px">${escapeHtml(desc)}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div class="price">₹${Number(price).toLocaleString()}</div>
-          <div class="card-actions">
-            <button class="btn-ghost" data-id="${escapeHtml(p.id)}" data-action="details">Details</button>
-            <button class="btn-primary" data-id="${escapeHtml(p.id)}" data-action="add">Add to Cart</button>
-          </div>
+  let total = 0;
+  cart.forEach(it=>{
+    total += it.price * it.qty;
+    const el = document.createElement('div');
+    el.className = 'order-row';
+    el.style.marginBottom='10px';
+    el.innerHTML = `
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:48px;height:48px;border-radius:8px;background:#0b1220;display:flex;align-items:center;justify-content:center">
+          ${ it.img ? `<img src="${encodeURI(it.img)}" style="max-height:40px"/>` : '<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#0f1724"/></svg>' }
         </div>
-      `;
-      grid.appendChild(card);
-    });
-
-    // attach event handlers
-    grid.querySelectorAll('[data-action="add"]').forEach(btn=>{
-      btn.addEventListener('click', (ev)=>{
-        const id = btn.getAttribute('data-id');
-        addToCart(id);
-      });
-    });
-    grid.querySelectorAll('[data-action="details"]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const id = btn.getAttribute('data-id');
-        const p = products.find(x=>x.id===id);
-        if(!p) return showToast('Product not found', true);
-        alert(`${p.name || p.title}\n\nPrice: ₹${p.price}\n\n${p.description || p.desc || ''}`);
-      });
-    });
-  }
-
-  // ========== CART ==========
-
-  function saveCartLocally(){ localStorage.setItem('mb_cart', JSON.stringify(cart)); renderCartUI(); renderCartCount(); }
-  function loadCartLocally(){ const raw = localStorage.getItem('mb_cart'); if(raw){ try{ cart = JSON.parse(raw); }catch(e){ cart = []; } } renderCartUI(); renderCartCount(); }
-
-  function addToCart(id){
-    const p = products.find(x=>x.id===id);
-    if(!p) return showToast('Product not found', true);
-    const existing = cart.find(c=>c.id === id);
-    if(existing) existing.qty += 1;
-    else cart.push({ id: id, title: p.name || p.title, price: Number(p.price || p.price || 0), qty: 1, img: p.image || p.img || '' });
-    saveCartLocally();
-    showToast('Added ' + (p.name || p.title));
-    if(currentUser) persistCartToFirestore();
-  }
-
-  function renderCartUI(){
-    cartItemsContainer.innerHTML = '';
-    if(cart.length === 0){
-      cartItemsContainer.innerHTML = '<div class="muted">Your cart is empty</div>';
-      cartTotalEl.textContent = '₹0';
-      return;
-    }
-    let total = 0;
-    cart.forEach(it=>{
-      total += it.price * it.qty;
-      const el = document.createElement('div');
-      el.className = 'order-row';
-      el.innerHTML = `
-        <div style="display:flex;gap:12px;align-items:center">
-          <div style="width:48px;height:48px;border-radius:8px;background:#0b1220;display:flex;align-items:center;justify-content:center">${it.img?'<img src="'+escapeHtml(it.img)+'" style="max-height:40px"/>':'<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#0f1724"/></svg>'}</div>
-          <div style="flex:1">
-            <div style="font-weight:700">${escapeHtml(it.title)}</div>
-            <div class="small muted">₹${it.price} × ${it.qty}</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="btn-ghost" data-id="${escapeHtml(it.id)}" data-op="decrease">−</button>
-            <button class="btn-ghost" data-id="${escapeHtml(it.id)}" data-op="increase">+</button>
-            <button class="btn-ghost" data-id="${escapeHtml(it.id)}" data-op="remove">Remove</button>
-          </div>
+        <div style="flex:1">
+          <div style="font-weight:700">${escapeHtml(it.title)}</div>
+          <div class="small muted">₹${it.price} × ${it.qty}</div>
         </div>
-      `;
-      cartItemsContainer.appendChild(el);
-    });
-
-    // attach handlers
-    cartItemsContainer.querySelectorAll('[data-op]').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        const id = b.getAttribute('data-id');
-        const op = b.getAttribute('data-op');
-        if(op === 'decrease') decreaseQty(id);
-        else if(op === 'increase') increaseQty(id);
-        else if(op === 'remove') removeItem(id);
-      });
-    });
-
-    cartTotalEl.textContent = '₹' + total.toLocaleString();
-  }
-
-  function increaseQty(id){ const it = cart.find(x=>x.id===id); if(it){ it.qty++; saveCartLocally(); if(currentUser) persistCartToFirestore(); } }
-  function decreaseQty(id){ const it = cart.find(x=>x.id===id); if(it){ it.qty = Math.max(1, it.qty - 1); saveCartLocally(); if(currentUser) persistCartToFirestore(); } }
-  function removeItem(id){ cart = cart.filter(x=>x.id !== id); saveCartLocally(); if(currentUser) persistCartToFirestore(); }
-
-  function renderCartCount(){
-    const count = cart.reduce((s,i)=>s+i.qty,0);
-    if(count > 0){ cartCount.style.display = 'flex'; cartCount.textContent = count; }
-    else cartCount.style.display = 'none';
-  }
-
-  // ========== Firestore persistence (cart snapshot) ==========
-  async function persistCartToFirestore(){
-    try{
-      if(!currentUser) return;
-      const userMetaRef = doc(db, 'users', currentUser.uid, 'meta', 'cartSnapshot');
-      await setDoc(userMetaRef, { cart, total: cart.reduce((s,i)=>s+i.price*i.qty,0), updatedAt: serverTimestamp() });
-      // ensure user doc exists
-      const userRef = doc(db, 'users', currentUser.uid);
-      await setDoc(userRef, { name: currentUser.displayName || currentUser.email.split('@')[0], email: currentUser.email }, { merge: true });
-    }catch(e){ console.warn('persistCartToFirestore failed', e); }
-  }
-
-  // ========== AUTH ==========
-  async function emailLogin(){
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass = document.getElementById('loginPass').value;
-    try{
-      await signInWithEmailAndPassword(auth, email, pass);
-      authClose();
-      showToast('Signed in');
-    }catch(e){ console.error(e); showToast('Login failed: ' + (e.message || e), true); }
-  }
-
-  async function emailRegister(){
-    const name = document.getElementById('regName').value.trim();
-    const phone = document.getElementById('regPhone').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const pass = document.getElementById('regPass').value;
-    if(pass.length < 6){ showToast('Password must be at least 6 chars', true); return; }
-    try{
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      await updateProfile(cred.user, { displayName: name });
-      await setDoc(doc(db, 'users', cred.user.uid), { name, email, phone, createdAt: serverTimestamp() }, { merge: true });
-      authClose(); showToast('Account created');
-    }catch(e){ console.error(e); showToast('Register failed: ' + (e.message || e), true); }
-  }
-
-  async function googleSignIn(){
-    const provider = new GoogleAuthProvider();
-    try{
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      await setDoc(doc(db, 'users', user.uid), { name: user.displayName, email: user.email, photoURL: user.photoURL, lastSignIn: serverTimestamp() }, { merge: true });
-      authClose(); showToast('Signed in with Google');
-    }catch(e){ console.error(e); showToast('Google sign-in failed: ' + (e.message || e), true); }
-  }
-
-  async function doSignOut(){
-    try{ await signOut(auth); showToast('Signed out'); }catch(e){ console.warn(e); }
-  }
-
-  onAuthStateChanged(auth, async (user)=>{
-    currentUser = user || null;
-    if(user){
-      signedOut.style.display='none';
-      signedIn.style.display='flex';
-      profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
-      avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
-
-      // try load cart snapshot
-      try{
-        const cs = await getDoc(doc(db, 'users', user.uid, 'meta', 'cartSnapshot'));
-        if(cs && cs.exists()){
-          const data = cs.data();
-          if(Array.isArray(data.cart) && data.cart.length > 0){
-            cart = data.cart;
-            saveCartLocally();
-          } else {
-            // if no server cart, but local exists, push local to server
-            const local = localStorage.getItem('mb_cart');
-            if(local) { cart = JSON.parse(local); await persistCartToFirestore(); }
-          }
-        } else {
-          const local = localStorage.getItem('mb_cart');
-          if(local) cart = JSON.parse(local);
-        }
-      }catch(e){ console.warn('Load user cart failed', e); const local = localStorage.getItem('mb_cart'); if(local) cart = JSON.parse(local); }
-
-      renderCartCount();
-      renderCartUI();
-      await loadOrderSummary();
-    } else {
-      signedOut.style.display='flex';
-      signedIn.style.display='none';
-      profileName.textContent = '';
-      avatar.textContent = 'M';
-      // keep local cart
-      const local = localStorage.getItem('mb_cart');
-      cart = local ? JSON.parse(local) : [];
-      renderCartCount();
-      renderCartUI();
-      document.getElementById('lastOrderSummary').textContent = '—';
-      document.getElementById('ordersList').innerHTML = '';
-    }
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn-ghost" data-id="${escapeHtml(it.id)}" data-op="decrease">−</button>
+          <button class="btn-ghost" data-id="${escapeHtml(it.id)}" data-op="increase">+</button>
+          <button class="btn-ghost" data-id="${escapeHtml(it.id)}" data-op="remove">Remove</button>
+        </div>
+      </div>
+    `;
+    cartItemsContainer.appendChild(el);
   });
 
-  // ========== CART MODAL ==========
-  openCart.addEventListener('click', ()=>{ cartModal.style.display = 'flex'; renderCartUI(); });
-  function cartClose(){ cartModal.style.display = 'none'; }
+  cartItemsContainer.querySelectorAll('[data-op]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const id = b.getAttribute('data-id');
+      const op = b.getAttribute('data-op');
+      if(op === 'decrease') decreaseQty(id);
+      else if(op === 'increase') increaseQty(id);
+      else if(op === 'remove') removeItem(id);
+    });
+  });
 
-  // ========== PLACE ORDER ==========
-  placeOrderBtn.addEventListener('click', placeOrder);
+  cartTotalEl.textContent = '₹' + total.toLocaleString();
+}
 
-  async function placeOrder(){
-    if(!currentUser){ showToast('Please sign in to place an order', true); return; }
-    if(cart.length === 0){ showToast('Cart empty', true); return; }
+function increaseQty(id){ const it = cart.find(x=>x.id===id); if(it){ it.qty++; saveCartLocally(); if(currentUser) persistCartToFirestore(); } }
+function decreaseQty(id){ const it = cart.find(x=>x.id===id); if(it){ it.qty = Math.max(1, it.qty - 1); saveCartLocally(); if(currentUser) persistCartToFirestore(); } }
+function removeItem(id){ cart = cart.filter(x=>x.id !== id); saveCartLocally(); if(currentUser) persistCartToFirestore(); }
 
-    const orderObj = {
-      uid: currentUser.uid,
-      userName: currentUser.displayName || currentUser.email.split('@')[0],
-      userEmail: currentUser.email,
-      items: cart,
-      total: cart.reduce((s,i)=>s + (i.price * i.qty), 0),
-      deliveryAddress: deliveryAddress.value || '',
-      status: 'pending',
-      createdAt: serverTimestamp()
-    };
+function renderCartCount(){
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  if(count > 0){ cartCount.style.display = 'flex'; cartCount.textContent = count; }
+  else cartCount.style.display = 'none';
+}
 
+/* =========================
+   Firestore: persist cart snapshot per user
+   ========================= */
+async function persistCartToFirestore(){
+  if(!currentUser) return;
+  try{
+    const userMetaRef = doc(db, 'users', currentUser.uid, 'meta', 'cartSnapshot');
+    await setDoc(userMetaRef, { cart, total: cart.reduce((s,i)=>s+i.price*i.qty,0), updatedAt: serverTimestamp() });
+    // ensure user doc exists
+    const userRef = doc(db, 'users', currentUser.uid);
+    await setDoc(userRef, { name: currentUser.displayName || currentUser.email.split('@')[0], email: currentUser.email }, { merge: true });
+  }catch(e){ console.warn('persistCartToFirestore failed', e); }
+}
+
+/* =========================
+   AUTH (email & Google)
+   ========================= */
+async function emailLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  try{
+    await signInWithEmailAndPassword(auth, email, pass);
+    authClose(); showToast('Signed in');
+  }catch(e){ console.error(e); showToast('Login failed: ' + (e.message || e), true); }
+}
+
+async function emailRegister(){
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPass').value;
+  if(pass.length < 6){ showToast('Password must be at least 6 chars', true); return; }
+  try{
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+    await setDoc(doc(db, 'users', cred.user.uid), { name, email, phone, createdAt: serverTimestamp() }, { merge: true });
+    authClose(); showToast('Account created');
+  }catch(e){ console.error(e); showToast('Register failed: ' + (e.message || e), true); }
+}
+
+async function googleSignIn(){
+  const provider = new GoogleAuthProvider();
+  try{
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    await setDoc(doc(db, 'users', user.uid), { name: user.displayName, email: user.email, photoURL: user.photoURL, lastSignIn: serverTimestamp() }, { merge: true });
+    authClose(); showToast('Signed in with Google');
+  }catch(e){ console.error(e); showToast('Google sign-in failed: ' + (e.message || e), true); }
+}
+
+async function doSignOut(){
+  try{ await signOut(auth); showToast('Signed out'); }catch(e){ console.warn(e); }
+}
+
+// monitor auth state
+onAuthStateChanged(auth, async (user)=>{
+  currentUser = user || null;
+  if(user){
+    signedOut.style.display='none';
+    signedIn.style.display='flex';
+    profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
+    avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
+
+    // load server cart snapshot if exists, else push local -> server
     try{
-      // save order
-      const ordersRef = collection(db, 'orders');
-      const docRef = await addDoc(ordersRef, orderObj);
-      showToast('Order placed');
+      const cs = await getDoc(doc(db, 'users', user.uid, 'meta', 'cartSnapshot'));
+      if(cs && cs.exists()){
+        const data = cs.data();
+        if(Array.isArray(data.cart) && data.cart.length > 0){
+          cart = data.cart;
+          saveCartLocally();
+        } else {
+          const local = localStorage.getItem('mb_cart');
+          if(local) { cart = JSON.parse(local); await persistCartToFirestore(); }
+        }
+      } else {
+        const local = localStorage.getItem('mb_cart');
+        if(local) cart = JSON.parse(local);
+      }
+    }catch(e){ console.warn('Load user cart failed', e); const local = localStorage.getItem('mb_cart'); if(local) cart = JSON.parse(local); }
 
-      // update user's meta (order count / last order)
+    renderCartCount(); renderCartUI(); await loadOrderSummary();
+  } else {
+    signedOut.style.display='flex';
+    signedIn.style.display='none';
+    profileName.textContent = '';
+    avatar.textContent = 'M';
+    const local = localStorage.getItem('mb_cart');
+    cart = local ? JSON.parse(local) : [];
+    renderCartCount(); renderCartUI();
+    document.getElementById('lastOrderSummary').textContent = '—';
+    document.getElementById('ordersList').innerHTML = '';
+  }
+});
+
+/* =========================
+   CART MODAL open/close
+   ========================= */
+openCart.addEventListener('click', ()=>{ cartModal.style.display = 'flex'; renderCartUI(); });
+function cartClose(){ cartModal.style.display = 'none'; }
+
+/* =========================
+   PLACE ORDER
+   - validates
+   - saves to Firestore
+   - calls EmailJS twice: once to customer, once to admin (admin email in template)
+   - if offline, queue in localStorage to retry on 'online'
+   ========================= */
+placeOrderBtn.addEventListener('click', placeOrder);
+
+async function placeOrder(){
+  if(!currentUser){ showToast('Please sign in to place an order', true); return; }
+  if(cart.length === 0){ showToast('Cart empty', true); return; }
+  const addr = (deliveryAddress.value||'').trim();
+  if(addr.length < 3){ showToast('Enter delivery address', true); return; }
+
+  // Build a sanitized order object (no undefineds)
+  const sanitizedItems = cart.map(it => ({
+    id: safeStr(it.id),
+    title: safeStr(it.title),
+    qty: Number(it.qty || 1),
+    price: Number(it.price || 0),
+    img: safeStr(it.img || '')
+  }));
+  const total = sanitizedItems.reduce((s,i)=> s + (i.price * i.qty), 0);
+
+  const orderObj = {
+    uid: currentUser.uid,
+    userName: currentUser.displayName || currentUser.email.split('@')[0],
+    userEmail: currentUser.email || '',
+    items: sanitizedItems,
+    total: total,
+    deliveryAddress: addr,
+    status: 'pending',
+    createdAt: serverTimestamp()
+  };
+
+  // If offline, queue order locally
+  if(!navigator.onLine){
+    queuePendingOrder(orderObj);
+    showToast('You are offline — order queued and will be sent when online');
+    cart = []; saveCartLocally(); cartClose();
+    return;
+  }
+
+  try{
+    const ordersRef = collection(db, 'orders');
+    const docRef = await addDoc(ordersRef, orderObj);
+    showToast('Order placed');
+
+    // update user's meta (order count / last order)
+    try{
       const userRef = doc(db, 'users', currentUser.uid);
       const userDoc = await getDoc(userRef);
       let count = 1;
@@ -565,96 +632,203 @@
         count = (ud.orderCount || 0) + 1;
       }
       await setDoc(userRef, { lastOrderDate: serverTimestamp(), orderCount: count }, { merge: true });
+    }catch(e){ console.warn('user meta update failed', e); }
 
-      // clear cart
-      cart = [];
-      saveCartLocally();
-      await persistCartToFirestore();
-      cartClose();
+    // clear cart locally & persist empty
+    cart = []; saveCartLocally(); await persistCartToFirestore(); cartClose();
 
-      // send email via EmailJS (frontend)
-      if(window.emailjs && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
-        try{
-          const itemsText = orderObj.items.map(it => `${it.title} x ${it.qty} — ₹${(it.price * it.qty).toLocaleString()}`).join('\n');
-          const params = {
-            user_name: orderObj.userName,
-            user_email: orderObj.userEmail,
-            order_items: itemsText,
-            total_price: '₹' + orderObj.total.toLocaleString(),
-            order_date: (new Date()).toLocaleString(),
-            admin_email: 'minibotix@gmail.com'
-          };
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-          showToast('Confirmation email sent');
-        }catch(e){ console.warn('EmailJS send failed', e); showToast('Email send failed', true); }
-      } else {
-        console.log('EmailJS not configured or not loaded');
-      }
+    // Prepare HTML for items
+    const itemsHtml = sanitizedItems.map(it => `<li>${escapeHtml(it.title)} × ${it.qty} — ₹${(it.price * it.qty).toLocaleString()}</li>`).join('');
+    const orderItemsHtml = `<ul style="padding-left:16px;margin:8px 0">${itemsHtml}</ul>`;
 
-      // reload orders summary
-      await loadOrderSummary();
+    // Email params
+    const paramsUser = {
+      user_name: orderObj.userName,
+      user_email: orderObj.userEmail,
+      order_id: docRef.id,
+      order_date: (new Date()).toLocaleString(),
+      order_items_html: orderItemsHtml,
+      total_price: '₹' + orderObj.total.toLocaleString(),
+      delivery_address: orderObj.deliveryAddress
+    };
+    const paramsAdmin = Object.assign({}, paramsUser, { admin_email: 'minibotix@gmail.com' });
 
-    }catch(e){
-      console.error('Place order failed', e);
+    // Send email(s) via EmailJS. Note: your EmailJS template must accept these fields.
+    if(window.emailjs && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
+      try{
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, paramsUser);
+        // also notify admin — either your template supports admin_email variable or you can use separate admin template
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, paramsAdmin);
+        showToast('Confirmation email sent');
+      }catch(e){ console.warn('EmailJS send failed', e); showToast('Email send failed', true); }
+    } else {
+      console.log('EmailJS not ready or not configured');
+    }
+
+    await loadOrderSummary();
+  }catch(e){
+    console.error('Place order failed', e);
+    // if Firestore write failed (e.g. offline), queue for retry:
+    if(e && e.message && e.message.toLowerCase().includes('network')){
+      queuePendingOrder(orderObj);
+      showToast('Network error — order queued and will be retried', true);
+      cart = []; saveCartLocally(); cartClose();
+    } else {
       showToast('Order failed: ' + (e.message || e), true);
     }
   }
+}
 
-  // ========== LOAD ORDER SUMMARY / PAST ORDERS ==========
-  async function loadOrderSummary(){
-    if(!currentUser){ document.getElementById('lastOrderSummary').textContent = '—'; document.getElementById('ordersList').innerHTML = ''; return; }
+/* =========================
+   PENDING ORDER QUEUE (localStorage)
+   - used when offline or Firestore rejects
+   ========================= */
+function queuePendingOrder(orderObj){
+  const raw = localStorage.getItem(PENDING_KEY);
+  const list = raw ? JSON.parse(raw) : [];
+  list.push({ order: orderObj, queuedAt: new Date().toISOString() });
+  localStorage.setItem(PENDING_KEY, JSON.stringify(list));
+}
+
+// Attempt to flush pending orders when online
+async function flushPendingOrders(){
+  const raw = localStorage.getItem(PENDING_KEY);
+  if(!raw) return;
+  const list = JSON.parse(raw);
+  if(!Array.isArray(list) || list.length === 0) return;
+  if(!navigator.onLine) return;
+  for(const entry of list.slice()){
     try{
-      const q = query(collection(db, 'orders'), where('uid', '==', currentUser.uid), orderBy('createdAt', 'desc'));
-      const snap = await getDocs(q);
-      const orders = [];
-      snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-      // last order
-      if(orders.length > 0){
-        const last = orders[0];
-        const date = last.createdAt && last.createdAt.toDate ? last.createdAt.toDate().toLocaleString() : '—';
-        document.getElementById('lastOrderSummary').textContent = `${date} · ₹${Number(last.total).toLocaleString()}`;
-      } else {
-        document.getElementById('lastOrderSummary').textContent = '—';
+      // ensure no undefined fields — convert createdAt to serverTimestamp at server
+      const order = Object.assign({}, entry.order);
+      order.createdAt = serverTimestamp();
+      const docRef = await addDoc(collection(db, 'orders'), order);
+      // attempt to send emails (same flow as above)
+      const itemsHtml = (order.items || []).map(it => `<li>${escapeHtml(it.title)} × ${it.qty} — ₹${(it.price * it.qty).toLocaleString()}</li>`).join('');
+      const params = {
+        user_name: order.userName,
+        user_email: order.userEmail,
+        order_id: docRef.id,
+        order_date: (new Date()).toLocaleString(),
+        order_items_html: `<ul>${itemsHtml}</ul>`,
+        total_price: '₹' + (order.total || 0),
+        delivery_address: order.deliveryAddress || '',
+        admin_email: 'minibotix@gmail.com'
+      };
+      if(window.emailjs && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
+        try{
+          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, Object.assign({}, params, { admin_email: 'minibotix@gmail.com' }));
+        }catch(e){ console.warn('flush email failed', e); }
       }
-
-      // render orders list
-      const list = document.getElementById('ordersList');
-      list.innerHTML = '';
-      orders.forEach(o => {
-        const row = document.createElement('div');
-        row.className = 'order-row';
-        const date = o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toLocaleString() : '—';
-        const itemsHtml = (o.items || []).map(it => `<div>${escapeHtml(it.title)} × ${it.qty} — ₹${it.price}</div>`).join('');
-        row.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <div style="font-weight:700">Order ${escapeHtml(o.id || '')}</div>
-              <div class="small muted">${escapeHtml(date)} • ${ (o.items||[]).length } items</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-weight:700">₹${Number(o.total).toLocaleString()}</div>
-              <div class="small muted">${escapeHtml(o.status || '')}</div>
-            </div>
-          </div>
-          <div style="margin-top:10px" id="orderItems_${escapeHtml(o.id || '')}">${itemsHtml}</div>
-        `;
-        list.appendChild(row);
-      });
-
-    }catch(e){ console.warn('loadOrderSummary error', e); }
+      // remove this entry from list
+      const cur = JSON.parse(localStorage.getItem(PENDING_KEY)) || [];
+      // remove first matching by queuedAt (simple)
+      const idx = cur.findIndex(x=>x.queuedAt === entry.queuedAt && JSON.stringify(x.order) === JSON.stringify(entry.order));
+      if(idx > -1){ cur.splice(idx,1); localStorage.setItem(PENDING_KEY, JSON.stringify(cur)); }
+    }catch(e){
+      console.warn('flushPendingOrders: write failed', e);
+      // stop further attempts to avoid rapid loop
+      break;
+    }
   }
+}
 
-  // ========== INIT ==========
-  loadCartLocally();
-  loadProducts();
+// attempt flush on navigator 'online'
+window.addEventListener('online', ()=>{ flushPendingOrders(); });
 
-  // expose for debugging in console
-  window.addToCart = addToCart;
-  window.viewDetails = (id) => {
-    const p = products.find(x=>x.id===id);
-    if(!p) return showToast('Not found', true);
-    alert(`${p.name || p.title}\n\nPrice: ₹${p.price}\n\n${p.description || p.desc || ''}`);
-  };
+/* =========================
+   ORDERS: load user's orders & render
+   ========================= */
+async function loadOrderSummary(){
+  if(!currentUser){ document.getElementById('lastOrderSummary').textContent = '—'; document.getElementById('ordersList').innerHTML = ''; return; }
+  try{
+    const q = query(collection(db, 'orders'), where('uid','==', currentUser.uid), orderBy('createdAt','desc'));
+    const snap = await getDocs(q);
+    const orders = [];
+    snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+    if(orders.length > 0){
+      const last = orders[0];
+      const date = last.createdAt && last.createdAt.toDate ? last.createdAt.toDate().toLocaleString() : '—';
+      document.getElementById('lastOrderSummary').textContent = `${date} · ₹${Number(last.total).toLocaleString()}`;
+    } else {
+      document.getElementById('lastOrderSummary').textContent = '—';
+    }
+    const list = document.getElementById('ordersList'); list.innerHTML = '';
+    orders.forEach(o=>{
+      const row = document.createElement('div'); row.className = 'order-row';
+      const date = o.createdAt && o.createdAt.toDate ? o.createdAt.toDate().toLocaleString() : '—';
+      const itemsHtml = (o.items || []).map(it => `<div>${escapeHtml(it.title)} × ${it.qty} — ₹${it.price}</div>`).join('');
+      row.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:700">Order ${escapeHtml(o.id || '')}</div>
+            <div class="small muted">${escapeHtml(date)} • ${ (o.items||[]).length } items</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:700">₹${Number(o.total).toLocaleString()}</div>
+            <div class="small muted">${escapeHtml(o.status || '')}</div>
+          </div>
+        </div>
+        <div style="margin-top:10px">${itemsHtml}</div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+          <button class="btn-ghost" data-order="${escapeHtml(o.id || '')}">Resend Email</button>
+        </div>
+      `;
+      const resendBtn = row.querySelector('button[data-order]');
+      resendBtn.addEventListener('click', ()=> resendEmail(o.id));
+      list.appendChild(row);
+    });
+  }catch(e){ console.warn('loadOrderSummary error', e); }
+}
+
+/* =========================
+   Resend email helper - fetch order doc and call EmailJS
+   ========================= */
+async function resendEmail(orderId){
+  if(!currentUser){ showToast('Sign in to resend', true); return; }
+  try{
+    const odoc = await getDoc(doc(db, 'orders', orderId));
+    if(!odoc.exists()) { showToast('Order not found', true); return; }
+    const o = odoc.data();
+    const itemsHtml = (o.items || []).map(it => `<li>${escapeHtml(it.title)} × ${it.qty} — ₹${(it.price * it.qty).toLocaleString()}</li>`).join('');
+    const params = {
+      user_name: o.userName || '',
+      user_email: o.userEmail || '',
+      order_id: orderId,
+      order_date: (o.createdAt && o.createdAt.toDate) ? o.createdAt.toDate().toLocaleString() : '',
+      order_items_html: `<ul>${itemsHtml}</ul>`,
+      total_price: '₹' + (o.total || 0),
+      delivery_address: o.deliveryAddress || '',
+      admin_email: 'minibotix@gmail.com'
+    };
+    if(window.emailjs && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, Object.assign({}, params, { admin_email: 'minibotix@gmail.com' }));
+      showToast('Resent email');
+    } else showToast('EmailJS not ready', true);
+  }catch(e){ console.error(e); showToast('Resend failed', true); }
+}
+
+/* =========================
+   UTIL: HTML escape helper for safety when inserting text
+   ========================= */
+function escapeHtml(s){
+  if(s === null || s === undefined) return '';
+  return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+/* =========================
+   INIT
+   ========================= */
+loadCartLocally();
+loadProducts();
+flushPendingOrders(); // attempt to send any queued orders on page load (if online)
+
+// expose debug helpers
+window.addToCart = addToCart;
+window.loadProducts = loadProducts;
+window.flushPendingOrders = flushPendingOrders;
 </script>
 </body>
 </html>
