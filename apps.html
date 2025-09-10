@@ -1,113 +1,537 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>MiniBotix Stores</title>
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
-  body { background: url('hill.jpg') no-repeat center/cover; min-height:100vh; color:black; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MiniBotix · Apps Store</title>
+  <link rel="icon" href="file.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071126;
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+      --accent1: #007bff;
+      --accent2: #00d4ff;
+      --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
 
-  /* Top toolbar */
-  .top-bar {
-    position: fixed; top:0; width:100%; display:flex; justify-content:space-between; align-items:center;
-    padding:10px 20px; background: rgba(255,255,255,0.5); z-index: 100;
-    border-bottom:1px solid #ccc;
-  }
-  .top-bar .left { font-weight:bold; font-size:18px; }
-  .top-bar .right a {
-    text-decoration:none; background:#007bff; color:white; padding:6px 12px; border-radius:5px; font-weight:bold;
-  }
+    /* header */
+    header.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);z-index:90;box-shadow:0 2px 12px rgba(0,0,0,0.6)}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+    .brand img{height:36px;width:36px;border-radius:6px}
+    nav.main-nav{display:flex;gap:22px;align-items:center}
+    nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.9);padding:6px 6px}
+    .back-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.9);cursor:pointer}
+    .user-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+    .avatar{height:36px;width:36px;border-radius:50%;background:#223;display:inline-flex;align-items:center;justify-content:center}
 
-  /* App grid */
-  .app-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-  gap:15px;
-  padding:70px 10px 20px; /* reduced top padding */
-  justify-items:center;
-}
+    /* hero */
+    .hero{padding:110px 22px 40px 22px}
+    .hero-card{max-width:1100px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:44px;border-radius:14px;box-shadow:0 30px 60px rgba(3,7,20,0.6)}
+    .eyebrow{display:inline-block;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;margin-bottom:16px;color:#aee9ff;font-weight:600}
+    .hero h1{font-size:44px;margin:6px 0 12px;line-height:1.03}
+    .hero p{color:rgba(255,255,255,0.85);margin-bottom:18px;max-width:900px}
 
+    .hero-actions{display:flex;gap:14px}
+    .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
 
-  .app-card {
-    background: rgba(255,255,255,0.8); border-radius:15px; padding:20px; text-align:center;
-    width:200px; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .app-card:hover {
-    transform: scale(1.05); box-shadow:0 5px 15px rgba(0,0,0,0.3);
-  }
-  .app-card img { width:80px; height:80px; margin-bottom:10px; }
-  .app-card h3 { margin-bottom:5px; font-size:16px; }
+    /* search */
+    .search-row{display:flex;gap:8px;margin-top:16px}
+    .search-input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;font-size:14px}
 
-  /* Popup */
-  .popup {
-    position: fixed; top:50%; left:50%; transform: translate(-50%, -50%);
-    background: rgba(255,255,255,0.95); padding:20px; border-radius:10px;
-    width:300px; display:none; z-index:200; text-align:center;
-  }
-  .popup img { width:80px; height:80px; margin-bottom:10px; }
-  .popup h3 { margin-bottom:10px; }
-  .popup p { margin-bottom:5px; font-size:14px; }
-  .popup button {
-    margin-top:10px; padding:10px 15px; background:#007bff; color:white;
-    border:none; border-radius:5px; cursor:pointer; font-weight:bold;
-  }
-  .popup .close { position:absolute; top:5px; right:10px; cursor:pointer; font-weight:bold; font-size:18px; }
-</style>
+    /* apps grid */
+    .section{padding:40px 22px 90px}
+    .container{max-width:1100px;margin:0 auto}
+    h2{font-size:24px;margin-bottom:10px}
+    .lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+    .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s, box-shadow .22s}
+    .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.5)}
+    .card .img{height:140px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+    .price{font-weight:700;color:var(--accent2);margin-right:12px}
+    .card-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
+
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:600;font-size:13px}
+
+    /* small screens */
+    @media (max-width:880px){
+      nav.main-nav{display:none}
+      .hero h1{font-size:28px}
+    }
+
+    /* small helper */
+    .muted{color:rgba(255,255,255,0.7);font-size:14px}
+    .small{font-size:13px;color:rgba(255,255,255,0.7)}
+
+    /* toast */
+    .mini-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 22px; padding: 10px 14px; border-radius: 8px; z-index: 9999; font-weight:600 }
+  </style>
 </head>
 <body>
 
-<div class="top-bar">
-  <div class="left">MiniBotix-Stores (App / Source Code)</div>
-  <div class="right">
-  <a href="index.html">Home</a>
-</div>
+  <!-- HEADER -->
+  <header class="nav">
+    <div style="display:flex;align-items:center;gap:18px">
+      <div class="back-btn" onclick="location.href='index.html'">← Back</div>
+      <div class="brand">
+        <img src="file.svg" alt="MiniBotix">
+        <div style="line-height:1">
+          <div style="font-weight:700">MiniBotix</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6)">Apps Store</div>
+        </div>
+      </div>
+    </div>
 
-</div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="products.html">Products</a>
+      <a href="componentshop.html">Components</a>
+      <a href="apps.html" style="text-decoration:underline">Apps</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
-<div class="app-grid">
-  <!-- Mayilon OS Simulator -->
-  <div class="app-card" onclick="showPopup('Mayilon OS Simulator','mayilon.png','3MB','A Windows 11 simulator for learning OS basics','https://github.com/miniBotix/MiniBotixApps/raw/main/mayilon','mayilon.png')">
-    <img src="mayilon.png" alt="Mayilon Logo">
-    <h3>Mayilon OS Simulator</h3>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div id="userArea" class="user-pill">
+        <div id="signedOut" style="display:flex;gap:8px;align-items:center">
+          <button id="openAuth" class="btn-ghost" title="Sign In">Sign In</button>
+        </div>
+        <div id="signedIn" style="display:none;align-items:center;gap:10px">
+          <div id="profileName" style="font-weight:600"></div>
+          <div class="avatar" id="avatar">M</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-card container">
+      <div class="eyebrow">MiniBotix · Apps · Free Tools</div>
+      <h1>MiniBotix Apps Store</h1>
+      <p class="lead">Discover free apps and download their source code. Search by app or source name and quickly download what you need.</p>
+
+      <div class="search-row">
+        <input id="searchInput" class="search-input" placeholder="Search apps or source code (type name and press Enter)" />
+        <button id="searchBtn" class="btn-primary">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPS -->
+  <section id="appsSection" class="section">
+    <div class="container">
+      <h2>Top Apps</h2>
+      <p class="lead">Top picks from our collection. Click the Source button to download source code.</p>
+
+      <div id="topApps" class="grid" style="margin-bottom:18px"></div>
+
+      <h2 style="margin-top:22px">All Apps</h2>
+      <p class="lead">Browse all available apps below.</p>
+      <div id="appsGrid" class="grid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div style="margin-bottom:8px">MiniBotix · Learn · Build · Innovate</div>
+      <small>© 2025 MiniBotix</small>
+    </div>
+  </footer>
+
+  <!-- AUTH Modal (simple) - reuse from components page -->
+  <div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999">
+    <div style="width:100%;max-width:420px;background:#071126;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong>Sign In / Register</strong>
+        <button onclick="authClose()" style="background:transparent;border:none;color:#fff;font-size:18px">✕</button>
+      </div>
+
+      <div id="authTabs">
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <button onclick="showLogin()" class="btn-ghost">Login</button>
+          <button onclick="showRegister()" class="btn-ghost">Register</button>
+          <button id="googleSignBtn" class="btn-primary" style="margin-left:auto">Sign in with Google</button>
+        </div>
+
+        <div id="loginView">
+          <div class="form-group"><label class="small">Email</label><input id="loginEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Password</label><input id="loginPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button class="btn-primary" id="loginBtn">Sign In</button>
+          </div>
+        </div>
+
+        <div id="registerView" style="display:none">
+          <div class="form-group"><label class="small">Full name</label><input id="regName" type="text" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Phone</label><input id="regPhone" type="tel" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Email</label><input id="regEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Password</label><input id="regPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button class="btn-primary" id="registerBtn">Create account</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Resumei -->
-  <div class="app-card" onclick="showPopup('Resumei','Resumei.jpeg','1MB-view','Resume analyzer source code','https://github.com/miniBotix/MiniBotixApps/raw/main/resumei.py','resumei.jpeg')">
-    <img src="resumei.png" alt="Resumei Logo">
-    <h3>Resumei</h3>
-  </div>
+  <!-- Toast container (created dynamically) -->
 
-  <!-- Coming Soon -->
-  <div class="app-card" onclick="showPopup('Coming Soon','Coming Soon','--','This app will be available soon','downloads/coming_soon.zip','coming.png')">
-    <img src="coming.png" alt="Coming Soon Logo">
-    <h3>Coming Soon</h3>
-  </div>
-</div>
+  <script type="module">
+    // ====== CONFIG ======
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
+      authDomain: "minibotix-a1b9a.firebaseapp.com",
+      projectId: "minibotix-a1b9a",
+      storageBucket: "minibotix-a1b9a.firebasestorage.app",
+      messagingSenderId: "771169717230",
+      appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
+      measurementId: "G-JQKFSBN4WP"
+    };
 
-<!-- Popup -->
-<div class="popup" id="popup">
-  <span class="close" onclick="closePopup()">×</span>
-  <img id="popupLogo" src="" alt="">
-  <h3 id="popupName"></h3>
-  <p><strong>Logo:</strong> <span id="popupLogoText"></span></p>
-  <p><strong>Storage:</strong> <span id="popupStorage"></span></p>
-  <p id="popupDesc"></p>
-  <button id="popupDownload">Download</button>
-</div>
+    // paths to JSON files (must be in same folder or accessible URL)
+    const APPS_JSON = 'app.json';
+    const SOURCES_JSON = 'source.json';
 
-<script>
-function showPopup(name, logoText, storage, description, downloadLink, logoSrc) {
-  document.getElementById('popupName').innerText = name;
-  document.getElementById('popupLogoText').innerText = logoText;
-  document.getElementById('popupStorage').innerText = storage;
-  document.getElementById('popupDesc').innerText = description;
-  document.getElementById('popupLogo').src = logoSrc;
-  const downloadBtn = document.getElementById('popupDownload');
-  downloadBtn.onclick = () => { window.location.href = downloadLink; };
-  document.getElementById('popup').style.display = 'block';
-}
-function closePopup() { document.getElementById('popup').style.display = 'none'; }
-</script>
+    // ====== FIREBASE IMPORTS ======
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      orderBy,
+      serverTimestamp,
+      addDoc
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    // init
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ====== UI REFS ======
+    const openAuthBtn = document.getElementById('openAuth');
+    const authModal = document.getElementById('authModal');
+    const signedOut = document.getElementById('signedOut');
+    const signedIn = document.getElementById('signedIn');
+    const profileName = document.getElementById('profileName');
+    const avatar = document.getElementById('avatar');
+
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const googleSignBtn = document.getElementById('googleSignBtn');
+
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+
+    const topAppsEl = document.getElementById('topApps');
+    const appsGrid = document.getElementById('appsGrid');
+
+    // auth modal handlers
+    document.getElementById('loginBtn').addEventListener('click', emailLogin);
+    document.getElementById('registerBtn').addEventListener('click', emailRegister);
+    document.getElementById('googleSignBtn').addEventListener('click', googleSignIn);
+    openAuthBtn.addEventListener('click', ()=> authOpen());
+
+    function authOpen(){ authModal.style.display = 'flex'; }
+    function authClose(){ authModal.style.display = 'none'; }
+    function showRegister(){ document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; }
+    function showLogin(){ document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none'; }
+
+    // ====== STATE ======
+    let apps = [];      // loaded from app.json
+    let sources = {};   // loaded from source.json keyed by sourceKey
+    let currentUser = null;
+
+    // ====== UTIL ======
+    function escapeHtml(s){ if(s===undefined || s===null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+    function showToast(msg, isErr=false){
+      const div = document.createElement('div');
+      div.className = 'mini-toast';
+      div.style.background = isErr ? '#ff6b6b' : 'linear-gradient(90deg,#00c6ff,#0066ff)';
+      div.style.color = isErr ? '#fff' : '#021';
+      div.textContent = msg;
+      document.body.appendChild(div);
+      setTimeout(()=>{ div.style.transition='all .4s'; div.style.opacity='0'; div.style.transform='translateY(8px)'; }, 2600);
+      setTimeout(()=>div.remove(),3000);
+    }
+
+    // ====== LOAD JSON ======
+    async function loadJsonFiles(){
+      try{
+        const [aRes, sRes] = await Promise.all([
+          fetch(APPS_JSON, {cache:'no-store'}),
+          fetch(SOURCES_JSON, {cache:'no-store'})
+        ]);
+        if(!aRes.ok) throw new Error('app.json fetch failed: '+aRes.status);
+        if(!sRes.ok) throw new Error('source.json fetch failed: '+sRes.status);
+        const aJson = await aRes.json();
+        const sJson = await sRes.json();
+        apps = Array.isArray(aJson) ? aJson : [];
+        // normalize apps
+        apps = apps.map((p, idx) => ({
+          id: p.id || p.slug || ('app_'+idx),
+          name: p.name || p.title || 'Unnamed App',
+          description: p.description || p.desc || '',
+          image: p.image || p.img || '',
+          downloads: Number(p.downloads || p.count || 0),
+          sourceKey: p.sourceKey || p.source || p.src || null,
+          tags: Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(',').map(t=>t.trim()) : [])
+        }));
+        // sources: either object or array
+        if(Array.isArray(sJson)){
+          // convert array to map by id
+          sources = {};
+          sJson.forEach(s => { if(s && s.id) sources[s.id] = s; });
+        } else {
+          sources = sJson || {};
+        }
+        renderAll();
+      }catch(e){
+        console.error('loadJsonFiles error', e);
+        showToast('Failed to load app list', true);
+      }
+    }
+
+    // ====== RENDER ======
+    function renderAll(){
+      renderTopApps();
+      renderAppsGrid();
+    }
+
+    function renderTopApps(){
+      topAppsEl.innerHTML = '';
+      // pick top 4 by downloads
+      const top = apps.slice().sort((a,b)=> (b.downloads||0) - (a.downloads||0)).slice(0,4);
+      top.forEach(p => {
+        const card = createAppCard(p, true);
+        topAppsEl.appendChild(card);
+      });
+    }
+
+    function renderAppsGrid(){
+      appsGrid.innerHTML = '';
+      apps.forEach(p => {
+        const card = createAppCard(p, false);
+        appsGrid.appendChild(card);
+      });
+      // after render, set listeners for source/dl buttons if needed
+    }
+
+    function createAppCard(p, compact=false){
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.id = 'app_' + p.id;
+      const imgSrc = p.image || ('https://via.placeholder.com/320x140?text='+encodeURIComponent(p.name));
+      const desc = p.description || '';
+      const downloads = Number(p.downloads || 0);
+      // source info (if available)
+      const src = p.sourceKey && sources[p.sourceKey] ? sources[p.sourceKey] : null;
+      const srcName = src ? (src.name || src.title || src.id) : (p.sourceKey ? p.sourceKey : '—');
+      el.innerHTML = `
+        <div class="img"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" style="max-width:100%;max-height:100%;object-fit:contain"></div>
+        <div style="font-weight:700;font-size:16px;margin-bottom:6px">${escapeHtml(p.name)}</div>
+        <div class="small muted" style="margin-bottom:8px">${escapeHtml(desc)}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div class="muted"><span class="badge">${escapeHtml(srcName)}</span></div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="small muted">Downloads: <strong>${downloads}</strong></div>
+            <div class="card-actions">
+              <button class="btn-ghost" data-id="${escapeHtml(p.id)}" data-action="view">View</button>
+              <button class="btn-primary" data-id="${escapeHtml(p.id)}" data-action="source">Source</button>
+            </div>
+          </div>
+        </div>
+      `;
+      // attach handlers
+      el.querySelectorAll('[data-action="view"]').forEach(btn=>{
+        btn.addEventListener('click', ()=> viewApp(p.id));
+      });
+      el.querySelectorAll('[data-action="source"]').forEach(btn=>{
+        btn.addEventListener('click', ()=> downloadSourceForApp(p));
+      });
+      return el;
+    }
+
+    // ====== ACTIONS ======
+    function viewApp(id){
+      const p = apps.find(x=>x.id===id);
+      if(!p) return showToast('App not found', true);
+      // simple modal style alert for now
+      const txt = `${p.name}\n\n${p.description}\n\nSource: ${p.sourceKey || '—'}\nDownloads: ${p.downloads||0}`;
+      alert(txt);
+    }
+
+    function downloadSourceForApp(p){
+      if(!p) return showToast('Invalid app', true);
+      const src = p.sourceKey && sources[p.sourceKey] ? sources[p.sourceKey] : null;
+      if(!src || !src.download){
+        showToast('Source download not available', true);
+        return;
+      }
+      // increment download counter in UI (optimistic)
+      try{
+        p.downloads = (Number(p.downloads)||0) + 1;
+        renderTopApps();
+        renderAppsGrid();
+      }catch(e){ /* ignore */ }
+
+      // create link and click
+      const a = document.createElement('a');
+      a.href = src.download;
+      a.target = '_blank';
+      // if download attribute is supported and URL is same-origin, we can set download:
+      // a.download = src.filename || '';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      showToast('Starting download...');
+      // Optionally record download to Firestore (analytics) - commented out, enable if you want:
+      // recordDownload(p.id, (src.id || p.sourceKey));
+    }
+
+    // optional: record download in firestore (uncomment to use)
+    async function recordDownload(appId, sourceId){
+      try{
+        if(!currentUser) return;
+        const rec = {
+          appId, sourceId, uid: currentUser.uid, createdAt: serverTimestamp()
+        };
+        await addDoc(collection(db, 'downloads'), rec);
+      }catch(e){ console.warn('recordDownload failed', e); }
+    }
+
+    // ====== SEARCH ======
+    function doSearch(queryText){
+      const q = String(queryText || '').trim().toLowerCase();
+      if(!q) { showToast('Type something to search', true); return; }
+      // find app by name or source name
+      const byApp = apps.find(a => (a.name || '').toLowerCase().includes(q) || (a.description||'').toLowerCase().includes(q));
+      if(byApp){
+        scrollToApp(byApp.id);
+        highlightApp(byApp.id);
+        return;
+      }
+      // search sources
+      const srcKey = Object.keys(sources).find(k => {
+        const s = sources[k];
+        return (s.name || s.title || '').toLowerCase().includes(q) || (s.id||'').toLowerCase().includes(q);
+      });
+      if(srcKey){
+        // find first app that references this source
+        const appForSrc = apps.find(a => a.sourceKey === srcKey);
+        if(appForSrc){ scrollToApp(appForSrc.id); highlightApp(appForSrc.id); return; }
+      }
+      showToast('No results found', true);
+    }
+
+    function scrollToApp(appId){
+      const node = document.getElementById('app_' + appId);
+      if(node){
+        node.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    }
+
+    function highlightApp(appId){
+      const node = document.getElementById('app_' + appId);
+      if(!node) return;
+      const orig = node.style.boxShadow;
+      node.style.boxShadow = '0 30px 60px rgba(0,200,255,0.18)';
+      setTimeout(()=> node.style.boxShadow = orig, 2400);
+    }
+
+    // wire search UI
+    searchBtn.addEventListener('click', ()=> doSearch(searchInput.value));
+    searchInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter') doSearch(searchInput.value); });
+
+    // ====== AUTH (email/google) ======
+    async function emailLogin(){
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPass').value;
+      try{
+        await signInWithEmailAndPassword(auth, email, pass);
+        authClose();
+        showToast('Signed in');
+      }catch(e){ console.error(e); showToast('Login failed: ' + (e.message || e), true); }
+    }
+
+    async function emailRegister(){
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPass').value;
+      if(pass.length < 6){ showToast('Password must be at least 6 chars', true); return; }
+      try{
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: name });
+        // create users doc
+        await setDoc(doc(db, 'users', cred.user.uid), { name, email, phone, createdAt: serverTimestamp() }, { merge: true });
+        authClose();
+        showToast('Account created');
+      }catch(e){ console.error(e); showToast('Register failed: ' + (e.message || e), true); }
+    }
+
+    async function googleSignIn(){
+      const provider = new GoogleAuthProvider();
+      try{
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        await setDoc(doc(db, 'users', user.uid), { name: user.displayName, email: user.email, photoURL: user.photoURL, lastSignIn: serverTimestamp() }, { merge: true });
+        authClose(); showToast('Signed in with Google');
+      }catch(e){ console.error(e); showToast('Google sign-in failed: ' + (e.message || e), true); }
+    }
+
+    async function doSignOut(){
+      try{ await signOut(auth); showToast('Signed out'); }catch(e){ console.warn(e); }
+    }
+
+    // monitor auth state
+    onAuthStateChanged(auth, async (user)=>{
+      currentUser = user || null;
+      if(user){
+        signedOut.style.display='none';
+        signedIn.style.display='flex';
+        profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
+        avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
+      } else {
+        signedOut.style.display='flex';
+        signedIn.style.display='none';
+        profileName.textContent = '';
+        avatar.textContent = 'M';
+      }
+    });
+
+    // ====== INIT ======
+    loadJsonFiles();
+
+    // expose for debug
+    window.doSearch = doSearch;
+    window.downloadSourceForApp = downloadSourceForApp;
+    window.viewApp = viewApp;
+
+  </script>
 
 </body>
 </html>
