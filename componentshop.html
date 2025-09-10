@@ -224,8 +224,9 @@
       measurementId: "G-JQKFSBN4WP"
     };
 
-    // Replace EmailJS usage with Apps Script endpoint
-    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSTowHASeuCMV3blgdYMnJA-qVfMuaVlH6X0oqQCZcOYDXcXPTR54oBXy41I8-m7NKHw/exec';
+    // ===== YOUR APPSCRIPT ENDPOINT =====
+    // <-- you gave this URL: I've wired it in below
+    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4FUPpsgFDM4xIfbYBZ4qPO0LnZ3iMsJQ_lri2Iu133CcNH62cQk2Gpic2EA5g-vPmaw/exec';
     const ADMIN_EMAIL = 'minibotix@gmail.com';
 
     // ===== IMPORT FIREBASE MODULES (v12) =====
@@ -311,11 +312,11 @@
 
     // ===== LOAD PRODUCTS (program.json) =====
     async function loadProducts(){
+      // user insisted program.json exists — no fallback used
       try{
         const res = await fetch('program.json', { cache: 'no-store' });
         if(!res.ok) throw new Error('program.json not found (HTTP ' + res.status + ')');
         const raw = await res.json();
-        // Normalize fields so code always sees: id, name, price, description, image
         products = (Array.isArray(raw) ? raw : []).map(p => ({
           id: p.id || p.c || p._id || (p.name ? p.name.replace(/\s+/g,'_').toLowerCase() : 'p_'+Math.random().toString(36).slice(2,9)),
           name: p.name || p.title || p.productName || 'Unnamed',
@@ -324,11 +325,9 @@
           image: p.image || p.img || ''
         }));
       }catch(e){
-        console.warn('program.json load failed, using fallback', e);
-        products = [
-          { id:'p_esp32', name:'ESP32 Dev Module', price:550, image:'', description:'ESP32-WROOM module with WiFi & Bluetooth' },
-          { id:'p_ldr', name:'LDR Photoresistor', price:15, image:'', description:'Light-dependent resistor for light sensing' },
-        ];
+        console.error('Failed to load program.json', e);
+        // If program.json truly missing, show helpful message in grid
+        products = [{ id:'_err', name:'Unable to load program.json', price:0, description:'Please ensure program.json is present and valid JSON.', image:'' }];
       }
       renderProducts();
     }
@@ -451,7 +450,7 @@
         await setDoc(userMetaRef, { cart, total: cart.reduce((s,i)=>s+i.price*i.qty,0), updatedAt: serverTimestamp() });
         // ensure user doc exists
         const userRef = doc(db, 'users', currentUser.uid);
-        await setDoc(userRef, { name: currentUser.displayName || currentUser.email.split('@')[0], email: currentUser.email }, { merge: true });
+        await setDoc(userRef, { name: currentUser.displayName || (currentUser.email||'').split('@')[0], email: currentUser.email }, { merge: true });
       }catch(e){ console.warn('persistCartToFirestore failed', e); }
     }
 
@@ -545,21 +544,62 @@
     // ===== PLACE ORDER =====
     placeOrderBtn.addEventListener('click', placeOrder);
 
-    // helper to POST to Apps Script
+    // robust helper to POST to Apps Script:
+    //  - first tries JSON
+    //  - if server returns non-OK or CORS issues, tries form-encoded fallback
     async function postToAppScript(payload){
-      try{
-        const res = await fetch(APP_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          mode: 'cors'
-        });
-        const json = await res.json().catch(()=>null);
-        return { ok: res.ok, status: res.status, body: json };
-      }catch(e){
-        console.warn('postToAppScript failed', e);
-        return { ok: false, error: e };
+      // Helper to JSON POST
+      async function tryJson(){
+        try{
+          const res = await fetch(APP_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            mode: 'cors'
+          });
+          let body = null;
+          try{ body = await res.json(); }catch(_){ body = await res.text().catch(()=>null); }
+          return { ok: res.ok, status: res.status, body };
+        }catch(e){
+          return { ok: false, error: e };
+        }
       }
+
+      // Helper to form-post fallback
+      async function tryForm(){
+        try{
+          const form = new URLSearchParams();
+          // flatten payload
+          for(const k of Object.keys(payload)){
+            let v = payload[k];
+            // If array/object -> stringify
+            if(typeof v === 'object') v = JSON.stringify(v);
+            form.append(k, String(v === undefined ? '' : v));
+          }
+          const res = await fetch(APP_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: form.toString(),
+            mode: 'cors'
+          });
+          let body = null;
+          try{ body = await res.json(); }catch(_){ body = await res.text().catch(()=>null); }
+          return { ok: res.ok, status: res.status, body };
+        }catch(e){
+          return { ok: false, error: e };
+        }
+      }
+
+      // First try JSON
+      const j = await tryJson();
+      if(j.ok) return j;
+
+      // If not OK, try fallback form-encoded
+      const f = await tryForm();
+      if(f.ok) return f;
+
+      // return best error info
+      return j.ok ? j : f;
     }
 
     async function placeOrder(){
@@ -605,7 +645,7 @@
         }
         await setDoc(userRef, { lastOrderDate: serverTimestamp(), orderCount: count }, { merge: true });
 
-        // clear cart
+        // clear cart locally and in firestore
         cart = [];
         saveCartLocally();
         await persistCartToFirestore();
@@ -615,23 +655,32 @@
         const itemsText = cleanItems.map(it => `${it.title} x ${it.qty} — ₹${(it.price * it.qty).toLocaleString()}`).join('\n');
         const itemsHtml = '<ul style="padding-left:16px;margin:8px 0">' + cleanItems.map(it => `<li>${escapeHtml(it.title)} × ${it.qty} — ₹${(it.price * it.qty).toLocaleString()}</li>`).join('') + '</ul>';
 
-        // call Apps Script to handle email / other server-side actions
+        // PAYLOAD to Apps Script - include both simple fields and structured items
         const payload = {
           action: 'new_order',
           orderId: docRef.id,
           orderDate: (new Date()).toISOString(),
-          userName: orderObj.userName,
-          userEmail: orderObj.userEmail,
-          orderItemsText: itemsText,
+          name: orderObj.userName,
+          email: orderObj.userEmail,
+          address: orderObj.deliveryAddress,
+          productsText: itemsText,      // simple text list (for Google Sheet Product column)
+          productsJson: cleanItems,     // structured JSON (Apps Script can parse if needed)
+          total: orderObj.total,
           orderItemsHtml: itemsHtml,
-          totalPrice: '₹' + orderObj.total.toLocaleString(),
-          deliveryAddress: orderObj.deliveryAddress,
           adminEmail: ADMIN_EMAIL
         };
 
+        // CALL APPSCRIPT (robust)
         const appRes = await postToAppScript(payload);
-        if(appRes.ok) showToast('Order sent to backend');
-        else showToast('Backend notify failed', true);
+
+        // handle outcome
+        if(appRes.ok && (appRes.status === 200 || appRes.status === 201)){
+          showToast('Order sent to backend');
+        } else {
+          // helpful debugging: inspect response body if present
+          console.warn('Apps Script response', appRes);
+          showToast('Backend notify failed', true);
+        }
 
         // reload orders list
         await loadOrderSummary();
@@ -702,12 +751,13 @@
           action: 'resend_order',
           orderId: orderId,
           orderDate: (o.createdAt && o.createdAt.toDate) ? o.createdAt.toDate().toISOString() : '',
-          userName: o.userName || '',
-          userEmail: o.userEmail || '',
-          orderItemsText: itemsText,
+          name: o.userName || '',
+          email: o.userEmail || '',
+          address: o.deliveryAddress || '',
+          productsText: itemsText,
+          productsJson: o.items || [],
+          total: o.total || 0,
           orderItemsHtml: itemsHtml,
-          totalPrice: '₹' + (o.total || 0),
-          deliveryAddress: o.deliveryAddress || '',
           adminEmail: ADMIN_EMAIL
         };
 
@@ -732,3 +782,4 @@
   </script>
 </body>
 </html>
+
