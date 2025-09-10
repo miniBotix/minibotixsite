@@ -1,0 +1,23 @@
+[
+  {
+    "id": "app1",
+    "name": "MiniBotix Controller",
+    "description": "Control your robotic arm directly from your mobile or PC with real-time updates.",
+    "image": "images/minibotix_app.png",
+    "download_link": "downloads/minibotix_app.apk"
+  },
+  {
+    "id": "app2",
+    "name": "Weather Monitor",
+    "description": "Track temperature, humidity, and pressure with IoT sensors and ESP modules.",
+    "image": "images/weather_app.png",
+    "download_link": "downloads/weather_app.apk"
+  },
+  {
+    "id": "app3",
+    "name": "Smart Irrigation",
+    "description": "Automated irrigation app with soil moisture monitoring and scheduling.",
+    "image": "images/irrigation_app.png",
+    "download_link": "downloads/irrigation_app.apk"
+  }
+]
