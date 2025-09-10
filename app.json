@@ -1,23 +1,73 @@
 [
   {
     "id": "app1",
-    "name": "MiniBotix Controller",
-    "description": "Control your robotic arm directly from your mobile or PC with real-time updates.",
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0IzZWLYNLRo5FnmsqFFYRvCKgKn2TEpdSTGAdMMGnEV2wi2-aqKy7SIxWt8cRrWoJG28&usqp=CAU",
-    "download_link": "downloads/minibotix_app.apk"
+    "name": "Crop Health Analyzer",
+    "description": "AI-powered tool to detect crop diseases from leaf images.",
+    "image": "images/crop_health.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_1"
   },
   {
     "id": "app2",
-    "name": "Weather Monitor",
-    "description": "Track temperature, humidity, and pressure with IoT sensors and ESP modules.",
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq8a5t4LDpAOQGXeWF200-aEwgDt3FlslOmw&s",
-    "download_link": "downloads/weather_app.apk"
+    "name": "Soil Moisture Tracker",
+    "description": "Monitor soil conditions and irrigation needs in real time.",
+    "image": "images/soil_moisture.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_2"
   },
   {
     "id": "app3",
-    "name": "Smart Irrigation",
-    "description": "Automated irrigation app with soil moisture monitoring and scheduling.",
-    "image": "https://cdsentec.com/wp-content/uploads/2022/08/smart-irrigation-system-project.png",
-    "download_link": "downloads/irrigation_app.apk"
+    "name": "Farm Yield Predictor",
+    "description": "Predict farm yield using weather and soil data with ML models.",
+    "image": "images/farm_yield.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_3"
+  },
+  {
+    "id": "app4",
+    "name": "Smart Irrigation Controller",
+    "description": "Automated irrigation system based on crop needs and weather.",
+    "image": "images/smart_irrigation.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_4"
+  },
+  {
+    "id": "app5",
+    "name": "Agri Drone Mapper",
+    "description": "Drone-based mapping system for large farms with 3D visualization.",
+    "image": "images/drone_mapper.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_5"
+  },
+  {
+    "id": "app6",
+    "name": "Inventory Manager",
+    "description": "IT system to manage farm stock, fertilizers, and machinery.",
+    "image": "images/inventory_manager.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_6"
+  },
+  {
+    "id": "app7",
+    "name": "Weather Forecast Dashboard",
+    "description": "Python-based visualization of weather trends for farmers.",
+    "image": "images/weather_dashboard.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_7"
+  },
+  {
+    "id": "app8",
+    "name": "Agri Market Price Tracker",
+    "description": "Get real-time updates of crop market prices with graphs.",
+    "image": "images/market_price.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_8"
+  },
+  {
+    "id": "app9",
+    "name": "Farm Expense Calculator",
+    "description": "Keep track of expenses and profits with data visualization.",
+    "image": "images/farm_expense.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_9"
+  },
+  {
+    "id": "app10",
+    "name": "Crop Visualization Tool",
+    "description": "Python Matplotlib/Seaborn-based crop growth visualization.",
+    "image": "images/crop_visualization.png",
+    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_10"
   }
 ]
+
