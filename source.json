@@ -1,0 +1,23 @@
+[
+  {
+    "id": "src1",
+    "name": "Robotic Arm Source Code",
+    "description": "Complete Python and Arduino code for controlling a 5-DOF robotic arm.",
+    "image": "images/robotic_arm_src.png",
+    "download_link": "downloads/robotic_arm_source.zip"
+  },
+  {
+    "id": "src2",
+    "name": "IoT Weather Station Code",
+    "description": "ESP8266/ESP32 code with ThingSpeak integration for temperature, pressure, and humidity.",
+    "image": "images/weather_src.png",
+    "download_link": "downloads/weather_source.zip"
+  },
+  {
+    "id": "src3",
+    "name": "Smart Irrigation Source",
+    "description": "Arduino + NodeMCU program for automatic irrigation with soil moisture sensor.",
+    "image": "images/irrigation_src.png",
+    "download_link": "downloads/irrigation_source.zip"
+  }
+]
