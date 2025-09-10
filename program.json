@@ -11,34 +11,34 @@
     "name": "ESP32 Dev Module",
     "price": 550,
     "description": "ESP32-WROOM module with WiFi & Bluetooth support.",
-    "image": "images/esp32.jpg"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXoKY7-Rr0JEeMD-T8HyWxUO7dtmc3Vs30ug&s"
   },
   {
     "id": "c3",
     "name": "DHT11 Sensor",
     "price": 120,
     "description": "Digital temperature and humidity sensor for basic IoT projects.",
-    "image": "images/dht11.jpg"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNlt24VkwkC7vpY5YiE3yzTvrKlV0c55-HUjx414Yn2ysUUeldjWIi4UmSR2sc55VrHtI&usqp=CAU"
   },
   {
     "id": "c4",
     "name": "Servo Motor 9g",
     "price": 180,
     "description": "Micro servo motor ideal for small robotic arms or projects.",
-    "image": "images/servo9g.jpg"
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLSx85SviOzQZoZaPAtB1z8cUEJTq47wXkWTcWPFnv1NyjMNh1PwD9R6LkxHR_Il4K-_g&usqp=CAU"
   },
   {
     "id": "c5",
     "name": "LDR Sensor",
     "price": 25,
     "description": "Light Dependent Resistor sensor to detect light intensity.",
-    "image": "images/ldr.jpg"
+    "image": "https://www.ariat-tech.com/upfile/images/6b/20240510151806282.png"
   },
   {
     "id": "c6",
     "name": "BMP180 Sensor",
     "price": 220,
     "description": "Digital barometric pressure sensor, also provides temperature readings.",
-    "image": "images/bmp180.jpg"
+    "image": "https://5.imimg.com/data5/SELLER/Default/2024/12/470967702/HT/HL/NL/562456/17887.jpg"
   }
 ]
