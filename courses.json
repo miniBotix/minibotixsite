@@ -1,0 +1,37 @@
+[
+  {
+    "id": "course1",
+    "name": "Python for Beginners",
+    "description": "Learn Python from scratch with hands-on examples.",
+    "image": "images/python_course.png",
+    "top": true
+  },
+  {
+    "id": "course2",
+    "name": "IoT with NodeMCU",
+    "description": "Build IoT projects using ESP8266 and sensors.",
+    "image": "images/iot_course.png",
+    "top": true
+  },
+  {
+    "id": "course3",
+    "name": "Web Development",
+    "description": "Learn HTML, CSS, JS and build responsive websites.",
+    "image": "images/webdev_course.png",
+    "top": false
+  },
+  {
+    "id": "course4",
+    "name": "Machine Learning",
+    "description": "Build ML models with Scikit-learn and Python.",
+    "image": "images/ml_course.png",
+    "top": true
+  },
+  {
+    "id": "course5",
+    "name": "Data Visualization",
+    "description": "Learn matplotlib, seaborn, and dashboard creation.",
+    "image": "images/visualization_course.png",
+    "top": false
+  }
+]
