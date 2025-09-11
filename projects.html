@@ -366,10 +366,10 @@
     async function loadProjects(){
       // Try fetch products.json (user said projects come from products.json)
       try{
-        const res = await fetch('products.json', {cache:'no-store'});
-        if(!res.ok) throw new Error('products.json not found (HTTP ' + res.status + ')');
+        const res = await fetch('projects.json', {cache:'no-store'});
+        if(!res.ok) throw new Error('projects.json not found (HTTP ' + res.status + ')');
         const data = await res.json();
-        if(!Array.isArray(data)) throw new Error('products.json is not an array');
+        if(!Array.isArray(data)) throw new Error('projects.json is not an array');
         projects = data.map((p, idx) => ({
           id: p.id || p._id || ('proj_'+(idx+1)),
           title: p.title || p.name || p.project_title || ('Project ' + (idx+1)),
