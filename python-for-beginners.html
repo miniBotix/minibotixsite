@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MiniBotix · Python Beginner — Course</title>
+<link rel="icon" href="file.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#071126;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.03);
+    --accent1: #007bff;
+    --accent2: #00d4ff;
+    --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+
+  /* simplified top bar : back only */
+  header.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);z-index:90}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+  .brand img{height:36px;width:36px;border-radius:6px}
+  .back-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.9);cursor:pointer}
+  .top-actions{display:flex;gap:12px;align-items:center}
+
+  /* hero */
+  .hero{padding:110px 22px 28px 22px}
+  .hero-card{max-width:1100px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:34px;border-radius:14px;box-shadow:0 30px 60px rgba(3,7,20,0.6)}
+  .eyebrow{display:inline-block;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;margin-bottom:16px;color:#aee9ff;font-weight:600}
+  .hero h1{font-size:36px;margin:6px 0 12px;line-height:1.03}
+  .hero p{color:rgba(255,255,255,0.85);margin-bottom:12px;max-width:900px}
+
+  .progress-pill{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+  .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:8px 12px;border-radius:10px;cursor:pointer}
+
+  /* content area */
+  .section{padding:28px 22px 90px}
+  .container{max-width:1100px;margin:0 auto}
+  h2{font-size:22px;margin-bottom:10px}
+  .lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
+
+  /* stage panel */
+  .stage-panel{display:grid;grid-template-columns:1fr 420px;gap:18px;align-items:start}
+  .lesson-card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+  .lesson-title{font-size:18px;font-weight:700;margin-bottom:8px}
+  .lesson-content{color:rgba(255,255,255,0.9);line-height:1.5}
+
+  /* right column: runner & quiz */
+  .runner-card{background:linear-gradient(180deg,rgba(255,255,255,0.015),rgba(255,255,255,0.01));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+  .editor{width:100%;height:220px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#06101a;padding:10px;color:#fff;font-family:monospace;resize:vertical;overflow:auto}
+  .outbox{min-height:80px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:#050816;padding:10px;color:#d6f7ff;font-family:monospace;font-size:13px;white-space:pre-wrap}
+
+  .quiz{margin-top:12px}
+  .q{margin-bottom:8px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);background:rgba(255,255,255,0.01)}
+  .answers{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+  .answer-btn{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;cursor:pointer;text-align:left}
+
+  .stage-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+  .muted{color:rgba(255,255,255,0.65);font-size:13px}
+
+  /* stage list */
+  .stages-list{display:flex;gap:8px;overflow:auto;padding:8px;margin-bottom:14px}
+  .stage-pill{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer;white-space:nowrap}
+  .stage-pill.locked{opacity:0.35;cursor:not-allowed}
+
+  /* small screens */
+  @media (max-width:980px){
+    .stage-panel{grid-template-columns:1fr}
+    .runner-card{order:2}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="nav">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="back-btn" onclick="location.href='courses.html'">← Back</div>
+    <div class="brand">
+      <img src="file.svg" alt="MiniBotix">
+      <div style="line-height:1">
+        <div style="font-weight:700">MiniBotix</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6)">Python · Beginner</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <div id="progressPill" class="progress-pill">Progress: <span id="progressText">Stage 0 / 10</span></div>
+    <button id="signBtn" class="btn-ghost">Sign In</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-card container">
+    <div class="eyebrow">MiniBotix · Courses · Python</div>
+    <h1>Python for Engineers — Beginner Track</h1>
+    <p class="lead">A ten-stage interactive course. Read each lesson, run code in-browser, take a short 5-question quiz. Pass a stage to unlock the next. Progress auto-saves to our backend so you can resume later.</p>
+    <div style="display:flex;gap:12px;align-items:center">
+      <button class="btn-primary" id="startBtn">Start / Resume</button>
+      <button class="btn-ghost" id="overviewBtn">Course Overview</button>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<section class="section">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h2>Course Stages</h2>
+      <div class="muted">Complete stages sequentially. Scores are stored against your account.</div>
+    </div>
+
+    <div class="stages-list" id="stagesList"></div>
+
+    <div id="mainStageArea" class="stage-panel">
+      <div class="lesson-card">
+        <div class="lesson-title" id="lessonTitle">Welcome</div>
+        <div class="lesson-content" id="lessonContent">
+          <p>Press "Start" to begin. Sign in to save progress and resume. Each stage includes a short lesson, code exercise and five quick quiz questions. Get >= 60% to pass the stage.</p>
+        </div>
+
+        <div style="margin-top:12px">
+          <strong>Stage status:</strong> <span id="stageStatus" class="muted">Not started</span>
+        </div>
+      </div>
+
+      <div class="runner-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-weight:700">Code Runner</div>
+          <div style="display:flex;gap:8px">
+            <button id="runBtn" class="btn-ghost">Run</button>
+            <button id="resetCodeBtn" class="btn-ghost">Reset</button>
+          </div>
+        </div>
+
+        <textarea id="editor" class="editor" spellcheck="false"></textarea>
+        <div style="margin-top:8px;font-weight:700">Output</div>
+        <div id="output" class="outbox">Program output will appear here</div>
+
+        <div class="quiz" id="quizArea"></div>
+
+        <div class="stage-footer">
+          <div>
+            <button id="submitQuizBtn" class="btn-primary">Submit Quiz</button>
+            <button id="markCompleteBtn" class="btn-ghost">Mark Complete (if quiz passed)</button>
+          </div>
+          <div class="muted">Stage Score: <span id="stageScore">—</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="padding-bottom:40px">
+  <div class="container" style="text-align:center">
+    <div style="margin-bottom:8px">MiniBotix · Learn · Build · Innovate</div>
+    <small>© 2025 MiniBotix</small>
+  </div>
+</footer>
+
+<!-- Skulpt (in-browser Python) -->
+<script src="https://cdn.jsdelivr.net/gh/skulpt/skulpt/dist/skulpt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/skulpt/skulpt/dist/skulpt-stdlib.js"></script>
+
+<!-- Firebase (v12 modular) -->
+<script type="module">
+  // ----------------- CONFIG -----------------
+  const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyFrd40CG30hgOvqVazeXYIVhjutnZFaQhRekDOgDD9fZUOkTDAzVhBwe0l2T6eOyd/exec';
+  const COURSE_NAME = 'Python Beginner';
+  const PASS_PERCENT = 60; // pass threshold
+
+  // Use your project's firebaseConfig (kept same as your other pages)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
+    authDomain: "minibotix-a1b9a.firebaseapp.com",
+    projectId: "minibotix-a1b9a",
+    storageBucket: "minibotix-a1b9a.firebasestorage.app",
+    messagingSenderId: "771169717230",
+    appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
+    measurementId: "G-JQKFSBN4WP"
+  };
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ----------------- UI REFS -----------------
+  const signBtn = document.getElementById('signBtn');
+  const startBtn = document.getElementById('startBtn');
+  const overviewBtn = document.getElementById('overviewBtn');
+
+  const stagesListEl = document.getElementById('stagesList');
+  const lessonTitleEl = document.getElementById('lessonTitle');
+  const lessonContentEl = document.getElementById('lessonContent');
+  const stageStatusEl = document.getElementById('stageStatus');
+  const progressTextEl = document.getElementById('progressText');
+
+  const editorEl = document.getElementById('editor');
+  const runBtn = document.getElementById('runBtn');
+  const resetCodeBtn = document.getElementById('resetCodeBtn');
+  const outputEl = document.getElementById('output');
+
+  const quizArea = document.getElementById('quizArea');
+  const submitQuizBtn = document.getElementById('submitQuizBtn');
+  const markCompleteBtn = document.getElementById('markCompleteBtn');
+  const stageScoreEl = document.getElementById('stageScore');
+
+  // ----------------- STATE -----------------
+  let currentUser = null;
+  let currentStageIndex = 0; // 0-based
+  const TOTAL_STAGES = 10;
+  let progress = { stage_no: 0, percentage: 0 }; // stage_no is 1-based last completed stage
+  let stageResults = Array(TOTAL_STAGES).fill(null); // store {score, passed, saved}
+  let locked = false; // if course completed & locked
+
+  // ----------------- COURSE CONTENT (10 stages) -----------------
+  // Each stage: lesson (html), starterCode, quiz (5 MCQ)
+  // I've provided compact but meaningful content for each stage.
+  const stages = [
+    {
+      title: 'Stage 1 — Introduction & Setup',
+      lesson: `<p>Welcome to Python. In this stage we'll cover what Python is, how to run a simple program and the REPL. 
+        Python is a high-level interpreted language, great for engineers for scripting, data processing and prototypes.</p>
+        <ul><li>Variables and basic types</li><li>Printing output</li><li>Simple arithmetic</li></ul>`,
+      starter: `# Stage 1: Hello world & arithmetic\nname = "Student"\nprint("Hello,", name)\nprint("2 + 3 =", 2 + 3)`,
+      quiz: [
+        { q: 'Which function prints output to console in Python?', a: ['echo()', 'print()', 'console.log()', 'output()'], correct:1 },
+        { q: 'What type of value is "42"?', a: ['int', 'str', 'float', 'bool'], correct:1 },
+        { q: 'What will print(2*3) output?', a: ['5','6','23','Error'], correct:1 },
+        { q: 'Python files typically have which extension?', a: ['.py', '.js', '.java', '.txt'], correct:0 },
+        { q: 'True or False: Python is statically typed?', a: ['True','False','Depends','Sometimes'], correct:1 }
+      ]
+    },
+    {
+      title: 'Stage 2 — Variables & Types',
+      lesson: `<p>Variables store values. Key built-in types: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>.</p>
+        <p>You can convert types with <code>int()</code>, <code>str()</code>, <code>float()</code>.</p>`,
+      starter: `# Stage 2: Variables & Types\nx = 10\ny = 2.5\nname = "MiniBotix"\nprint(x, y, name)\nprint("x as str:", str(x))`,
+      quiz: [
+        { q: 'Which converts "3.14" to a float?', a:['int("3.14")','float("3.14")','str(3.14)','None'], correct:1 },
+        { q: 'Which is a boolean in Python?', a:['"True"','True','1','"1"'], correct:1 },
+        { q: 'What is type("hello")?', a:['int','str','list','bool'], correct:1 },
+        { q: 'What does // do?', a:['Float division','Modulus','Integer division (floor)','Power'], correct:2 },
+        { q: 'Which is immutable?', a:['list','dict','str','set'], correct:2 }
+      ]
+    },
+    {
+      title: 'Stage 3 — Control Flow (if / else)',
+      lesson: `<p>If statements let you branch logic. Use <code>if</code>, <code>elif</code>, and <code>else</code>.</p>`,
+      starter: `# Stage 3: If/else\nx = 7\nif x % 2 == 0:\n    print("even")\nelse:\n    print("odd")`,
+      quiz: [
+        { q: 'Which compares equality?', a:['=','==','===',':='], correct:1 },
+        { q: 'Which keyword handles alternative branch?', a:['otherwise','elif','elseif','or'], correct:1 },
+        { q: 'True or False: Indentation matters in Python', a:['True','False','Only sometimes','No'], correct:0 },
+        { q: 'What prints for x=10 if x>5: print("A") elif x>8: print("B")', a:['A','B','Both','Error'], correct:0 },
+        { q: 'Which is valid condition?', a:['x = 5','x == 5','if x: 5','if x = 5:'], correct:1 }
+      ]
+    },
+    {
+      title: 'Stage 4 — Loops (for & while)',
+      lesson: `<p>Loops repeat tasks. Use <code>for</code> to iterate over sequences and <code>while</code> while a condition holds.</p>`,
+      starter: `# Stage 4: Loops\nfor i in range(5):\n    print("i =", i)\n\nn = 3\nwhile n>0:\n    print("tick", n)\n    n -= 1`,
+      quiz: [
+        { q: 'How to loop 0..4?', a:['for i in 0..4','for i in range(5)','for (i=0;i<5;i++)','while i<5:'], correct:1 },
+        { q: 'What does range(2,5) yield?', a:['0,1,2,3,4','2,3,4','2,3,4,5','Error'], correct:1 },
+        { q: 'Break exits the loop immediately?', a:['Yes','No','Only in while','Only in for'], correct:0 },
+        { q: 'Continue skips to next iteration', a:['True','False','Maybe','Only in Python 3'], correct:0 },
+        { q: 'While needs an explicit counter to avoid infinite loop?', a:['Always','Never','Often yes','Not required'], correct:2 }
+      ]
+    },
+    {
+      title: 'Stage 5 — Functions',
+      lesson: `<p>Functions encapsulate behavior. Use <code>def name(params):</code> and <code>return</code> to return values.</p>`,
+      starter: `# Stage 5: Functions\ndef add(a,b):\n    return a + b\n\nprint(add(3,4))`,
+      quiz: [
+        { q: 'How define a function?', a:['function x():','def x():','func x():','define x():'], correct:1 },
+        { q: 'How to return value?', a:['exit','return','yield','send'], correct:1 },
+        { q: 'Are functions first-class in Python?', a:['Yes','No','Only in 3.8+','Only if decorated'], correct:0 },
+        { q: 'Default parameter placed where?', a:['First','Middle','Last','Anywhere'], correct:2 },
+        { q: 'Lambda creates anonymous function', a:['True','False','Only in 3.0','Only for IO'], correct:0 }
+      ]
+    },
+    {
+      title: 'Stage 6 — Lists & Dictionaries',
+      lesson: `<p>Lists are ordered sequences; dicts are key→value maps. Common ops: indexing, append, pop, keys(), values().</p>`,
+      starter: `# Stage 6: Lists & Dicts\nfruits = ['apple','banana']\nfruits.append('cherry')\nprint(fruits)\n\nperson = {'name':'A','age':20}\nprint(person['name'])`,
+      quiz: [
+        { q: "How to access first element of a list 'a'?", a:['a(0)','a[0]','a.0','a.first()'], correct:1 },
+        { q: 'Which creates a dict?', a:["{'k':1}", "['k',1]", "('k',1)", "{'k'}"], correct:0 },
+        { q: 'Append adds item to end of list', a:['True','False','Maybe','Only for strings'], correct:0 },
+        { q: 'keys() returns ?', a:['list','view','string','int'], correct:1 },
+        { q: 'Pop removes item and returns it', a:['True','False','It raises','No'], correct:0 }
+      ]
+    },
+    {
+      title: 'Stage 7 — File I/O & Exceptions',
+      lesson: `<p>Read and write files using <code>open(...)</code>. Handle errors with <code>try/except</code>.</p>`,
+      starter: `# Stage 7: File I/O (demo)\nprint("We won't write files here in the browser.")\n# In real apps: with open('file.txt','w') as f: f.write('hello')`,
+      quiz: [
+        { q: 'Which opens file for reading?', a:["open('f','r')","open('f','w')","open('f','rw')","open('f')"], correct:0 },
+        { q: 'Context manager auto-closes file', a:['True','False','Only in 3.10','Only with try'], correct:0 },
+        { q: 'Which catches exceptions?', a:['try/except','if/error','throw/catch','try/catch'], correct:0 },
+        { q: 'Finally runs when?', a:['Always after try','Only on exceptions','Never','Before try'], correct:0 },
+        { q: 'open(..., "a") means', a:['append','write','read','error'], correct:0 }
+      ]
+    },
+    {
+      title: 'Stage 8 — Modules & Libraries',
+      lesson: `<p>Break code into modules. Use <code>import</code>. Popular libs: <code>math</code>, <code>random</code>, <code>json</code>.</p>`,
+      starter: `# Stage 8: Modules\nimport math\nprint(math.sqrt(25))\n\nimport random\nprint(random.randint(1,6))`,
+      quiz: [
+        { q: 'How to import sqrt only?', a:['from math import sqrt','import math.sqrt','import sqrt from math','include math.sqrt'], correct:0 },
+        { q: 'json.dumps converts to string?', a:['True','False','Depends','Only with indent'], correct:0 },
+        { q: 'Which library for numerical arrays?', a:['numpy','pandas','django','flask'], correct:0 },
+        { q: 'random.randint(1,3) includes 3', a:['Yes','No','Only sometimes','Depends on seed'], correct:0 },
+        { q: 'You can create modules by saving .py files', a:['True','False','Only in packages','Only with __init__'], correct:0 }
+      ]
+    },
+    {
+      title: 'Stage 9 — Simple Data Handling',
+      lesson: `<p>Use lists, dicts and loops to filter and transform data. We'll practice with a small dataset.</p>`,
+      starter: `# Stage 9: Data handling\ndata = [1,2,3,4,5]\nsquares = [x*x for x in data]\nprint(squares)`,
+      quiz: [
+        { q: 'List comprehension syntax?', a:['[x for x in list]','(x for x in list)','{x for x in list}','<x for x>'], correct:0 },
+        { q: 'Map returns?', a:['map object','list','string','int'], correct:0 },
+        { q: 'Filter selects items', a:['True','False','Only for sets','No'], correct:0 },
+        { q: 'Reduce reduces sequence to value', a:['True','False','Only for numbers','No'], correct:0 },
+        { q: 'Which creates tuple?', a:["(1,2)","[1,2]","{1,2}","<1,2>"], correct:0 }
+      ]
+    },
+    {
+      title: 'Stage 10 — Mini Project & Wrap-up',
+      lesson: `<p>Combine everything: write a small program that processes data and prints a result. This stage verifies full understanding.</p>`,
+      starter: `# Stage 10: Mini project (example)\n# Count even numbers in a list\nnums = [1,2,3,4,5,6]\nevens = [n for n in nums if n%2==0]\nprint("Even count:", len(evens))`,
+      quiz: [
+        { q: 'Project stage checks integration of topics', a:['True','False','Only coding','Only quiz'], correct:0 },
+        { q: 'List comprehension can replace loops', a:['Yes','No','Only with range','Only in Python 2'], correct:0 },
+        { q: 'Functions help reuse code', a:['True','False','They slow code','Only for OOP'], correct:0 },
+        { q: 'Modules help organize code', a:['True','False','Only for packages','No'], correct:0 },
+        { q: 'Final step: you should', a:['Stop','Submit progress','Delete files','Rename project'], correct:1 }
+      ]
+    }
+  ];
+
+  // ----------------- UTILS -----------------
+  function showToast(msg, err=false, t=3000){
+    const d = document.createElement('div');
+    d.textContent = msg;
+    d.style.position = 'fixed';
+    d.style.left = '50%';
+    d.style.transform = 'translateX(-50%)';
+    d.style.bottom = '22px';
+    d.style.padding = '10px 14px';
+    d.style.borderRadius = '8px';
+    d.style.zIndex = 9999;
+    d.style.fontWeight = 700;
+    d.style.background = err ? '#ff6b6b' : 'linear-gradient(90deg,#00c6ff,#0066ff)';
+    d.style.color = err ? '#fff' : '#021';
+    document.body.appendChild(d);
+    setTimeout(()=>{ d.style.transition = 'all .3s'; d.style.opacity='0'; d.style.transform += ' translateY(8px)'; }, t-300);
+    setTimeout(()=>d.remove(), t);
+  }
+
+  function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+  function nowIso(){ return (new Date()).toISOString(); }
+
+  // ----------------- RENDER STAGES UI -----------------
+  function renderStagesList(){
+    stagesListEl.innerHTML = '';
+    for(let i=0;i<TOTAL_STAGES;i++){
+      const pill = document.createElement('div');
+      pill.className = 'stage-pill';
+      if(i > currentStageIndex) pill.classList.add('locked');
+      pill.innerHTML = `Stage ${i+1}: ${escapeHtml(stages[i].title.split('—')[1] || stages[i].title)}`;
+      pill.dataset.index = i;
+      if(i <= currentStageIndex) {
+        pill.addEventListener('click', ()=> loadStage(i));
+      }
+      stagesListEl.appendChild(pill);
+    }
+  }
+
+  // ----------------- LOAD / SAVE PROGRESS (Apps Script) -----------------
+  // The Apps Script should support GET ?email=someone@example.com returning JSON rows
+  async function fetchProgressFromBackend(email){
+    try{
+      const url = APP_SCRIPT_URL + '?email=' + encodeURIComponent(email);
+      const res = await fetch(url, { method: 'GET', mode:'cors' });
+      if(!res.ok) return null;
+      const json = await res.json();
+      if(json && json.rows && Array.isArray(json.rows)){
+        // find latest row for this course
+        const rows = json.rows.filter(r => (r['course_name']||r['Course']||r['Course Name']||'').toString().toLowerCase().includes(COURSE_NAME.toLowerCase()));
+        if(rows.length === 0) return null;
+        // pick most recent by Timestamp if present
+        rows.sort((a,b)=>{
+          const ta = new Date(a['Timestamp'] || a['timestamp'] || a['time'] || 0).getTime();
+          const tb = new Date(b['Timestamp'] || b['timestamp'] || b['time'] || 0).getTime();
+          return tb - ta;
+        });
+        return rows[0];
+      }
+      return null;
+    }catch(e){
+      console.warn('fetchProgress error', e);
+      return null;
+    }
+  }
+
+  async function postProgress(payload){
+    // payload: { name, email, course_name, stage_no, percentage, timestamp }
+    try{
+      const res = await fetch(APP_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'cors'
+      });
+      let body = null;
+      try{ body = await res.json(); }catch(_){ body = await res.text().catch(()=>null); }
+      return { ok: res.ok, status: res.status, body };
+    }catch(e){
+      console.error('postProgress error', e);
+      return { ok:false, error:e };
+    }
+  }
+
+  // ----------------- AUTH -----------------
+  function updateSignUi(){
+    if(currentUser){
+      signBtn.textContent = 'Sign Out';
+      signBtn.onclick = async ()=> { await signOut(auth); showToast('Signed out'); };
+    } else {
+      signBtn.textContent = 'Sign In';
+      signBtn.onclick = showSignPopup;
+    }
+  }
+
+  async function showSignPopup(){
+    // Simple: use Google popup sign-in. If they want email/password, they can register elsewhere.
+    const provider = new GoogleAuthProvider();
+    try{
+      await signInWithPopup(auth, provider);
+      showToast('Signed in');
+    }catch(e){
+      console.error('Google sign-in failed', e);
+      showToast('Sign-in failed', true);
+    }
+  }
+
+  onAuthStateChanged(auth, async (user)=>{
+    currentUser = user || null;
+    updateSignUi();
+    if(user){
+      // fetch backend progress
+      const email = user.email;
+      const row = await fetchProgressFromBackend(email);
+      if(row){
+        // attempt to parse stage_no and percentage
+        const sn = parseInt(row['stage_no'] || row['Stage'] || row['stage'] || row['stage_no']) || 0;
+        const pct = Number(row['percentage'] || row['Percentage'] || row['percentage'] || 0) || 0;
+        if(sn > 0){ progress.stage_no = sn; progress.percentage = pct; currentStageIndex = Math.max(0, sn); }
+        if(progress.stage_no >= TOTAL_STAGES && progress.percentage >= 100){ locked = true; showToast('Course previously completed — locked', false); }
+        renderStagesList();
+        updateProgressUI();
+        if(progress.stage_no > 0) loadStage(progress.stage_no - 1);
+      } else {
+        renderStagesList();
+      }
+    } else {
+      renderStagesList();
+    }
+  });
+
+  // ----------------- STAGE LOGIC -----------------
+  function updateProgressUI(){
+    const displayStage = Math.min(currentStageIndex + 1, TOTAL_STAGES);
+    progressTextEl.textContent = `Stage ${displayStage} / ${TOTAL_STAGES}`;
+  }
+
+  function loadStage(index){
+    if(locked) { showToast('Course completed previously — cannot re-take', true); return; }
+    if(index > currentStageIndex){ showToast('Stage locked. Complete previous stages first.', true); return; }
+    currentStageIndex = index;
+    const st = stages[index];
+    lessonTitleEl.innerHTML = `${escapeHtml(st.title)}`;
+    lessonContentEl.innerHTML = st.lesson;
+    editorEl.value = st.starter;
+    outputEl.textContent = '';
+    stageStatusEl.textContent = (stageResults[index] && stageResults[index].passed) ? 'Passed' : 'In progress';
+    renderQuiz(index);
+    updateProgressUI();
+    renderStagesList();
+  }
+
+  function renderQuiz(index){
+    const st = stages[index];
+    quizArea.innerHTML = '';
+    const title = document.createElement('div'); title.style.fontWeight='700'; title.textContent = 'Quiz (5 questions)';
+    quizArea.appendChild(title);
+
+    const qWrap = document.createElement('div'); qWrap.style.marginTop='8px';
+    st.quiz.forEach((q,i)=>{
+      const qbox = document.createElement('div'); qbox.className = 'q';
+      qbox.innerHTML = `<div style="font-weight:600">Q${i+1}. ${escapeHtml(q.q)}</div>`;
+      const ans = document.createElement('div'); ans.className = 'answers';
+      q.a.forEach((opt,j)=>{
+        const b = document.createElement('button');
+        b.className = 'answer-btn';
+        b.type = 'button';
+        b.innerHTML = escapeHtml(opt);
+        b.dataset.q = i;
+        b.dataset.opt = j;
+        b.onclick = ()=> {
+          // single-select per question
+          // mark selected visually
+          qbox.querySelectorAll('.answer-btn').forEach(bb=>bb.style.background='transparent');
+          b.style.background = 'rgba(0, 212, 255, 0.12)';
+          b.style.borderColor = 'rgba(0,212,255,0.22)';
+          // store selection
+          st._userAnswers = st._userAnswers || {};
+          st._userAnswers[i] = j;
+        };
+        ans.appendChild(b);
+      });
+      qbox.appendChild(ans);
+      qWrap.appendChild(qbox);
+    });
+    quizArea.appendChild(qWrap);
+  }
+
+  // ----------------- SKULPT RUNNER -----------------
+  function outf(text){ outputEl.textContent += text; }
+  function builtinRead(x) {
+    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+      throw "File not found: '" + x + "'";
+    return Sk.builtinFiles["files"][x];
+  }
+
+  async function runCode(){
+    outputEl.textContent = '';
+    const prog = editorEl.value || '';
+    Sk.pre = "output";
+    Sk.configure({ output:outf, read: builtinRead });
+    try{
+      await Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>", false, prog, true));
+    }catch(e){
+      outputEl.textContent += '\nError: ' + e.toString();
+    }
+  }
+
+  runBtn.addEventListener('click', runCode);
+  resetCodeBtn.addEventListener('click', ()=> {
+    const st = stages[currentStageIndex];
+    editorEl.value = st.starter;
+    outputEl.textContent = '';
+  });
+
+  // ----------------- QUIZ SUBMISSION & STAGE COMPLETION -----------------
+  submitQuizBtn.addEventListener('click', ()=> {
+    const st = stages[currentStageIndex];
+    const answers = st._userAnswers || {};
+    let correct = 0;
+    for(let i=0;i<st.quiz.length;i++){
+      if(answers[i] !== undefined && Number(answers[i]) === Number(st.quiz[i].correct)) correct++;
+    }
+    const pct = Math.round((correct / st.quiz.length) * 100);
+    stageResults[currentStageIndex] = { score: pct, passed: pct >= PASS_PERCENT, saved:false };
+    stageScoreEl.textContent = `${pct}% (${correct}/${st.quiz.length})`;
+    stageStatusEl.textContent = stageResults[currentStageIndex].passed ? 'Passed' : 'Failed';
+    showToast(`Quiz scored ${pct}%`);
+  });
+
+  markCompleteBtn.addEventListener('click', async ()=> {
+    const res = stageResults[currentStageIndex];
+    if(!res){ showToast('Please submit the quiz first', true); return; }
+    if(!res.passed){ showToast('Score is below passing threshold. Re-try the quiz.', true); return; }
+    // move progress forward
+    const completedStageNo = currentStageIndex + 1; // 1-based
+    // compute cumulative percentage: average of completed stage scores
+    let sum = 0, count = 0;
+    for(let i=0;i<=currentStageIndex;i++){
+      if(stageResults[i] && typeof stageResults[i].score==='number'){ sum += stageResults[i].score; count++; }
+    }
+    const cumulativePct = count ? Math.round(sum / count) : 0;
+    progress.stage_no = Math.max(progress.stage_no, completedStageNo);
+    progress.percentage = cumulativePct;
+
+    // save to backend if signed in
+    if(!currentUser){
+      showToast('Sign in to save progress', true);
+      return;
+    }
+    const payload = {
+      name: currentUser.displayName || currentUser.email.split('@')[0] || '',
+      email: currentUser.email || '',
+      course_name: COURSE_NAME,
+      stage_no: progress.stage_no,
+      percentage: progress.percentage,
+      timestamp: nowIso()
+    };
+    const resPost = await postProgress(payload);
+    if(resPost.ok){
+      showToast('Progress saved');
+      stageResults[currentStageIndex].saved = true;
+      // unlock next stage if exists
+      if(currentStageIndex < TOTAL_STAGES -1){
+        currentStageIndex++;
+      } else {
+        // finished course: compute final percentage (average all stages)
+        let totalSum=0, totalCount=0;
+        for(let i=0;i<TOTAL_STAGES;i++){
+          if(stageResults[i] && typeof stageResults[i].score==='number'){ totalSum += stageResults[i].score; totalCount++; }
+        }
+        const finalPct = totalCount ? Math.round(totalSum/totalCount) : progress.percentage;
+        progress.stage_no = TOTAL_STAGES;
+        progress.percentage = finalPct;
+        // send final row marking completion
+        await postProgress({ name: currentUser.displayName || '', email: currentUser.email, course_name: COURSE_NAME, stage_no: progress.stage_no, percentage: progress.percentage, timestamp: nowIso() });
+        showToast('Course completed! Congratulations 🎉');
+        locked = true;
+      }
+      renderStagesList();
+      updateProgressUI();
+      // load next stage if unlocked
+      loadStage(Math.min(currentStageIndex, TOTAL_STAGES-1));
+    } else {
+      console.warn('postProgress failed', resPost);
+      showToast('Failed saving progress to backend', true);
+    }
+  });
+
+  // ----------------- START / RESUME -----------------
+  startBtn.addEventListener('click', async ()=> {
+    if(!currentUser){
+      showToast('Please sign in to save/resume progress', false);
+      await showSignPopup();
+      return;
+    }
+    // fetch latest backend info and resume
+    const row = await fetchProgressFromBackend(currentUser.email);
+    if(row){
+      // parse saved stage
+      const sn = parseInt(row['stage_no'] || row['Stage'] || row['stage'] || 0) || 0;
+      const pct = Number(row['percentage'] || row['Percentage'] || 0) || 0;
+      progress.stage_no = sn;
+      progress.percentage = pct;
+      currentStageIndex = Math.max(0, (sn>0 ? sn-1 : 0));
+    } else {
+      // default start from stage 1
+      currentStageIndex = 0;
+    }
+    renderStagesList();
+    updateProgressUI();
+    loadStage(currentStageIndex);
+  });
+
+  overviewBtn.addEventListener('click', ()=> {
+    const s = stages.map((st,i)=> `<li><strong>Stage ${i+1}:</strong> ${escapeHtml(st.title)}</li>`).join('');
+    alert('Course overview:\\n\\n' + stages.map((st,i)=>`${i+1}. ${st.title}`).join('\\n'));
+  });
+
+  // ----------------- INITIALIZE -----------------
+  // prefill stage results array with nulls
+  for(let i=0;i<TOTAL_STAGES;i++) stageResults[i] = null;
+
+  // initial UI
+  renderStagesList();
+  updateProgressUI();
+
+  // Prefill editor with stage 1 starter
+  editorEl.value = stages[0].starter;
+
+  // quick check: if user not signed in, signBtn shows sign-in
+  updateSignUi();
+
+  // expose for debug
+  window._stages = stages;
+  window._stageResults = stageResults;
+
+  // Prevent accidental navigation if course in progress
+  window.addEventListener('beforeunload', (e)=>{
+    // optional: check if any unsaved data
+    // e.preventDefault();
+    // e.returnValue = '';
+  });
+
+</script>
+</body>
+</html>
