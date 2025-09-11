@@ -68,6 +68,10 @@
 
   /* small toast */
   .mini-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 22px; padding: 10px 14px; border-radius: 8px; z-index: 9999; font-weight:600 }
+
+  /* long lesson formatting for readability */
+  .lesson-content p { margin: 8px 0; }
+  .lesson-content pre { background:#04101a;padding:10px;border-radius:8px;overflow:auto }
 </style>
 </head>
 <body>
@@ -97,7 +101,7 @@
   <div class="hero-card container">
     <div class="eyebrow">MiniBotix · Courses · Python</div>
     <h1>Python for Engineers — Beginner Track</h1>
-    <p class="lead">Ten short stages each with a lesson, code exercise and a short quiz. Run the code in your browser. Pass a stage (≥ 60%) to unlock the next one. Progress is saved to our Google Sheet so you can resume anytime.</p>
+    <p class="lead">Ten short stages each with a lesson, interactive code runner and a short quiz. Run the code in your browser using the built-in Python interpreter. Pass each stage to unlock the next. Progress is saved to Google Sheet so you can resume anytime.</p>
     <div style="display:flex;gap:12px;align-items:center">
       <button class="btn-primary" id="startBtn">Start / Resume</button>
       <button class="btn-ghost" id="overviewBtn">Course Overview</button>
@@ -109,7 +113,7 @@
   <div class="container">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <h2>Course Stages</h2>
-      <div class="muted">Complete stages one by one. Scores saved to your account.</div>
+      <div class="muted">Complete stages sequentially. Scores saved to your account and the central progress sheet.</div>
     </div>
 
     <div class="stages-list" id="stagesList"></div>
@@ -118,7 +122,8 @@
       <div class="lesson-card">
         <div class="lesson-title" id="lessonTitle">Welcome</div>
         <div class="lesson-content" id="lessonContent">
-          <p>Press "Start" to begin. Sign in to save progress and resume. Each stage has short examples and a code exercise to run. Quizzes are 5 simple multiple-choice questions designed to confirm your understanding.</p>
+          <p>Press "Start" to begin. Sign in to save progress and resume. Each stage contains: a short lesson, one or more example snippets, a code exercise you can run in your browser, and a short 5-question multiple-choice quiz. Achieve ≥ 60% to pass a stage and unlock the next one.</p>
+          <p>We wrote lessons so they are simple and clear — the style is practical and example-driven.</p>
         </div>
 
         <div style="margin-top:12px">
@@ -136,9 +141,9 @@
           </div>
         </div>
 
-        <textarea id="editor" class="editor" spellcheck="false"></textarea>
+        <textarea id="editor" class="editor" spellcheck="false" aria-label="Python code editor"></textarea>
         <div style="margin-top:8px;font-weight:700">Output</div>
-        <div id="output" class="outbox">Program output will appear here</div>
+        <div id="output" class="outbox" role="status" aria-live="polite">Program output will appear here</div>
 
         <div class="quiz" id="quizArea" style="display:none"></div>
 
@@ -173,7 +178,7 @@
   const COURSE_NAME = 'Python Beginner';
   const PASS_PERCENT = 60;
 
-  // Replace with your project's firebaseConfig if needed
+  // Firebase config — keep same as site
   const firebaseConfig = {
     apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
     authDomain: "minibotix-a1b9a.firebaseapp.com",
@@ -223,141 +228,233 @@
   let stageResults = Array(TOTAL_STAGES).fill(null); // {score, passed, saved}
   let locked = false;
 
-  // -------- COURSE CONTENT --------
-  // For each stage: title, lesson (HTML string), starter code, quiz array
+  // -------- COURSE CONTENT (detailed lessons) --------
+  // Each stage contains: title, lesson (HTML), starter code, quiz (5 MCQ)
   const stages = [
     {
       title: 'Stage 1 — Introduction & Setup',
-      lesson: `<p><strong>What is Python?</strong> Python is a friendly, high-level language excellent for scripting, calculations and building small programs quickly. This first stage shows how to print text, use variables and do simple math.</p>
-        <p><strong>Why learn this?</strong> Engineers use Python to automate tasks, process data and prototype ideas fast.</p>
-        <p><strong>Short manual-style steps:</strong></p>
-        <ol>
-          <li>Open the code editor on the right.</li>
-          <li>Read the starter code and click <em>Run</em>.</li>
-          <li>Observe output. Try changing a value and run again.</li>
-        </ol>`,
-      starter: `# Stage 1: Hello world & arithmetic\nname = "Student"\nprint("Hello,", name)\nprint("2 + 3 =", 2 + 3)\n# Try: change name or add more prints`,
+      lesson:
+        `<p><strong>Why Python?</strong> It is simple, readable and great for engineers — for scripts, tests, data processing and quick prototypes.</p>
+         <p><strong>What you will learn in this stage:</strong> writing a first program, printing output, simple arithmetic, and using variables.</p>
+         <p><strong>Tip:</strong> Think of Python as your 'do-it-fast' tool. If you want to quickly calculate or transform data, Python is ideal.</p>
+         <pre># Example:\nprint("Hello, world!")\nprint("2 + 3 =", 2 + 3)</pre>
+         <p>Try changing strings and numbers. Observe results in the Output box.</p>`,
+      starter:
+`# Stage 1: Hello & arithmetic
+name = "Student"
+print("Hello,", name)
+print("2 + 3 =", 2 + 3)
+# Try: change name or add a new print line`,
       quiz: [
-        { q: 'Which function prints output in Python?', a: ['echo()', 'print()', 'console.log()', 'output()'], correct:1 },
-        { q: 'What type is "42" (with quotes)?', a: ['int', 'str', 'float', 'bool'], correct:1 },
-        { q: 'What will print(2*3) output?', a: ['5','6','23','Error'], correct:1 },
-        { q: 'Python source files usually use which extension?', a: ['.py', '.js', '.java', '.txt'], correct:0 },
-        { q: 'Is Python statically typed?', a: ['True','False','Depends','Sometimes'], correct:1 }
+        { q: 'Which function prints output to console in Python?', a: ['echo()', 'print()', 'console.log()', 'output()'], correct: 1 },
+        { q: 'What type is "42" (with quotes)?', a: ['int', 'str', 'float', 'bool'], correct: 1 },
+        { q: 'What will print(2*3) output?', a: ['5','6','23','Error'], correct: 1 },
+        { q: 'Python files typically have which extension?', a: ['.py', '.js', '.java', '.txt'], correct: 0 },
+        { q: 'True or False: Python is statically typed?', a: ['True','False','Depends','Sometimes'], correct: 1 }
       ]
     },
+
     {
       title: 'Stage 2 — Variables & Types',
-      lesson: `<p><strong>Variables</strong> hold values. Types you will meet immediately: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>.</p>
-        <p><strong>Short tips:</strong> variables are assigned with <code>=</code>. Use <code>type(x)</code> to see a variable's type.</p>
-        <p>Example use-case: storing sensor readings, names, or flags.</p>`,
-      starter: `# Stage 2: Variables & Types\nx = 10\ny = 2.5\nname = "MiniBotix"\nprint("x:", x, "type:", type(x))\nprint("y:", y, "type:", type(y))\nprint("name:", name, "type:", type(name))`,
+      lesson:
+        `<p><strong>Variables</strong> store values (numbers, text, true/false). Python determines type at runtime.</p>
+         <p><strong>Common types:</strong> <code>int</code> (whole numbers), <code>float</code> (decimal), <code>str</code> (text), <code>bool</code> (True/False).</p>
+         <p><strong>Example:</strong> store a sensor reading in a variable and print it.</p>
+         <pre>x = 10\ny = 2.5\nname = "MiniBotix"\nprint(x, y, name)</pre>
+         <p>Try changing values and use <code>type(x)</code> to inspect types.</p>`,
+      starter:
+`# Stage 2: Variables & Types
+x = 10
+y = 2.5
+name = "MiniBotix"
+print("x:", x, "type:", type(x))
+print("y:", y, "type:", type(y))
+print("name:", name, "type:", type(name))`,
       quiz: [
-        { q: 'Which converts "3.14" to float?', a: ['int("3.14")','float("3.14")','str(3.14)','None'], correct:1 },
-        { q: 'Which is boolean True in Python?', a: ['"True"','True','1','"1"'], correct:1 },
-        { q: 'What is type("hello")?', a: ['int','str','list','bool'], correct:1 },
-        { q: 'What does // do?', a: ['Float division','Modulus','Integer (floor) division','Power'], correct:2 },
-        { q: 'Which is immutable?', a: ['list','dict','str','set'], correct:2 }
+        { q: 'Which converts "3.14" to a float?', a: ['int("3.14")','float("3.14")','str(3.14)','None'], correct: 1 },
+        { q: 'Which is a boolean in Python?', a: ['"True"','True','1','"1"'], correct: 1 },
+        { q: 'What is type("hello")?', a: ['int','str','list','bool'], correct: 1 },
+        { q: 'What does // do?', a: ['Float division','Modulus','Integer division (floor)','Power'], correct: 2 },
+        { q: 'Which is immutable?', a: ['list','dict','str','set'], correct: 2 }
       ]
     },
+
     {
       title: 'Stage 3 — Control Flow (if / else)',
-      lesson: `<p><strong>If statements</strong> let you run code conditionally. Use <code>if</code>, <code>elif</code>, and <code>else</code>. Indentation is the structure in Python—pay attention to spaces.</p>
-        <p>Short example included below. Try changing conditions to see different outputs.</p>`,
-      starter: `# Stage 3: If/else\nx = 7\nif x % 2 == 0:\n    print(x, "is even")\nelif x % 3 == 0:\n    print(x, "divisible by 3")\nelse:\n    print(x, "is odd and not divisible by 3")`,
+      lesson:
+        `<p><strong>If statements</strong> let your program make decisions. Use <code>if</code>, <code>elif</code> and <code>else</code>.</p>
+         <p><strong>Important:</strong> Python uses indentation (spaces) for blocks. Keep indentation consistent.</p>
+         <pre>x = 7\nif x % 2 == 0:\n    print("even")\nelse:\n    print("odd")</pre>
+         <p>Change x and see the outputs. Try nested conditions later.</p>`,
+      starter:
+`# Stage 3: If / else
+x = 7
+if x % 2 == 0:
+    print(x, "is even")
+elif x % 3 == 0:
+    print(x, "divisible by 3")
+else:
+    print(x, "is odd and not divisible by 3")`,
       quiz: [
-        { q: 'Which operator tests equality?', a: ['=','==','===',':='], correct:1 },
-        { q: 'Keyword for alternative branch?', a: ['otherwise','elif','elseif','or'], correct:1 },
-        { q: 'Does indentation matter in Python?', a: ['True','False','Only sometimes','No'], correct:0 },
-        { q: 'For x=10 which prints: if x>5: print("A") elif x>8: print("B")', a: ['A','B','Both','Error'], correct:0 },
-        { q: 'Valid condition syntax?', a: ['x = 5','x == 5','if x: 5','if x = 5:'], correct:1 }
+        { q: 'Which compares equality?', a: ['=','==','===',':='], correct: 1 },
+        { q: 'Which keyword handles alternative branch?', a: ['otherwise','elif','elseif','or'], correct: 1 },
+        { q: 'True or False: Indentation matters in Python', a: ['True','False','Only sometimes','No'], correct: 0 },
+        { q: 'What prints for x=10 if x>5: print("A") elif x>8: print("B")', a: ['A','B','Both','Error'], correct: 0 },
+        { q: 'Which is valid condition?', a: ['x = 5','x == 5','if x: 5','if x = 5:'], correct: 1 }
       ]
     },
+
     {
       title: 'Stage 4 — Loops (for & while)',
-      lesson: `<p><strong>Loops</strong> repeat tasks. Use <code>for</code> to iterate sequences and <code>while</code> to continue while a condition holds. Typical tasks: iterate sensor values or generate repeated logs.</p>`,
-      starter: `# Stage 4: Loops\nfor i in range(5):\n    print("i =", i)\n\nn = 3\nwhile n>0:\n    print("tick", n)\n    n -= 1`,
+      lesson:
+        `<p>Loops repeat actions. Use <code>for</code> to iterate sequences and <code>while</code> to loop until a condition is false.</p>
+         <p><strong>For example:</strong> iterate through a list of readings and print each.</p>
+         <pre>for i in range(5):\n    print(i)\n\nn = 3\nwhile n>0:\n    print("tick", n)\n    n -= 1</pre>
+         <p>Be careful with while loops — ensure they end.</p>`,
+      starter:
+`# Stage 4: Loops
+for i in range(5):
+    print("i =", i)
+
+n = 3
+while n>0:
+    print("tick", n)
+    n -= 1`,
       quiz: [
-        { q: 'How to loop 0..4?', a: ['for i in 0..4','for i in range(5)','for (i=0;i<5;i++)','while i<5:'], correct:1 },
-        { q: 'What does range(2,5) yield?', a: ['0,1,2,3,4','2,3,4','2,3,4,5','Error'], correct:1 },
-        { q: 'Break exits the loop?', a: ['Yes','No','Only in while','Only in for'], correct:0 },
-        { q: 'Continue skips current iteration', a: ['True','False','Maybe','Only in Python 3'], correct:0 },
-        { q: 'While needs counter to avoid infinite loop?', a: ['Always','Never','Often yes','Not required'], correct:2 }
+        { q: 'How to loop 0..4?', a: ['for i in 0..4','for i in range(5)','for (i=0;i<5;i++)','while i<5:'], correct: 1 },
+        { q: 'What does range(2,5) yield?', a: ['0,1,2,3,4','2,3,4','2,3,4,5','Error'], correct: 1 },
+        { q: 'Break exits the loop immediately?', a: ['Yes','No','Only in while','Only in for'], correct: 0 },
+        { q: 'Continue skips to next iteration', a: ['True','False','Maybe','Only in Python 3'], correct: 0 },
+        { q: 'While needs an explicit counter to avoid infinite loop?', a: ['Always','Never','Often yes','Not required'], correct: 2 }
       ]
     },
+
     {
       title: 'Stage 5 — Functions',
-      lesson: `<p><strong>Functions</strong> let you wrap behavior into reusable blocks. Use <code>def name(params):</code> and <code>return</code> to get results back.</p>
-        <p>Good practice: small functions, meaningful names, one job per function.</p>`,
-      starter: `# Stage 5: Functions\ndef add(a, b):\n    return a + b\n\nprint("add(3,4) =", add(3,4))`,
+      lesson:
+        `<p>Functions let you group logic and reuse it. Use <code>def</code> to declare a function and <code>return</code> to produce a result.</p>
+         <pre>def add(a, b):\n    return a + b\n\nprint(add(3,4))</pre>
+         <p>Good functions are small, focused and well-named.</p>`,
+      starter:
+`# Stage 5: Functions
+def add(a, b):
+    return a + b
+
+print("add(3,4) =", add(3,4))`,
       quiz: [
-        { q: 'How to define a function?', a: ['function x():','def x():','func x():','define x():'], correct:1 },
-        { q: 'Keyword to return from function?', a: ['exit','return','yield','send'], correct:1 },
-        { q: 'Are Python functions first-class?', a: ['Yes','No','Only in 3.8+','Only if decorated'], correct:0 },
-        { q: 'Default parameters should be placed?', a: ['First','Middle','Last','Anywhere'], correct:2 },
-        { q: 'Lambda creates anonymous function?', a: ['True','False','Only in 3.0','Only for IO'], correct:0 }
+        { q: 'How define a function?', a: ['function x():','def x():','func x():','define x():'], correct: 1 },
+        { q: 'How to return a value?', a: ['exit','return','yield','send'], correct: 1 },
+        { q: 'Are functions first-class in Python?', a: ['Yes','No','Only in 3.8+','Only if decorated'], correct: 0 },
+        { q: 'Default parameter placed where?', a: ['First','Middle','Last','Anywhere'], correct: 2 },
+        { q: 'Lambda creates anonymous function', a: ['True','False','Only in 3.0','Only for IO'], correct: 0 }
       ]
     },
+
     {
       title: 'Stage 6 — Lists & Dictionaries',
-      lesson: `<p><strong>Lists</strong> are ordered collections. <strong>Dicts</strong> map keys to values. They are essential for storing tabular or structured data.</p>
-        <p>Common actions: index, append, pop, keys(), values().</p>`,
-      starter: `# Stage 6: Lists & Dicts\nfruits = ['apple','banana']\nfruits.append('cherry')\nprint(fruits)\n\nperson = {'name': 'A', 'age': 20}\nprint(person['name'])`,
+      lesson:
+        `<p>Lists store ordered collections. Dictionaries map keys to values. They are widely used for structured data.</p>
+         <pre>fruits = ['apple','banana']\nfruits.append('cherry')\nprint(fruits)\n\nperson = {'name':'A','age':20}\nprint(person['name'])</pre>
+         <p>Use lists for sequences and dicts when you need lookups by key.</p>`,
+      starter:
+`# Stage 6: Lists & Dicts
+fruits = ['apple', 'banana']
+fruits.append('cherry')
+print("fruits:", fruits)
+
+person = {'name': 'A', 'age': 20}
+print("person name:", person['name'])`,
       quiz: [
-        { q: "Access first element of list 'a'?", a: ['a(0)','a[0]','a.0','a.first()'], correct:1 },
-        { q: 'Which creates a dict?', a: ["{'k':1}", "['k',1]", "('k',1)", "{'k'}"], correct:0 },
-        { q: 'append adds to end of list?', a: ['True','False','Maybe','Only for strings'], correct:0 },
-        { q: 'keys() on dict returns?', a: ['list','view','string','int'], correct:1 },
-        { q: 'pop() removes and returns?', a: ['True','False','It raises','No'], correct:0 }
+        { q: "How to access first element of a list 'a'?", a: ['a(0)','a[0]','a.0','a.first()'], correct: 1 },
+        { q: 'Which creates a dict?', a: ["{'k':1}", "['k',1]", "('k',1)", "{'k'}"], correct: 0 },
+        { q: 'Append adds item to end of list', a: ['True','False','Maybe','Only for strings'], correct: 0 },
+        { q: 'keys() returns ?', a: ['list','view','string','int'], correct: 1 },
+        { q: 'Pop removes item and returns it', a: ['True','False','It raises','No'], correct: 0 }
       ]
     },
+
     {
       title: 'Stage 7 — File I/O & Exceptions',
-      lesson: `<p>Files: use <code>open(...)</code>. Prefer the <code>with</code> pattern to auto-close files. Handle errors with <code>try/except</code>.</p>
-        <p>We will not write files in the browser, but you should know how to in real projects.</p>`,
-      starter: `# Stage 7: File I/O (demo)\nprint("In a desktop Python you would use open('file.txt','w') to write.")\n# Example:\n# with open('out.txt', 'w') as f:\n#     f.write('hello')`,
+      lesson:
+        `<p>Files let you store and read data. Use <code>with open(...)</code> to ensure files are closed safely. Use <code>try/except</code> to catch errors.</p>
+         <pre># Example (desktop Python):\nwith open('out.txt','w') as f:\n    f.write('hello')</pre>
+         <p>In the browser we won't write files; just understand the pattern for real projects.</p>`,
+      starter:
+`# Stage 7: File I/O (demo)
+print("We won't write files in the browser.")
+# Desktop example:
+# with open('file.txt', 'w') as f:
+#     f.write('hello')`,
       quiz: [
-        { q: 'Open file for reading?', a: ["open('f','r')","open('f','w')","open('f','rw')","open('f')"], correct:0 },
-        { q: 'Context manager auto-closes file?', a: ['True','False','Only in 3.10','Only with try'], correct:0 },
-        { q: 'Which catches exceptions?', a: ['try/except','if/error','throw/catch','try/catch'], correct:0 },
-        { q: 'Finally block runs when?', a: ['Always after try','Only on exceptions','Never','Before try'], correct:0 },
-        { q: 'open(..., "a") mode means?', a: ['append','write','read','error'], correct:0 }
+        { q: 'Which opens file for reading?', a: ["open('f','r')","open('f','w')","open('f','rw')","open('f')"], correct: 0 },
+        { q: 'Context manager auto-closes file', a: ['True','False','Only in 3.10','Only with try'], correct: 0 },
+        { q: 'Which catches exceptions?', a: ['try/except','if/error','throw/catch','try/catch'], correct: 0 },
+        { q: 'Finally runs when?', a: ['Always after try','Only on exceptions','Never','Before try'], correct: 0 },
+        { q: 'open(..., "a") means', a: ['append','write','read','error'], correct: 0 }
       ]
     },
+
     {
       title: 'Stage 8 — Modules & Libraries',
-      lesson: `<p>Use modules to reuse code. Loading libraries: <code>import math</code>, <code>import random</code> etc. When you need external libraries (numpy, pandas), install them in your environment.</p>`,
-      starter: `# Stage 8: Modules\nimport math\nprint('sqrt(25)=', math.sqrt(25))\nimport random\nprint('dice:', random.randint(1,6))`,
+      lesson:
+        `<p>Modules help you organize code. Use <code>import</code>. Python has many standard libraries like <code>math</code>, <code>random</code>, and you will meet third-party packages such as <code>numpy</code>.</p>
+         <pre>import math\nprint(math.sqrt(25))\nimport random\nprint(random.randint(1,6))</pre>`,
+      starter:
+`# Stage 8: Modules
+import math
+print('sqrt(25)=', math.sqrt(25))
+
+import random
+print('dice:', random.randint(1,6))`,
       quiz: [
-        { q: 'Import sqrt only from math?', a: ['from math import sqrt','import math.sqrt','import sqrt from math','include math.sqrt'], correct:0 },
-        { q: 'json.dumps creates string?', a: ['True','False','Depends','Only with indent'], correct:0 },
-        { q: 'Library for numerical arrays?', a: ['numpy','pandas','django','flask'], correct:0 },
-        { q: 'random.randint(1,3) includes 3?', a: ['Yes','No','Only sometimes','Depends'], correct:0 },
-        { q: 'Create modules by saving .py files?', a: ['True','False','Only in packages','Only with __init__'], correct:0 }
+        { q: 'How to import sqrt only?', a: ['from math import sqrt','import math.sqrt','import sqrt from math','include math.sqrt'], correct: 0 },
+        { q: 'json.dumps converts to string?', a: ['True','False','Depends','Only with indent'], correct: 0 },
+        { q: 'Which library for numerical arrays?', a: ['numpy','pandas','django','flask'], correct: 0 },
+        { q: 'random.randint(1,3) includes 3', a: ['Yes','No','Only sometimes','Depends on seed'], correct: 0 },
+        { q: 'You can create modules by saving .py files', a: ['True','False','Only in packages','Only with __init__'], correct: 0 }
       ]
     },
+
     {
       title: 'Stage 9 — Simple Data Handling',
-      lesson: `<p>Combine lists, dicts, loops, and comprehensions to filter and transform data. This is useful when you need to process sensor logs or CSV rows.</p>`,
-      starter: `# Stage 9: Data handling\ndata = [1,2,3,4,5]\nsquares = [x*x for x in data]\nprint('squares:', squares)\n# filter even\nevens = [x for x in data if x%2==0]\nprint('evens:', evens)`,
+      lesson:
+        `<p>Combine lists, dicts and loops to filter and transform data. Use list comprehensions to write concise transformations.</p>
+         <pre>data = [1,2,3,4,5]\nsquares = [x*x for x in data]\nprint(squares)</pre>
+         <p>Practice converting raw readings into useful summaries.</p>`,
+      starter:
+`# Stage 9: Data handling
+data = [1,2,3,4,5]
+squares = [x*x for x in data]
+print('squares:', squares)
+evens = [x for x in data if x%2==0]
+print('evens:', evens)`,
       quiz: [
-        { q: 'List comprehension example?', a: ['[x for x in list]','(x for x in list)','{x for x in list}','<x for x>'], correct:0 },
-        { q: 'map() returns?', a: ['map object','list','string','int'], correct:0 },
-        { q: 'filter() selects items?', a: ['True','False','Only for sets','No'], correct:0 },
-        { q: 'reduce() reduces sequence to value?', a: ['True','False','Only for numbers','No'], correct:0 },
-        { q: 'Which creates tuple?', a: ['(1,2)','[1,2]','{1,2}','<1,2>'], correct:0 }
+        { q: 'List comprehension syntax?', a: ['[x for x in list]','(x for x in list)','{x for x in list}','<x for x>'], correct: 0 },
+        { q: 'Map returns?', a: ['map object','list','string','int'], correct: 0 },
+        { q: 'Filter selects items', a: ['True','False','Only for sets','No'], correct: 0 },
+        { q: 'Reduce reduces sequence to value', a: ['True','False','Only for numbers','No'], correct: 0 },
+        { q: 'Which creates tuple?', a: ["(1,2)","[1,2]","{1,2}","<1,2>"], correct: 0 }
       ]
     },
+
     {
       title: 'Stage 10 — Mini Project & Wrap-up',
-      lesson: `<p>Combine everything: think of a small task — parse a list, filter values, compute a metric and print result. This final stage confirms you can build a small useful script.</p>
-        <p>When you complete the quiz and mark as complete we will send your final progress to the sheet and lock the course for your account.</p>`,
-      starter: `# Stage 10: Mini project\nnums = [1,2,3,4,5,6,7,8,9,10]\nevens = [n for n in nums if n%2==0]\nprint('Even numbers:', evens)\nprint('Count:', len(evens))`,
+      lesson:
+        `<p>Combine everything from earlier stages. Build a small script that reads a list, filters, aggregates and prints a result. This demonstrates you can use functions, loops, lists and basic IO.</p>
+         <pre>nums = [1,2,3,4,5,6]\nevens = [n for n in nums if n%2==0]\nprint('Even count:', len(evens))</pre>
+         <p>When you pass the final quiz and click Mark Complete we record your final completion to the sheet and lock the course for your account.</p>`,
+      starter:
+`# Stage 10: Mini project
+nums = [1,2,3,4,5,6,7,8,9,10]
+evens = [n for n in nums if n%2==0]
+print('Even numbers:', evens)
+print('Count:', len(evens))`,
       quiz: [
-        { q: 'Project stage checks integration of topics', a: ['True','False','Only coding','Only quiz'], correct:0 },
-        { q: 'List comprehension can replace loops', a: ['Yes','No','Only with range','Only in Python 2'], correct:0 },
-        { q: 'Functions help reuse code', a: ['True','False','They slow code','Only for OOP'], correct:0 },
-        { q: 'Modules help organize code', a: ['True','False','Only for packages','No'], correct:0 },
-        { q: 'Final step should be', a: ['Stop','Submit progress','Delete files','Rename project'], correct:1 }
+        { q: 'Project stage checks integration of topics', a: ['True','False','Only coding','Only quiz'], correct: 0 },
+        { q: 'List comprehension can replace loops', a: ['Yes','No','Only with range','Only in Python 2'], correct: 0 },
+        { q: 'Functions help reuse code', a: ['True','False','They slow code','Only for OOP'], correct: 0 },
+        { q: 'Modules help organize code', a: ['True','False','Only for packages','No'], correct: 0 },
+        { q: 'Final step: you should', a: ['Stop','Submit progress','Delete files','Rename project'], correct: 1 }
       ]
     }
   ];
@@ -375,8 +472,9 @@
     div.style.zIndex = 99999;
     document.body.appendChild(div);
     setTimeout(()=>{ div.style.transition='all .3s'; div.style.opacity='0'; div.style.transform += ' translateY(8px)'; }, duration-250);
-    setTimeout(()=>div.remove(), duration);
+    setTimeout(()=>{ if(div && div.parentNode) div.parentNode.removeChild(div); }, duration);
   }
+
   function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
   function nowIso(){ return (new Date()).toISOString(); }
 
@@ -387,7 +485,7 @@
       const pill = document.createElement('div');
       pill.className = 'stage-pill';
       if(i > currentStageIndex) pill.classList.add('locked');
-      const short = stages[i].title.split('—')[1] ? stages[i].title.split('—')[1].trim() : stages[i].title;
+      const short = (stages[i].title.indexOf('—') !== -1) ? stages[i].title.split('—')[1].trim() : stages[i].title;
       pill.innerHTML = `Stage ${i+1}: ${escapeHtml(short)}`;
       pill.dataset.index = i;
       if(i <= currentStageIndex){
@@ -398,42 +496,50 @@
   }
 
   // -------- APPSCRIPT INTERACTIONS (GET / POST) --------
-  // GET: APP_SCRIPT_URL?email=someone@example.com
+  // fetchProgressFromBackend(email) => returns latest row object or null
   async function fetchProgressFromBackend(email){
     try{
       if(!email) return null;
       const url = APP_SCRIPT_URL + '?email=' + encodeURIComponent(email) + '&course_name=' + encodeURIComponent(COURSE_NAME);
       const res = await fetch(url, { method: 'GET', mode: 'cors' });
-      if(!res.ok) return null;
+      if(!res.ok){
+        console.warn('Progress GET failed', res.status);
+        return null;
+      }
       const json = await res.json();
-      // Expecting { status: 'success', rows: [...] } or { rows: [...] }
-      const rows = json.rows || json.data || json.progress || [];
-      if(!Array.isArray(rows) || rows.length === 0) return null;
-      // pick latest by timestamp or last row
+      // Support multiple possible shapes: {status:..., progress:...} or {rows:[...]} or {data:[...]}
+      let rows = [];
+      if(json.progress) rows = [json.progress];
+      else if(Array.isArray(json.rows)) rows = json.rows;
+      else if(Array.isArray(json.data)) rows = json.data;
+      else if(Array.isArray(json)) rows = json; // if script returned plain array
+      if(!rows || rows.length === 0) return null;
+      // choose latest by timestamp field
       rows.sort((a,b)=>{
-        const ta = new Date(a.timestamp || a.Timestamp || a.time || 0).getTime();
-        const tb = new Date(b.timestamp || b.Timestamp || b.time || 0).getTime();
+        const ta = new Date(a.timestamp || a.Timestamp || a.time || a.date || 0).getTime();
+        const tb = new Date(b.timestamp || b.Timestamp || b.time || b.date || 0).getTime();
         return tb - ta;
       });
       return rows[0];
     }catch(e){
-      console.warn('fetchProgress error', e);
+      console.warn('fetchProgressFromBackend error', e);
       return null;
     }
   }
 
-  // POST: send payload {name,email,course_name,stage_no,percentage,timestamp}
+  // postProgress(payload) => {ok, status, body}
   async function postProgress(payload){
     try{
-      const res = await fetch(APP_SCRIPT_URL, {
+      // Try JSON first
+      let res = await fetch(APP_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
         mode: 'cors'
       });
-      const bodyText = await res.text();
+      let txt = await res.text();
       let body = null;
-      try{ body = JSON.parse(bodyText); }catch(e){ body = bodyText; }
+      try{ body = JSON.parse(txt); }catch(e){ body = txt; }
       return { ok: res.ok, status: res.status, body };
     }catch(e){
       console.error('postProgress error', e);
@@ -472,18 +578,16 @@
     currentUser = user || null;
     updateSignUi();
     if(user){
-      // fetch server progress and resume
+      // fetch server progress and set currentStageIndex appropriately
       const row = await fetchProgressFromBackend(user.email);
       if(row){
-        // try several possible field names
-        const sn = parseInt(row.stage_no || row['stage_no'] || row.stage || row.Stage || row.stageNo || row['Stage No'] || 0) || 0;
+        const sn = parseInt(row.stage_no || row['stage_no'] || row.stage || row.Stage || 0) || 0;
         const pct = Number(row.percentage || row['percentage'] || row.Percentage || 0) || 0;
         if(sn > 0){
           progress.stage_no = sn;
           progress.percentage = pct;
-          // set stage index to the stage they should be allowed to open
-          // if stage_no is N, last completed stage is N, next unlock is N+1 (index N)
-          currentStageIndex = Math.min(TOTAL_STAGES - 1, Math.max(0, sn));
+          // if last completed stage is N, next unlock index should be N (0-based)
+          currentStageIndex = Math.max(0, Math.min(TOTAL_STAGES - 1, sn));
         }
         if(progress.stage_no >= TOTAL_STAGES && progress.percentage >= 100){
           locked = true;
@@ -492,13 +596,13 @@
       }
       renderStagesList();
       updateProgressUI();
-      // if they already completed something, open the last unlocked
       if(progress.stage_no > 0){
+        // open the last unlocked stage
         const openIndex = Math.max(0, progress.stage_no - 1);
         loadStage(openIndex);
       }
     } else {
-      // not signed in - reset to default
+      // not signed in - reset UI but keep local state
       renderStagesList();
       updateProgressUI();
     }
@@ -521,10 +625,11 @@
     outputEl.textContent = '';
     stageStatusEl.textContent = (stageResults[index] && stageResults[index].passed) ? 'Passed' : 'In progress';
     quizArea.style.display = 'none';
-    document.getElementById('stageScore').textContent = stageResults[index] && stageResults[index].score !== undefined ? stageResults[index].score + '%' : '—';
+    stageScoreEl.textContent = stageResults[index] && stageResults[index].score !== undefined ? stageResults[index].score + '%' : '—';
     renderStagesList();
     updateProgressUI();
-    // hide quiz area, user clicks Show Quiz to start
+    // scroll main area into view
+    setTimeout(()=>{ document.getElementById('mainStageArea').scrollIntoView({behavior:'smooth'}); }, 120);
   }
 
   function renderQuiz(index){
@@ -535,7 +640,6 @@
     quizArea.appendChild(title);
 
     const qWrap = document.createElement('div');
-    st._userAnswers = st._userAnswers || {};
     st.quiz.forEach((q,i)=>{
       const qbox = document.createElement('div');
       qbox.className = 'q';
@@ -545,20 +649,25 @@
       qbox.appendChild(qtitle);
 
       const ans = document.createElement('div'); ans.className = 'answers';
+      // render radio group
       q.a.forEach((opt,j)=>{
-        const b = document.createElement('button');
-        b.className = 'answer-btn';
-        b.type = 'button';
-        b.innerHTML = escapeHtml(opt);
-        b.style.textAlign = 'left';
-        b.onclick = ()=>{
-          // single-select per question — visually mark
-          Array.from(ans.children).forEach(bb=>{ bb.style.background='transparent'; bb.style.borderColor='rgba(255,255,255,0.04)'; });
-          b.style.background = 'rgba(0, 212, 255, 0.12)';
-          b.style.borderColor = 'rgba(0,212,255,0.25)';
-          st._userAnswers[i] = j;
-        };
-        ans.appendChild(b);
+        const label = document.createElement('label');
+        label.style.display = 'block';
+        label.style.cursor = 'pointer';
+        label.style.padding = '6px';
+        label.style.borderRadius = '6px';
+        label.style.border = '1px solid rgba(255,255,255,0.04)';
+        label.style.marginTop = '6px';
+
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = `q_${index}_${i}`;
+        radio.value = j;
+        radio.style.marginRight = '8px';
+
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(opt));
+        ans.appendChild(label);
       });
       qbox.appendChild(ans);
       qWrap.appendChild(qbox);
@@ -568,8 +677,8 @@
 
   // -------- SKULPT RUNNER (in-browser python) --------
   function skulptOut(text){
-    // append text to output
-    outputEl.textContent += text;
+    // safe append to output element
+    outputEl.textContent += String(text);
   }
   function skulptBuiltinRead(x){
     if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
@@ -582,14 +691,14 @@
     const prog = editorEl.value || '';
     Sk.configure({ output: skulptOut, read: skulptBuiltinRead });
     try{
+      // run asynchronously
       await Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>", false, prog, true));
     }catch(e){
-      outputEl.textContent += '\nError: ' + (e.toString ? e.toString() : e);
+      outputEl.textContent += '\nError: ' + (e.toString ? e.toString() : String(e));
     }
   }
 
   runBtn.addEventListener('click', ()=> {
-    // small UX: show quick toast for running
     showToast('Running code...');
     runCode();
   });
@@ -602,32 +711,38 @@
 
   showQuizBtn.addEventListener('click', ()=> {
     renderQuiz(currentStageIndex);
-    // scroll to quiz
     quizArea.scrollIntoView({behavior:'smooth'});
   });
 
   // submit quiz
   submitQuizBtn.addEventListener('click', ()=> {
     const st = stages[currentStageIndex];
-    const answers = st._userAnswers || {};
+    const answers = {};
+    const qCount = st.quiz.length;
     let correct = 0;
-    for(let i=0;i<st.quiz.length;i++){
-      if(answers[i] !== undefined && Number(answers[i]) === Number(st.quiz[i].correct)) correct++;
+    for(let i=0;i<qCount;i++){
+      const radios = document.getElementsByName(`q_${currentStageIndex}_${i}`);
+      let selected = null;
+      for(const r of radios){ if(r.checked) selected = Number(r.value); }
+      if(selected === null){ /* unanswered */ }
+      if(selected !== null && selected === st.quiz[i].correct) correct++;
+      answers[i] = selected;
     }
-    const pct = Math.round((correct / st.quiz.length) * 100);
+    const pct = Math.round((correct / qCount) * 100);
     stageResults[currentStageIndex] = { score: pct, passed: pct >= PASS_PERCENT, saved: false };
-    stageScoreEl.textContent = `${pct}% (${correct}/${st.quiz.length})`;
+    stageScoreEl.textContent = `${pct}% (${correct}/${qCount})`;
     stageStatusEl.textContent = stageResults[currentStageIndex].passed ? 'Passed' : 'Failed';
     showToast(`Quiz scored ${pct}%`);
   });
 
-  // mark complete and save
+  // mark complete -> send to Apps Script and optionally update Firestore
   markCompleteBtn.addEventListener('click', async ()=> {
     const res = stageResults[currentStageIndex];
-    if(!res){ showToast('Submit the quiz first', true); return; }
-    if(!res.passed){ showToast('Score below passing threshold. Retake quiz.', true); return; }
-    // compute cumulative percentage (average of completed stages)
-    let sum=0,count=0;
+    if(!res){ showToast('Please submit the quiz first', true); return; }
+    if(!res.passed){ showToast('Score below passing threshold. Re-try the quiz.', true); return; }
+
+    // compute cumulative percent for completed stages up to current
+    let sum = 0, count = 0;
     for(let i=0;i<=currentStageIndex;i++){
       if(stageResults[i] && typeof stageResults[i].score === 'number'){ sum += stageResults[i].score; count++; }
     }
@@ -655,47 +770,53 @@
       showToast('Progress saved to Google Sheet');
       stageResults[currentStageIndex].saved = true;
 
-      // update Firestore optional user meta
+      // update small user meta to Firestore
       try{
         await setDoc(doc(db, 'users', currentUser.uid), { lastCourse: COURSE_NAME, lastCourseAt: serverTimestamp(), lastStage: progress.stage_no }, { merge: true });
-      }catch(e){ /* ignore */ }
+      }catch(e){ console.warn('firestore write failed', e); }
 
-      // unlock next stage or finish course
+      // unlock next stage or finish
       if(currentStageIndex < TOTAL_STAGES - 1){
         currentStageIndex++;
       } else {
-        // final completion - send final confirmation row
+        // final: compute overall average across all stages that have scores
+        let totalSum = 0, totalCount = 0;
+        for(let i=0;i<TOTAL_STAGES;i++){
+          if(stageResults[i] && typeof stageResults[i].score === 'number'){ totalSum += stageResults[i].score; totalCount++; }
+        }
+        const finalPct = totalCount ? Math.round(totalSum / totalCount) : progress.percentage;
         progress.stage_no = TOTAL_STAGES;
-        progress.percentage = Math.round((stageResults.reduce((s,r)=> s + (r && r.score||0), 0) / TOTAL_STAGES) || progress.percentage);
-        await postProgress({ name: currentUser.displayName||'', email: currentUser.email, course_name: COURSE_NAME, stage_no: progress.stage_no, percentage: progress.percentage, timestamp: nowIso() });
-        showToast('Course completed — congratulations 🎉');
+        progress.percentage = finalPct;
+        // send final confirmation
+        await postProgress({ name: currentUser.displayName || '', email: currentUser.email, course_name: COURSE_NAME, stage_no: progress.stage_no, percentage: progress.percentage, timestamp: nowIso() });
+        showToast('Course completed! Congratulations 🎉');
         locked = true;
       }
+
       renderStagesList();
       updateProgressUI();
-      loadStage(Math.min(currentStageIndex, TOTAL_STAGES - 1));
+      loadStage(Math.min(currentStageIndex, TOTAL_STAGES-1));
     } else {
       console.warn('postProgress failed', posted);
-      showToast('Failed to save progress to backend', true);
+      showToast('Failed saving progress to backend', true);
     }
   });
 
-  // Start / Resume button
+  // Start / Resume button: ensures signed-in then fetch progress
   startBtn.addEventListener('click', async ()=> {
     if(!currentUser){
       showToast('Please sign in to save & resume progress', false);
       await showSignPopup();
       return;
     }
-    // try to fetch progress row
     const row = await fetchProgressFromBackend(currentUser.email);
     if(row){
       const sn = parseInt(row.stage_no || row['stage_no'] || row.stage || 0) || 0;
       const pct = Number(row.percentage || row['percentage'] || 0) || 0;
       progress.stage_no = sn;
       progress.percentage = pct;
-      // if last completed stage is N, next unlock is N+1 (index N)
-      currentStageIndex = Math.min(TOTAL_STAGES - 1, Math.max(0, sn));
+      // if last completed stage is N, next unlock index should be N
+      currentStageIndex = Math.max(0, Math.min(TOTAL_STAGES - 1, sn));
     } else {
       currentStageIndex = 0;
     }
@@ -705,29 +826,32 @@
   });
 
   overviewBtn.addEventListener('click', ()=> {
-    const list = stages.map((s,i)=>`${i+1}. ${s.title.replace('Stage ' + (i+1) + ' — ','')}`).join('\n');
+    const list = stages.map((s,i)=> `${i+1}. ${s.title.replace('Stage ' + (i+1) + ' — ','')}`).join('\n\n');
     alert('Course overview:\n\n' + list);
   });
 
-  // Initialize
+  // -------- INITIALIZE --------
   for(let i=0;i<TOTAL_STAGES;i++) stageResults[i] = null;
   renderStagesList();
   updateProgressUI();
   // populate editor with first starter by default
   editorEl.value = stages[0].starter;
 
-  // update sign UI
+  // update sign UI (initial)
   updateSignUi();
 
-  // prevent accidental unload (optional)
-  window.addEventListener('beforeunload', (e)=>{
-    // if user has unsaved quiz results we could prompt; left empty for smoother UX
-  });
-
-  // expose for debugging (optional)
+  // optional: expose some internal objects for quick debugging in console
   window._stages = stages;
   window._stageResults = stageResults;
+  window._progress = progress;
+
+  // prevent accidental navigation while writing code (optional)
+  window.addEventListener('beforeunload', (e)=>{
+    // Not forcing a confirm prompt to keep UX smooth, but you can enable:
+    // e.preventDefault(); e.returnValue = '';
+  });
 
 </script>
 </body>
 </html>
+
