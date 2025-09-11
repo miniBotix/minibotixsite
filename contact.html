@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MiniBotix · Contact & Support</title>
+  <link rel="icon" href="file.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071126;
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+      --accent1: #007bff;
+      --accent2: #00d4ff;
+      --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+
+    /* header */
+    header.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);z-index:90;box-shadow:0 2px 12px rgba(0,0,0,0.6)}
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+    .brand img{height:36px;width:36px;border-radius:6px}
+    nav.main-nav{display:flex;gap:22px;align-items:center}
+    nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.9);padding:6px 6px}
+    .back-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.9);cursor:pointer}
+    .user-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+    .avatar{height:36px;width:36px;border-radius:50%;background:#223;display:inline-flex;align-items:center;justify-content:center}
+
+    /* hero */
+    .hero{padding:110px 22px 40px 22px}
+    .hero-card{max-width:1100px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:44px;border-radius:14px;box-shadow:0 30px 60px rgba(3,7,20,0.6)}
+    .eyebrow{display:inline-block;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;margin-bottom:16px;color:#aee9ff;font-weight:600}
+    .hero h1{font-size:44px;margin:6px 0 12px;line-height:1.03}
+    .hero p{color:rgba(255,255,255,0.85);margin-bottom:18px;max-width:900px}
+
+    .hero-actions{display:flex;gap:14px}
+    .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
+
+    /* contact layout */
+    .section{padding:40px 22px 90px}
+    .container{max-width:1100px;margin:0 auto}
+    h2{font-size:24px;margin-bottom:10px}
+    .lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
+    .contact-grid{display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+    .contact-card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .contact-item{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+    .contact-item .icon{width:44px;height:44px;border-radius:8px;background:#0b1220;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .social-links{display:flex;flex-direction:column;gap:8px}
+    .small-muted{font-size:13px;color:rgba(255,255,255,0.72)}
+
+    /* form */
+    .form-row{display:flex;gap:10px}
+    .form-field{width:100%;display:flex;flex-direction:column}
+    input[type="text"], input[type="email"], textarea, select{
+      padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;font-size:14px;
+    }
+    textarea{min-height:140px;resize:vertical}
+
+    /* modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999}
+    .modal-card{width:100%;max-width:720px;background:#071126;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+
+    /* small screens */
+    @media (max-width:880px){
+      nav.main-nav{display:none}
+      .hero h1{font-size:28px}
+      .contact-grid{grid-template-columns:1fr}
+    }
+
+    /* helper */
+    .muted{color:rgba(255,255,255,0.7);font-size:14px}
+    .small{font-size:13px;color:rgba(255,255,255,0.7)}
+    .mini-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 22px; padding: 10px 14px; border-radius: 8px; z-index: 9999; font-weight:600 }
+
+    /* subtle button group */
+    .btn-row{display:flex;gap:8px;flex-wrap:wrap}
+    .link-like{background:transparent;border:none;color:var(--accent2);text-decoration:underline;cursor:pointer;padding:0;font-weight:600}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="nav">
+    <div style="display:flex;align-items:center;gap:18px">
+      <div class="back-btn" onclick="location.href='index.html'">← Back</div>
+      <div class="brand">
+        <img src="file.svg" alt="MiniBotix">
+        <div style="line-height:1">
+          <div style="font-weight:700">MiniBotix</div>
+          <div id="headerSubtitle" style="font-size:12px;color:rgba(255,255,255,0.6)">Contact & Support</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="products.html">Products</a>
+      <a href="componentshop.html">Components</a>
+      <a href="projects.html">Projects</a>
+      <a href="apps.html">Free Apps</a>
+      <a href="contact.html" style="text-decoration:underline">Contact</a>
+    </nav>
+
+    <div style="display:flex;align-items:center;gap:12px">
+      <div id="userArea" class="user-pill">
+        <div id="signedOut" style="display:flex;gap:8px;align-items:center">
+          <button id="openAuth" class="btn-ghost" title="Sign In">Sign In</button>
+        </div>
+        <div id="signedIn" style="display:none;align-items:center;gap:10px">
+          <div id="profileName" style="font-weight:600"></div>
+          <div class="avatar" id="avatar">M</div>
+          <div class="cart-bubble" title="Cart">
+            <button id="openCart" class="btn-ghost" title="Open Cart">🛒</button>
+            <div id="cartCount" class="cart-count" style="display:none">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-card container">
+      <div class="eyebrow">MiniBotix · Contact · Support & Projects</div>
+      <h1>Need help? Send feedback or request a project quote</h1>
+      <p class="lead">We're here to help — report bugs, ask for project support, or give feedback. Click the contact button or the email below to send us a message.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" id="openContactBtn">Contact Support</button>
+        <button class="btn-ghost" id="supportGuideBtn">Support Guide</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section class="section">
+    <div class="container">
+      <h2>Get in touch</h2>
+      <p class="lead">Choose Feedback or Project request. For quicker response, sign in so we can prefill your name & email.</p>
+
+      <div class="contact-grid" style="margin-top:18px">
+        <div>
+          <div class="contact-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div>
+                <div style="font-weight:700;font-size:18px">Contact MiniBotix</div>
+                <div class="small-muted">We aim to reply within 24–48 hours.</div>
+              </div>
+              <div>
+                <button class="btn-primary" id="quickFeedback">Send Feedback</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <div class="contact-item">
+                <div class="icon">@</div>
+                <div>
+                  <div style="font-weight:700">Email</div>
+                  <div class="small-muted"><button id="emailBtn" class="link-like">minibotix@gmail.com</button></div>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="icon">☎</div>
+                <div>
+                  <div style="font-weight:700">Support Hours</div>
+                  <div class="small-muted">Mon–Sat, 9:00–18:00 IST</div>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="icon">💬</div>
+                <div>
+                  <div style="font-weight:700">Project Enquiries</div>
+                  <div class="small-muted">Use Project type in form for quotes & collaborations</div>
+                </div>
+              </div>
+
+              <div style="margin-top:10px">
+                <div style="font-weight:700;margin-bottom:6px">Follow us</div>
+                <div class="social-links">
+                  <div><strong>Instagram:</strong> <span class="small-muted">@minibotix</span></div>
+                  <div><strong>Facebook:</strong> <span class="small-muted">minibotix</span></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- help / FAQ card -->
+          <div style="margin-top:12px" class="contact-card">
+            <div style="font-weight:700;margin-bottom:8px">Need specific help?</div>
+            <div class="small-muted">Choose “Project” for new development or hardware integration requests. Choose “Feedback” for bug reports, UI suggestions and course feedback.</div>
+            <div style="margin-top:10px" class="btn-row">
+              <button class="btn-ghost" id="openContactBtn2">Write to us</button>
+              <button class="btn-ghost" id="openContactBtn3">Report a bug</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right column: Quick form preview & links -->
+        <aside>
+          <div class="contact-card">
+            <div style="font-weight:700;margin-bottom:10px">Quick message</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="small-muted">Click the button to open the contact form. Signed-in users will see their name & email prefilled.</div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <button id="openContactSmall" class="btn-primary">Open Form</button>
+                <button id="openContactSmall2" class="btn-ghost">Send Test</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card" style="margin-top:12px">
+            <div style="font-weight:700;margin-bottom:8px">Security & Privacy</div>
+            <div class="small-muted">We store your message in Google Sheets for internal review. Your email is only used to respond. We do not share personal information.</div>
+          </div>
+
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div style="margin-bottom:8px">MiniBotix · Learn · Build · Innovate</div>
+      <small>© 2025 MiniBotix</small>
+    </div>
+  </footer>
+
+  <!-- AUTH Modal (simple) -->
+  <div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999">
+    <div style="width:100%;max-width:420px;background:#071126;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong>Sign In / Register</strong>
+        <button onclick="authClose()" style="background:transparent;border:none;color:#fff;font-size:18px">✕</button>
+      </div>
+
+      <div id="authTabs">
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <button onclick="showLogin()" class="btn-ghost">Login</button>
+          <button onclick="showRegister()" class="btn-ghost">Register</button>
+          <button id="googleSignBtn" class="btn-primary" style="margin-left:auto">Sign in with Google</button>
+        </div>
+
+        <div id="loginView">
+          <div class="form-group"><label class="small">Email</label><input id="loginEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Password</label><input id="loginPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button class="btn-primary" id="loginBtn">Sign In</button>
+          </div>
+        </div>
+
+        <div id="registerView" style="display:none">
+          <div class="form-group"><label class="small">Full name</label><input id="regName" type="text" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Phone</label><input id="regPhone" type="tel" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Email</label><input id="regEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div class="form-group"><label class="small">Password</label><input id="regPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button class="btn-primary" id="registerBtn">Create account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT Modal (Main) -->
+  <div id="contactModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong id="modalTitle">Send message to MiniBotix</strong>
+        <button onclick="closeContactModal()" style="background:transparent;border:none;color:#fff;font-size:18px">✕</button>
+      </div>
+
+      <form id="contactForm" onsubmit="return submitContactForm(event)">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <label class="small">Name *</label>
+            <input id="c_name" type="text" placeholder="Your full name">
+          </div>
+          <div style="flex:1;min-width:220px">
+            <label class="small">Email *</label>
+            <input id="c_email" type="email" placeholder="Your email">
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="small">Address (optional)</label>
+          <input id="c_address" type="text" placeholder="Address, city, pin">
+        </div>
+
+        <div style="margin-top:10px;display:flex;gap:12px;align-items:center">
+          <div style="min-width:120px">
+            <label class="small">Type *</label>
+            <select id="c_type">
+              <option value="">-- Select --</option>
+              <option value="Feedback">Feedback</option>
+              <option value="Project">Project</option>
+            </select>
+          </div>
+
+          <div style="flex:1">
+            <label class="small">Instagram ID (optional)</label>
+            <input id="c_instagram" type="text" placeholder="@yourhandle">
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label class="small">Message *</label>
+          <textarea id="c_content" placeholder="Describe the issue, feedback or project details..."></textarea>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <div class="small-muted">We will reply to the provided email.</div>
+          <div style="display:flex;gap:8px">
+            <button type="button" onclick="closeContactModal()" class="btn-ghost">Cancel</button>
+            <button id="sendContactBtn" class="btn-primary" type="submit">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast container (dynamically created) -->
+
+  <!-- Firebase + Apps Script integration -->
+  <script type="module">
+    // ===== CONFIG - replace if needed =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
+      authDomain: "minibotix-a1b9a.firebaseapp.com",
+      projectId: "minibotix-a1b9a",
+      storageBucket: "minibotix-a1b9a.firebasestorage.app",
+      messagingSenderId: "771169717230",
+      appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
+      measurementId: "G-JQKFSBN4WP"
+    };
+
+    // ===== YOUR APPSCRIPT ENDPOINT =====
+    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRZu4DkjYeQeseI2hu7y-9OP248RrkAD5lDthypwI3Qs8PEcL4STfr4VF8bvPcTC0b/exec';
+    const ADMIN_EMAIL = 'minibotix@gmail.com';
+
+    // ===== IMPORT FIREBASE MODULES (v12) =====
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    // initialize firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ===== UI REFS =====
+    const openAuthBtn = document.getElementById('openAuth');
+    const authModal = document.getElementById('authModal');
+    const signedOut = document.getElementById('signedOut');
+    const signedIn = document.getElementById('signedIn');
+    const profileName = document.getElementById('profileName');
+    const avatar = document.getElementById('avatar');
+
+    const openContactBtn = document.getElementById('openContactBtn');
+    const openContactBtn2 = document.getElementById('openContactBtn2');
+    const openContactBtn3 = document.getElementById('openContactBtn3');
+    const openContactBtnSmall = document.getElementById('openContactSmall');
+    const openContactBtnSmall2 = document.getElementById('openContactSmall2');
+    const emailBtn = document.getElementById('emailBtn');
+    const quickFeedback = document.getElementById('quickFeedback');
+
+    const contactModal = document.getElementById('contactModal');
+    const contactForm = document.getElementById('contactForm');
+    const c_name = document.getElementById('c_name');
+    const c_email = document.getElementById('c_email');
+    const c_address = document.getElementById('c_address');
+    const c_content = document.getElementById('c_content');
+    const c_type = document.getElementById('c_type');
+    const c_instagram = document.getElementById('c_instagram');
+    const sendContactBtn = document.getElementById('sendContactBtn');
+
+    document.getElementById('loginBtn').addEventListener('click', emailLogin);
+    document.getElementById('registerBtn').addEventListener('click', emailRegister);
+    document.getElementById('googleSignBtn').addEventListener('click', googleSignIn);
+    openAuthBtn.addEventListener('click', ()=> authOpen());
+
+    // auth modal helpers
+    function authOpen(){ authModal.style.display = 'flex'; }
+    function authClose(){ authModal.style.display = 'none'; }
+    function showRegister(){ document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; }
+    function showLogin(){ document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none'; }
+
+    // contact modal handlers
+    function openContactModal(prefill={}){
+      // prefill fields if provided
+      if(prefill.name) c_name.value = prefill.name;
+      if(prefill.email) c_email.value = prefill.email;
+      if(prefill.address) c_address.value = prefill.address;
+      if(prefill.type) c_type.value = prefill.type;
+      if(prefill.content) c_content.value = prefill.content;
+      contactModal.style.display = 'flex';
+      contactModal.setAttribute('aria-hidden', 'false');
+      // focus message
+      setTimeout(()=>c_content.focus(), 260);
+    }
+    function closeContactModal(){
+      contactModal.style.display = 'none';
+      contactModal.setAttribute('aria-hidden', 'true');
+    }
+
+    // quick open buttons
+    openContactBtn.addEventListener('click', ()=> openContactModal({}));
+    openContactBtn2.addEventListener('click', ()=> openContactModal({ type: 'Project' }));
+    openContactBtn3.addEventListener('click', ()=> openContactModal({ type: 'Feedback' }));
+    openContactBtnSmall.addEventListener('click', ()=> openContactModal({}));
+    quickFeedback.addEventListener('click', ()=> openContactModal({ type: 'Feedback', content: 'Quick feedback: ' }));
+    openContactBtnSmall2.addEventListener('click', async ()=> {
+      // quick test send (demo) - uses current user email if available
+      const demo = {
+        name: auth.currentUser && auth.currentUser.displayName ? auth.currentUser.displayName : 'Demo User',
+        email: auth.currentUser && auth.currentUser.email ? auth.currentUser.email : 'demo@example.com',
+        address: '',
+        type: 'Feedback',
+        content: 'This is a quick test message from the Contact page.',
+        instagram: ''
+      };
+      await sendToAppsScriptAndHandle(demo);
+    });
+
+    // clicking the displayed email opens the contact modal for composing
+    emailBtn.addEventListener('click', ()=> openContactModal({ type: 'Feedback', content: '' }));
+
+    // ===== AUTH LOGIC =====
+    async function emailLogin(){
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPass').value;
+      try{
+        await signInWithEmailAndPassword(auth, email, pass);
+        authClose();
+        showToast('Signed in');
+      }catch(e){ console.error(e); showToast('Login failed: ' + (e.message || e), true); }
+    }
+
+    async function emailRegister(){
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPass').value;
+      if(pass.length < 6){ showToast('Password must be at least 6 chars', true); return; }
+      try{
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: name });
+        await setDoc(doc(db, 'users', cred.user.uid), { name, email, phone, createdAt: serverTimestamp() }, { merge: true });
+        authClose(); showToast('Account created');
+      }catch(e){ console.error(e); showToast('Register failed: ' + (e.message || e), true); }
+    }
+
+    async function googleSignIn(){
+      const provider = new GoogleAuthProvider();
+      try{
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        await setDoc(doc(db, 'users', user.uid), { name: user.displayName, email: user.email, photoURL: user.photoURL, lastSignIn: serverTimestamp() }, { merge: true });
+        authClose(); showToast('Signed in with Google');
+      }catch(e){ console.error(e); showToast('Google sign-in failed: ' + (e.message || e), true); }
+    }
+
+    async function doSignOut(){
+      try{ await signOut(auth); showToast('Signed out'); }catch(e){ console.warn(e); }
+    }
+
+    // monitor auth state
+    onAuthStateChanged(auth, async (user)=>{
+      if(user){
+        signedOut.style.display='none';
+        signedIn.style.display='flex';
+        profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
+        avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
+
+        // prefill possible fields for faster messaging
+        // try to load profile details from Firestore if present
+        try{
+          const ud = await getDoc(doc(db, 'users', user.uid));
+          if(ud && ud.exists()){
+            const d = ud.data();
+            // optional: you could read saved address or phone etc.
+          }
+        }catch(e){ /* ignore */ }
+
+      } else {
+        signedOut.style.display='flex';
+        signedIn.style.display='none';
+        profileName.textContent = '';
+        avatar.textContent = 'M';
+      }
+    });
+
+    // ===== UTIL =====
+    function showToast(msg, isErr=false, duration=3200){
+      const div = document.createElement('div');
+      div.className = 'mini-toast';
+      div.style.background = isErr ? '#ff6b6b' : 'linear-gradient(90deg,#00c6ff,#0066ff)';
+      div.style.color = isErr ? '#fff' : '#021';
+      div.textContent = msg;
+      document.body.appendChild(div);
+      setTimeout(()=>{ div.style.transition='all .4s'; div.style.opacity='0'; div.style.transform='translateY(8px)'; }, duration - 300);
+      setTimeout(()=>div.remove(), duration);
+    }
+
+    function escapeHtml(s){ if(s===undefined || s===null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    // ===== FORM SUBMISSION =====
+    contactForm.addEventListener('submit', submitContactForm);
+
+    async function submitContactForm(e){
+      if(e && e.preventDefault) e.preventDefault();
+
+      const name = (c_name.value || '').trim();
+      const email = (c_email.value || '').trim();
+      const address = (c_address.value || '').trim();
+      const type = (c_type.value || '').trim();
+      const content = (c_content.value || '').trim();
+      const instagram = (c_instagram.value || '').trim();
+
+      // basic validation
+      if(!name){ showToast('Please enter your name', true); c_name.focus(); return false; }
+      if(!email || !validateEmail(email)){ showToast('Enter a valid email', true); c_email.focus(); return false; }
+      if(!type){ showToast('Please select Feedback or Project', true); c_type.focus(); return false; }
+      if(!content || content.length < 8){ showToast('Message is too short', true); c_content.focus(); return false; }
+
+      // Build payload expected by your Apps Script
+      const payload = {
+        name: name,
+        email: email,
+        address: address,
+        content: content,
+        type: type,
+        instagram: instagram || '',
+        // meta
+        source: 'contact_page',
+        timestamp: (new Date()).toISOString()
+      };
+
+      // send
+      await sendToAppsScriptAndHandle(payload);
+
+      return false;
+    }
+
+    function validateEmail(em){
+      // simple regex
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
+    }
+
+    // robust POST to Apps Script (tries JSON and falls back to form-encoded)
+    async function postToAppsScript(payload){
+      // Try JSON first
+      try{
+        const res = await fetch(APP_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          mode: 'cors'
+        });
+        let body = null;
+        try{ body = await res.json(); }catch(_){ body = await res.text().catch(()=>null); }
+        return { ok: res.ok, status: res.status, body };
+      }catch(err){
+        // try form encoded fallback
+        try{
+          const form = new URLSearchParams();
+          for(const k of Object.keys(payload)) {
+            let v = payload[k];
+            if(typeof v === 'object') v = JSON.stringify(v);
+            form.append(k, String(v === undefined ? '' : v));
+          }
+          const res = await fetch(APP_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: form.toString(),
+            mode: 'cors'
+          });
+          let body = null;
+          try{ body = await res.json(); }catch(_){ body = await res.text().catch(()=>null); }
+          return { ok: res.ok, status: res.status, body };
+        }catch(err2){
+          return { ok: false, error: err2 };
+        }
+      }
+    }
+
+    async function sendToAppsScriptAndHandle(payload){
+      // disable send button to avoid duplicates
+      if(sendContactBtn) sendContactBtn.disabled = true;
+      try{
+        showToast('Sending...', false, 1800);
+        const res = await postToAppsScript(payload);
+        if(res && res.ok && (res.status === 200 || res.status === 201)){
+          showToast('Message sent. Thank you!');
+          // clear form
+          c_content.value = '';
+          c_instagram.value = '';
+          c_type.value = '';
+          // optionally store to Firestore user meta
+          if(auth.currentUser){
+            try{
+              await setDoc(doc(db, 'users', auth.currentUser.uid), { lastContactAt: serverTimestamp() }, { merge: true });
+            }catch(e){ /* ignore */ }
+          }
+          closeContactModal();
+          return true;
+        } else {
+          console.warn('Apps Script response not ok', res);
+          // try to extract message
+          const msg = res && res.body && res.body.message ? res.body.message : 'Backend notify failed';
+          showToast(msg || 'Backend notify failed', true);
+          return false;
+        }
+      }catch(e){
+        console.error('Send error', e);
+        showToast('Send failed: ' + (e.message || e), true);
+        return false;
+      } finally {
+        if(sendContactBtn) sendContactBtn.disabled = false;
+      }
+    }
+
+    // Prefill form if user clicks contact when signed in
+    // Make the "open contact" functions prefill when possible
+    async function prefillAndOpen(){
+      const user = auth.currentUser;
+      if(user){
+        const name = user.displayName || '';
+        const email = user.email || '';
+        openContactModal({ name, email });
+      } else {
+        openContactModal({});
+      }
+    }
+
+    // Hook: when clicking openContact, prefill using auth state
+    // (some open buttons already use openContactModal; override for signed in)
+    openContactBtn.removeEventListener && openContactBtn.removeEventListener('click', ()=>{}); // noop-safe
+    openContactBtn.addEventListener('click', prefillAndOpen);
+    openContactBtn2.addEventListener('click', async ()=> {
+      const user = auth.currentUser;
+      if(user) openContactModal({ name: user.displayName || '', email: user.email || '', type: 'Project' });
+      else openContactModal({ type: 'Project' });
+    });
+
+    // ===== INIT: prefill fields if user is signed in on page load =====
+    onAuthStateChanged(auth, user => {
+      if(user){
+        // prefill the contact form fields if modal is open
+        if(contactModal.style.display === 'flex'){
+          c_name.value = user.displayName || c_name.value || '';
+          c_email.value = user.email || c_email.value || '';
+        }
+      }
+    });
+
+    // expose sign out for debugging
+    window.doSignOut = doSignOut;
+
+    // small safety: close modal on backdrop click
+    contactModal.addEventListener('click', (ev)=> {
+      if(ev.target === contactModal) closeContactModal();
+    });
+
+    // Quick: when page unload or before, ensure no double sends — trivial here
+    window.addEventListener('beforeunload', ()=>{ if(sendContactBtn) sendContactBtn.disabled = false; });
+
+    // End of module
+  </script>
+</body>
+</html>
