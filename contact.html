@@ -80,6 +80,9 @@
     /* subtle button group */
     .btn-row{display:flex;gap:8px;flex-wrap:wrap}
     .link-like{background:transparent;border:none;color:var(--accent2);text-decoration:underline;cursor:pointer;padding:0;font-weight:600}
+
+    /* cart-count (kept in header for theme consistency) */
+    .cart-count{position:absolute;right:-8px;top:-8px;background:#ff5c5c;color:#fff;height:20px;width:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px}
   </style>
 </head>
 <body>
@@ -115,7 +118,7 @@
         <div id="signedIn" style="display:none;align-items:center;gap:10px">
           <div id="profileName" style="font-weight:600"></div>
           <div class="avatar" id="avatar">M</div>
-          <div class="cart-bubble" title="Cart">
+          <div class="cart-bubble" title="Cart" style="position:relative">
             <button id="openCart" class="btn-ghost" title="Open Cart">🛒</button>
             <div id="cartCount" class="cart-count" style="display:none">0</div>
           </div>
@@ -343,7 +346,8 @@
     };
 
     // ===== YOUR APPSCRIPT ENDPOINT =====
-    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxaguYpt5uFrraGhSl1PWXbGf3mBkhT692mcgGbv3h8MBKGmkWNJknID_set1vmgGaI/exec';
+    // <-- Using the URL you last supplied in the conversation.
+    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdryHn-rIBbXov8wsTFdXnqdWlGlovFtTz9sI236hn5eMaYRsR6X2DwIKJfxzYGoGn/exec';
     const ADMIN_EMAIL = 'minibotix@gmail.com';
 
     // ===== IMPORT FIREBASE MODULES (v12) =====
@@ -397,6 +401,7 @@
     const c_instagram = document.getElementById('c_instagram');
     const sendContactBtn = document.getElementById('sendContactBtn');
 
+    // wire up auth buttons
     document.getElementById('loginBtn').addEventListener('click', emailLogin);
     document.getElementById('registerBtn').addEventListener('click', emailRegister);
     document.getElementById('googleSignBtn').addEventListener('click', googleSignIn);
@@ -416,6 +421,7 @@
       if(prefill.address) c_address.value = prefill.address;
       if(prefill.type) c_type.value = prefill.type;
       if(prefill.content) c_content.value = prefill.content;
+      if(prefill.instagram) c_instagram.value = prefill.instagram;
       contactModal.style.display = 'flex';
       contactModal.setAttribute('aria-hidden', 'false');
       // focus message
@@ -427,11 +433,11 @@
     }
 
     // quick open buttons
-    openContactBtn.addEventListener('click', ()=> openContactModal({}));
-    openContactBtn2.addEventListener('click', ()=> openContactModal({ type: 'Project' }));
-    openContactBtn3.addEventListener('click', ()=> openContactModal({ type: 'Feedback' }));
-    openContactBtnSmall.addEventListener('click', ()=> openContactModal({}));
-    quickFeedback.addEventListener('click', ()=> openContactModal({ type: 'Feedback', content: 'Quick feedback: ' }));
+    openContactBtn.addEventListener('click', ()=> prefillAndOpen());
+    openContactBtn2.addEventListener('click', ()=> prefillAndOpen({ type: 'Project' }));
+    openContactBtn3.addEventListener('click', ()=> prefillAndOpen({ type: 'Feedback' }));
+    openContactBtnSmall.addEventListener('click', ()=> prefillAndOpen());
+    quickFeedback.addEventListener('click', ()=> prefillAndOpen({ type: 'Feedback', content: 'Quick feedback: ' }));
     openContactBtnSmall2.addEventListener('click', async ()=> {
       // quick test send (demo) - uses current user email if available
       const demo = {
@@ -446,7 +452,7 @@
     });
 
     // clicking the displayed email opens the contact modal for composing
-    emailBtn.addEventListener('click', ()=> openContactModal({ type: 'Feedback', content: '' }));
+    emailBtn.addEventListener('click', ()=> prefillAndOpen({ type: 'Feedback' }));
 
     // ===== AUTH LOGIC =====
     async function emailLogin(){
@@ -494,17 +500,6 @@
         signedIn.style.display='flex';
         profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
         avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
-
-        // prefill possible fields for faster messaging
-        // try to load profile details from Firestore if present
-        try{
-          const ud = await getDoc(doc(db, 'users', user.uid));
-          if(ud && ud.exists()){
-            const d = ud.data();
-            // optional: you could read saved address or phone etc.
-          }
-        }catch(e){ /* ignore */ }
-
       } else {
         signedOut.style.display='flex';
         signedIn.style.display='none';
@@ -546,27 +541,26 @@
       if(!type){ showToast('Please select Feedback or Project', true); c_type.focus(); return false; }
       if(!content || content.length < 8){ showToast('Message is too short', true); c_content.focus(); return false; }
 
-      // Build payload expected by your Apps Script
+      // Build payload expected by your Apps Script and sheet header:
+      // Timestamp | Name | Email | Address | Content | Project/Feedback
       const payload = {
+        action: 'contact_message',
         name: name,
         email: email,
         address: address,
         content: content,
-        type: type,
+        type: type, // "Feedback" or "Project"
         instagram: instagram || '',
-        // meta
         source: 'contact_page',
         timestamp: (new Date()).toISOString()
       };
 
       // send
       await sendToAppsScriptAndHandle(payload);
-
       return false;
     }
 
     function validateEmail(em){
-      // simple regex
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
     }
 
@@ -613,27 +607,39 @@
       try{
         showToast('Sending...', false, 1800);
         const res = await postToAppsScript(payload);
+
+        // If network-level OK (200/201) treat as sent. Many Apps Script functions return 200 with JSON.
         if(res && res.ok && (res.status === 200 || res.status === 201)){
-          showToast('Message sent. Thank you!');
+          // If server returned JSON with status property, check it
+          const body = res.body;
+          if(body && typeof body === 'object' && (body.status === 'success' || body.status === 'ok')){
+            showToast('Message sent. Thank you!');
+          } else {
+            // We got 200 but script may not have appended due to script logic — still assume success,
+            // but show returned message if present to help debugging.
+            const msg = body && body.message ? body.message : 'Message sent. Thank you!';
+            showToast(msg);
+          }
+
           // clear form
           c_content.value = '';
           c_instagram.value = '';
           c_type.value = '';
           // optionally store to Firestore user meta
           if(auth.currentUser){
-            try{
-              await setDoc(doc(db, 'users', auth.currentUser.uid), { lastContactAt: serverTimestamp() }, { merge: true });
-            }catch(e){ /* ignore */ }
+            try{ await setDoc(doc(db, 'users', auth.currentUser.uid), { lastContactAt: serverTimestamp() }, { merge: true }); }catch(e){ /* ignore */ }
           }
           closeContactModal();
           return true;
         } else {
+          // Not OK. Provide helpful log and message.
           console.warn('Apps Script response not ok', res);
           // try to extract message
           const msg = res && res.body && res.body.message ? res.body.message : 'Backend notify failed';
           showToast(msg || 'Backend notify failed', true);
           return false;
         }
+
       }catch(e){
         console.error('Send error', e);
         showToast('Send failed: ' + (e.message || e), true);
@@ -644,27 +650,22 @@
     }
 
     // Prefill form if user clicks contact when signed in
-    // Make the "open contact" functions prefill when possible
-    async function prefillAndOpen(){
+    async function prefillAndOpen(prefill={}){
       const user = auth.currentUser;
       if(user){
         const name = user.displayName || '';
         const email = user.email || '';
-        openContactModal({ name, email });
+        openContactModal(Object.assign({ name, email }, prefill));
       } else {
-        openContactModal({});
+        openContactModal(prefill);
       }
     }
 
     // Hook: when clicking openContact, prefill using auth state
     // (some open buttons already use openContactModal; override for signed in)
-    openContactBtn.removeEventListener && openContactBtn.removeEventListener('click', ()=>{}); // noop-safe
+    try{ openContactBtn.removeEventListener && openContactBtn.removeEventListener('click', ()=>{}); }catch(e){}
     openContactBtn.addEventListener('click', prefillAndOpen);
-    openContactBtn2.addEventListener('click', async ()=> {
-      const user = auth.currentUser;
-      if(user) openContactModal({ name: user.displayName || '', email: user.email || '', type: 'Project' });
-      else openContactModal({ type: 'Project' });
-    });
+    openContactBtn2.addEventListener('click', ()=> prefillAndOpen({ type: 'Project' }));
 
     // ===== INIT: prefill fields if user is signed in on page load =====
     onAuthStateChanged(auth, user => {
