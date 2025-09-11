@@ -1,0 +1,82 @@
+[
+  {
+    "id": "C001",
+    "name": "Smart Vending Machine Kit",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/vending_machine.jpg",
+    "price": 5500,
+    "category": "Automation",
+    "description": "DIY IoT-enabled vending machine kit with coin acceptor, LCD, NodeMCU, and servo motors."
+  },
+  {
+    "id": "C002",
+    "name": "Biometric Attendance System",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/attendance_system.jpg",
+    "price": 4200,
+    "category": "Security",
+    "description": "Fingerprint-based attendance system with ESP32, OLED display, and database integration."
+  },
+  {
+    "id": "C003",
+    "name": "Smart Irrigation Kit",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/smart_irrigation.jpg",
+    "price": 3200,
+    "category": "Agriculture",
+    "description": "Automated irrigation system using soil moisture sensor, water pump, and NodeMCU."
+  },
+  {
+    "id": "C004",
+    "name": "Home Automation Kit",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/home_automation.jpg",
+    "price": 2800,
+    "category": "IoT",
+    "description": "Wi-Fi based home automation kit with relay modules, mobile app control, and ESP8266."
+  },
+  {
+    "id": "C005",
+    "name": "Robotic Arm Kit",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/robotic_arm.jpg",
+    "price": 4500,
+    "category": "Robotics",
+    "description": "5DOF robotic arm kit with servo motors, NodeMCU, and camera support for object detection."
+  },
+  {
+    "id": "C006",
+    "name": "Weather Monitoring Station",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/weather_station.jpg",
+    "price": 3600,
+    "category": "IoT",
+    "description": "Monitors temperature, humidity, pressure, and rainfall with DHT11, BMP180, and NodeMCU."
+  },
+  {
+    "id": "C007",
+    "name": "Smart Dustbin",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/smart_dustbin.jpg",
+    "price": 2000,
+    "category": "Automation",
+    "description": "Ultrasonic sensor-based automatic dustbin with servo motor lid control."
+  },
+  {
+    "id": "C008",
+    "name": "Line Follower Robot",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/line_follower.jpg",
+    "price": 2500,
+    "category": "Robotics",
+    "description": "Autonomous line-following robot with IR sensors, motor driver, and rechargeable battery."
+  },
+  {
+    "id": "C009",
+    "name": "Smart Door Lock System",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/smart_lock.jpg",
+    "price": 3100,
+    "category": "Security",
+    "description": "IoT-based smart door lock with keypad, RFID, and mobile app control."
+  },
+  {
+    "id": "C010",
+    "name": "Mini CNC Plotter",
+    "image": "https://raw.githubusercontent.com/yourrepo/images/cnc_plotter.jpg",
+    "price": 4800,
+    "category": "Robotics",
+    "description": "DIY CNC machine kit using Arduino, stepper motors, and GRBL firmware for plotting."
+  }
+]
