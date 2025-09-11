@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "title": "IoT Smart Agriculture System",
+    "image": "images/agriculture.jpg",
+    "shortDescription": "An IoT-based system to monitor soil moisture, temperature, and humidity for precision farming.",
+    "fullDescription": "This project integrates sensors (soil moisture, temperature, humidity) with an ESP32 and sends real-time data to the cloud. Farmers can view insights on a mobile app and receive automated alerts for irrigation and crop health monitoring."
+  },
+  {
+    "id": 2,
+    "title": "AI-Powered Attendance System",
+    "image": "images/attendance.jpg",
+    "shortDescription": "Face-recognition based smart attendance system for schools and offices.",
+    "fullDescription": "Using OpenCV and a deep learning model, this project enables automatic attendance tracking through a camera. It reduces manual errors and integrates with cloud databases for record management and reporting."
+  },
+  {
+    "id": 3,
+    "title": "Mini Vending Machine",
+    "image": "images/vending.jpg",
+    "shortDescription": "A prototype vending machine that dispenses items based on IoT payments.",
+    "fullDescription": "This project uses NodeMCU with servo motors and sensors to build a small vending machine. It supports cashless payments through mobile wallets and integrates with Firebase for tracking purchases and inventory."
+  },
+  {
+    "id": 4,
+    "title": "Robotic Arm for Object Sorting",
+    "image": "images/roboticarm.jpg",
+    "shortDescription": "An automated robotic arm that sorts objects based on size and color.",
+    "fullDescription": "This robotic arm uses multiple servo motors, a Raspberry Pi camera, and OpenCV to detect object characteristics. The system sorts items on a conveyor belt into separate bins, demonstrating automation in industries."
+  },
+  {
+    "id": 5,
+    "title": "Smart Weather Station",
+    "image": "images/weather.jpg",
+    "shortDescription": "A compact weather station to measure temperature, pressure, humidity, and rainfall.",
+    "fullDescription": "Built using NodeMCU, DHT11, BMP180, and a rain sensor, this project collects weather parameters and uploads data to ThingSpeak. It also provides real-time alerts and graphical dashboards for analysis."
+  }
+]
