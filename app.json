@@ -2,9 +2,9 @@
   {
     "id": "app1",
     "name": "Crop Health Analyzer",
-    "description": "AI-powered tool to detect crop diseases from leaf images.",
-    "image": "images/crop_health.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_1"
+    "description": "AI-powered tool to monitor Crops and analyze Harvesting yield,Provide datas About Governmant Scheme and provide accurate realtime data for crop monitoring",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSapxjcd0R02Nj8FUKQTbHiNA1tYLIwZo7dxQ&s",
+    "download_link": "https://drive.google.com/file/d/1etqukzAwTQJIfXBePw49d-720nx2c91u/view?usp=drive_link"
   },
   {
     "id": "app2",
