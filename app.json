@@ -2,72 +2,93 @@
   {
     "id": "app1",
     "name": "FieldLink",
-    "description": "AI-powered tool to monitor Crops and analyze Harvesting yield,Provide datas About Governmant Scheme and provide accurate realtime data for crop monitoring",
+    "description": "AI-powered tool to monitor crops and analyze harvesting yield, provide info about government schemes and realtime crop monitoring data.",
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSapxjcd0R02Nj8FUKQTbHiNA1tYLIwZo7dxQ&s",
-    "download_link": "https://drive.google.com/drive/folders/1hdqQiXCKET9n2bx9l25S4mze7NzO-h0G?usp=sharing"
+    "download_link": "https://drive.google.com/drive/folders/1hdqQiXCKET9n2bx9l25S4mze7NzO-h0G?usp=sharing",
+    "downloads": 0,
+    "tags": ["agri", "ai", "monitoring"]
   },
   {
     "id": "app2",
     "name": "Soil Moisture Tracker",
     "description": "Monitor soil conditions and irrigation needs in real time.",
     "image": "images/soil_moisture.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_2"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_2",
+    "downloads": 0,
+    "tags": ["irrigation", "sensor"]
   },
   {
     "id": "app3",
     "name": "Farm Yield Predictor",
     "description": "Predict farm yield using weather and soil data with ML models.",
     "image": "images/farm_yield.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_3"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_3",
+    "downloads": 0,
+    "tags": ["ml", "prediction"]
   },
   {
     "id": "app4",
     "name": "Smart Irrigation Controller",
     "description": "Automated irrigation system based on crop needs and weather.",
     "image": "images/smart_irrigation.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_4"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_4",
+    "downloads": 0,
+    "tags": ["automation", "irrigation"]
   },
   {
     "id": "app5",
     "name": "Agri Drone Mapper",
     "description": "Drone-based mapping system for large farms with 3D visualization.",
     "image": "images/drone_mapper.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_5"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_5",
+    "downloads": 0,
+    "tags": ["drone", "mapping"]
   },
   {
     "id": "app6",
     "name": "Inventory Manager",
     "description": "IT system to manage farm stock, fertilizers, and machinery.",
     "image": "images/inventory_manager.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_6"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_6",
+    "downloads": 0,
+    "tags": ["inventory", "management"]
   },
   {
     "id": "app7",
     "name": "Weather Forecast Dashboard",
     "description": "Python-based visualization of weather trends for farmers.",
     "image": "images/weather_dashboard.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_7"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_7",
+    "downloads": 0,
+    "tags": ["weather", "visualization"]
   },
   {
     "id": "app8",
     "name": "Agri Market Price Tracker",
     "description": "Get real-time updates of crop market prices with graphs.",
     "image": "images/market_price.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_8"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_8",
+    "downloads": 0,
+    "tags": ["markets", "prices"]
   },
   {
     "id": "app9",
     "name": "Farm Expense Calculator",
     "description": "Keep track of expenses and profits with data visualization.",
     "image": "images/farm_expense.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_9"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_9",
+    "downloads": 0,
+    "tags": ["finance", "tools"]
   },
   {
     "id": "app10",
     "name": "Crop Visualization Tool",
     "description": "Python Matplotlib/Seaborn-based crop growth visualization.",
     "image": "images/crop_visualization.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=FILE_ID_10"
+    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_10",
+    "downloads": 0,
+    "tags": ["visualization", "python"]
   }
 ]
+
 
