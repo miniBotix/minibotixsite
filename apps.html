@@ -14,9 +14,13 @@
       --accent1: #007bff;
       --accent2: #00d4ff;
       --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --blue: #2563eb;
+      --blue-dark: #1e40af;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
+    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial,color-scheme:dark;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
     a{color:inherit;text-decoration:none}
 
     /* header */
@@ -39,6 +43,12 @@
     .hero-actions{display:flex;gap:14px}
     .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
+
+    /* small specific button styles for card actions */
+    .btn-view{background:var(--blue);border:none;color:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+    .btn-view:hover{background:var(--blue-dark)}
+    .btn-download{background:var(--green);border:none;color:#021;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+    .btn-download:hover{background:var(--green-dark)}
 
     /* search */
     .search-row{display:flex;gap:8px;margin-top:16px}
@@ -115,10 +125,10 @@
     <div class="hero-card container">
       <div class="eyebrow">MiniBotix · Apps · Free Tools</div>
       <h1>MiniBotix Apps Store</h1>
-      <p class="lead">Discover free apps and download their source code. Search by app or source name and quickly download what you need.</p>
+      <p class="lead">Discover free apps and download their installers or source. Search by app name, tags or description and quickly download what you need.</p>
 
       <div class="search-row">
-        <input id="searchInput" class="search-input" placeholder="Search apps or source code (type name and press Enter)" />
+        <input id="searchInput" class="search-input" placeholder="Search apps (type name, tag or description and press Enter)" />
         <button id="searchBtn" class="btn-primary">Search</button>
       </div>
     </div>
@@ -128,7 +138,7 @@
   <section id="appsSection" class="section">
     <div class="container">
       <h2>Top Apps</h2>
-      <p class="lead">Top picks from our collection. Click the Source button to download source code.</p>
+      <p class="lead">Top picks from our collection. Click the Download button to fetch the installer or archive.</p>
 
       <div id="topApps" class="grid" style="margin-bottom:18px"></div>
 
@@ -197,7 +207,7 @@
 
     // paths to JSON files (must be in same folder or accessible URL)
     const APPS_JSON = 'app.json';
-    const SOURCES_JSON = 'source.json';
+    // NOTE: source.json removed — we only use app.json now
 
     // ====== FIREBASE IMPORTS ======
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -261,7 +271,6 @@
 
     // ====== STATE ======
     let apps = [];      // loaded from app.json
-    let sources = {};   // loaded from source.json keyed by sourceKey
     let currentUser = null;
 
     // ====== UTIL ======
@@ -277,36 +286,24 @@
       setTimeout(()=>div.remove(),3000);
     }
 
-    // ====== LOAD JSON ======
+    // ====== LOAD JSON (only app.json) ======
     async function loadJsonFiles(){
       try{
-        const [aRes, sRes] = await Promise.all([
-          fetch(APPS_JSON, {cache:'no-store'}),
-          fetch(SOURCES_JSON, {cache:'no-store'})
-        ]);
+        const aRes = await fetch(APPS_JSON, {cache:'no-store'});
         if(!aRes.ok) throw new Error('app.json fetch failed: '+aRes.status);
-        if(!sRes.ok) throw new Error('source.json fetch failed: '+sRes.status);
         const aJson = await aRes.json();
-        const sJson = await sRes.json();
         apps = Array.isArray(aJson) ? aJson : [];
-        // normalize apps
+        // normalize apps (ensure fields exist)
         apps = apps.map((p, idx) => ({
           id: p.id || p.slug || ('app_'+idx),
           name: p.name || p.title || 'Unnamed App',
           description: p.description || p.desc || '',
           image: p.image || p.img || '',
           downloads: Number(p.downloads || p.count || 0),
-          sourceKey: p.sourceKey || p.source || p.src || null,
-          tags: Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(',').map(t=>t.trim()) : [])
+          download_link: p.download_link || p.download || p.link || '',
+          tags: Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(',').map(t=>t.trim()) : []),
+          top: !!p.top
         }));
-        // sources: either object or array
-        if(Array.isArray(sJson)){
-          // convert array to map by id
-          sources = {};
-          sJson.forEach(s => { if(s && s.id) sources[s.id] = s; });
-        } else {
-          sources = sJson || {};
-        }
         renderAll();
       }catch(e){
         console.error('loadJsonFiles error', e);
@@ -322,8 +319,11 @@
 
     function renderTopApps(){
       topAppsEl.innerHTML = '';
-      // pick top 4 by downloads
-      const top = apps.slice().sort((a,b)=> (b.downloads||0) - (a.downloads||0)).slice(0,4);
+      // pick top 4 by downloads (or those marked top=true first)
+      const markedTop = apps.filter(a => a.top).slice(0,4);
+      let top;
+      if(markedTop.length) top = markedTop;
+      else top = apps.slice().sort((a,b)=> (b.downloads||0) - (a.downloads||0)).slice(0,4);
       top.forEach(p => {
         const card = createAppCard(p, true);
         topAppsEl.appendChild(card);
@@ -336,7 +336,6 @@
         const card = createAppCard(p, false);
         appsGrid.appendChild(card);
       });
-      // after render, set listeners for source/dl buttons if needed
     }
 
     function createAppCard(p, compact=false){
@@ -346,9 +345,8 @@
       const imgSrc = p.image || ('https://via.placeholder.com/320x140?text='+encodeURIComponent(p.name));
       const desc = p.description || '';
       const downloads = Number(p.downloads || 0);
-      // source info (if available)
-      const src = p.sourceKey && sources[p.sourceKey] ? sources[p.sourceKey] : null;
-      const srcName = src ? (src.name || src.title || src.id) : (p.sourceKey ? p.sourceKey : '—');
+      // badge: show simple label (could be tags[0] or "Download")
+      const srcName = (p.tags && p.tags[0]) ? p.tags[0] : 'Download';
       el.innerHTML = `
         <div class="img"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" style="max-width:100%;max-height:100%;object-fit:contain"></div>
         <div style="font-weight:700;font-size:16px;margin-bottom:6px">${escapeHtml(p.name)}</div>
@@ -358,8 +356,8 @@
           <div style="display:flex;align-items:center;gap:8px">
             <div class="small muted">Downloads: <strong>${downloads}</strong></div>
             <div class="card-actions">
-              <button class="btn-ghost" data-id="${escapeHtml(p.id)}" data-action="view">View</button>
-              <button class="btn-primary" data-id="${escapeHtml(p.id)}" data-action="source">Source</button>
+              <button class="btn-view" data-id="${escapeHtml(p.id)}" data-action="view">View</button>
+              <button class="btn-download" data-id="${escapeHtml(p.id)}" data-action="download">Download</button>
             </div>
           </div>
         </div>
@@ -368,8 +366,8 @@
       el.querySelectorAll('[data-action="view"]').forEach(btn=>{
         btn.addEventListener('click', ()=> viewApp(p.id));
       });
-      el.querySelectorAll('[data-action="source"]').forEach(btn=>{
-        btn.addEventListener('click', ()=> downloadSourceForApp(p));
+      el.querySelectorAll('[data-action="download"]').forEach(btn=>{
+        btn.addEventListener('click', ()=> downloadAppFor(p));
       });
       return el;
     }
@@ -378,16 +376,15 @@
     function viewApp(id){
       const p = apps.find(x=>x.id===id);
       if(!p) return showToast('App not found', true);
-      // simple modal style alert for now
-      const txt = `${p.name}\n\n${p.description}\n\nSource: ${p.sourceKey || '—'}\nDownloads: ${p.downloads||0}`;
+      // show a simple modal alert for now
+      const txt = `${p.name}\n\n${p.description}\n\nTags: ${p.tags && p.tags.length ? p.tags.join(', ') : '—'}\nDownloads: ${p.downloads||0}`;
       alert(txt);
     }
 
-    function downloadSourceForApp(p){
+    function downloadAppFor(p){
       if(!p) return showToast('Invalid app', true);
-      const src = p.sourceKey && sources[p.sourceKey] ? sources[p.sourceKey] : null;
-      if(!src || !src.download){
-        showToast('Source download not available', true);
+      if(!p.download_link){
+        showToast('Download link not available', true);
         return;
       }
       // increment download counter in UI (optimistic)
@@ -399,26 +396,22 @@
 
       // create link and click
       const a = document.createElement('a');
-      a.href = src.download;
+      a.href = p.download_link;
       a.target = '_blank';
-      // if download attribute is supported and URL is same-origin, we can set download:
-      // a.download = src.filename || '';
+      // note: cross-origin download attribute won't always work; this opens the link
       document.body.appendChild(a);
       a.click();
       a.remove();
 
       showToast('Starting download...');
-      // Optionally record download to Firestore (analytics) - commented out, enable if you want:
-      // recordDownload(p.id, (src.id || p.sourceKey));
+      // Optionally record download to Firestore (analytics)
+      // recordDownload(p.id);
     }
 
-    // optional: record download in firestore (uncomment to use)
-    async function recordDownload(appId, sourceId){
+    async function recordDownload(appId){
       try{
         if(!currentUser) return;
-        const rec = {
-          appId, sourceId, uid: currentUser.uid, createdAt: serverTimestamp()
-        };
+        const rec = { appId, uid: currentUser.uid, createdAt: serverTimestamp() };
         await addDoc(collection(db, 'downloads'), rec);
       }catch(e){ console.warn('recordDownload failed', e); }
     }
@@ -427,22 +420,12 @@
     function doSearch(queryText){
       const q = String(queryText || '').trim().toLowerCase();
       if(!q) { showToast('Type something to search', true); return; }
-      // find app by name or source name
-      const byApp = apps.find(a => (a.name || '').toLowerCase().includes(q) || (a.description||'').toLowerCase().includes(q));
+      // find app by name, description or tags
+      const byApp = apps.find(a => (a.name || '').toLowerCase().includes(q) || (a.description||'').toLowerCase().includes(q) || (a.tags||[]).some(t=>String(t).toLowerCase().includes(q)));
       if(byApp){
         scrollToApp(byApp.id);
         highlightApp(byApp.id);
         return;
-      }
-      // search sources
-      const srcKey = Object.keys(sources).find(k => {
-        const s = sources[k];
-        return (s.name || s.title || '').toLowerCase().includes(q) || (s.id||'').toLowerCase().includes(q);
-      });
-      if(srcKey){
-        // find first app that references this source
-        const appForSrc = apps.find(a => a.sourceKey === srcKey);
-        if(appForSrc){ scrollToApp(appForSrc.id); highlightApp(appForSrc.id); return; }
       }
       showToast('No results found', true);
     }
@@ -528,10 +511,11 @@
 
     // expose for debug
     window.doSearch = doSearch;
-    window.downloadSourceForApp = downloadSourceForApp;
+    window.downloadAppFor = downloadAppFor;
     window.viewApp = viewApp;
 
   </script>
 
 </body>
 </html>
+
