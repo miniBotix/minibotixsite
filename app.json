@@ -10,12 +10,12 @@
   },
   {
     "id": "app2",
-    "name": "Soil Moisture Tracker",
-    "description": "Monitor soil conditions and irrigation needs in real time.",
-    "image": "images/soil_moisture.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_2",
+    "name": "Resume Analyzer",
+    "description": "ML based mini ATS to optimize the interview Process.",
+    "image": "Resume_Analyzer.png",
+    "download_link": "https://github.com/miniBotix/minibotixsite/releases/download/v1.0.1/Resume_Analyser.exe",
     "downloads": 0,
-    "tags": ["irrigation", "sensor"]
+    "tags": ["Analysis", "ml"]
   },
   {
     "id": "app3",
