@@ -4,7 +4,7 @@
     "name": "FieldLink",
     "description": "AI-powered tool to monitor crops and analyze harvesting yield, provide info about government schemes and realtime crop monitoring data.",
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSapxjcd0R02Nj8FUKQTbHiNA1tYLIwZo7dxQ&s",
-    "download_link": "https://drive.google.com/file/d/1Npp3tBGZbXn6PTPViStXCIZI0dPt9PxI/view?usp=drive_link",
+    "download_link": "https://github.com/miniBotix/minibotixsite/releases/download/v1.0.0/appy.exe",
     "downloads": 0,
     "tags": ["agri", "ai", "monitoring"]
   },
