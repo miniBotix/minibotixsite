@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MiniBotix · Apps Store</title>
   <link rel="icon" href="file.svg" type="image/svg+xml">
+  <!-- Use Poppins (kept) + Inter fallback for crisp text -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -14,13 +15,14 @@
       --accent1: #007bff;
       --accent2: #00d4ff;
       --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
-      --green: #22c55e;
-      --green-dark: #16a34a;
-      --blue: #2563eb;
-      --blue-dark: #1e40af;
+      --blue:#2386ff;
+      --blue-dark:#1b6fd6;
+      --green:#2ecc71;
+      --green-dark:#27ae60;
+      --muted: rgba(255,255,255,0.7);
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial,color-scheme:dark;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased}
+    html,body{height:100%;margin:0;font-family:'Poppins',Inter,system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
     a{color:inherit;text-decoration:none}
 
     /* header */
@@ -44,18 +46,12 @@
     .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
 
-    /* small specific button styles for card actions */
-    .btn-view{background:var(--blue);border:none;color:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:600}
-    .btn-view:hover{background:var(--blue-dark)}
-    .btn-download{background:var(--green);border:none;color:#021;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:700}
-    .btn-download:hover{background:var(--green-dark)}
-
     /* search */
     .search-row{display:flex;gap:8px;margin-top:16px}
     .search-input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;font-size:14px}
 
     /* apps grid */
-    .section{padding:40px 22px 90px}
+    .section{padding:40px 22px 120px}
     .container{max-width:1100px;margin:0 auto}
     h2{font-size:24px;margin-bottom:10px}
     .lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
@@ -63,21 +59,55 @@
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
     .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s, box-shadow .22s}
     .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.5)}
-    .card .img{height:140px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+    .card .img{height:140px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden}
+    .card .img img{max-width:100%;max-height:100%;object-fit:cover}
     .price{font-weight:700;color:var(--accent2);margin-right:12px}
     .card-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
 
-    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:600;font-size:13px}
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:600;font-size:13px;color:var(--muted)}
 
-    /* small screens */
+    /* Buttons: view (blue) left, download (green) right */
+    .btn-view{
+      background: linear-gradient(90deg,var(--blue),var(--blue-dark));
+      color: #fff;
+      padding:8px 12px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      transition:transform .15s, box-shadow .15s;
+    }
+    .btn-view:hover{ transform: translateY(-2px); box-shadow:0 8px 18px rgba(14,78,173,0.18); }
+
+    .btn-download{
+      background: linear-gradient(90deg,var(--green),var(--green-dark));
+      color: #021;
+      padding:8px 12px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:700;
+      transition:transform .15s, box-shadow .15s;
+    }
+    .btn-download:hover{ transform: translateY(-2px); box-shadow:0 8px 18px rgba(29,150,90,0.12); }
+
+    /* small screens adjustments */
     @media (max-width:880px){
       nav.main-nav{display:none}
       .hero h1{font-size:28px}
+      .card .img{height:120px}
     }
 
     /* small helper */
     .muted{color:rgba(255,255,255,0.7);font-size:14px}
     .small{font-size:13px;color:rgba(255,255,255,0.7)}
+
+    /* view modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999}
+    .modal{background:#071126;padding:18px;border-radius:12px;max-width:800px;width:94%;box-shadow:0 30px 60px rgba(3,7,20,0.7);border:1px solid rgba(255,255,255,0.03)}
+    .modal .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .modal .modal-body{color:rgba(255,255,255,0.9);line-height:1.5}
+    .modal .close-btn{background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer}
 
     /* toast */
     .mini-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 22px; padding: 10px 14px; border-radius: 8px; z-index: 9999; font-weight:600 }
@@ -125,10 +155,10 @@
     <div class="hero-card container">
       <div class="eyebrow">MiniBotix · Apps · Free Tools</div>
       <h1>MiniBotix Apps Store</h1>
-      <p class="lead">Discover free apps and download their installers or source. Search by app name, tags or description and quickly download what you need.</p>
+      <p class="lead">Discover free apps and download them easily. Search by app name or description and click View to learn more or Download to get the file.</p>
 
-      <div class="search-row">
-        <input id="searchInput" class="search-input" placeholder="Search apps (type name, tag or description and press Enter)" />
+      <div class="search-row" style="margin-top:18px;">
+        <input id="searchInput" class="search-input" placeholder="Search apps (type name and press Enter)" />
         <button id="searchBtn" class="btn-primary">Search</button>
       </div>
     </div>
@@ -138,7 +168,7 @@
   <section id="appsSection" class="section">
     <div class="container">
       <h2>Top Apps</h2>
-      <p class="lead">Top picks from our collection. Click the Download button to fetch the installer or archive.</p>
+      <p class="lead">Top picks from our collection.</p>
 
       <div id="topApps" class="grid" style="margin-bottom:18px"></div>
 
@@ -155,38 +185,17 @@
     </div>
   </footer>
 
-  <!-- AUTH Modal (simple) - reuse from components page -->
-  <div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:999">
-    <div style="width:100%;max-width:420px;background:#071126;padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <strong>Sign In / Register</strong>
-        <button onclick="authClose()" style="background:transparent;border:none;color:#fff;font-size:18px">✕</button>
+  <!-- View Modal -->
+  <div id="viewModalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal" role="document" id="viewModal">
+      <div class="modal-head">
+        <strong id="modalTitle">App name</strong>
+        <div>
+          <button class="close-btn" onclick="closeViewModal()" title="Close">✕</button>
+        </div>
       </div>
-
-      <div id="authTabs">
-        <div style="display:flex;gap:8px;margin-bottom:12px">
-          <button onclick="showLogin()" class="btn-ghost">Login</button>
-          <button onclick="showRegister()" class="btn-ghost">Register</button>
-          <button id="googleSignBtn" class="btn-primary" style="margin-left:auto">Sign in with Google</button>
-        </div>
-
-        <div id="loginView">
-          <div class="form-group"><label class="small">Email</label><input id="loginEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-          <div class="form-group"><label class="small">Password</label><input id="loginPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-            <button class="btn-primary" id="loginBtn">Sign In</button>
-          </div>
-        </div>
-
-        <div id="registerView" style="display:none">
-          <div class="form-group"><label class="small">Full name</label><input id="regName" type="text" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-          <div class="form-group"><label class="small">Phone</label><input id="regPhone" type="tel" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-          <div class="form-group"><label class="small">Email</label><input id="regEmail" type="email" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-          <div class="form-group"><label class="small">Password</label><input id="regPass" type="password" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff"></div>
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-            <button class="btn-primary" id="registerBtn">Create account</button>
-          </div>
-        </div>
+      <div class="modal-body" id="modalBody">
+        <!-- populated dynamically -->
       </div>
     </div>
   </div>
@@ -205,9 +214,8 @@
       measurementId: "G-JQKFSBN4WP"
     };
 
-    // paths to JSON files (must be in same folder or accessible URL)
+    // Only one JSON now (app.json)
     const APPS_JSON = 'app.json';
-    // NOTE: source.json removed — we only use app.json now
 
     // ====== FIREBASE IMPORTS ======
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -225,24 +233,19 @@
       getFirestore,
       doc,
       setDoc,
-      getDoc,
+      addDoc,
       collection,
-      query,
-      where,
-      getDocs,
-      orderBy,
-      serverTimestamp,
-      addDoc
+      serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-    // init
+    // init firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     // ====== UI REFS ======
     const openAuthBtn = document.getElementById('openAuth');
-    const authModal = document.getElementById('authModal');
+    const authModal = document.getElementById('authModal'); // not displayed here but preserved
     const signedOut = document.getElementById('signedOut');
     const signedIn = document.getElementById('signedIn');
     const profileName = document.getElementById('profileName');
@@ -258,16 +261,17 @@
     const topAppsEl = document.getElementById('topApps');
     const appsGrid = document.getElementById('appsGrid');
 
-    // auth modal handlers
-    document.getElementById('loginBtn').addEventListener('click', emailLogin);
-    document.getElementById('registerBtn').addEventListener('click', emailRegister);
-    document.getElementById('googleSignBtn').addEventListener('click', googleSignIn);
-    openAuthBtn.addEventListener('click', ()=> authOpen());
+    const viewModalBackdrop = document.getElementById('viewModalBackdrop');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
 
-    function authOpen(){ authModal.style.display = 'flex'; }
-    function authClose(){ authModal.style.display = 'none'; }
-    function showRegister(){ document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; }
-    function showLogin(){ document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none'; }
+    // attach auth open if present
+    if(openAuthBtn) openAuthBtn.addEventListener('click', ()=> authOpen());
+
+    function authOpen(){ if(typeof authModal !== 'undefined') authModal.style.display = 'flex'; }
+    function authClose(){ if(typeof authModal !== 'undefined') authModal.style.display = 'none'; }
+    function showRegister(){ if(document.getElementById('loginView')) { document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; } }
+    function showLogin(){ if(document.getElementById('loginView')) { document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none'; } }
 
     // ====== STATE ======
     let apps = [];      // loaded from app.json
@@ -287,26 +291,25 @@
     }
 
     // ====== LOAD JSON (only app.json) ======
-    async function loadJsonFiles(){
+    async function loadAppsJson(){
       try{
-        const aRes = await fetch(APPS_JSON, {cache:'no-store'});
-        if(!aRes.ok) throw new Error('app.json fetch failed: '+aRes.status);
-        const aJson = await aRes.json();
+        const res = await fetch(APPS_JSON, {cache:'no-store'});
+        if(!res.ok) throw new Error('app.json fetch failed: '+res.status);
+        const aJson = await res.json();
         apps = Array.isArray(aJson) ? aJson : [];
-        // normalize apps (ensure fields exist)
+        // normalize apps (ensure id/name/description/image/download_link exist)
         apps = apps.map((p, idx) => ({
           id: p.id || p.slug || ('app_'+idx),
           name: p.name || p.title || 'Unnamed App',
           description: p.description || p.desc || '',
           image: p.image || p.img || '',
-          downloads: Number(p.downloads || p.count || 0),
           download_link: p.download_link || p.download || p.link || '',
-          tags: Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(',').map(t=>t.trim()) : []),
-          top: !!p.top
+          sourceName: p.source || p.sourceName || '',
+          tags: Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(',').map(t=>t.trim()) : [])
         }));
         renderAll();
       }catch(e){
-        console.error('loadJsonFiles error', e);
+        console.error('loadAppsJson error', e);
         showToast('Failed to load app list', true);
       }
     }
@@ -319,11 +322,8 @@
 
     function renderTopApps(){
       topAppsEl.innerHTML = '';
-      // pick top 4 by downloads (or those marked top=true first)
-      const markedTop = apps.filter(a => a.top).slice(0,4);
-      let top;
-      if(markedTop.length) top = markedTop;
-      else top = apps.slice().sort((a,b)=> (b.downloads||0) - (a.downloads||0)).slice(0,4);
+      // keep consistent: take first 4 apps as "top" (no download count)
+      const top = apps.slice(0,4);
       top.forEach(p => {
         const card = createAppCard(p, true);
         topAppsEl.appendChild(card);
@@ -344,20 +344,17 @@
       el.id = 'app_' + p.id;
       const imgSrc = p.image || ('https://via.placeholder.com/320x140?text='+encodeURIComponent(p.name));
       const desc = p.description || '';
-      const downloads = Number(p.downloads || 0);
-      // badge: show simple label (could be tags[0] or "Download")
-      const srcName = (p.tags && p.tags[0]) ? p.tags[0] : 'Download';
+      const badgeText = p.sourceName || '—';
       el.innerHTML = `
-        <div class="img"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}" style="max-width:100%;max-height:100%;object-fit:contain"></div>
+        <div class="img"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}"></div>
         <div style="font-weight:700;font-size:16px;margin-bottom:6px">${escapeHtml(p.name)}</div>
         <div class="small muted" style="margin-bottom:8px">${escapeHtml(desc)}</div>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
-          <div class="muted"><span class="badge">${escapeHtml(srcName)}</span></div>
+          <div class="muted"><span class="badge">${escapeHtml(badgeText)}</span></div>
           <div style="display:flex;align-items:center;gap:8px">
-            <div class="small muted">Downloads: <strong>${downloads}</strong></div>
             <div class="card-actions">
               <button class="btn-view" data-id="${escapeHtml(p.id)}" data-action="view">View</button>
-              <button class="btn-download" data-id="${escapeHtml(p.id)}" data-action="download">Download</button>
+              <a class="btn-download" data-id="${escapeHtml(p.id)}" data-action="download" href="${escapeHtml(p.download_link)}" target="_blank" rel="noopener">Download</a>
             </div>
           </div>
         </div>
@@ -366,49 +363,61 @@
       el.querySelectorAll('[data-action="view"]').forEach(btn=>{
         btn.addEventListener('click', ()=> viewApp(p.id));
       });
-      el.querySelectorAll('[data-action="download"]').forEach(btn=>{
-        btn.addEventListener('click', ()=> downloadAppFor(p));
+      // track download clicks to optionally record analytics (but allow default navigation)
+      el.querySelectorAll('[data-action="download"]').forEach(a=>{
+        a.addEventListener('click', (ev)=>{
+          // optional: you may want to prevent default and do some checks or conversions for drive links.
+          // We do not prevent opening — we only record (async) and show toast.
+          showToast('Starting download...');
+          recordDownload(p.id);
+        });
       });
       return el;
     }
 
-    // ====== ACTIONS ======
+    // ====== VIEW/DETAILS ======
     function viewApp(id){
       const p = apps.find(x=>x.id===id);
       if(!p) return showToast('App not found', true);
-      // show a simple modal alert for now
-      const txt = `${p.name}\n\n${p.description}\n\nTags: ${p.tags && p.tags.length ? p.tags.join(', ') : '—'}\nDownloads: ${p.downloads||0}`;
-      alert(txt);
-    }
-
-    function downloadAppFor(p){
-      if(!p) return showToast('Invalid app', true);
-      if(!p.download_link){
-        showToast('Download link not available', true);
-        return;
+      modalTitle.textContent = p.name;
+      modalBody.innerHTML = `
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <div style="flex:0 0 160px">
+            <div style="width:160px;height:100px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center">
+              <img src="${escapeHtml(p.image || '')}" alt="${escapeHtml(p.name)}" style="max-width:100%;max-height:100%;object-fit:cover">
+            </div>
+          </div>
+          <div style="flex:1">
+            <p style="margin:0 0 8px;color:rgba(255,255,255,0.9)">${escapeHtml(p.description)}</p>
+            <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+              <a class="btn-view" href="#" id="modalViewBtn">Details</a>
+              <a class="btn-download" href="${escapeHtml(p.download_link)}" target="_blank" rel="noopener">Download</a>
+            </div>
+          </div>
+        </div>
+      `;
+      // show modal
+      openViewModal();
+      const modalViewBtn = document.getElementById('modalViewBtn');
+      if(modalViewBtn){
+        modalViewBtn.addEventListener('click', (ev)=>{ ev.preventDefault(); closeViewModal(); alert(`${p.name}\n\n${p.description}`); });
       }
-      // increment download counter in UI (optimistic)
-      try{
-        p.downloads = (Number(p.downloads)||0) + 1;
-        renderTopApps();
-        renderAppsGrid();
-      }catch(e){ /* ignore */ }
-
-      // create link and click
-      const a = document.createElement('a');
-      a.href = p.download_link;
-      a.target = '_blank';
-      // note: cross-origin download attribute won't always work; this opens the link
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-
-      showToast('Starting download...');
-      // Optionally record download to Firestore (analytics)
-      // recordDownload(p.id);
     }
 
+    function openViewModal(){
+      viewModalBackdrop.style.display = 'flex';
+    }
+    function closeViewModal(){
+      viewModalBackdrop.style.display = 'none';
+    }
+
+    viewModalBackdrop.addEventListener('click', (ev)=>{
+      if(ev.target === viewModalBackdrop) closeViewModal();
+    });
+
+    // ====== RECORD DOWNLOAD (optional analytics) ======
     async function recordDownload(appId){
+      // only record if signed in (optional)
       try{
         if(!currentUser) return;
         const rec = { appId, uid: currentUser.uid, createdAt: serverTimestamp() };
@@ -420,14 +429,17 @@
     function doSearch(queryText){
       const q = String(queryText || '').trim().toLowerCase();
       if(!q) { showToast('Type something to search', true); return; }
-      // find app by name, description or tags
-      const byApp = apps.find(a => (a.name || '').toLowerCase().includes(q) || (a.description||'').toLowerCase().includes(q) || (a.tags||[]).some(t=>String(t).toLowerCase().includes(q)));
-      if(byApp){
-        scrollToApp(byApp.id);
-        highlightApp(byApp.id);
-        return;
-      }
-      showToast('No results found', true);
+      // find app by name or description or tags
+      const results = apps.filter(a => {
+        return (a.name || '').toLowerCase().includes(q)
+          || (a.description || '').toLowerCase().includes(q)
+          || (a.tags || []).some(t => String(t).toLowerCase().includes(q));
+      });
+      if(results.length === 0){ showToast('No results found', true); return; }
+      // show first result by scrolling and highlight
+      const first = results[0];
+      scrollToApp(first.id);
+      highlightApp(first.id);
     }
 
     function scrollToApp(appId){
@@ -449,10 +461,13 @@
     searchBtn.addEventListener('click', ()=> doSearch(searchInput.value));
     searchInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter') doSearch(searchInput.value); });
 
-    // ====== AUTH (email/google) ======
+    // ====== AUTH (email/google) - keep as before ======
     async function emailLogin(){
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPass').value;
+      const emailEl = document.getElementById('loginEmail');
+      const passEl = document.getElementById('loginPass');
+      if(!emailEl || !passEl) { showToast('Login elements missing', true); return; }
+      const email = emailEl.value.trim();
+      const pass = passEl.value;
       try{
         await signInWithEmailAndPassword(auth, email, pass);
         authClose();
@@ -461,10 +476,15 @@
     }
 
     async function emailRegister(){
-      const name = document.getElementById('regName').value.trim();
-      const phone = document.getElementById('regPhone').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const pass = document.getElementById('regPass').value;
+      const nameEl = document.getElementById('regName');
+      const phoneEl = document.getElementById('regPhone');
+      const emailEl = document.getElementById('regEmail');
+      const passEl = document.getElementById('regPass');
+      if(!nameEl || !phoneEl || !emailEl || !passEl){ showToast('Register elements missing', true); return; }
+      const name = nameEl.value.trim();
+      const phone = phoneEl.value.trim();
+      const email = emailEl.value.trim();
+      const pass = passEl.value;
       if(pass.length < 6){ showToast('Password must be at least 6 chars', true); return; }
       try{
         const cred = await createUserWithEmailAndPassword(auth, email, pass);
@@ -494,28 +514,26 @@
     onAuthStateChanged(auth, async (user)=>{
       currentUser = user || null;
       if(user){
-        signedOut.style.display='none';
-        signedIn.style.display='flex';
-        profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
-        avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
+        if(signedOut) signedOut.style.display='none';
+        if(signedIn) signedIn.style.display='flex';
+        if(profileName) profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
+        if(avatar) avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
       } else {
-        signedOut.style.display='flex';
-        signedIn.style.display='none';
-        profileName.textContent = '';
-        avatar.textContent = 'M';
+        if(signedOut) signedOut.style.display='flex';
+        if(signedIn) signedIn.style.display='none';
+        if(profileName) profileName.textContent = '';
+        if(avatar) avatar.textContent = 'M';
       }
     });
 
     // ====== INIT ======
-    loadJsonFiles();
+    loadAppsJson();
 
     // expose for debug
     window.doSearch = doSearch;
-    window.downloadAppFor = downloadAppFor;
     window.viewApp = viewApp;
 
   </script>
 
 </body>
 </html>
-
