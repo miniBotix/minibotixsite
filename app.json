@@ -19,10 +19,10 @@
   },
   {
     "id": "app3",
-    "name": "Farm Yield Predictor",
+    "name": "System Performance Monitor",
     "description": "Predict farm yield using weather and soil data with ML models.",
-    "image": "images/farm_yield.png",
-    "download_link": "https://drive.google.com/uc?export=download&id=DRIVE_FILE_ID_3",
+    "image": "system_performance.png",
+    "download_link": "https://github.com/kavinmayil/PYTHON/releases/download/v1.0.0/Performance_Checker.exe",
     "downloads": 0,
     "tags": ["ml", "prediction"]
   },
