@@ -21,7 +21,7 @@
     "id": "app3",
     "name": "System Performance Monitor",
     "description": "Real-time system performance analyzer with dark theme, history tracking, and process insights — built for Windows & macOS.",
-    "image": "system_performance.png",
+    "image": "system_check.png",
     "download_link": "https://github.com/kavinmayil/PYTHON/releases/download/v1.0.0/Performance_Checker.exe",
     "downloads": 0,
     "tags": ["Analysis", "System","monitoring"]
