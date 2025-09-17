@@ -20,11 +20,11 @@
   {
     "id": "app3",
     "name": "System Performance Monitor",
-    "description": "Predict farm yield using weather and soil data with ML models.",
+    "description": "Real-time system performance analyzer with dark theme, history tracking, and process insights — built for Windows & macOS.",
     "image": "system_performance.png",
     "download_link": "https://github.com/kavinmayil/PYTHON/releases/download/v1.0.0/Performance_Checker.exe",
     "downloads": 0,
-    "tags": ["ml", "prediction"]
+    "tags": ["Analysis", "System","monitoring"]
   },
   {
     "id": "app4",
