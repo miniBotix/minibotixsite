@@ -9,28 +9,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ----------------- Basic reset & layout ----------------- */
     :root{
       --accent-start:#007bff;
       --accent-end:#00d4ff;
       --glass: rgba(255,255,255,0.06);
       --card-bg: rgba(255,255,255,0.03);
       --muted: rgba(255,255,255,0.75);
+      --success: #00c2ff;
+      --danger: #ff6b6b;
     }
     *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#071126;overflow-x:hidden}
+    html,body{height:100%;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#071126;overflow-x:hidden;scroll-behavior:smooth}
     a{color:inherit;text-decoration:none}
-
-    /* ---------- background canvas sits behind everything ---------- */
-    #rainCanvas{
-      position:fixed;inset:0;width:100%;height:100%;z-index:-10;background:url('hill.jpg') center/cover no-repeat;
+    /* ---------- background full-page using background.jpg ---------- */
+    /* The rain canvas remains, but we overlay the background.jpg as a fixed background for full-screen effect */
+    body::before{
+      content:"";
+      position:fixed;inset:0;
+      background: no-repeat center/cover url('background.jpg'); /* background.jpg in repo root */
+      filter: saturate(1.05) contrast(1.02) brightness(0.92);
+      transform: translateZ(0);
+      z-index:-20;
     }
-    .bg-overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(3,7,15,0.55),rgba(3,7,15,0.35));z-index:-5}
+    /* dim & gradient overlay (soft) */
+    .bg-overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(2,6,12,0.45),rgba(2,6,12,0.35));z-index:-10;pointer-events:none}
+
+    /* ---------- Rain canvas (kept) ---------- */
+    #rainCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-15;mix-blend-mode:screen;pointer-events:none}
 
     /* ----------------- NAVBAR ----------------- */
     header.nav{
       position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;
-      background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:50;border-bottom:1px solid rgba(255,255,255,0.03)
+      background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.12));backdrop-filter:blur(6px);z-index:60;border-bottom:1px solid rgba(255,255,255,0.03)
     }
     .nav-left{display:flex;align-items:center;gap:12px}
     .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff}
@@ -43,24 +53,25 @@
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
     .btn-primary{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));padding:9px 14px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)}
 
-    .hamburger{display:none;width:44px;height:44px;border-radius:10px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
+    .hamburger{display:none;width:44px;height:44px;border-radius:10px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer;transition:transform .25s, background .25s}
+    .hamburger.open{transform:rotate(90deg);background:linear-gradient(90deg,var(--accent-start),var(--accent-end))}
     .hamburger div{width:22px;height:2px;background:#fff;border-radius:2px;position:relative}
     .hamburger div:after,.hamburger div:before{content:'';position:absolute;width:22px;height:2px;background:#fff;border-radius:2px;left:0}
     .hamburger div:before{top:-7px} .hamburger div:after{top:7px}
 
     /* ---------- HERO ---------- */
-    .hero{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20px;text-align:center}
-    .hero-card{width:min(980px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));padding:40px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 30px 80px rgba(3,7,20,.6)}
+    .hero{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20;text-align:center}
+    .hero-card{width:min(980px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));padding:40px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 30px 80px rgba(3,7,20,.6)}
     .eyebrow{display:inline-block;background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:999px;margin-bottom:12px;font-weight:600;color:#aee9ff}
     .hero h1{font-size:48px;line-height:1.05;margin-bottom:12px}
-    .hero p{color:rgba(255,255,255,0.85);margin-bottom:20px}
+    .hero p{color:rgba(255,255,255,0.9);margin-bottom:20px}
     .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
     /* ---------- SECTIONS ---------- */
     .section{padding:60px 22px;background:transparent}
     .container{max-width:1100px;margin:0 auto}
     .section h2{font-size:24px;color:#fff;margin-bottom:12px}
-    .section p.lead{color:rgba(255,255,255,0.85);margin-bottom:18px}
+    .section p.lead{color:rgba(255,255,255,0.9);margin-bottom:18px}
 
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px}
     .card{background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .25s ease,box-shadow .25s;cursor:default;overflow:hidden}
@@ -73,7 +84,7 @@
 
     /* ---------- AUTH & PROFILE MODALS ---------- */
     .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:120;backdrop-filter:blur(3px)}
-    .modal-card{width:100%;max-width:520px;background:#0b1220;padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,.03)}
+    .modal-card{width:100%;max-width:520px;background:#071728;padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,.03)}
     .modal .close{float:right;color:rgba(255,255,255,0.6);font-size:20px;cursor:pointer}
     .form-group{margin-bottom:12px}
     .form-group label{display:block;font-size:13px;margin-bottom:6px;color:rgba(255,255,255,0.85)}
@@ -84,6 +95,20 @@
     .profile-pill img{height:32px;width:32px;border-radius:50%;object-fit:cover;background:#223}
     .settings-icon{cursor:pointer;color:rgba(255,255,255,.8)}
 
+    /* ---------- DASHBOARD (hidden until login) ---------- */
+    #dashboardSection{ display:none; padding:40px 22px; position:relative; border-top:1px solid rgba(255,255,255,0.03); }
+    .dashboard-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+    .dash-main{min-height:260px;padding:18px;border-radius:12px;background:var(--card-bg);border:1px solid rgba(255,255,255,0.03)}
+    .dash-side{padding:18px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
+    .product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .product-card img{width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px}
+
+    /* ---------- LOADING SKELETON ---------- */
+    .skeleton-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .skeleton{height:160px;border-radius:12px;background:linear-gradient(90deg,#0b1228,#0f1730,#0b1228);background-size:200% 100%;animation:skeletonLoading 1.4s infinite}
+    @keyframes skeletonLoading { 0%{background-position:200% 0%} 100%{background-position:-200% 0%} }
+
+    @media (max-width:1100px){ .dashboard-inner{grid-template-columns:1fr} }
     @media (max-width:880px){
       nav.main-nav{display:none}
       .hamburger{display:flex}
@@ -91,8 +116,16 @@
       .hero-card{padding:20px}
     }
 
+    /* mobile menu (animated) */
+    .mobile-nav { position:fixed;top:64px;right:18px;background:linear-gradient(180deg,rgba(1,6,12,0.98),rgba(3,8,16,0.95));border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;transform-origin:top right;transform:scale(0.95) translateY(-6px);opacity:0;pointer-events:none;transition:transform .25s ease,opacity .25s ease; border:1px solid rgba(255,255,255,0.03);z-index:60; }
+    .mobile-nav.open { transform:scale(1) translateY(0);opacity:1;pointer-events:auto; }
+
     /* small toast */
     .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);padding:10px 14px;border-radius:8px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+
+    .muted{color:rgba(255,255,255,0.65);font-size:13px}
+    .link-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:#fff}
+    .vis-toggle{cursor:pointer;padding:6px;border-radius:6px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);font-size:13px}
   </style>
 </head>
 <body>
@@ -111,13 +144,14 @@
     </div>
 
     <nav class="main-nav" role="navigation" aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#courses">Courses</a>
-      <a href="#products">Products</a>
-      <a href="#components">Components</a>
-      <a href="#projects">Projects</a>
-      <a href="#apps">Free Apps</a>
-      <a href="#contact">Contact</a>
+      <a href="#home" data-scroll>Home</a>
+      <a href="#courses" data-scroll>Courses</a>
+      <a href="#products" data-scroll>Products</a>
+      <a href="#components" data-scroll>Components</a>
+      <a href="#projects" data-scroll>Projects</a>
+      <a href="#about" data-scroll>About</a>
+      <a href="#apps" data-scroll>Free Apps</a>
+      <a href="#contact" data-scroll>Contact</a>
     </nav>
 
     <div class="user-area" id="userArea">
@@ -135,8 +169,24 @@
     </div>
   </header>
 
+  <!-- MOBILE NAV (animated popup) -->
+  <div id="mobileNav" class="mobile-nav" role="dialog" aria-hidden="true">
+    <a href="#home" data-scroll>Home</a>
+    <a href="#courses" data-scroll>Courses</a>
+    <a href="#products" data-scroll>Products</a>
+    <a href="#components" data-scroll>Components</a>
+    <a href="#projects" data-scroll>Projects</a>
+    <a href="#about" data-scroll>About</a>
+    <a href="#apps" data-scroll>Free Apps</a>
+    <a href="#contact" data-scroll>Contact</a>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button id="mobileSignIn" class="btn-ghost">Sign In</button>
+      <button id="mobileSignUp" class="btn-primary">Register</button>
+    </div>
+  </div>
+
   <!-- HERO -->
-  <section id="home" class="hero">
+  <section id="home" class="hero" tabindex="-1">
     <div class="hero-card container">
       <div class="eyebrow">MiniBotix • Courses · Products · Projects</div>
       <h1>Learn · Build · Innovate</h1>
@@ -150,63 +200,47 @@
   </section>
 
   <!-- COURSES -->
-  <section id="courses" class="section">
+  <section id="courses" class="section" tabindex="-1">
     <div class="container">
       <h2>Courses</h2>
       <p class="lead">From beginner embedded systems to advanced robotics — project-based learning you can finish in weeks.</p>
-      <div class="grid">
-        <article class="card">
-          <span class="badge">Beginner</span>
-          <h3>Embedded Systems 101</h3>
-          <p>Learn electronics basics, microcontrollers, and simple circuits — build 6 hands-on projects.</p>
-          <a href="courses.html">Open Course</a>
-        </article>
-
-        <article class="card">
-          <span class="badge">IoT</span>
-          <h3>IoT for Agriculture</h3>
-          <p>Smart irrigation, sensor networks and data logging. Practical projects for small farms.</p>
-          <a href="courses.html">Open Course</a>
-        </article>
-
-        <article class="card">
-          <span class="badge">Advanced</span>
-          <h3>Robotics & Automation</h3>
-          <p>Design, control and automate robotic arms and vehicles using microcontrollers and computer vision.</p>
-          <a href="courses.html">Open Course</a>
-        </article>
+      <!-- skeleton loader -->
+      <div id="coursesGrid" class="grid">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
       </div>
     </div>
   </section>
 
   <!-- PRODUCTS -->
-  <section id="products" class="section">
+  <section id="products" class="section" tabindex="-1">
     <div class="container">
       <h2>Products (Agriculture & Engineering)</h2>
       <p class="lead">We sell tested agriculture devices, sensors, and engineering kits — shipped with documentation and support.</p>
-      <div class="grid">
-        <div class="card"><h3>Auto Irrigation Kit</h3><p>Solar-powered controller, moisture sensor, and valve driver — ready to install.</p><a href="products.html">Shop Product</a></div>
-        <div class="card"><h3>Soil Health Sensor</h3><p>pH, moisture and temperature readings with calibration guide and data export.</p><a href="products.html">Shop Product</a></div>
-        <div class="card"><h3>Robotics Parts Bundle</h3><p>Motors, servos, frames and electronics for building small robots and arms.</p><a href="products.html">Shop Product</a></div>
+      <div id="productsGrid" class="grid">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
       </div>
     </div>
   </section>
 
   <!-- Components -->
-  <section id="components" class="section">
+  <section id="components" class="section" tabindex="-1">
     <div class="container">
       <h2>Electronic Components</h2>
       <p class="lead">Sensors, modules, microcontrollers, PCBs and more — buy parts for your classroom or lab.</p>
-      <div class="grid">
-        <div class="card"><h3>ESP32 / ESP8266 Modules</h3><p>Wi-Fi + Bluetooth microcontrollers, ideal for IoT.</p><a href="componentshop.html">Component Store</a></div>
-        <div class="card"><h3>Sensor Modules</h3><p>DHT11/22, BMP180, MQ sensors and more.</p><a href="componentshop.html">Component Store</a></div>
-        <div class="card"><h3>PCB Services</h3><p>PCB review, small-batch fabrication, and assembly guidance.</p><a href="componentshop.html">Component Store</a></div>
+      <div id="componentsGrid" class="grid">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
       </div>
     </div>
   </section>
 
   <!-- Projects -->
-  <section id="projects" class="section">
+  <section id="projects" class="section" tabindex="-1">
     <div class="container">
       <h2>Projects</h2>
       <p class="lead">Get full projects with code, wiring diagrams, and BOMs — or commission custom builds.</p>
@@ -218,8 +252,29 @@
     </div>
   </section>
 
+  <!-- ABOUT -->
+  <section id="about" class="section" tabindex="-1">
+    <div class="container">
+      <h2>About MiniBotix</h2>
+      <p class="lead">MiniBotix combines R&D, hardware, and software to deliver robotics and smart agriculture solutions — from concept to production.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Founder</h3>
+          <p><strong>M. Kavinkumar (Kavinmayil)</strong> — Tech Innovator · Hybrid Developer · Founder of MiniBotix. Skilled in R&D, DBMS, scripting, hardware integration, production and delivery.</p>
+          <p class="muted">Kavin leads product development and education initiatives focused on practical, deployable systems for makers and farmers.</p>
+        </div>
+
+        <div class="card">
+          <h3>What We Offer</h3>
+          <p>Source code & system apps, agriculture products & projects, electronics components, curated datasets (web-scraping on request), and hands-on courses for agriculture data management.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Apps & Free codes -->
-  <section id="apps" class="section">
+  <section id="apps" class="section" tabindex="-1">
     <div class="container">
       <h2>Free Apps & Source Code</h2>
       <p class="lead">Download basic apps and example source to bootstrap learning. We share starter code for students.</p>
@@ -232,7 +287,7 @@
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="section">
+  <section id="contact" class="section" tabindex="-1">
     <div class="container">
       <h2>Contact & Support</h2>
       <p class="lead">Need help? Send PCB files to <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> for a free review.</p>
@@ -248,7 +303,7 @@
   <!-- AUTH MODAL -->
   <div id="authModal" class="modal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-      <span class="close" id="authClose">&times;</span>
+      <span class="close" id="authClose" title="Close">&times;</span>
 
       <div id="authContainer">
         <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;justify-content:center">
@@ -261,12 +316,14 @@
           <form id="loginForm" onsubmit="return false;">
             <div class="form-group">
               <label for="loginEmail">Email</label>
-              <input id="loginEmail" type="email" required placeholder="you@domain.com">
+              <input id="loginEmail" type="email" required placeholder="you@domain.com" autocomplete="email">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="position:relative">
               <label for="loginPassword">Password</label>
-              <input id="loginPassword" type="password" required placeholder="Password">
+              <input id="loginPassword" type="password" required placeholder="Password" autocomplete="current-password">
+              <span id="toggleLoginPass" class="vis-toggle" title="Show / hide password" style="position:absolute;right:8px;top:32px">Show</span>
             </div>
+
             <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
               <button class="btn-primary" id="emailSignIn" type="button">Sign In</button>
               <button class="btn-ghost" id="showRegister" type="button">New? Register</button>
@@ -280,23 +337,24 @@
           <form id="registerForm" onsubmit="return false;">
             <div class="form-group">
               <label for="regName">Full name</label>
-              <input id="regName" type="text" required placeholder="Your name">
+              <input id="regName" type="text" required placeholder="Your name" autocomplete="name">
             </div>
             <div class="form-group">
               <label for="regPhone">Phone</label>
-              <input id="regPhone" type="tel" required placeholder="+91 9XXXXXXXXX">
+              <input id="regPhone" type="tel" required placeholder="+91 9XXXXXXXXX" autocomplete="tel">
             </div>
             <div class="form-group">
               <label for="regEmail">Email</label>
-              <input id="regEmail" type="email" required placeholder="you@domain.com">
+              <input id="regEmail" type="email" required placeholder="you@domain.com" autocomplete="email">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="position:relative">
               <label for="regPass">Password</label>
-              <input id="regPass" type="password" required placeholder="At least 6 characters">
+              <input id="regPass" type="password" required placeholder="At least 6 characters" autocomplete="new-password">
+              <span id="toggleRegPass" class="vis-toggle" style="position:absolute;right:8px;top:34px">Show</span>
             </div>
             <div class="form-group">
               <label for="regPass2">Confirm Password</label>
-              <input id="regPass2" type="password" required placeholder="Confirm Password">
+              <input id="regPass2" type="password" required placeholder="Confirm Password" autocomplete="new-password">
             </div>
 
             <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
@@ -318,7 +376,7 @@
   <!-- PROFILE SETTINGS MODAL -->
   <div id="profileModal" class="modal" aria-hidden="true">
     <div class="modal-card">
-      <span class="close" id="profileClose">&times;</span>
+      <span class="close" id="profileClose" title="Close">&times;</span>
       <h3>Profile Settings</h3>
       <form id="profileForm" onsubmit="return false;">
         <div class="form-group"><label>Name</label><input id="pfName" type="text" required></div>
@@ -332,11 +390,49 @@
     </div>
   </div>
 
+  <!-- DASHBOARD SECTION (dark glassy) -->
+  <section id="dashboardSection">
+    <div class="dashboard-inner">
+      <div class="dash-main">
+        <h2>Welcome to your Dashboard</h2>
+        <p class="muted" id="dashWelcome">Summary & quick actions</p>
+
+        <div style="margin-top:18px;">
+          <h3>Products</h3>
+          <div id="dashboardProducts" class="product-grid">
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="dash-side">
+        <h3>Your Info</h3>
+        <div id="dashProfile" style="margin-top:12px">
+          <div class="muted">Name</div>
+          <div id="dashName" style="font-weight:700;margin-bottom:8px">—</div>
+          <div class="muted">Email</div>
+          <div id="dashEmail" style="font-weight:600">—</div>
+
+          <div style="margin-top:12px">
+            <button class="link-btn" id="goToOrders">Orders</button>
+            <button class="link-btn" id="manageProfile" style="margin-left:8px">Manage Profile</button>
+          </div>
+
+          <div style="margin-top:16px">
+            <small class="muted">Session token:</small>
+            <div id="sessionTokenPreview" style="word-break:break-word;font-size:12px;margin-top:6px;color:var(--success)"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
   <!-- Toast container injected by JS -->
 
   <!-- Firebase SDKs (modular v12.2.1) -->
   <script type="module">
-    // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
     import {
       getAuth,
@@ -359,7 +455,7 @@
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-    // ---------- FIREBASE CONFIG ----------
+    // ---------- FIREBASE CONFIG (kept from your file) ----------
     const firebaseConfig = {
       apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
       authDomain: "minibotix-a1b9a.firebaseapp.com",
@@ -376,7 +472,7 @@
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    // ---------- DOM REFERENCES ----------
+    // ---------- DOM references ----------
     const openAuth = document.getElementById('openAuth');
     const authModal = document.getElementById('authModal');
     const authClose = document.getElementById('authClose');
@@ -408,7 +504,25 @@
     const toCourses = document.getElementById('toCourses');
     const toProducts = document.getElementById('toProducts');
 
-    // helpers
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileSignIn = document.getElementById('mobileSignIn');
+    const mobileSignUp = document.getElementById('mobileSignUp');
+
+    const coursesGrid = document.getElementById('coursesGrid');
+    const productsGrid = document.getElementById('productsGrid');
+    const componentsGrid = document.getElementById('componentsGrid');
+
+    const dashboardSection = document.getElementById('dashboardSection');
+    const dashboardProducts = document.getElementById('dashboardProducts');
+    const dashWelcome = document.getElementById('dashWelcome');
+    const dashName = document.getElementById('dashName');
+    const dashEmail = document.getElementById('dashEmail');
+    const sessionTokenPreview = document.getElementById('sessionTokenPreview');
+
+    const mobileAuthOpenBtn = document.getElementById('mobileSignIn');
+    const mobileAuthRegisterBtn = document.getElementById('mobileSignUp');
+
     const $ = s => document.querySelector(s);
     const $$ = s => Array.from(document.querySelectorAll(s));
 
@@ -454,16 +568,42 @@
       draw();
     })();
 
-    // ---------- Mobile menu toggle ----------
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    mobileBtn && mobileBtn.addEventListener('click', ()=>{
-      const nav = document.querySelector('nav.main-nav');
-      if(!nav) return;
-      if(nav.style.display === 'flex'){ nav.style.display='none'; mobileBtn.classList.remove('open'); }
-      else { nav.style.display='flex'; nav.style.flexDirection='column'; nav.style.position='absolute'; nav.style.top='64px'; nav.style.right='20px'; nav.style.background='rgba(5,8,15,0.95)'; nav.style.padding='12px'; nav.style.borderRadius='10px'; mobileBtn.classList.add('open'); }
+    // ---------- Smooth scroll for nav links ----------
+    $$('[data-scroll]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const target = a.getAttribute('href').slice(1);
+        const el = document.getElementById(target);
+        if(el){
+          el.scrollIntoView({behavior:'smooth', block:'start'});
+          // close mobile nav if open
+          if(mobileNav && mobileNav.classList.contains('open')){ mobileNav.classList.remove('open'); mobileMenuBtn.classList.remove('open'); }
+          // set focus for accessibility
+          setTimeout(()=> el.focus({preventScroll:true}), 600);
+        }
+      });
     });
 
-    // ---------- AUTH modal controls ----------
+    // ---------- Mobile menu toggle ----------
+    mobileMenuBtn && mobileMenuBtn.addEventListener('click', (e)=>{
+      const open = mobileNav.classList.toggle('open');
+      mobileMenuBtn.classList.toggle('open', open);
+      mobileNav.setAttribute('aria-hidden', open ? 'false' : 'true');
+    });
+
+    // close mobile nav on outside click
+    window.addEventListener('click', (e)=>{
+      if(!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mobileNav.classList.contains('open')){
+        mobileNav.classList.remove('open');
+        mobileMenuBtn.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+      }
+    });
+
+    mobileSignIn && mobileSignIn.addEventListener('click', ()=>{ authModal.style.display='flex'; showEmailTab(); });
+    mobileSignUp && mobileSignUp.addEventListener('click', ()=>{ authModal.style.display='flex'; showRegisterView(); });
+
+    // ---------- AUTH Modal toggles ----------
     openAuth && openAuth.addEventListener('click', ()=>{ authModal.style.display = 'flex'; showEmailTab(); });
     authClose && authClose.addEventListener('click', ()=>{ authModal.style.display = 'none'; });
 
@@ -479,38 +619,54 @@
       tabGoogle.classList.add('btn-primary'); tabEmail.classList.remove('btn-primary');
     }
 
-    showRegister.addEventListener('click', ()=>{
-      emailView.style.display = 'none';
-      registerView.style.display = 'block';
+    function showRegisterView(){
+      emailView.style.display='none'; registerView.style.display='block'; googleView.style.display='none';
+      tabEmail.classList.remove('btn-primary'); tabGoogle.classList.remove('btn-primary');
+    }
+
+    showRegister.addEventListener('click', ()=>{ showRegisterView(); });
+    showLogin.addEventListener('click', ()=>{ showEmailTab(); });
+
+    // ---------- password visibility toggles ----------
+    const toggleLoginPass = document.getElementById('toggleLoginPass');
+    const toggleRegPass = document.getElementById('toggleRegPass');
+    toggleLoginPass && toggleLoginPass.addEventListener('click', ()=>{
+      const p = document.getElementById('loginPassword');
+      if(p.type === 'password'){ p.type='text'; toggleLoginPass.textContent='Hide' } else { p.type='password'; toggleLoginPass.textContent='Show' }
     });
-    showLogin.addEventListener('click', ()=>{
-      registerView.style.display = 'none';
-      emailView.style.display = 'block';
+    toggleRegPass && toggleRegPass.addEventListener('click', ()=>{
+      const p = document.getElementById('regPass');
+      if(p.type === 'password'){ p.type='text'; toggleRegPass.textContent='Hide' } else { p.type='password'; toggleRegPass.textContent='Show' }
     });
 
-    // ---------- AUTH actions ----------
+    // enter to submit
+    document.getElementById('loginForm').addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ emailSignIn.click(); } });
+    document.getElementById('registerForm').addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ createAccount.click(); } });
+
+    // ---------- AUTH handlers ----------
     googleSignIn.addEventListener('click', async ()=>{
       try{
-        const result = await signInWithPopup(auth, googleProvider);
+        googleSignIn.disabled = true;
+        await signInWithPopup(auth, googleProvider);
         authModal.style.display = 'none';
       }catch(e){
         showToast('Google sign-in failed: ' + (e.message || e), true);
-      }
+      }finally{ googleSignIn.disabled = false; }
     });
 
     createAccount.addEventListener('click', async ()=>{
-      const name = $('#regName').value.trim();
-      const phone = $('#regPhone').value.trim();
-      const email = $('#regEmail').value.trim().toLowerCase();
-      const pass = $('#regPass').value;
-      const pass2 = $('#regPass2').value;
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const email = document.getElementById('regEmail').value.trim().toLowerCase();
+      const pass = document.getElementById('regPass').value;
+      const pass2 = document.getElementById('regPass2').value;
       if(pass.length < 6){ showToast('Password must be at least 6 characters', true); return; }
       if(pass !== pass2){ showToast('Passwords do not match', true); return; }
+
+      createAccount.disabled = true;
       try{
         const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-        // update displayName
         await updateProfile(userCred.user, { displayName: name });
-        // create Firestore profile doc
         await setDoc(doc(db, 'users', userCred.user.uid), {
           name: name,
           phone: phone,
@@ -522,22 +678,23 @@
         showToast('Account created');
       }catch(e){
         showToast('Register failed: ' + (e.message || e), true);
-      }
+      }finally{ createAccount.disabled = false; }
     });
 
     emailSignIn.addEventListener('click', async ()=>{
-      const email = $('#loginEmail').value.trim().toLowerCase();
-      const pass = $('#loginPassword').value;
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const pass = document.getElementById('loginPassword').value;
+      emailSignIn.disabled = true;
       try{
         await signInWithEmailAndPassword(auth, email, pass);
         authModal.style.display = 'none';
         showToast('Signed in');
       }catch(e){
         showToast('Sign in failed: ' + (e.message || e), true);
-      }
+      }finally{ emailSignIn.disabled = false; }
     });
 
-    // ---------- Auth state observer & Firestore profile load ----------
+    // ---------- Auth state observer ----------
     let currentUser = null;
     onAuthStateChanged(auth, async (user) => {
       if(user){
@@ -555,18 +712,15 @@
         }
         const userData = (await getDoc(userDocRef)).data();
 
-        // Update nav UI
         signedOutUI.style.display = 'none';
         signedInUI.style.display = 'flex';
         profileName.textContent = userData.name ? userData.name.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
         profileAvatar.src = user.photoURL || gravatarFallback(user.email);
 
-        // fill profile modal
         pfName.value = userData.name || '';
         pfPhone.value = userData.phone || '';
         pfArea.value = userData.area || '';
 
-        // log page view activity
         try{
           await addDoc(collection(db, 'users', user.uid, 'activity'), {
             action: 'page_view',
@@ -574,10 +728,25 @@
             ts: serverTimestamp()
           });
         }catch(e){ console.warn('Activity log failed', e); }
+
+        // ensure session token
+        let token = localStorage.getItem('mini_session_token');
+        if(!token){
+          token = generateSessionToken();
+          localStorage.setItem('mini_session_token', token);
+        }
+        // write token to Firestore for the user
+        try{ await updateDoc(doc(db, 'users', user.uid), { sessionToken: token, sessionTokenUpdated: serverTimestamp() }); }catch(e){ /* ignore */ }
+        sessionTokenPreview.textContent = localStorage.getItem('mini_session_token') || '—';
+
+        // show dashboard and hydrate
+        showDashboardForUser(userData);
+
       }else{
         currentUser = null;
         signedOutUI.style.display = 'flex';
         signedInUI.style.display = 'none';
+        dashboardSection.style.display = 'none';
       }
     });
 
@@ -613,18 +782,15 @@
       }
     });
 
-    // ---------- Navigation helpers ----------
-    toCourses.addEventListener('click', ()=>{ location.href = 'courses.html'; });
-    toProducts.addEventListener('click', ()=>{ location.href = 'products.html'; });
-
-    // ---------- Simple toast ----------
+    // ---------- Toast ----------
     function showToast(msg, error=false){
       const t = document.createElement('div');
       t.className = 'toast';
       t.textContent = msg;
-      t.style.background = error ? '#ff4d4f' : '#00c2ff';
-      t.style.color = error ? '#fff' : '#021';
+      t.style.background = error ? 'linear-gradient(90deg,var(--danger),#ff3b3b)' : 'linear-gradient(90deg,var(--success),#00a0d9)';
+      t.style.color = '#021';
       t.style.padding = '10px 14px';
+      t.style.fontWeight = 700;
       document.body.appendChild(t);
       setTimeout(()=>{ t.style.transition='all .4s'; t.style.opacity='0'; t.style.transform='translateY(10px)'; },2200);
       setTimeout(()=>t.remove(),2600);
@@ -640,8 +806,8 @@
       }
     }
 
-    // ---------- md5 (compact) ----------
-    function md5(s){
+    // ---------- md5 ----------
+    function md5(s){ /* same compact md5 function as before */ 
       function L(k,d){return (k<<d)|(k>>>(32-d))}
       function K(G,k){var I=(G&65535)+(k&65535);var H=(G>>>16)+(k>>>16)+(I>>>16);return (H<<16)|(I&65535)}
       function r(a,b,c,d,e,f,g){a=K(a,K(K((b&c)|((~b)&d),e),g));return K(L(a,f),b)}
@@ -693,19 +859,121 @@
       return toHex(a)+toHex(b)+toHex(c)+toHex(d);
     }
 
-    // Close modals by clicking outside
+    // ---------- skeleton hydrate ----------
+    function hydrateGrids(){
+      const courses = [
+        {title:'Embedded Systems 101', badge:'Beginner', desc:'Learn electronics basics, microcontrollers, and build 6 hands-on projects.'},
+        {title:'IoT for Agriculture', badge:'IoT', desc:'Smart irrigation, sensor networks and data logging.'},
+        {title:'Robotics & Automation', badge:'Advanced', desc:'Design, control and automate robotic arms and vehicles.'}
+      ];
+      coursesGrid.innerHTML = courses.map(c=>`
+        <article class="card">
+          <span class="badge">${c.badge}</span>
+          <h3>${c.title}</h3>
+          <p>${c.desc}</p>
+          <a href="courses.html">Open Course</a>
+        </article>
+      `).join('');
+
+      const products = [
+        {title:'Auto Irrigation Kit', desc:'Solar-powered controller, moisture sensor, and valve driver — ready to install.', img:'https://i.imgur.com/3f6TQyq.jpg'},
+        {title:'Soil Health Sensor', desc:'pH, moisture and temperature readings with calibration guide and data export.', img:'https://i.imgur.com/6ZQ9m1K.jpg'},
+        {title:'Robotics Parts Bundle', desc:'Motors, servos, frames and electronics for building small robots and arms.', img:'https://i.imgur.com/0Zf2S3h.jpeg'}
+      ];
+      productsGrid.innerHTML = products.map(p=>`
+        <div class="card">
+          <img src="${p.img}" alt="${p.title}" style="width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:10px">
+          <h3>${p.title}</h3>
+          <p>${p.desc}</p>
+          <a href="products.html">Shop Product</a>
+        </div>
+      `).join('');
+
+      const comps = [
+        {title:'ESP32 / ESP8266 Modules', desc:'Wi-Fi + Bluetooth microcontrollers, ideal for IoT.'},
+        {title:'Sensor Modules', desc:'DHT11/22, BMP180, MQ sensors and more.'},
+        {title:'PCB Services', desc:'PCB review, small-batch fabrication, and assembly guidance.'}
+      ];
+      componentsGrid.innerHTML = comps.map(c=>`
+        <div class="card"><h3>${c.title}</h3><p>${c.desc}</p><a href="componentshop.html">Component Store</a></div>
+      `).join('');
+    }
+    setTimeout(hydrateGrids, 900);
+
+    // ---------- session token (anti-scrape helper) ----------
+    function generateSessionToken(){
+      try{
+        const arr = new Uint8Array(16);
+        crypto.getRandomValues(arr);
+        return Array.from(arr).map(b=>b.toString(16).padStart(2,'0')).join('');
+      }catch(e){
+        return Math.random().toString(36).slice(2,18);
+      }
+    }
+    (function ensureSessionTokenForVisitor(){
+      if(!localStorage.getItem('mini_session_token')){
+        localStorage.setItem('mini_session_token', generateSessionToken());
+      }
+      // Attach token to internal links (optional)
+      setTimeout(()=>{
+        const token = localStorage.getItem('mini_session_token');
+        if(!token) return;
+        $$('a[href]').forEach(a=>{
+          try{
+            const url = new URL(a.href, location.href);
+            if(url.origin === location.origin){
+              url.searchParams.set('_st', token);
+              a.href = url.toString();
+            }
+          }catch(e){}
+        });
+      },1200);
+    })();
+
+    // ---------- dashboard rendering ----------
+    function showDashboardForUser(userData){
+      dashboardSection.style.display = 'block';
+      dashWelcome.textContent = `Hello ${userData.name || 'Member'}, here's quick access to your products and tools.`;
+      dashName.textContent = userData.name || '—';
+      dashEmail.textContent = userData.email || (currentUser && currentUser.email) || '—';
+
+      setTimeout(()=> {
+        const products = [
+          {title:'Auto Irrigation Kit', desc:'Solar controller, moisture sensor & valve driver', img:'https://i.imgur.com/3f6TQyq.jpg'},
+          {title:'Soil Health Sensor', desc:'pH, moisture & temperature with calibration', img:'https://i.imgur.com/6ZQ9m1K.jpg'},
+          {title:'Robotics Parts Bundle', desc:'Motors, servos & electronics for small robots', img:'https://i.imgur.com/0Zf2S3h.jpeg'}
+        ];
+        dashboardProducts.innerHTML = products.map(p=>`
+          <div class="product-card card">
+            <img src="${p.img}" alt="${p.title}">
+            <h4>${p.title}</h4>
+            <p class="muted" style="font-size:13px">${p.desc}</p>
+            <div style="margin-top:8px"><a href="products.html" class="link-btn">View</a></div>
+          </div>
+        `).join('');
+      }, 600);
+
+      const token = localStorage.getItem('mini_session_token') || '—';
+      sessionTokenPreview.textContent = token;
+    }
+
+    // ---------- extra small helpers ----------
+    $$('.mobile-nav a').forEach(a => a.addEventListener('click', ()=>{ mobileNav.classList.remove('open'); mobileMenuBtn.classList.remove('open'); }));
+    document.getElementById('toCourses') && document.getElementById('toCourses').addEventListener('click', ()=>{ document.querySelector('a[href="#courses"]').click(); });
+    document.getElementById('toProducts') && document.getElementById('toProducts').addEventListener('click', ()=>{ document.querySelector('a[href="#products"]').click(); });
+
+    // close modals by clicking outside
     window.addEventListener('click', (e)=>{
       if(e.target === authModal) authModal.style.display = 'none';
       if(e.target === profileModal) profileModal.style.display = 'none';
     });
 
-    // Mobile nav close on link
-    $$('nav.main-nav a').forEach(a=>{
-      a.addEventListener('click', ()=>{
-        const nav = document.querySelector('nav.main-nav');
-        if(window.innerWidth < 880) nav.style.display='none';
-      });
-    });
+    // final: check _st param if present (optional debugging)
+    (function checkSessionParam(){
+      const p = new URLSearchParams(location.search);
+      const st = p.get('_st');
+      if(st) console.log('session token param:', st);
+    })();
 
   </script>
 </body>
