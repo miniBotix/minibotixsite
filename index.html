@@ -1,715 +1,949 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="MiniBotix - Courses, Products (Agriculture & Engineering), Electronics Components, Projects & Free Source Code" />
-  <title>MiniBotix · Learn · Build · Innovate</title>
-  <link rel="icon" href="file.svg" type="image/svg+xml">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MiniBotix · Learn · Build · Innovate</title>
+<link rel="icon" href="file.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030912;--bg1:#060e1c;--bg2:#0a1628;--bg3:#0d1e35;
+  --line:rgba(0,160,255,0.08);--line-hi:rgba(0,180,255,0.2);
+  --c:#00b4ff;--c2:#0052cc;--cg:#00ffa3;--co:#ff8c42;--cr:#ff4060;
+  --txt:#daeeff;--txt2:#6b8fa8;
+  --glow:0 0 40px rgba(0,160,255,0.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(0,180,255,0.25)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--line-hi);border-radius:2px}
 
-  <style>
-    /* ----------------- Basic reset & layout ----------------- */
-    :root{
-      --accent-start:#007bff;
-      --accent-end:#00d4ff;
-      --glass: rgba(255,255,255,0.06);
-      --card-bg: rgba(255,255,255,0.03);
-      --muted: rgba(255,255,255,0.75);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#071126;overflow-x:hidden}
-    a{color:inherit;text-decoration:none}
+/* BG LAYERS */
+#rain{position:fixed;inset:0;z-index:0;pointer-events:none}
+.gbg{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(var(--line)1px,transparent 1px),linear-gradient(90deg,var(--line)1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 20%,transparent 100%)}
+.rglow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:1000px;height:700px;
+  background:radial-gradient(ellipse at center,rgba(0,70,200,0.16) 0%,transparent 70%);z-index:1;pointer-events:none}
 
-    /* ---------- background canvas sits behind everything ---------- */
-    #rainCanvas{
-      position:fixed;inset:0;width:100%;height:100%;z-index:-10;background:url('hill.jpg') center/cover no-repeat;
-    }
-    .bg-overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(3,7,15,0.55),rgba(3,7,15,0.35));z-index:-5}
+header,main,footer,section{position:relative;z-index:10}
 
-    /* ----------------- NAVBAR ----------------- */
-    header.nav{
-      position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;
-      background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:50;border-bottom:1px solid rgba(255,255,255,0.03)
-    }
-    .nav-left{display:flex;align-items:center;gap:12px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff}
-    .brand img{height:36px;width:36px;object-fit:contain;border-radius:6px}
-    nav.main-nav{display:flex;gap:18px;align-items:center}
-    nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.92);padding:6px 8px;border-radius:6px;transition:all .18s}
-    nav.main-nav a:hover{transform:translateY(-3px);color:#00e0ff}
-    .user-area{display:flex;align-items:center;gap:12px}
+/* NAVBAR */
+header{position:fixed;top:0;left:0;right:0;height:62px;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+  background:rgba(3,9,18,0.9);backdrop-filter:blur(18px) saturate(1.6);
+  border-bottom:1px solid var(--line);transition:box-shadow .3s}
+header.scrolled{box-shadow:0 4px 50px rgba(0,0,0,.7)}
+.brand{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none}
+.bm{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--c2),var(--c));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;
+  box-shadow:0 4px 18px rgba(0,120,255,0.4);flex-shrink:0}
+.bn{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.bn em{color:var(--c);font-style:normal}
 
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
-    .btn-primary{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));padding:9px 14px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+nav.main-nav{display:flex;gap:1px}
+nav.main-nav a{font-size:11.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--txt2);padding:6px 10px;border-radius:6px;transition:color .2s,background .2s;position:relative}
+nav.main-nav a::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  width:0;height:1.5px;background:var(--c);border-radius:1px;transition:width .25s}
+nav.main-nav a:hover{color:var(--c);background:rgba(0,180,255,0.05)}
+nav.main-nav a:hover::after{width:55%}
 
-    .hamburger{display:none;width:44px;height:44px;border-radius:10px;align-items:center;justify-content:center;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
-    .hamburger div{width:22px;height:2px;background:#fff;border-radius:2px;position:relative}
-    .hamburger div:after,.hamburger div:before{content:'';position:absolute;width:22px;height:2px;background:#fff;border-radius:2px;left:0}
-    .hamburger div:before{top:-7px} .hamburger div:after{top:7px}
+.nr{display:flex;align-items:center;gap:12px}
 
-    /* ---------- HERO ---------- */
-    .hero{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20px;text-align:center}
-    .hero-card{width:min(980px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));padding:40px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 30px 80px rgba(3,7,20,.6)}
-    .eyebrow{display:inline-block;background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:999px;margin-bottom:12px;font-weight:600;color:#aee9ff}
-    .hero h1{font-size:48px;line-height:1.05;margin-bottom:12px}
-    .hero p{color:rgba(255,255,255,0.85);margin-bottom:20px}
-    .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+/* Clock pill */
+.cpill{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line-hi);
+  border-radius:999px;padding:5px 12px;cursor:default;user-select:none}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--cg);flex-shrink:0;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 7px var(--cg)}50%{opacity:.25;box-shadow:none}}
+.csw{width:22px;height:22px;flex-shrink:0}
+#navClock{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--cg)}
 
-    /* ---------- SECTIONS ---------- */
-    .section{padding:60px 22px;background:transparent}
-    .container{max-width:1100px;margin:0 auto}
-    .section h2{font-size:24px;color:#fff;margin-bottom:12px}
-    .section p.lead{color:rgba(255,255,255,0.85);margin-bottom:18px}
+.btn-o{background:transparent;border:1px solid var(--line-hi);padding:7px 14px;border-radius:7px;
+  color:var(--txt2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;
+  cursor:pointer;transition:all .2s}
+.btn-o:hover{border-color:var(--c);color:var(--c);background:rgba(0,180,255,0.05)}
+.btn-s{background:linear-gradient(135deg,var(--c2),var(--c));border:none;padding:8px 16px;border-radius:7px;
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;box-shadow:0 4px 18px rgba(0,100,255,0.35);transition:opacity .2s,transform .15s}
+.btn-s:hover{opacity:.88;transform:translateY(-1px)}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px}
-    .card{background:var(--card-bg);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .25s ease,box-shadow .25s;cursor:default;overflow:hidden}
-    .card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
-    .card h3{font-size:18px;margin-bottom:8px}
-    .card p{font-size:14px;color:rgba(255,255,255,0.85)}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,0.2);font-weight:600;font-size:12px;margin-right:8px}
+.ham{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:7px;
+  background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.ham span{width:18px;height:1.5px;background:var(--txt2);border-radius:1px;display:block}
+#sui{display:none}
+.apill{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:var(--bg2);
+  border:1px solid var(--line-hi);border-radius:999px;cursor:pointer;transition:background .2s}
+.apill:hover{background:var(--bg3)}
+.apill img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.apill .aname{font-size:12px;font-weight:600}
+.apill .gear{color:var(--txt2);font-size:13px;margin-left:3px}
 
-    footer{padding:28px 22px;background:transparent;text-align:center;color:rgba(255,255,255,0.7)}
+/* MOBILE NAV */
+#mobileNav{display:none;flex-direction:column;gap:2px;position:fixed;top:62px;left:0;right:0;
+  background:rgba(4,10,20,0.98);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);padding:12px 16px 20px;z-index:190}
+#mobileNav.open{display:flex}
+#mobileNav a{padding:11px 12px;border-radius:7px;font-size:13px;font-weight:500;
+  color:var(--txt2);border-left:2px solid transparent;transition:all .2s}
+#mobileNav a:hover{background:var(--bg2);color:var(--c);border-left-color:var(--c)}
 
-    /* ---------- AUTH & PROFILE MODALS ---------- */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:120;backdrop-filter:blur(3px)}
-    .modal-card{width:100%;max-width:520px;background:#0b1220;padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,.03)}
-    .modal .close{float:right;color:rgba(255,255,255,0.6);font-size:20px;cursor:pointer}
-    .form-group{margin-bottom:12px}
-    .form-group label{display:block;font-size:13px;margin-bottom:6px;color:rgba(255,255,255,0.85)}
-    .form-group input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff}
-    .small{font-size:13px;color:rgba(255,255,255,0.7)}
+/* HERO */
+#home{min-height:100vh;display:flex;align-items:center;padding:100px 28px 80px}
+.hi{max-width:1140px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 430px;gap:60px;align-items:center}
+.htag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-hi);border-radius:4px;
+  padding:5px 12px;margin-bottom:28px;font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--c);background:rgba(0,180,255,0.04)}
+.htag .hd{width:5px;height:5px;border-radius:50%;background:var(--cg);animation:blink 1.8s infinite}
+.hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(40px,5.2vw,70px);
+  line-height:1.0;letter-spacing:-.03em;margin-bottom:22px}
+.hero h1 .acc{background:linear-gradient(90deg,var(--c),var(--cg));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hsub{color:var(--txt2);font-size:15.5px;line-height:1.72;max-width:480px;margin-bottom:36px}
+.hbtns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+.hbtns .btn-s{font-size:14px;padding:13px 26px}
+.hbtns .btn-o{font-size:14px;padding:13px 26px}
+.kpi-row{display:flex;gap:32px;padding-top:36px;border-top:1px solid var(--line)}
+.kpi .kv{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:var(--c)}
+.kpi .kv.g{color:var(--cg)}.kpi .kv.o{color:var(--co)}
+.kpi .kl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-top:2px}
 
-    .profile-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:999px;border:1px solid rgba(255,255,255,0.03)}
-    .profile-pill img{height:32px;width:32px;border-radius:50%;object-fit:cover;background:#223}
-    .settings-icon{cursor:pointer;color:rgba(255,255,255,.8)}
+/* DASH PANEL */
+.dp{background:var(--bg2);border:1px solid var(--line-hi);border-radius:14px;overflow:hidden;
+  box-shadow:var(--glow),0 40px 90px rgba(0,0,0,.75);animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.dph{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;
+  background:rgba(255,255,255,0.02);border-bottom:1px solid var(--line)}
+.dpdots{display:flex;gap:5px}
+.dpdots span{width:9px;height:9px;border-radius:50%}
+.dpdots span:nth-child(1){background:#ff5f57}
+.dpdots span:nth-child(2){background:#febc2e}
+.dpdots span:nth-child(3){background:#28c840}
+.dpt{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--txt2);text-transform:uppercase}
+.dpm{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.dpmc{background:var(--bg2);padding:14px 12px}
+.mv{font-family:'DM Mono',monospace;font-size:20px;font-weight:500}
+.mv.c{color:var(--c)}.mv.g{color:var(--cg)}.mv.o{color:var(--co)}
+.ml{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt2);margin-top:2px}
 
-    @media (max-width:880px){
-      nav.main-nav{display:none}
-      .hamburger{display:flex}
-      .hero h1{font-size:28px}
-      .hero-card{padding:20px}
-    }
+/* Clock section */
+.cs{display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.aw{position:relative;width:84px;height:84px;flex-shrink:0}
+.aw svg{width:84px;height:84px}
+.ci2{flex:1}
+.cil{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:5px}
+#dTime{font-family:'DM Mono',monospace;font-size:19px;font-weight:500;color:var(--cg);line-height:1}
+#dDate{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt2);margin-top:5px}
 
-    /* small toast */
-    .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);padding:10px 14px;border-radius:8px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.4)}
-  </style>
+/* Rings */
+.rr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.rc{background:var(--bg2);padding:14px 10px;display:flex;flex-direction:column;align-items:center}
+.rsv{position:relative;width:64px;height:64px}
+.rsv svg{width:64px;height:64px;transform:rotate(-90deg)}
+.rst{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:500}
+.rcl{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);margin-top:7px;text-align:center}
+
+/* bars */
+.dpb{padding:13px 14px 0}
+.br{margin-bottom:9px}
+.bm2{display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px}
+.bm2 span:first-child{color:var(--txt2)}
+.bt{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.bf{height:100%;border-radius:2px;transition:width 2s cubic-bezier(.4,0,.2,1)}
+.bfc{background:linear-gradient(90deg,var(--c2),var(--c))}
+.bfg{background:linear-gradient(90deg,#009f6a,var(--cg))}
+.bfo{background:linear-gradient(90deg,#c85a00,var(--co))}
+
+/* ticker */
+.dptick{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--line);
+  font-family:'DM Mono',monospace;font-size:9px}
+.td{width:5px;height:5px;border-radius:50%;background:var(--cg);animation:blink 1.5s infinite;flex-shrink:0}
+#ticker{color:var(--cg);transition:opacity .35s}
+
+/* SECTIONS */
+.section{padding:96px 28px}
+.con{max-width:1140px;margin:0 auto}
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--line-hi),transparent)}
+.sl2{display:inline-flex;align-items:center;gap:7px;
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c);border:1px solid var(--line-hi);padding:4px 10px;border-radius:3px;
+  background:rgba(0,180,255,0.04);margin-bottom:16px}
+.sn{color:var(--txt2)}
+h2.sh{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,3.5vw,44px);
+  letter-spacing:-.02em;margin-bottom:12px}
+.lead{color:var(--txt2);font-size:15px;line-height:1.72;max-width:540px;margin-bottom:40px}
+
+/* STATS BAND */
+.sband{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:0}
+.sc{background:var(--bg1);padding:24px 20px;position:relative;overflow:hidden;transition:background .3s}
+.sc:hover{background:var(--bg2)}
+.sc .sv{font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:var(--c);margin-bottom:4px}
+.sc .sv.g{color:var(--cg)}.sc .sv.o{color:var(--co)}.sc .sv.w{color:#fff}
+.sc .sl3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2)}
+.sc .corner{position:absolute;bottom:8px;right:12px;font-family:'DM Mono',monospace;font-size:26px;
+  color:rgba(255,255,255,0.025);font-weight:700;line-height:1}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.card{background:var(--bg1);padding:28px;position:relative;overflow:hidden;transition:background .3s,transform .3s}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--c2),var(--c));
+  transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.card:hover{background:var(--bg2);transform:translateY(-5px)}
+.card:hover::before{transform:scaleX(1)}
+.card::after{content:'';position:absolute;bottom:-70px;right:-70px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,180,255,0.06),transparent 70%);opacity:0;transition:opacity .3s}
+.card:hover::after{opacity:1}
+.ci3{width:42px;height:42px;border-radius:9px;border:1px solid var(--line-hi);
+  background:rgba(0,180,255,0.07);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 8px;border-radius:3px;border:1px solid var(--line-hi);
+  color:var(--c);margin-bottom:10px}
+.badge.g{color:var(--cg);border-color:rgba(0,255,163,0.2)}
+.badge.o{color:var(--co);border-color:rgba(255,140,66,0.2)}
+.badge.r{color:var(--cr);border-color:rgba(255,64,96,0.2)}
+.card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;margin-bottom:8px}
+.card p{font-size:13px;color:var(--txt2);line-height:1.65;margin-bottom:18px}
+.clink{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--c);display:inline-flex;align-items:center;gap:6px;transition:gap .25s}
+.card:hover .clink{gap:10px}
+
+/* CONTACT */
+.ctbox{background:var(--bg2);border:1px solid var(--line-hi);border-radius:14px;
+  padding:48px;display:flex;align-items:center;justify-content:space-between;
+  gap:32px;flex-wrap:wrap;position:relative;overflow:hidden}
+.ctbox::before{content:'';position:absolute;top:-100px;right:-100px;width:350px;height:350px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,120,255,0.07),transparent 70%);pointer-events:none}
+.ctbox h3{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;margin-bottom:10px}
+.ctbox p{color:var(--txt2);font-size:15px;max-width:450px;line-height:1.68}
+.ctbox a{color:var(--c)}
+
+/* FOOTER */
+footer{padding:26px 28px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.fbrand{display:flex;align-items:center;gap:10px}
+.finfo{font-family:'DM Mono',monospace;font-size:11px;color:var(--txt2)}
+.flinks{display:flex;gap:18px;font-size:12px;color:var(--txt2)}
+.flinks a:hover{color:var(--c)}
+
+/* MODALS */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.78);z-index:500;backdrop-filter:blur(9px)}
+.modal.open{display:flex}
+.mc{width:100%;max-width:420px;background:var(--bg2);border:1px solid var(--line-hi);
+  border-radius:14px;padding:32px;animation:sUp .3s ease}
+@keyframes sUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.mch{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.mc h3{font-family:'Syne',sans-serif;font-weight:700;font-size:20px}
+.mcc{color:var(--txt2);font-size:22px;cursor:pointer;line-height:1;transition:color .2s}
+.mcc:hover{color:#fff}
+.tabs{display:flex;gap:4px;background:var(--bg1);border-radius:8px;padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:8px;border-radius:6px;border:none;background:transparent;color:var(--txt2);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.tab.on{background:linear-gradient(135deg,var(--c2),var(--c));color:#fff;box-shadow:0 2px 14px rgba(0,100,255,0.3)}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+.fg input{width:100%;padding:11px 14px;background:var(--bg1);border:1px solid var(--line-hi);
+  border-radius:7px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(0,180,255,0.08)}
+.ma{display:flex;gap:10px;margin-top:20px}
+.ma .btn-s{flex:1;padding:11px}
+.ma .btn-o{padding:11px 16px;font-size:13px}
+.mnote{font-size:11px;color:var(--txt2);margin-top:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:11px 18px;
+  border-radius:8px;font-size:13px;font-weight:500;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.5);
+  animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* REVEAL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.revl{opacity:0;transform:translateX(-30px);transition:opacity .75s ease,transform .75s ease}
+.revl.in{opacity:1;transform:translateX(0)}
+.revr{opacity:0;transform:translateX(30px);transition:opacity .75s ease,transform .75s ease}
+.revr.in{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* RESPONSIVE */
+@media(max-width:1020px){.hi{grid-template-columns:1fr}.dp{display:none}nav.main-nav{display:none}.ham{display:flex}.sband{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.sband{grid-template-columns:1fr}header{padding:0 16px}.section{padding:64px 16px}#home{padding:90px 16px 60px}.hero h1{font-size:36px}.ctbox{padding:28px}footer{flex-direction:column;align-items:flex-start}}
+</style>
 </head>
 <body>
+<canvas id="rain"></canvas>
+<div class="gbg"></div>
+<div class="rglow"></div>
 
-  <!-- Rain background canvas -->
-  <canvas id="rainCanvas" aria-hidden="true"></canvas>
-  <div class="bg-overlay" aria-hidden="true"></div>
+<!-- NAVBAR -->
+<header id="hdr">
+  <div class="brand" onclick="scrollTo({top:0,behavior:'smooth'})">
+    <div class="bm">M</div>
+    <div class="bn">Mini<em>Botix</em></div>
+  </div>
 
-  <!-- NAV -->
-  <header class="nav" role="banner">
-    <div class="nav-left">
-      <div class="brand">
-        <img src="file.svg" alt="MiniBotix logo" loading="lazy">
-        <div>MiniBotix</div>
+  <nav class="main-nav">
+    <a href="#home">Home</a>
+    <a href="#courses">Courses</a>
+    <a href="#products">Products</a>
+    <a href="#components">Components</a>
+    <a href="#projects">Projects</a>
+    <a href="#apps">Apps</a>
+    <a href="about_us.html">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="nr">
+    <div class="cpill">
+      <div class="pulse"></div>
+      <div class="csw">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="19" stroke="rgba(0,180,255,0.18)" stroke-width="1.5"/>
+          <circle cx="22" cy="22" r="1.5" fill="var(--cg)"/>
+          <line id="nh" x1="22" y1="22" x2="22" y2="12" stroke="var(--txt)" stroke-width="2" stroke-linecap="round"/>
+          <line id="nm" x1="22" y1="22" x2="22" y2="9"  stroke="var(--c)"  stroke-width="1.2" stroke-linecap="round"/>
+          <line id="ns" x1="22" y1="22" x2="22" y2="6"  stroke="var(--cg)" stroke-width="0.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span id="navClock">00:00:00</span>
+    </div>
+
+    <div id="sou"><button class="btn-o" id="openAuth">Sign In</button></div>
+    <div id="sui">
+      <div class="apill" id="openPS">
+        <img id="pAvatar" src="file.svg" alt="">
+        <span class="aname" id="pName">User</span>
+        <span class="gear">⚙</span>
       </div>
     </div>
 
-    <nav class="main-nav" role="navigation" aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#courses">Courses</a>
-      <a href="#products">Products</a>
-      <a href="#components">Components</a>
-      <a href="#projects">Projects</a>
-      <a href="#apps">Free Apps</a>
-       <a href="about_us.html">About Us</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <button class="ham" id="hamBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-    <div class="user-area" id="userArea">
-      <div id="signedOutUI">
-        <button id="openAuth" class="btn-ghost" title="Sign in or Register">Sign In</button>
+<!-- MOBILE NAV -->
+<div id="mobileNav">
+  <a href="#home" onclick="closeM()">Home</a>
+  <a href="#courses" onclick="closeM()">Courses</a>
+  <a href="#products" onclick="closeM()">Products</a>
+  <a href="#components" onclick="closeM()">Components</a>
+  <a href="#projects" onclick="closeM()">Projects</a>
+  <a href="#apps" onclick="closeM()">Free Apps</a>
+  <a href="about_us.html" onclick="closeM()">About</a>
+  <a href="#contact" onclick="closeM()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hi">
+    <div class="revl">
+      <div class="htag"><span class="hd"></span> MiniBotix · All Systems Online</div>
+      <h1 class="hero">
+        Learn ·<br>Build ·<br><span class="acc">Innovate</span>
+      </h1>
+      <p class="hsub">Practical courses, agricultural &amp; engineering products, tested project kits, electronic components, and free source code — one platform, endless possibilities.</p>
+      <div class="hbtns">
+        <button class="btn-s" id="toCourses">Explore Courses →</button>
+        <button class="btn-o" id="toProducts">Shop Products</button>
       </div>
-
-      <div id="signedInUI" class="profile-pill" style="display:none">
-        <img id="profileAvatar" src="" alt="profile" onerror="this.src='file.svg'">
-        <span id="profileName">User</span>
-        <span class="settings-icon" id="openProfileSettings" title="Settings">&#9881;</span>
-      </div>
-
-      <button class="hamburger" id="mobileMenuBtn" aria-label="Open menu"><div></div></button>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section id="home" class="hero">
-    <div class="hero-card container">
-      <div class="eyebrow">MiniBotix • Courses · Products · Projects</div>
-      <h1>Learn · Build · Innovate</h1>
-      <p class="lead">Practical courses, agricultural & engineering products, tested project kits, electronic components, and free source code to start building today.</p>
-
-      <div class="hero-actions">
-        <button class="btn-primary" id="toCourses">Explore Courses</button>
-        <button class="btn-ghost" id="toProducts">Shop Products</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- COURSES -->
-  <section id="courses" class="section">
-    <div class="container">
-      <h2>Courses</h2>
-      <p class="lead">From beginner embedded systems to advanced robotics — project-based learning you can finish in weeks.</p>
-      <div class="grid">
-        <article class="card">
-          <span class="badge">Beginner</span>
-          <h3>Embedded Systems 101</h3>
-          <p>Learn electronics basics, microcontrollers, and simple circuits — build 6 hands-on projects.</p>
-          <a href="courses.html">Open Course</a>
-        </article>
-
-        <article class="card">
-          <span class="badge">IoT</span>
-          <h3>IoT for Agriculture</h3>
-          <p>Smart irrigation, sensor networks and data logging. Practical projects for small farms.</p>
-          <a href="courses.html">Open Course</a>
-        </article>
-
-        <article class="card">
-          <span class="badge">Advanced</span>
-          <h3>Robotics & Automation</h3>
-          <p>Design, control and automate robotic arms and vehicles using microcontrollers and computer vision.</p>
-          <a href="courses.html">Open Course</a>
-        </article>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kv">50+</div><div class="kl">Courses</div></div>
+        <div class="kpi"><div class="kv g">5k+</div><div class="kl">Students</div></div>
+        <div class="kpi"><div class="kv o">120+</div><div class="kl">Projects</div></div>
+        <div class="kpi"><div class="kv">99%</div><div class="kl">Uptime</div></div>
       </div>
     </div>
-  </section>
 
-  <!-- PRODUCTS -->
-  <section id="products" class="section">
-    <div class="container">
-      <h2>Products (Agriculture & Engineering)</h2>
-      <p class="lead">We sell tested agriculture devices, sensors, and engineering kits — shipped with documentation and support.</p>
-      <div class="grid">
-        <div class="card"><h3>Auto Irrigation Kit</h3><p>Solar-powered controller, moisture sensor, and valve driver — ready to install.</p><a href="products.html">Shop Product</a></div>
-        <div class="card"><h3>Soil Health Sensor</h3><p>pH, moisture and temperature readings with calibration guide and data export.</p><a href="products.html">Shop Product</a></div>
-        <div class="card"><h3>Robotics Parts Bundle</h3><p>Motors, servos, frames and electronics for building small robots and arms.</p><a href="products.html">Shop Product</a></div>
+    <!-- DASHBOARD PANEL -->
+    <div class="dp revr d1">
+      <div class="dph">
+        <div class="dpdots"><span></span><span></span><span></span></div>
+        <div class="dpt">MiniBotix · Live Overview</div>
+        <div class="pulse"></div>
       </div>
-    </div>
-  </section>
-
-  <!-- Components -->
-  <section id="components" class="section">
-    <div class="container">
-      <h2>Electronic Components</h2>
-      <p class="lead">Sensors, modules, microcontrollers, PCBs and more — buy parts for your classroom or lab.</p>
-      <div class="grid">
-        <div class="card"><h3>ESP32 / ESP8266 Modules</h3><p>Wi-Fi + Bluetooth microcontrollers, ideal for IoT.</p><a href="componentshop.html">Component Store</a></div>
-        <div class="card"><h3>Sensor Modules</h3><p>DHT11/22, BMP180, MQ sensors and more.</p><a href="componentshop.html">Component Store</a></div>
-        <div class="card"><h3>PCB Services</h3><p>PCB review, small-batch fabrication, and assembly guidance.</p><a href="componentshop.html">Component Store</a></div>
+      <div class="dpm">
+        <div class="dpmc"><div class="mv c">50</div><div class="ml">Courses</div></div>
+        <div class="dpmc"><div class="mv g">98.7%</div><div class="ml">Uptime</div></div>
+        <div class="dpmc"><div class="mv o">5.2k</div><div class="ml">Members</div></div>
       </div>
-    </div>
-  </section>
 
-  <!-- Projects -->
-  <section id="projects" class="section">
-    <div class="container">
-      <h2>Projects</h2>
-      <p class="lead">Get full projects with code, wiring diagrams, and BOMs — or commission custom builds.</p>
-      <div class="grid">
-        <div class="card"><h3>Rain Detector</h3><p>Automated cover system and alerting example with code.</p><a href="projects.html">See Projects</a></div>
-        <div class="card"><h3>Robotic Arm</h3><p>Image-detection guided pick-and-place demo with servo control.</p><a href="projects.html">See Projects</a></div>
-        <div class="card"><h3>Satellite Simulator</h3><p>ESP32-CAM + sensors for environmental simulation & streaming.</p><a href="projects.html">See Projects</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Apps & Free codes -->
-  <section id="apps" class="section">
-    <div class="container">
-      <h2>Free Apps & Source Code</h2>
-      <p class="lead">Download basic apps and example source to bootstrap learning. We share starter code for students.</p>
-      <div class="grid">
-        <div class="card"><h3>Starter Voice Assistant</h3><p>Python-based assistant template (private code available upon course purchase).</p><a href="apps.html">Open</a></div>
-        <div class="card"><h3>Color Detection Example</h3><p>OpenCV example for object detection with a webcam.</p><a href="apps.html">Open</a></div>
-        <div class="card"><h3>ThingSpeak Data Sender</h3><p>NodeMCU code to push environment sensor readings to ThingSpeak.</p><a href="apps.html">Open</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="section">
-    <div class="container">
-      <h2>Contact & Support</h2>
-      <p class="lead">Need help? Send PCB files to <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> for a free review.</p>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <small>© 2025 MiniBotix · Learn · Build · Innovate</small>
-    </div>
-  </footer>
-
-  <!-- AUTH MODAL -->
-  <div id="authModal" class="modal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-      <span class="close" id="authClose">&times;</span>
-
-      <div id="authContainer">
-        <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;justify-content:center">
-          <button id="tabEmail" class="btn-primary" style="padding:8px 12px">Email</button>
-          <button id="tabGoogle" class="btn-ghost" style="padding:8px 12px">Google</button>
+      <!-- Analog Clock -->
+      <div class="cs">
+        <div class="aw">
+          <svg viewBox="0 0 84 84" fill="none">
+            <circle cx="42" cy="42" r="40" stroke="var(--line-hi)" stroke-width="1"/>
+            <g stroke="var(--txt2)" stroke-width="1.5" stroke-linecap="round">
+              <line x1="42" y1="4" x2="42" y2="10"/>
+              <line x1="42" y1="74" x2="42" y2="80"/>
+              <line x1="4" y1="42" x2="10" y2="42"/>
+              <line x1="74" y1="42" x2="80" y2="42"/>
+            </g>
+            <g stroke="rgba(0,180,255,0.15)" stroke-width="0.8">
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(30 42 42)"/>
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(60 42 42)"/>
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(120 42 42)"/>
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(150 42 42)"/>
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(210 42 42)"/>
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(240 42 42)"/>
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(300 42 42)"/>
+              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(330 42 42)"/>
+            </g>
+            <line id="ph" x1="42" y1="42" x2="42" y2="22" stroke="var(--txt)" stroke-width="2.5" stroke-linecap="round"/>
+            <line id="pm" x1="42" y1="42" x2="42" y2="12" stroke="var(--c)" stroke-width="1.5" stroke-linecap="round"/>
+            <line id="ps" x1="42" y1="42" x2="42" y2="8"  stroke="var(--cg)" stroke-width="0.9" stroke-linecap="round"/>
+            <circle cx="42" cy="42" r="3" fill="var(--bg2)" stroke="var(--cg)" stroke-width="1.2"/>
+          </svg>
         </div>
-
-        <div id="emailView">
-          <h3 id="authTitle">Sign In / Register</h3>
-          <form id="loginForm" onsubmit="return false;">
-            <div class="form-group">
-              <label for="loginEmail">Email</label>
-              <input id="loginEmail" type="email" required placeholder="you@domain.com">
-            </div>
-            <div class="form-group">
-              <label for="loginPassword">Password</label>
-              <input id="loginPassword" type="password" required placeholder="Password">
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
-              <button class="btn-primary" id="emailSignIn" type="button">Sign In</button>
-              <button class="btn-ghost" id="showRegister" type="button">New? Register</button>
-            </div>
-            <p class="small" style="margin-top:10px;color:rgba(255,255,255,0.6)">We store profile data in Firestore.</p>
-          </form>
+        <div class="ci2">
+          <div class="cil">Local Time</div>
+          <div id="dTime">00:00:00</div>
+          <div id="dDate">Loading...</div>
         </div>
+      </div>
 
-        <div id="registerView" style="display:none">
-          <h3>Create Account</h3>
-          <form id="registerForm" onsubmit="return false;">
-            <div class="form-group">
-              <label for="regName">Full name</label>
-              <input id="regName" type="text" required placeholder="Your name">
-            </div>
-            <div class="form-group">
-              <label for="regPhone">Phone</label>
-              <input id="regPhone" type="tel" required placeholder="+91 9XXXXXXXXX">
-            </div>
-            <div class="form-group">
-              <label for="regEmail">Email</label>
-              <input id="regEmail" type="email" required placeholder="you@domain.com">
-            </div>
-            <div class="form-group">
-              <label for="regPass">Password</label>
-              <input id="regPass" type="password" required placeholder="At least 6 characters">
-            </div>
-            <div class="form-group">
-              <label for="regPass2">Confirm Password</label>
-              <input id="regPass2" type="password" required placeholder="Confirm Password">
-            </div>
-
-            <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
-              <button class="btn-primary" id="createAccount" type="button">Create Account</button>
-              <button class="btn-ghost" id="showLogin" type="button">Have account? Sign in</button>
-            </div>
-          </form>
+      <!-- Rings -->
+      <div class="rr">
+        <div class="rc">
+          <div class="rsv">
+            <svg viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,180,255,0.1)" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="var(--c)" stroke-width="6"
+                stroke-dasharray="163.36" stroke-dashoffset="40.84" stroke-linecap="round"/>
+            </svg>
+            <div class="rst" style="color:var(--c);font-size:11px">75%</div>
+          </div>
+          <div class="rcl">Course Completion</div>
         </div>
-
-        <div id="googleView" style="display:none;text-align:center;margin-top:12px">
-          <p class="small" style="margin-bottom:12px;color:rgba(255,255,255,0.7)">Sign in with Google</p>
-          <button id="googleSignIn" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="height:18px"> Sign in with Google</button>
+        <div class="rc">
+          <div class="rsv">
+            <svg viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,255,163,0.1)" stroke-width="6"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="var(--cg)" stroke-width="6"
+                stroke-dasharray="163.36" stroke-dashoffset="32.67" stroke-linecap="round"/>
+            </svg>
+            <div class="rst" style="color:var(--cg);font-size:11px">80%</div>
+          </div>
+          <div class="rcl">Project Success</div>
         </div>
+      </div>
 
+      <!-- Bars -->
+      <div class="dpb">
+        <div class="br">
+          <div class="bm2"><span>Embedded Systems</span><span style="color:var(--c)">88%</span></div>
+          <div class="bt"><div class="bf bfc" style="width:0" data-w="88%"></div></div>
+        </div>
+        <div class="br">
+          <div class="bm2"><span>IoT Agriculture</span><span style="color:var(--cg)">74%</span></div>
+          <div class="bt"><div class="bf bfg" style="width:0" data-w="74%"></div></div>
+        </div>
+        <div class="br">
+          <div class="bm2"><span>Robotics</span><span style="color:var(--co)">61%</span></div>
+          <div class="bt"><div class="bf bfo" style="width:0" data-w="61%"></div></div>
+        </div>
+      </div>
+
+      <div class="dptick">
+        <div class="td"></div>
+        <span id="ticker">System nominal · All services operational</span>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- PROFILE SETTINGS MODAL -->
-  <div id="profileModal" class="modal" aria-hidden="true">
-    <div class="modal-card">
-      <span class="close" id="profileClose">&times;</span>
+<div class="sep"></div>
+
+<!-- STATS -->
+<section class="section" style="padding:56px 28px">
+  <div class="con">
+    <div class="sband reveal">
+      <div class="sc"><div class="sv">50+</div><div class="sl3">Courses</div><div class="corner">01</div></div>
+      <div class="sc"><div class="sv g">5k+</div><div class="sl3">Students</div><div class="corner">02</div></div>
+      <div class="sc"><div class="sv o">120+</div><div class="sl3">Project Kits</div><div class="corner">03</div></div>
+      <div class="sc"><div class="sv w">300+</div><div class="sl3">Components</div><div class="corner">04</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- COURSES -->
+<section id="courses" class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">01 /</span> Courses</div>
+      <h2 class="sh">Learn. Apply. Repeat.</h2>
+      <p class="lead">From beginner embedded systems to advanced robotics — project-based learning you can complete in weeks, not years.</p>
+    </div>
+    <div class="cards reveal d2">
+      <article class="card">
+        <div class="badge">Beginner</div>
+        <div class="ci3">🔌</div>
+        <h3>Embedded Systems 101</h3>
+        <p>Learn electronics basics, microcontrollers, and circuits — build 6 complete hands-on projects with real hardware.</p>
+        <a href="courses.html" class="clink">Open Course →</a>
+      </article>
+      <article class="card">
+        <div class="badge g">IoT</div>
+        <div class="ci3">🌿</div>
+        <h3>IoT for Agriculture</h3>
+        <p>Smart irrigation, sensor networks and data logging. Practical IoT projects for small farms and greenhouses.</p>
+        <a href="courses.html" class="clink">Open Course →</a>
+      </article>
+      <article class="card">
+        <div class="badge o">Advanced</div>
+        <div class="ci3">🤖</div>
+        <h3>Robotics &amp; Automation</h3>
+        <p>Design, control and automate robotic arms and vehicles using microcontrollers, servos, and computer vision.</p>
+        <a href="courses.html" class="clink">Open Course →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- PRODUCTS -->
+<section id="products" class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">02 /</span> Products</div>
+      <h2 class="sh">Agriculture &amp; Engineering</h2>
+      <p class="lead">Tested devices, sensors, and engineering kits shipped with full documentation, wiring guides, and dedicated support.</p>
+    </div>
+    <div class="cards reveal d2">
+      <div class="card">
+        <div class="badge g">In Stock</div>
+        <div class="ci3">💧</div>
+        <h3>Auto Irrigation Kit</h3>
+        <p>Solar-powered controller with moisture sensor and valve driver. Ready to install — no coding required out of the box.</p>
+        <a href="products.html" class="clink">Shop Product →</a>
+      </div>
+      <div class="card">
+        <div class="badge g">In Stock</div>
+        <div class="ci3">🌱</div>
+        <h3>Soil Health Sensor</h3>
+        <p>pH, moisture and temperature in one compact unit. Calibration guide and CSV data export included.</p>
+        <a href="products.html" class="clink">Shop Product →</a>
+      </div>
+      <div class="card">
+        <div class="badge o">Bundle</div>
+        <div class="ci3">⚙️</div>
+        <h3>Robotics Parts Bundle</h3>
+        <p>Motors, servos, frames and driver electronics for building small robots, arms, and automated mechanisms.</p>
+        <a href="products.html" class="clink">Shop Product →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- COMPONENTS -->
+<section id="components" class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">03 /</span> Components</div>
+      <h2 class="sh">Electronic Components</h2>
+      <p class="lead">Sensors, modules, microcontrollers, PCBs and more — everything you need for your classroom, lab, or startup.</p>
+    </div>
+    <div class="cards reveal d2">
+      <div class="card">
+        <div class="badge">Wi-Fi + BT</div>
+        <div class="ci3">📡</div>
+        <h3>ESP32 / ESP8266 Modules</h3>
+        <p>Dual-core Wi-Fi &amp; Bluetooth microcontrollers. The industry-standard choice for IoT — tested before shipping.</p>
+        <a href="componentshop.html" class="clink">Component Store →</a>
+      </div>
+      <div class="card">
+        <div class="badge">Calibrated</div>
+        <div class="ci3">🔬</div>
+        <h3>Sensor Modules</h3>
+        <p>DHT11/22, BMP180, MQ gas sensors, ultrasonic, IR, current sensors and more — individually tested units.</p>
+        <a href="componentshop.html" class="clink">Component Store →</a>
+      </div>
+      <div class="card">
+        <div class="badge r">Service</div>
+        <div class="ci3">🖥️</div>
+        <h3>PCB Services</h3>
+        <p>Free Gerber file review. Small-batch fabrication, SMT assembly, and engineering guidance from our team.</p>
+        <a href="componentshop.html" class="clink">View Services →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">04 /</span> Projects</div>
+      <h2 class="sh">Build Real Things</h2>
+      <p class="lead">Full projects with complete source code, wiring diagrams, component lists, and video walkthroughs. Custom builds available.</p>
+    </div>
+    <div class="cards reveal d2">
+      <div class="card">
+        <div class="badge g">Open Source</div>
+        <div class="ci3">🌧️</div>
+        <h3>Rain Detector</h3>
+        <p>Automated shelter cover system with rain sensor triggering, relay control, and mobile alert integration.</p>
+        <a href="projects.html" class="clink">See Project →</a>
+      </div>
+      <div class="card">
+        <div class="badge o">Vision AI</div>
+        <div class="ci3">🦾</div>
+        <h3>Robotic Arm</h3>
+        <p>Image-detection guided pick-and-place — 4-DOF arm with servo control and OpenCV object tracking.</p>
+        <a href="projects.html" class="clink">See Project →</a>
+      </div>
+      <div class="card">
+        <div class="badge">IoT</div>
+        <div class="ci3">🛰️</div>
+        <h3>Satellite Simulator</h3>
+        <p>ESP32-CAM with environmental sensors — real-time streaming, telemetry logging, and web dashboard.</p>
+        <a href="projects.html" class="clink">See Project →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- APPS -->
+<section id="apps" class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">05 /</span> Free Apps</div>
+      <h2 class="sh">Free Apps &amp; Source Code</h2>
+      <p class="lead">Download starter apps and example source to bootstrap your learning. Open-source tools for every student.</p>
+    </div>
+    <div class="cards reveal d2">
+      <div class="card">
+        <div class="badge">Python</div>
+        <div class="ci3">🎤</div>
+        <h3>Voice Assistant Starter</h3>
+        <p>Python-based assistant with wake word detection, speech synthesis, and command parsing. Full build on course purchase.</p>
+        <a href="apps.html" class="clink">Open App →</a>
+      </div>
+      <div class="card">
+        <div class="badge g">OpenCV</div>
+        <div class="ci3">👁️</div>
+        <h3>Color Detection</h3>
+        <p>Real-time HSV color detection and object tracking with your webcam — fully annotated OpenCV source.</p>
+        <a href="apps.html" class="clink">Open App →</a>
+      </div>
+      <div class="card">
+        <div class="badge o">NodeMCU</div>
+        <div class="ci3">📊</div>
+        <h3>ThingSpeak Sender</h3>
+        <p>Push live sensor readings to ThingSpeak with retry logic, data buffering, and real-time visual dashboard.</p>
+        <a href="apps.html" class="clink">Open App →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">06 /</span> Contact</div>
+      <h2 class="sh">Contact &amp; Support</h2>
+    </div>
+    <div class="ctbox reveal d2">
+      <div>
+        <h3>We're here to help.</h3>
+        <p>Send your PCB files to <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> for a free review. Questions about courses, products, or custom builds? Our team responds within 24 hours — usually much sooner.</p>
+      </div>
+      <button class="btn-s" style="white-space:nowrap;padding:14px 28px;font-size:14px" onclick="location.href='mailto:minibotix@gmail.com'">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fbrand">
+    <div class="bm" style="width:28px;height:28px;font-size:12px;border-radius:6px">M</div>
+    <div class="finfo">© 2025 MiniBotix · Learn · Build · Innovate</div>
+  </div>
+  <div class="flinks">
+    <a href="#courses">Courses</a>
+    <a href="#products">Products</a>
+    <a href="#projects">Projects</a>
+    <a href="#apps">Apps</a>
+    <a href="#contact">Contact</a>
+    <a href="about_us.html">About</a>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal">
+  <div class="mc">
+    <div class="mch">
+      <h3>Access MiniBotix</h3>
+      <span class="mcc" id="authClose">×</span>
+    </div>
+    <div class="tabs">
+      <button class="tab on" id="tabEmail">Email</button>
+      <button class="tab" id="tabGoogle">Google</button>
+    </div>
+    <div id="emailView">
+      <div id="loginView">
+        <div class="fg"><label>Email</label><input id="loginEmail" type="email" placeholder="you@domain.com"></div>
+        <div class="fg"><label>Password</label><input id="loginPassword" type="password" placeholder="Password"></div>
+        <div class="ma">
+          <button class="btn-s" id="emailSignIn">Sign In</button>
+          <button class="btn-o" id="showRegister">Register</button>
+        </div>
+      </div>
+      <div id="registerView" style="display:none">
+        <div class="fg"><label>Full Name</label><input id="regName" type="text" placeholder="Your name"></div>
+        <div class="fg"><label>Phone</label><input id="regPhone" type="tel" placeholder="+91 9XXXXXXXXX"></div>
+        <div class="fg"><label>Email</label><input id="regEmail" type="email" placeholder="you@domain.com"></div>
+        <div class="fg"><label>Password</label><input id="regPass" type="password" placeholder="Min 6 characters"></div>
+        <div class="fg"><label>Confirm</label><input id="regPass2" type="password" placeholder="Confirm password"></div>
+        <div class="ma">
+          <button class="btn-s" id="createAccount">Create Account</button>
+          <button class="btn-o" id="showLogin">Sign In</button>
+        </div>
+      </div>
+    </div>
+    <div id="googleView" style="display:none;padding-top:8px">
+      <button id="googleSignIn" class="btn-s" style="width:100%;padding:13px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px">
+        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16.1 19 13 24 13c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.5-3.3-11.2-7.9L6.1 33.4C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.6l6.2 5.2C42.3 35.5 44 30.1 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+    <p class="mnote">Your data is stored securely in Firestore.</p>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profileModal" class="modal">
+  <div class="mc">
+    <div class="mch">
       <h3>Profile Settings</h3>
-      <form id="profileForm" onsubmit="return false;">
-        <div class="form-group"><label>Name</label><input id="pfName" type="text" required></div>
-        <div class="form-group"><label>Phone</label><input id="pfPhone" type="tel" required></div>
-        <div class="form-group"><label>Delivery Area</label><input id="pfArea" type="text" required></div>
-        <div style="display:flex;gap:12px;margin-top:12px">
-          <button class="btn-primary" id="saveProfile" type="button">Save</button>
-          <button class="btn-ghost" id="logoutBtn" type="button">Logout</button>
-        </div>
-      </form>
+      <span class="mcc" id="profileClose">×</span>
+    </div>
+    <div class="fg"><label>Name</label><input id="pfName" type="text"></div>
+    <div class="fg"><label>Phone</label><input id="pfPhone" type="tel"></div>
+    <div class="fg"><label>Delivery Area</label><input id="pfArea" type="text"></div>
+    <div class="ma">
+      <button class="btn-s" id="saveProfile">Save Changes</button>
+      <button class="btn-o" id="logoutBtn">Logout</button>
     </div>
   </div>
+</div>
 
-  <!-- Toast container injected by JS -->
-
-  <!-- Firebase SDKs (modular v12.2.1) -->
-  <script type="module">
-    // Firebase imports
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged,
-      updateProfile
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      updateDoc,
-      collection,
-      addDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-    // ---------- FIREBASE CONFIG ----------
-    const firebaseConfig = {
-      apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
-      authDomain: "minibotix-a1b9a.firebaseapp.com",
-      projectId: "minibotix-a1b9a",
-      storageBucket: "minibotix-a1b9a.firebasestorage.app",
-      messagingSenderId: "771169717230",
-      appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
-      measurementId: "G-JQKFSBN4WP"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const googleProvider = new GoogleAuthProvider();
-
-    // ---------- DOM REFERENCES ----------
-    const openAuth = document.getElementById('openAuth');
-    const authModal = document.getElementById('authModal');
-    const authClose = document.getElementById('authClose');
-    const tabEmail = document.getElementById('tabEmail');
-    const tabGoogle = document.getElementById('tabGoogle');
-    const emailView = document.getElementById('emailView');
-    const googleView = document.getElementById('googleView');
-    const registerView = document.getElementById('registerView');
-    const showRegister = document.getElementById('showRegister');
-    const showLogin = document.getElementById('showLogin');
-    const emailSignIn = document.getElementById('emailSignIn');
-    const createAccount = document.getElementById('createAccount');
-    const googleSignIn = document.getElementById('googleSignIn');
-
-    const signedOutUI = document.getElementById('signedOutUI');
-    const signedInUI = document.getElementById('signedInUI');
-    const profileName = document.getElementById('profileName');
-    const profileAvatar = document.getElementById('profileAvatar');
-    const openProfileSettings = document.getElementById('openProfileSettings');
-
-    const profileModal = document.getElementById('profileModal');
-    const profileClose = document.getElementById('profileClose');
-    const pfName = document.getElementById('pfName');
-    const pfPhone = document.getElementById('pfPhone');
-    const pfArea = document.getElementById('pfArea');
-    const saveProfile = document.getElementById('saveProfile');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    const toCourses = document.getElementById('toCourses');
-    const toProducts = document.getElementById('toProducts');
-
-    // helpers
-    const $ = s => document.querySelector(s);
-    const $$ = s => Array.from(document.querySelectorAll(s));
-
-    // ---------- Rain canvas ----------
-    (function rain(){
-      const canvas = document.getElementById('rainCanvas');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let W = canvas.width = innerWidth, H = canvas.height = innerHeight;
-      window.addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; initDrops(); });
-
-      let drops = [];
-      function initDrops(n=140){
-        drops = [];
-        for(let i=0;i<n;i++){
-          drops.push({
-            x: Math.random()*W,
-            y: Math.random()*H,
-            len: Math.random()*25+8,
-            sp: Math.random()*3+1.8,
-            sw: Math.random()*1.4+0.6,
-            alpha: 0.12 + Math.random()*0.12
-          });
-        }
-      }
-      function draw(){
-        ctx.clearRect(0,0,W,H);
-        for(let d of drops){
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(170,220,255,${d.alpha})`;
-          ctx.lineWidth = d.sw;
-          ctx.moveTo(d.x, d.y);
-          ctx.lineTo(d.x+1, d.y + d.len);
-          ctx.stroke();
-          d.y += d.sp;
-          d.x += Math.sin(d.y/50)*0.5;
-          if(d.y > H + 20){ d.y = -20; d.x = Math.random()*W; }
-          d.alpha = 0.12 + Math.random()*0.12;
-        }
-        requestAnimationFrame(draw);
-      }
-      initDrops();
-      draw();
-    })();
-
-    // ---------- Mobile menu toggle ----------
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    mobileBtn && mobileBtn.addEventListener('click', ()=>{
-      const nav = document.querySelector('nav.main-nav');
-      if(!nav) return;
-      if(nav.style.display === 'flex'){ nav.style.display='none'; mobileBtn.classList.remove('open'); }
-      else { nav.style.display='flex'; nav.style.flexDirection='column'; nav.style.position='absolute'; nav.style.top='64px'; nav.style.right='20px'; nav.style.background='rgba(5,8,15,0.95)'; nav.style.padding='12px'; nav.style.borderRadius='10px'; mobileBtn.classList.add('open'); }
-    });
-
-    // ---------- AUTH modal controls ----------
-    openAuth && openAuth.addEventListener('click', ()=>{ authModal.style.display = 'flex'; showEmailTab(); });
-    authClose && authClose.addEventListener('click', ()=>{ authModal.style.display = 'none'; });
-
-    tabEmail.addEventListener('click', showEmailTab);
-    tabGoogle.addEventListener('click', showGoogleTab);
-
-    function showEmailTab(){
-      emailView.style.display = 'block'; googleView.style.display = 'none'; registerView.style.display = 'none';
-      tabEmail.classList.add('btn-primary'); tabGoogle.classList.remove('btn-primary');
+<script>
+/* ══ RAIN ══ */
+(function(){
+  const cv=document.getElementById('rain'),ctx=cv.getContext('2d');
+  let W,H,dr=[];
+  function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;init()}
+  function init(){
+    dr=[];
+    for(let i=0;i<180;i++){
+      dr.push({x:Math.random()*W,y:Math.random()*H-H,
+        len:Math.random()*35+10,sp:Math.random()*3.5+2,
+        sw:Math.random()*1.2+0.3,a:0.04+Math.random()*0.09,
+        drift:Math.random()*0.5-0.25,ph:Math.random()*Math.PI*2});
     }
-    function showGoogleTab(){
-      emailView.style.display = 'none'; googleView.style.display = 'block'; registerView.style.display = 'none';
-      tabGoogle.classList.add('btn-primary'); tabEmail.classList.remove('btn-primary');
-    }
-
-    showRegister.addEventListener('click', ()=>{
-      emailView.style.display = 'none';
-      registerView.style.display = 'block';
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    dr.forEach(d=>{
+      const g=ctx.createLinearGradient(d.x,d.y,d.x+d.drift*8,d.y+d.len);
+      g.addColorStop(0,'rgba(0,180,255,0)');
+      g.addColorStop(0.5,`rgba(0,190,255,${d.a})`);
+      g.addColorStop(1,'rgba(100,220,255,0)');
+      ctx.beginPath();ctx.strokeStyle=g;ctx.lineWidth=d.sw;
+      ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+d.drift*4,d.y+d.len);ctx.stroke();
+      d.y+=d.sp;d.x+=Math.sin(d.y*0.012+d.ph)*0.4;
+      if(d.y>H+50){d.y=-50;d.x=Math.random()*W}
+      d.a=0.04+Math.random()*0.08;
     });
-    showLogin.addEventListener('click', ()=>{
-      registerView.style.display = 'none';
-      emailView.style.display = 'block';
-    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',rs);rs();draw();
+})();
 
-    // ---------- AUTH actions ----------
-    googleSignIn.addEventListener('click', async ()=>{
-      try{
-        const result = await signInWithPopup(auth, googleProvider);
-        authModal.style.display = 'none';
-      }catch(e){
-        showToast('Google sign-in failed: ' + (e.message || e), true);
-      }
-    });
+/* ══ CLOCKS ══ */
+function rpt(cx,cy,ang,len){return{x:cx+Math.sin(ang)*len,y:cy-Math.cos(ang)*len}}
+function setHand(id,ang,cx,cy,len){
+  const el=document.getElementById(id);if(!el)return;
+  const p=rpt(cx,cy,ang,len);
+  el.setAttribute('x2',p.x.toFixed(2));el.setAttribute('y2',p.y.toFixed(2));
+}
+function updateClocks(){
+  const n=new Date(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds(),ms=n.getMilliseconds();
+  const sa=(s+ms/1000)*(Math.PI*2/60);
+  const ma=(m+s/60)*(Math.PI*2/60);
+  const ha=(h%12+m/60)*(Math.PI*2/12);
+  setHand('nh',ha,22,22,10);setHand('nm',ma,22,22,13);setHand('ns',sa,22,22,15);
+  setHand('ph',ha,42,42,20);setHand('pm',ma,42,42,30);setHand('ps',sa,42,42,34);
+  const pad=n=>String(n).padStart(2,'0');
+  const ts=`${pad(h)}:${pad(m)}:${pad(s)}`;
+  document.getElementById('navClock').textContent=ts;
+  document.getElementById('dTime').textContent=ts;
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('dDate').textContent=
+    `${days[n.getDay()]}, ${months[n.getMonth()]} ${n.getDate()}`;
+}
+setInterval(updateClocks,80);updateClocks();
 
-    createAccount.addEventListener('click', async ()=>{
-      const name = $('#regName').value.trim();
-      const phone = $('#regPhone').value.trim();
-      const email = $('#regEmail').value.trim().toLowerCase();
-      const pass = $('#regPass').value;
-      const pass2 = $('#regPass2').value;
-      if(pass.length < 6){ showToast('Password must be at least 6 characters', true); return; }
-      if(pass !== pass2){ showToast('Passwords do not match', true); return; }
-      try{
-        const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-        // update displayName
-        await updateProfile(userCred.user, { displayName: name });
-        // create Firestore profile doc
-        await setDoc(doc(db, 'users', userCred.user.uid), {
-          name: name,
-          phone: phone,
-          area: '',
-          email: email,
-          createdAt: serverTimestamp()
-        });
-        authModal.style.display = 'none';
-        showToast('Account created');
-      }catch(e){
-        showToast('Register failed: ' + (e.message || e), true);
-      }
-    });
+/* ══ TICKER ══ */
+const ticks=[
+  'System nominal · All services operational',
+  'New batch: Embedded Systems 101 · Enrolling now',
+  '5,200+ learners across 14 countries',
+  'Components in stock · Ships within 48h',
+  'ESP32 modules restocked · Limited units',
+  'Free PCB review — send files to minibotix@gmail.com',
+  'Robotics & Automation · Advanced track now open',
+  'IoT Agriculture course — new module added',
+];
+let ti=0;
+function rotateTick(){
+  const el=document.getElementById('ticker');if(!el)return;
+  el.style.opacity='0';
+  setTimeout(()=>{ti=(ti+1)%ticks.length;el.textContent=ticks[ti];el.style.opacity='1'},380);
+}
+setInterval(rotateTick,4500);
 
-    emailSignIn.addEventListener('click', async ()=>{
-      const email = $('#loginEmail').value.trim().toLowerCase();
-      const pass = $('#loginPassword').value;
-      try{
-        await signInWithEmailAndPassword(auth, email, pass);
-        authModal.style.display = 'none';
-        showToast('Signed in');
-      }catch(e){
-        showToast('Sign in failed: ' + (e.message || e), true);
-      }
-    });
+/* ══ SCROLL REVEAL ══ */
+const io=new IntersectionObserver(en=>{
+  en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal,.revl,.revr').forEach(el=>io.observe(el));
 
-    // ---------- Auth state observer & Firestore profile load ----------
-    let currentUser = null;
-    onAuthStateChanged(auth, async (user) => {
-      if(user){
-        currentUser = user;
-        const userDocRef = doc(db, 'users', user.uid);
-        const snap = await getDoc(userDocRef);
-        if(!snap.exists()){
-          await setDoc(userDocRef, {
-            name: user.displayName || '',
-            phone: '',
-            area: '',
-            email: user.email || '',
-            createdAt: serverTimestamp()
-          });
-        }
-        const userData = (await getDoc(userDocRef)).data();
+/* bars animate in */
+setTimeout(()=>{
+  document.querySelectorAll('.bf[data-w]').forEach(b=>b.style.width=b.dataset.w);
+},700);
 
-        // Update nav UI
-        signedOutUI.style.display = 'none';
-        signedInUI.style.display = 'flex';
-        profileName.textContent = userData.name ? userData.name.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
-        profileAvatar.src = user.photoURL || gravatarFallback(user.email);
+/* ══ NAV SCROLL ══ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('hdr').classList.toggle('scrolled',scrollY>40);
+});
 
-        // fill profile modal
-        pfName.value = userData.name || '';
-        pfPhone.value = userData.phone || '';
-        pfArea.value = userData.area || '';
+/* ══ MOBILE NAV ══ */
+document.getElementById('hamBtn').addEventListener('click',()=>{
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+function closeM(){document.getElementById('mobileNav').classList.remove('open')}
 
-        // log page view activity
-        try{
-          await addDoc(collection(db, 'users', user.uid, 'activity'), {
-            action: 'page_view',
-            page: window.location.pathname,
-            ts: serverTimestamp()
-          });
-        }catch(e){ console.warn('Activity log failed', e); }
-      }else{
-        currentUser = null;
-        signedOutUI.style.display = 'flex';
-        signedInUI.style.display = 'none';
-      }
-    });
+/* ══ HERO BUTTONS ══ */
+document.getElementById('toCourses').addEventListener('click',()=>location.href='courses.html');
+document.getElementById('toProducts').addEventListener('click',()=>location.href='products.html');
 
-    // ---------- Profile settings ----------
-    openProfileSettings && openProfileSettings.addEventListener('click', ()=>{ profileModal.style.display = 'flex'; });
-    profileClose && profileClose.addEventListener('click', ()=>{ profileModal.style.display = 'none'; });
+/* ══ MODALS ══ */
+const AM=document.getElementById('authModal'),PM=document.getElementById('profileModal');
+const openM=m=>m.classList.add('open');
+const closeModal=m=>m.classList.remove('open');
+document.getElementById('openAuth').addEventListener('click',()=>openM(AM));
+document.getElementById('authClose').addEventListener('click',()=>closeModal(AM));
+document.getElementById('profileClose').addEventListener('click',()=>closeModal(PM));
+document.getElementById('openPS').addEventListener('click',()=>openM(PM));
+window.addEventListener('click',e=>{if(e.target===AM)closeModal(AM);if(e.target===PM)closeModal(PM)});
 
-    saveProfile.addEventListener('click', async ()=>{
-      if(!currentUser){ showToast('No user signed in', true); return; }
-      const name = pfName.value.trim();
-      const phone = pfPhone.value.trim();
-      const area = pfArea.value.trim();
-      try{
-        await updateDoc(doc(db, 'users', currentUser.uid), { name, phone, area, updatedAt: serverTimestamp() });
-        await updateProfile(currentUser, { displayName: name });
-        profileName.textContent = name ? name.split(' ')[0] : (currentUser.email ? currentUser.email.split('@')[0] : 'User');
-        profileModal.style.display = 'none';
-        await addDoc(collection(db, 'users', currentUser.uid, 'activity'), { action: 'update_profile', fields: ['name','phone','area'], ts: serverTimestamp() });
-        showToast('Profile saved');
-      }catch(e){
-        showToast('Save failed: ' + (e.message || e), true);
-      }
-    });
+const tE=document.getElementById('tabEmail'),tG=document.getElementById('tabGoogle');
+const eV=document.getElementById('emailView'),gV=document.getElementById('googleView');
+function showE(){eV.style.display='block';gV.style.display='none';tE.classList.add('on');tG.classList.remove('on')}
+function showG(){eV.style.display='none';gV.style.display='block';tG.classList.add('on');tE.classList.remove('on')}
+tE.addEventListener('click',showE);tG.addEventListener('click',showG);
+document.getElementById('showRegister').addEventListener('click',()=>{
+  document.getElementById('loginView').style.display='none';
+  document.getElementById('registerView').style.display='block';
+});
+document.getElementById('showLogin').addEventListener('click',()=>{
+  document.getElementById('registerView').style.display='none';
+  document.getElementById('loginView').style.display='block';
+});
 
-    logoutBtn.addEventListener('click', async ()=>{
-      if(!currentUser) return;
-      try{
-        await signOut(auth);
-        profileModal.style.display = 'none';
-        showToast('Signed out');
-      }catch(e){
-        showToast('Logout failed: ' + (e.message || e), true);
-      }
-    });
+function toast(msg,err){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  t.style.background=err?'var(--cr)':'var(--cg)';t.style.color=err?'#fff':'#010e07';
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.transition='all .4s';t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)'},2400);
+  setTimeout(()=>t.remove(),2800);
+}
+</script>
 
-    // ---------- Navigation helpers ----------
-    toCourses.addEventListener('click', ()=>{ location.href = 'courses.html'; });
-    toProducts.addEventListener('click', ()=>{ location.href = 'products.html'; });
-
-    // ---------- Simple toast ----------
-    function showToast(msg, error=false){
-      const t = document.createElement('div');
-      t.className = 'toast';
-      t.textContent = msg;
-      t.style.background = error ? '#ff4d4f' : '#00c2ff';
-      t.style.color = error ? '#fff' : '#021';
-      t.style.padding = '10px 14px';
-      document.body.appendChild(t);
-      setTimeout(()=>{ t.style.transition='all .4s'; t.style.opacity='0'; t.style.transform='translateY(10px)'; },2200);
-      setTimeout(()=>t.remove(),2600);
-    }
-
-    // ---------- gravatar fallback (md5) ----------
-    function gravatarFallback(email){
-      try{
-        const hash = md5((email||'').trim().toLowerCase());
-        return `https://www.gravatar.com/avatar/${hash}?d=identicon&s=80`;
-      }catch(e){
-        return 'file.svg';
-      }
-    }
-
-    // ---------- md5 (compact) ----------
-    function md5(s){
-      function L(k,d){return (k<<d)|(k>>>(32-d))}
-      function K(G,k){var I=(G&65535)+(k&65535);var H=(G>>>16)+(k>>>16)+(I>>>16);return (H<<16)|(I&65535)}
-      function r(a,b,c,d,e,f,g){a=K(a,K(K((b&c)|((~b)&d),e),g));return K(L(a,f),b)}
-      function o(a,b,c,d,e,f,g){a=K(a,K(K((b&d)|(c&(~d)),e),g));return K(L(a,f),b)}
-      function q(a,b,c,d,e,f,g){a=K(a,K(K(b^c^d,e),g));return K(L(a,f),b)}
-      function p(a,b,c,d,e,f,g){a=K(a,K(K(c^(b|(~d)),e),g));return K(L(a,f),b)}
-      function s(s){var n=[],b=(1<<8)-1;for(var i=0;i<s.length*8;i+=8)n[i>>5]|=(s.charCodeAt(i/8)&b)<<(i%32);return n}
-      function t(l){var a='',b=32;for(var i=0;i<4;i++)for(var j=0;j<8;j++){a+=((l>>>(i*8+j*4))&15).toString(16)}return a}
-      var x=s(unescape(encodeURIComponent(s||'')));
-      var a=1732584193,b=-271733879,c=-1732584194,d=271733878;
-      x[x.length>>0]=x.length*8;
-      for(var i=0;i<x.length;i+=16){
-        var olda=a,oldb=b,oldc=c,oldd=d;
-        a=r(a,b,c,d,x[i+0],7,-680876936);d=r(d,a,b,c,x[i+1],12,-389564586);
-        c=r(c,d,a,b,x[i+2],17,606105819);b=r(b,c,d,a,x[i+3],22,-1044525330);
-        a=r(a,b,c,d,x[i+4],7,-176418897);d=r(d,a,b,c,x[i+5],12,1200080426);
-        c=r(c,d,a,b,x[i+6],17,-1473231341);b=r(b,c,d,a,x[i+7],22,-45705983);
-        a=r(a,b,c,d,x[i+8],7,1770035416);d=r(d,a,b,c,x[i+9],12,-1958414417);
-        c=r(c,d,a,b,x[i+10],17,-42063);b=r(b,c,d,a,x[i+11],22,-1990404162);
-        a=r(a,b,c,d,x[i+12],7,1804603682);d=r(d,a,b,c,x[i+13],12,-40341101);
-        c=r(c,d,a,b,x[i+14],17,-1502002290);b=r(b,c,d,a,x[i+15],22,1236535329);
-        a=o(a,b,c,d,x[i+1],5,-165796510);d=o(d,a,b,c,x[i+6],9,-1069501632);
-        c=o(c,d,a,b,x[i+11],14,643717713);b=o(b,c,d,a,x[i+0],20,-373897302);
-        a=o(a,b,c,d,x[i+5],5,-701558691);d=o(d,a,b,c,x[i+10],9,38016083);
-        c=o(c,d,a,b,x[i+15],14,-660478335);b=o(b,c,d,a,x[i+4],20,-405537848);
-        a=o(a,b,c,d,x[i+9],5,568446438);d=o(d,a,b,c,x[i+14],9,-1019803690);
-        c=o(c,d,a,b,x[i+3],14,-187363961);b=o(b,c,d,a,x[i+8],20,1163531501);
-        a=o(a,b,c,d,x[i+13],5,-1444681467);d=o(d,a,b,c,x[i+2],9,-51403784);
-        c=o(c,d,a,b,x[i+7],14,1735328473);b=o(b,c,d,a,x[i+12],20,-1926607734);
-        a=q(a,b,c,d,x[i+5],4,-378558);d=q(d,a,b,c,x[i+8],11,-2022574463);
-        c=q(c,d,a,b,x[i+11],16,1839030562);b=q(b,c,d,a,x[i+14],23,-35309556);
-        a=q(a,b,c,d,x[i+1],4,-1530992060);d=q(d,a,b,c,x[i+4],11,1272893353);
-        c=q(c,d,a,b,x[i+7],16,-155497632);b=q(b,c,d,a,x[i+10],23,-1094730640);
-        a=q(a,b,c,d,x[i+13],4,681279174);d=q(d,a,b,c,x[i+0],11,-358537222);
-        c=q(c,d,a,b,x[i+3],16,-722521979);b=q(b,c,d,a,x[i+6],23,76029189);
-        a=q(a,b,c,d,x[i+9],4,-640364487);d=q(d,a,b,c,x[i+12],11,-421815835);
-        c=q(c,d,a,b,x[i+15],16,530742520);b=q(b,c,d,a,x[i+2],23,-995338651);
-        a=p(a,b,c,d,x[i+0],6,-198630844);d=p(d,a,b,c,x[i+7],10,1126891415);
-        c=p(c,d,a,b,x[i+14],15,-1416354905);b=p(b,c,d,a,x[i+5],21,-57434055);
-        a=p(a,b,c,d,x[i+12],6,1700485571);d=p(d,a,b,c,x[i+3],10,-1894986606);
-        c=p(c,d,a,b,x[i+10],15,-1051523);b=p(b,c,d,a,x[i+1],21,-2054922799);
-        a=p(a,b,c,d,x[i+8],6,1873313359);d=p(d,a,b,c,x[i+15],10,-30611744);
-        c=p(c,d,a,b,x[i+6],15,-1560198380);b=p(b,c,d,a,x[i+13],21,1309151649);
-        a=p(a,b,c,d,x[i+4],6,-145523070);d=p(d,a,b,c,x[i+11],10,-1120210379);
-        c=p(c,d,a,b,x[i+2],15,718787259);b=p(b,c,d,a,x[i+9],21,-343485551);
-        a=K(a,olda);b=K(b,oldb);c=K(c,oldc);d=K(d,oldd);
-      }
-      function toHex(n){return ('00000000'+(n>>>0).toString(16)).slice(-8)}
-      return toHex(a)+toHex(b)+toHex(c)+toHex(d);
-    }
-
-    // Close modals by clicking outside
-    window.addEventListener('click', (e)=>{
-      if(e.target === authModal) authModal.style.display = 'none';
-      if(e.target === profileModal) profileModal.style.display = 'none';
-    });
-
-    // Mobile nav close on link
-    $$('nav.main-nav a').forEach(a=>{
-      a.addEventListener('click', ()=>{
-        const nav = document.querySelector('nav.main-nav');
-        if(window.innerWidth < 880) nav.style.display='none';
-      });
-    });
-
-  </script>
+<!-- FIREBASE -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import{getFirestore,doc,setDoc,getDoc,updateDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",authDomain:"minibotix-a1b9a.firebaseapp.com",projectId:"minibotix-a1b9a",storageBucket:"minibotix-a1b9a.firebasestorage.app",messagingSenderId:"771169717230",appId:"1:771169717230:web:44848d73e548d0e0f8dcff"});
+const auth=getAuth(app),db=getFirestore(app),gp=new GoogleAuthProvider();
+let cu=null;
+const g=id=>document.getElementById(id);
+g('googleSignIn').addEventListener('click',async()=>{
+  try{await signInWithPopup(auth,gp);document.getElementById('authModal').classList.remove('open')}
+  catch(e){toast('Google sign-in failed',true)}
+});
+g('emailSignIn').addEventListener('click',async()=>{
+  try{await signInWithEmailAndPassword(auth,g('loginEmail').value.trim(),g('loginPassword').value);
+    document.getElementById('authModal').classList.remove('open');toast('Signed in')}
+  catch(e){toast('Sign in failed: '+e.message,true)}
+});
+g('createAccount').addEventListener('click',async()=>{
+  const name=g('regName').value.trim(),phone=g('regPhone').value.trim(),
+    email=g('regEmail').value.trim(),pass=g('regPass').value,pass2=g('regPass2').value;
+  if(pass.length<6){toast('Password min 6 characters',true);return}
+  if(pass!==pass2){toast('Passwords do not match',true);return}
+  try{
+    const uc=await createUserWithEmailAndPassword(auth,email,pass);
+    await updateProfile(uc.user,{displayName:name});
+    await setDoc(doc(db,'users',uc.user.uid),{name,phone,area:'',email,createdAt:serverTimestamp()});
+    document.getElementById('authModal').classList.remove('open');toast('Account created!');
+  }catch(e){toast('Register failed: '+e.message,true)}
+});
+onAuthStateChanged(auth,async user=>{
+  if(user){
+    cu=user;
+    const ref=doc(db,'users',user.uid),snap=await getDoc(ref);
+    if(!snap.exists())await setDoc(ref,{name:user.displayName||'',phone:'',area:'',email:user.email||'',createdAt:serverTimestamp()});
+    const ud=(await getDoc(ref)).data();
+    g('sou').style.display='none';g('sui').style.display='block';
+    g('pName').textContent=(ud.name||user.email||'User').split(' ')[0];
+    g('pAvatar').src=user.photoURL||'file.svg';
+    g('pfName').value=ud.name||'';g('pfPhone').value=ud.phone||'';g('pfArea').value=ud.area||'';
+  }else{
+    cu=null;g('sou').style.display='block';g('sui').style.display='none';
+  }
+});
+g('saveProfile').addEventListener('click',async()=>{
+  if(!cu){toast('Not signed in',true);return}
+  const name=g('pfName').value.trim(),phone=g('pfPhone').value.trim(),area=g('pfArea').value.trim();
+  try{
+    await updateDoc(doc(db,'users',cu.uid),{name,phone,area,updatedAt:serverTimestamp()});
+    await updateProfile(cu,{displayName:name});
+    g('pName').textContent=name.split(' ')[0];
+    document.getElementById('profileModal').classList.remove('open');toast('Profile saved');
+  }catch(e){toast('Save failed: '+e.message,true)}
+});
+g('logoutBtn').addEventListener('click',async()=>{
+  await signOut(auth);document.getElementById('profileModal').classList.remove('open');toast('Signed out');
+});
+</script>
 </body>
 </html>
-
-
