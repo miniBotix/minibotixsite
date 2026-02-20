@@ -1,539 +1,626 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MiniBotix · Apps Store</title>
-  <link rel="icon" href="file.svg" type="image/svg+xml">
-  <!-- Use Poppins (kept) + Inter fallback for crisp text -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#071126;
-      --card: rgba(255,255,255,0.04);
-      --glass: rgba(255,255,255,0.03);
-      --accent1: #007bff;
-      --accent2: #00d4ff;
-      --accent-grad: linear-gradient(90deg,var(--accent1),var(--accent2));
-      --blue:#2386ff;
-      --blue-dark:#1b6fd6;
-      --green:#2ecc71;
-      --green-dark:#27ae60;
-      --muted: rgba(255,255,255,0.7);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:'Poppins',Inter,system-ui,Segoe UI,Roboto,Arial;color:#fff;background:var(--bg);-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
-    a{color:inherit;text-decoration:none}
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Apps Store · MiniBotix</title>
+<link rel="icon" href="file.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030912;--bg1:#060e1c;--bg2:#0a1628;--bg3:#0d1e35;
+  --line:rgba(0,160,255,0.08);--line-hi:rgba(0,180,255,0.2);
+  --c:#00b4ff;--c2:#0052cc;--cg:#00ffa3;--co:#ff8c42;--cr:#ff4060;
+  --cp:#b06fff;--cy:#ffe066;
+  --txt:#daeeff;--txt2:#6b8fa8;
+  --glow:0 0 40px rgba(0,160,255,0.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(0,180,255,0.25)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--line-hi);border-radius:2px}
 
-    /* header */
-    header.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);z-index:90;box-shadow:0 2px 12px rgba(0,0,0,0.6)}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
-    .brand img{height:36px;width:36px;border-radius:6px}
-    nav.main-nav{display:flex;gap:22px;align-items:center}
-    nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.9);padding:6px 6px}
-    .back-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.9);cursor:pointer}
-    .user-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
-    .avatar{height:36px;width:36px;border-radius:50%;background:#223;display:inline-flex;align-items:center;justify-content:center}
+/* BG */
+#rain{position:fixed;inset:0;z-index:0;pointer-events:none}
+.gbg{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(var(--line)1px,transparent 1px),linear-gradient(90deg,var(--line)1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 20%,transparent 100%)}
+.rglow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:1000px;height:700px;
+  background:radial-gradient(ellipse at center,rgba(0,70,200,0.16)0%,transparent 70%);z-index:1;pointer-events:none}
+header,main,footer,section,.page{position:relative;z-index:10}
 
-    /* hero */
-    .hero{padding:110px 22px 40px 22px}
-    .hero-card{max-width:1100px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:44px;border-radius:14px;box-shadow:0 30px 60px rgba(3,7,20,0.6)}
-    .eyebrow{display:inline-block;background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;margin-bottom:16px;color:#aee9ff;font-weight:600}
-    .hero h1{font-size:44px;margin:6px 0 12px;line-height:1.03}
-    .hero p{color:rgba(255,255,255,0.85);margin-bottom:18px;max-width:900px}
+/* NAVBAR */
+header{position:fixed;top:0;left:0;right:0;height:62px;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+  background:rgba(3,9,18,0.9);backdrop-filter:blur(18px) saturate(1.6);
+  border-bottom:1px solid var(--line);transition:box-shadow .3s}
+header.scrolled{box-shadow:0 4px 50px rgba(0,0,0,.7)}
+.brand{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none}
+.bm{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--c2),var(--c));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;
+  box-shadow:0 4px 18px rgba(0,120,255,0.4);flex-shrink:0}
+.bn{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.bn em{color:var(--c);font-style:normal}
 
-    .hero-actions{display:flex;gap:14px}
-    .btn-primary{background:var(--accent-grad);padding:10px 16px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.45)}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer}
+nav.main-nav{display:flex;gap:1px}
+nav.main-nav a{font-size:11.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--txt2);padding:6px 10px;border-radius:6px;transition:color .2s,background .2s;position:relative}
+nav.main-nav a::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  width:0;height:1.5px;background:var(--c);border-radius:1px;transition:width .25s}
+nav.main-nav a:hover{color:var(--c);background:rgba(0,180,255,0.05)}
+nav.main-nav a:hover::after{width:55%}
+nav.main-nav a.active{color:var(--c)}
+nav.main-nav a.active::after{width:55%}
 
-    /* search */
-    .search-row{display:flex;gap:8px;margin-top:16px}
-    .search-input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;font-size:14px}
+.nr{display:flex;align-items:center;gap:12px}
+.cpill{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line-hi);
+  border-radius:999px;padding:5px 12px;cursor:default;user-select:none}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--cg);flex-shrink:0;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 7px var(--cg)}50%{opacity:.25;box-shadow:none}}
+.csw{width:22px;height:22px;flex-shrink:0}
+#navClock{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--cg)}
+.btn-o{background:transparent;border:1px solid var(--line-hi);padding:7px 14px;border-radius:7px;
+  color:var(--txt2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .2s}
+.btn-o:hover{border-color:var(--c);color:var(--c);background:rgba(0,180,255,0.05)}
+.btn-s{background:linear-gradient(135deg,var(--c2),var(--c));border:none;padding:8px 16px;border-radius:7px;
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;box-shadow:0 4px 18px rgba(0,100,255,0.35);transition:opacity .2s,transform .15s}
+.btn-s:hover{opacity:.88;transform:translateY(-1px)}
+.ham{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:7px;
+  background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.ham span{width:18px;height:1.5px;background:var(--txt2);border-radius:1px;display:block}
+#sui{display:none}
+.apill{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:var(--bg2);
+  border:1px solid var(--line-hi);border-radius:999px;cursor:pointer;transition:background .2s}
+.apill:hover{background:var(--bg3)}
+.apill img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.apill .aname{font-size:12px;font-weight:600}
+.apill .gear{color:var(--txt2);font-size:13px;margin-left:3px}
 
-    /* apps grid */
-    .section{padding:40px 22px 120px}
-    .container{max-width:1100px;margin:0 auto}
-    h2{font-size:24px;margin-bottom:10px}
-    .lead{color:rgba(255,255,255,0.8);margin-bottom:14px}
+#mobileNav{display:none;flex-direction:column;gap:2px;position:fixed;top:62px;left:0;right:0;
+  background:rgba(4,10,20,0.98);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);padding:12px 16px 20px;z-index:190}
+#mobileNav.open{display:flex}
+#mobileNav a{padding:11px 12px;border-radius:7px;font-size:13px;font-weight:500;
+  color:var(--txt2);border-left:2px solid transparent;transition:all .2s}
+#mobileNav a:hover{background:var(--bg2);color:var(--c);border-left-color:var(--c)}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-    .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s, box-shadow .22s}
-    .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.5)}
-    .card .img{height:140px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden}
-    .card .img img{max-width:100%;max-height:100%;object-fit:cover}
-    .price{font-weight:700;color:var(--accent2);margin-right:12px}
-    .card-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
+/* PAGE HERO */
+.page-hero{padding:120px 28px 72px;text-align:center}
+.page-hero .con{max-width:700px;margin:0 auto}
+.htag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-hi);border-radius:4px;
+  padding:5px 12px;margin-bottom:28px;font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--c);background:rgba(0,180,255,0.04)}
+.htag .hd{width:5px;height:5px;border-radius:50%;background:var(--cg);animation:blink 1.8s infinite}
+.page-hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(38px,5vw,64px);
+  letter-spacing:-.03em;line-height:1.05;margin-bottom:20px}
+.page-hero h1 .acc{background:linear-gradient(90deg,var(--c),var(--cg));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-hero p{color:var(--txt2);font-size:16px;line-height:1.72;max-width:560px;margin:0 auto 28px}
 
-    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-weight:600;font-size:13px;color:var(--muted)}
+/* SEARCH BAR */
+.search-row{display:flex;gap:8px;max-width:540px;margin:0 auto}
+.search-input{flex:1;padding:11px 16px;background:var(--bg2);border:1px solid var(--line-hi);
+  border-radius:8px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.search-input::placeholder{color:var(--txt2)}
+.search-input:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(0,180,255,0.08)}
 
-    /* Buttons: view (blue) left, download (green) right */
-    .btn-view{
-      background: linear-gradient(90deg,var(--blue),var(--blue-dark));
-      color: #fff;
-      padding:8px 12px;
-      border-radius:10px;
-      border:0;
-      cursor:pointer;
-      font-weight:600;
-      transition:transform .15s, box-shadow .15s;
-    }
-    .btn-view:hover{ transform: translateY(-2px); box-shadow:0 8px 18px rgba(14,78,173,0.18); }
+/* SEP */
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--line-hi),transparent)}
 
-    .btn-download{
-      background: linear-gradient(90deg,var(--green),var(--green-dark));
-      color: #021;
-      padding:8px 12px;
-      border-radius:10px;
-      border:0;
-      cursor:pointer;
-      font-weight:700;
-      transition:transform .15s, box-shadow .15s;
-    }
-    .btn-download:hover{ transform: translateY(-2px); box-shadow:0 8px 18px rgba(29,150,90,0.12); }
+/* SECTION */
+.section{padding:80px 28px}
+.con{max-width:1140px;margin:0 auto}
+.sl2{display:inline-flex;align-items:center;gap:7px;
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c);border:1px solid var(--line-hi);padding:4px 10px;border-radius:3px;
+  background:rgba(0,180,255,0.04);margin-bottom:16px}
+.sn{color:var(--txt2)}
+h2.sh{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,3.2vw,40px);
+  letter-spacing:-.02em;margin-bottom:12px}
+.lead{color:var(--txt2);font-size:15px;line-height:1.72;max-width:560px;margin-bottom:44px}
 
-    /* small screens adjustments */
-    @media (max-width:880px){
-      nav.main-nav{display:none}
-      .hero h1{font-size:28px}
-      .card .img{height:120px}
-    }
+/* APPS GRID */
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px}
 
-    /* small helper */
-    .muted{color:rgba(255,255,255,0.7);font-size:14px}
-    .small{font-size:13px;color:rgba(255,255,255,0.7)}
+/* APP CARD */
+.app-card{
+  background:var(--bg2);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;
+  position:relative;display:flex;flex-direction:column;
+}
+.app-card:hover{transform:translateY(-6px);border-color:var(--line-hi);box-shadow:var(--glow)}
+.app-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--c2),var(--c));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:2;
+}
+.app-card:hover::before{transform:scaleX(1)}
 
-    /* view modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999}
-    .modal{background:#071126;padding:18px;border-radius:12px;max-width:800px;width:94%;box-shadow:0 30px 60px rgba(3,7,20,0.7);border:1px solid rgba(255,255,255,0.03)}
-    .modal .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .modal .modal-body{color:rgba(255,255,255,0.9);line-height:1.5}
-    .modal .close-btn{background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer}
+.ac-thumb{height:148px;background:var(--bg1);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.ac-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.app-card:hover .ac-thumb img{transform:scale(1.04)}
+.ac-thumb .ac-placeholder{font-size:52px;opacity:.35}
 
-    /* toast */
-    .mini-toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 22px; padding: 10px 14px; border-radius: 8px; z-index: 9999; font-weight:600 }
-  </style>
+.ac-body{padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:8px}
+.ac-name{font-family:'Syne',sans-serif;font-weight:700;font-size:17px}
+.ac-desc{font-size:13px;color:var(--txt2);line-height:1.65;flex:1}
+
+.ac-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;background:rgba(255,255,255,0.03);border:1px solid var(--line);color:var(--txt2)}
+
+.ac-source{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--c);border:1px solid rgba(0,180,255,0.2);padding:3px 8px;border-radius:3px;
+  background:rgba(0,180,255,0.05);display:inline-block;margin-top:2px;align-self:flex-start}
+
+.ac-actions{display:flex;gap:8px;padding:16px 22px;border-top:1px solid var(--line);background:rgba(0,0,0,0.15)}
+.btn-view{flex:1;padding:9px 14px;background:transparent;border:1px solid var(--line-hi);
+  border-radius:7px;color:var(--txt2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.04em;cursor:pointer;transition:all .2s;text-align:center}
+.btn-view:hover{border-color:var(--c);color:var(--c);background:rgba(0,180,255,0.05)}
+.btn-dl{flex:1;padding:9px 14px;background:linear-gradient(135deg,#006644,var(--cg));
+  border:none;border-radius:7px;color:#010e07;font-family:'DM Sans',sans-serif;font-size:12px;
+  font-weight:700;letter-spacing:.04em;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,255,163,0.2);transition:opacity .2s,transform .15s;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-dl:hover{opacity:.88;transform:translateY(-1px)}
+
+/* TOP APPS HIGHLIGHT */
+.top-badge{position:absolute;top:12px;right:12px;z-index:3;
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 8px;border-radius:3px;background:rgba(0,0,0,0.6);border:1px solid var(--cy);
+  color:var(--cy);backdrop-filter:blur(4px)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:64px 28px;color:var(--txt2)}
+.empty-state .ei{font-size:52px;margin-bottom:16px;opacity:.4}
+.empty-state p{font-size:15px}
+
+/* MODAL */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.78);z-index:500;backdrop-filter:blur(9px)}
+.modal.open{display:flex}
+.mc{width:100%;max-width:560px;background:var(--bg2);border:1px solid var(--line-hi);
+  border-radius:14px;overflow:hidden;animation:sUp .3s ease}
+@keyframes sUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.mc-head{display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;border-bottom:1px solid var(--line)}
+.mc-head h3{font-family:'Syne',sans-serif;font-weight:700;font-size:18px}
+.mcc{color:var(--txt2);font-size:22px;cursor:pointer;line-height:1;transition:color .2s;background:none;border:none}
+.mcc:hover{color:#fff}
+.mc-body{padding:24px}
+.mc-thumb{width:100%;height:200px;background:var(--bg1);border-radius:10px;overflow:hidden;margin-bottom:20px;display:flex;align-items:center;justify-content:center}
+.mc-thumb img{width:100%;height:100%;object-fit:cover}
+.mc-desc{font-size:14px;color:var(--txt2);line-height:1.72;margin-bottom:20px}
+.mc-foot{display:flex;gap:10px;padding:16px 24px;border-top:1px solid var(--line);background:rgba(0,0,0,0.15)}
+
+/* AUTH MODAL */
+.tabs{display:flex;gap:4px;background:var(--bg1);border-radius:8px;padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:8px;border-radius:6px;border:none;background:transparent;color:var(--txt2);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.tab.on{background:linear-gradient(135deg,var(--c2),var(--c));color:#fff;box-shadow:0 2px 14px rgba(0,100,255,0.3)}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+.fg input{width:100%;padding:11px 14px;background:var(--bg1);border:1px solid var(--line-hi);
+  border-radius:7px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(0,180,255,0.08)}
+.ma{display:flex;gap:10px;margin-top:20px}
+.ma .btn-s{flex:1;padding:11px}
+.ma .btn-o{padding:11px 16px;font-size:13px}
+.mnote{font-size:11px;color:var(--txt2);margin-top:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:11px 18px;
+  border-radius:8px;font-size:13px;font-weight:500;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.5);
+  animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* FOOTER */
+footer{padding:26px 28px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.finfo{font-family:'DM Mono',monospace;font-size:11px;color:var(--txt2)}
+.flinks{display:flex;gap:18px;font-size:12px;color:var(--txt2)}
+.flinks a:hover{color:var(--c)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.18s}.d3{transition-delay:.26s}
+.d4{transition-delay:.34s}.d5{transition-delay:.42s}.d6{transition-delay:.5s}
+
+/* RESPONSIVE */
+@media(max-width:1020px){nav.main-nav{display:none}.ham{display:flex}}
+@media(max-width:640px){header{padding:0 16px}.section{padding:56px 16px}.page-hero{padding:100px 16px 56px}.search-row{flex-direction:column}.apps-grid{grid-template-columns:1fr}footer{flex-direction:column;align-items:flex-start}}
+</style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="nav">
-    <div style="display:flex;align-items:center;gap:18px">
-      <div class="back-btn" onclick="location.href='index.html'">← Back</div>
-      <div class="brand">
-        <img src="file.svg" alt="MiniBotix">
-        <div style="line-height:1">
-          <div style="font-weight:700">MiniBotix</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.6)">Apps Store</div>
-        </div>
-      </div>
-    </div>
+<canvas id="rain"></canvas>
+<div class="gbg"></div>
+<div class="rglow"></div>
 
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="courses.html">Courses</a>
-      <a href="products.html">Products</a>
-      <a href="componentshop.html">Components</a>
-      <a href="apps.html" style="text-decoration:underline">Apps</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-
-    <div style="display:flex;align-items:center;gap:12px">
-      <div id="userArea" class="user-pill">
-        <div id="signedOut" style="display:flex;gap:8px;align-items:center">
-          <button id="openAuth" class="btn-ghost" title="Sign In">Sign In</button>
-        </div>
-        <div id="signedIn" style="display:none;align-items:center;gap:10px">
-          <div id="profileName" style="font-weight:600"></div>
-          <div class="avatar" id="avatar">M</div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-card container">
-      <div class="eyebrow">MiniBotix · Apps · Free Tools</div>
-      <h1>MiniBotix Apps Store</h1>
-      <p class="lead">Discover free apps and download them easily. Search by app name or description and click View to learn more or Download to get the file.</p>
-
-      <div class="search-row" style="margin-top:18px;">
-        <input id="searchInput" class="search-input" placeholder="Search apps (type name and press Enter)" />
-        <button id="searchBtn" class="btn-primary">Search</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- APPS -->
-  <section id="appsSection" class="section">
-    <div class="container">
-      <h2>Top Apps</h2>
-      <p class="lead">Top picks from our collection.</p>
-
-      <div id="topApps" class="grid" style="margin-bottom:18px"></div>
-
-      <h2 style="margin-top:22px">All Apps</h2>
-      <p class="lead">Browse all available apps below.</p>
-      <div id="appsGrid" class="grid" aria-live="polite"></div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <div style="margin-bottom:8px">MiniBotix · Learn · Build · Innovate</div>
-      <small>© 2025 MiniBotix</small>
-    </div>
-  </footer>
-
-  <!-- View Modal -->
-  <div id="viewModalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true">
-    <div class="modal" role="document" id="viewModal">
-      <div class="modal-head">
-        <strong id="modalTitle">App name</strong>
-        <div>
-          <button class="close-btn" onclick="closeViewModal()" title="Close">✕</button>
-        </div>
-      </div>
-      <div class="modal-body" id="modalBody">
-        <!-- populated dynamically -->
-      </div>
-    </div>
+<!-- NAVBAR -->
+<header id="hdr">
+  <div class="brand" onclick="location.href='index.html'">
+    <div class="bm">M</div>
+    <div class="bn">Mini<em>Botix</em></div>
   </div>
 
-  <!-- Toast container (created dynamically) -->
+  <nav class="main-nav">
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="componentshop.html">Components</a>
+    <a href="projects.html">Projects</a>
+    <a href="apps.html" class="active">Apps</a>
+    <a href="about_us.html">About</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
 
-  <script type="module">
-    // ====== CONFIG ======
-    const firebaseConfig = {
-      apiKey: "AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",
-      authDomain: "minibotix-a1b9a.firebaseapp.com",
-      projectId: "minibotix-a1b9a",
-      storageBucket: "minibotix-a1b9a.firebasestorage.app",
-      messagingSenderId: "771169717230",
-      appId: "1:771169717230:web:44848d73e548d0e0f8dcff",
-      measurementId: "G-JQKFSBN4WP"
-    };
+  <div class="nr">
+    <div class="cpill">
+      <div class="pulse"></div>
+      <div class="csw">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="19" stroke="rgba(0,180,255,0.18)" stroke-width="1.5"/>
+          <circle cx="22" cy="22" r="1.5" fill="var(--cg)"/>
+          <line id="nh" x1="22" y1="22" x2="22" y2="12" stroke="var(--txt)" stroke-width="2" stroke-linecap="round"/>
+          <line id="nm" x1="22" y1="22" x2="22" y2="9"  stroke="var(--c)"  stroke-width="1.2" stroke-linecap="round"/>
+          <line id="ns" x1="22" y1="22" x2="22" y2="6"  stroke="var(--cg)" stroke-width="0.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span id="navClock">00:00:00</span>
+    </div>
+    <div id="sou"><button class="btn-o" id="openAuth">Sign In</button></div>
+    <div id="sui">
+      <div class="apill" id="openPS">
+        <img id="pAvatar" src="file.svg" alt="">
+        <span class="aname" id="pName">User</span>
+        <span class="gear">⚙</span>
+      </div>
+    </div>
+    <button class="ham" id="hamBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-    // Only one JSON now (app.json)
-    const APPS_JSON = 'app.json';
+<div id="mobileNav">
+  <a href="index.html" onclick="closeM()">Home</a>
+  <a href="courses.html" onclick="closeM()">Courses</a>
+  <a href="products.html" onclick="closeM()">Products</a>
+  <a href="componentshop.html" onclick="closeM()">Components</a>
+  <a href="projects.html" onclick="closeM()">Projects</a>
+  <a href="apps.html" onclick="closeM()">Apps</a>
+  <a href="about_us.html" onclick="closeM()">About</a>
+  <a href="index.html#contact" onclick="closeM()">Contact</a>
+</div>
 
-    // ====== FIREBASE IMPORTS ======
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged,
-      updateProfile
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      addDoc,
-      collection,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+<!-- PAGE HERO -->
+<div class="page-hero reveal">
+  <div class="con">
+    <div class="htag"><span class="hd"></span> MiniBotix · Free Tools</div>
+    <h1>Apps<br><span class="acc">Store</span></h1>
+    <p>Discover and download free tools built by the MiniBotix team. Search by name, tag, or description to find what you need.</p>
+    <div class="search-row">
+      <input id="searchInput" class="search-input" placeholder="Search apps by name, tag or description…" />
+      <button id="searchBtn" class="btn-s" style="white-space:nowrap;padding:11px 20px">Search →</button>
+    </div>
+  </div>
+</div>
 
-    // init firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+<div class="sep"></div>
 
-    // ====== UI REFS ======
-    const openAuthBtn = document.getElementById('openAuth');
-    const authModal = document.getElementById('authModal'); // not displayed here but preserved
-    const signedOut = document.getElementById('signedOut');
-    const signedIn = document.getElementById('signedIn');
-    const profileName = document.getElementById('profileName');
-    const avatar = document.getElementById('avatar');
+<!-- TOP APPS -->
+<section class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">01 /</span> Featured</div>
+      <h2 class="sh">Top Picks</h2>
+      <p class="lead">Hand-picked apps from our collection.</p>
+    </div>
+    <div class="apps-grid reveal d2" id="topApps"></div>
+  </div>
+</section>
 
-    const loginBtn = document.getElementById('loginBtn');
-    const registerBtn = document.getElementById('registerBtn');
-    const googleSignBtn = document.getElementById('googleSignBtn');
+<div class="sep"></div>
 
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
+<!-- ALL APPS -->
+<section class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">02 /</span> All Apps</div>
+      <h2 class="sh">Browse Everything</h2>
+      <p class="lead">Every app we've built, free to download.</p>
+    </div>
+    <div class="apps-grid reveal d2" id="appsGrid"></div>
+  </div>
+</section>
 
-    const topAppsEl = document.getElementById('topApps');
-    const appsGrid = document.getElementById('appsGrid');
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="bm" style="width:28px;height:28px;font-size:12px;border-radius:6px">M</div>
+    <div class="finfo">© 2025 MiniBotix · Learn · Build · Innovate</div>
+  </div>
+  <div class="flinks">
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="projects.html">Projects</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</footer>
 
-    const viewModalBackdrop = document.getElementById('viewModalBackdrop');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalBody = document.getElementById('modalBody');
+<!-- VIEW MODAL -->
+<div id="viewModal" class="modal">
+  <div class="mc">
+    <div class="mc-head">
+      <h3 id="modalTitle">App Name</h3>
+      <button class="mcc" id="viewClose">×</button>
+    </div>
+    <div class="mc-body">
+      <div class="mc-thumb"><img id="modalImg" src="" alt=""></div>
+      <p class="mc-desc" id="modalDesc"></p>
+      <div class="ac-tags" id="modalTags"></div>
+    </div>
+    <div class="mc-foot">
+      <button class="btn-view" id="viewClose2">← Back</button>
+      <a class="btn-dl" id="modalDl" href="#" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 4v-2h14v2H5z"/></svg>
+        Download
+      </a>
+    </div>
+  </div>
+</div>
 
-    // attach auth open if present
-    if(openAuthBtn) openAuthBtn.addEventListener('click', ()=> authOpen());
-
-    function authOpen(){ if(typeof authModal !== 'undefined') authModal.style.display = 'flex'; }
-    function authClose(){ if(typeof authModal !== 'undefined') authModal.style.display = 'none'; }
-    function showRegister(){ if(document.getElementById('loginView')) { document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; } }
-    function showLogin(){ if(document.getElementById('loginView')) { document.getElementById('loginView').style.display='block'; document.getElementById('registerView').style.display='none'; } }
-
-    // ====== STATE ======
-    let apps = [];      // loaded from app.json
-    let currentUser = null;
-
-    // ====== UTIL ======
-    function escapeHtml(s){ if(s===undefined || s===null) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-    function showToast(msg, isErr=false){
-      const div = document.createElement('div');
-      div.className = 'mini-toast';
-      div.style.background = isErr ? '#ff6b6b' : 'linear-gradient(90deg,#00c6ff,#0066ff)';
-      div.style.color = isErr ? '#fff' : '#021';
-      div.textContent = msg;
-      document.body.appendChild(div);
-      setTimeout(()=>{ div.style.transition='all .4s'; div.style.opacity='0'; div.style.transform='translateY(8px)'; }, 2600);
-      setTimeout(()=>div.remove(),3000);
-    }
-
-    // ====== LOAD JSON (only app.json) ======
-    async function loadAppsJson(){
-      try{
-        const res = await fetch(APPS_JSON, {cache:'no-store'});
-        if(!res.ok) throw new Error('app.json fetch failed: '+res.status);
-        const aJson = await res.json();
-        apps = Array.isArray(aJson) ? aJson : [];
-        // normalize apps (ensure id/name/description/image/download_link exist)
-        apps = apps.map((p, idx) => ({
-          id: p.id || p.slug || ('app_'+idx),
-          name: p.name || p.title || 'Unnamed App',
-          description: p.description || p.desc || '',
-          image: p.image || p.img || '',
-          download_link: p.download_link || p.download || p.link || '',
-          sourceName: p.source || p.sourceName || '',
-          tags: Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(',').map(t=>t.trim()) : [])
-        }));
-        renderAll();
-      }catch(e){
-        console.error('loadAppsJson error', e);
-        showToast('Failed to load app list', true);
-      }
-    }
-
-    // ====== RENDER ======
-    function renderAll(){
-      renderTopApps();
-      renderAppsGrid();
-    }
-
-    function renderTopApps(){
-      topAppsEl.innerHTML = '';
-      // keep consistent: take first 4 apps as "top" (no download count)
-      const top = apps.slice(0,4);
-      top.forEach(p => {
-        const card = createAppCard(p, true);
-        topAppsEl.appendChild(card);
-      });
-    }
-
-    function renderAppsGrid(){
-      appsGrid.innerHTML = '';
-      apps.forEach(p => {
-        const card = createAppCard(p, false);
-        appsGrid.appendChild(card);
-      });
-    }
-
-    function createAppCard(p, compact=false){
-      const el = document.createElement('div');
-      el.className = 'card';
-      el.id = 'app_' + p.id;
-      const imgSrc = p.image || ('https://via.placeholder.com/320x140?text='+encodeURIComponent(p.name));
-      const desc = p.description || '';
-      const badgeText = p.sourceName || '—';
-      el.innerHTML = `
-        <div class="img"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(p.name)}"></div>
-        <div style="font-weight:700;font-size:16px;margin-bottom:6px">${escapeHtml(p.name)}</div>
-        <div class="small muted" style="margin-bottom:8px">${escapeHtml(desc)}</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
-          <div class="muted"><span class="badge">${escapeHtml(badgeText)}</span></div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div class="card-actions">
-              <button class="btn-view" data-id="${escapeHtml(p.id)}" data-action="view">View</button>
-              <a class="btn-download" data-id="${escapeHtml(p.id)}" data-action="download" href="${escapeHtml(p.download_link)}" target="_blank" rel="noopener">Download</a>
-            </div>
-          </div>
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal">
+  <div class="mc" style="max-width:420px">
+    <div class="mc-head"><h3>Access MiniBotix</h3><button class="mcc" id="authClose">×</button></div>
+    <div class="mc-body" style="padding:24px">
+      <div class="tabs">
+        <button class="tab on" id="tabEmail">Email</button>
+        <button class="tab" id="tabGoogle">Google</button>
+      </div>
+      <div id="emailView">
+        <div id="loginView">
+          <div class="fg"><label>Email</label><input id="loginEmail" type="email" placeholder="you@domain.com"></div>
+          <div class="fg"><label>Password</label><input id="loginPassword" type="password" placeholder="Password"></div>
+          <div class="ma"><button class="btn-s" id="emailSignIn">Sign In</button><button class="btn-o" id="showRegister">Register</button></div>
         </div>
-      `;
-      // attach handlers
-      el.querySelectorAll('[data-action="view"]').forEach(btn=>{
-        btn.addEventListener('click', ()=> viewApp(p.id));
-      });
-      // track download clicks to optionally record analytics (but allow default navigation)
-      el.querySelectorAll('[data-action="download"]').forEach(a=>{
-        a.addEventListener('click', (ev)=>{
-          // optional: you may want to prevent default and do some checks or conversions for drive links.
-          // We do not prevent opening — we only record (async) and show toast.
-          showToast('Starting download...');
-          recordDownload(p.id);
-        });
-      });
-      return el;
-    }
-
-    // ====== VIEW/DETAILS ======
-    function viewApp(id){
-      const p = apps.find(x=>x.id===id);
-      if(!p) return showToast('App not found', true);
-      modalTitle.textContent = p.name;
-      modalBody.innerHTML = `
-        <div style="display:flex;gap:14px;align-items:flex-start">
-          <div style="flex:0 0 160px">
-            <div style="width:160px;height:100px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center">
-              <img src="${escapeHtml(p.image || '')}" alt="${escapeHtml(p.name)}" style="max-width:100%;max-height:100%;object-fit:cover">
-            </div>
-          </div>
-          <div style="flex:1">
-            <p style="margin:0 0 8px;color:rgba(255,255,255,0.9)">${escapeHtml(p.description)}</p>
-            <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-              <a class="btn-view" href="#" id="modalViewBtn">Details</a>
-              <a class="btn-download" href="${escapeHtml(p.download_link)}" target="_blank" rel="noopener">Download</a>
-            </div>
-          </div>
+        <div id="registerView" style="display:none">
+          <div class="fg"><label>Full Name</label><input id="regName" type="text" placeholder="Your name"></div>
+          <div class="fg"><label>Phone</label><input id="regPhone" type="tel" placeholder="+91 9XXXXXXXXX"></div>
+          <div class="fg"><label>Email</label><input id="regEmail" type="email" placeholder="you@domain.com"></div>
+          <div class="fg"><label>Password</label><input id="regPass" type="password" placeholder="Min 6 characters"></div>
+          <div class="fg"><label>Confirm</label><input id="regPass2" type="password" placeholder="Confirm password"></div>
+          <div class="ma"><button class="btn-s" id="createAccount">Create Account</button><button class="btn-o" id="showLogin">Sign In</button></div>
         </div>
-      `;
-      // show modal
-      openViewModal();
-      const modalViewBtn = document.getElementById('modalViewBtn');
-      if(modalViewBtn){
-        modalViewBtn.addEventListener('click', (ev)=>{ ev.preventDefault(); closeViewModal(); alert(`${p.name}\n\n${p.description}`); });
-      }
-    }
+      </div>
+      <div id="googleView" style="display:none;padding-top:8px">
+        <button id="googleSignIn" class="btn-s" style="width:100%;padding:13px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px">
+          <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16.1 19 13 24 13c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.5-3.3-11.2-7.9L6.1 33.4C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.6l6.2 5.2C42.3 35.5 44 30.1 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+      <p class="mnote">Your data is stored securely in Firestore.</p>
+    </div>
+  </div>
+</div>
 
-    function openViewModal(){
-      viewModalBackdrop.style.display = 'flex';
-    }
-    function closeViewModal(){
-      viewModalBackdrop.style.display = 'none';
-    }
+<!-- PROFILE MODAL -->
+<div id="profileModal" class="modal">
+  <div class="mc" style="max-width:420px">
+    <div class="mc-head"><h3>Profile Settings</h3><button class="mcc" id="profileClose">×</button></div>
+    <div class="mc-body" style="padding:24px">
+      <div class="fg"><label>Name</label><input id="pfName" type="text"></div>
+      <div class="fg"><label>Phone</label><input id="pfPhone" type="tel"></div>
+      <div class="fg"><label>Delivery Area</label><input id="pfArea" type="text"></div>
+      <div class="ma"><button class="btn-s" id="saveProfile">Save Changes</button><button class="btn-o" id="logoutBtn">Logout</button></div>
+    </div>
+  </div>
+</div>
 
-    viewModalBackdrop.addEventListener('click', (ev)=>{
-      if(ev.target === viewModalBackdrop) closeViewModal();
+<script>
+/* RAIN */
+(function(){
+  const cv=document.getElementById('rain'),ctx=cv.getContext('2d');
+  let W,H,dr=[];
+  function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;init()}
+  function init(){dr=[];for(let i=0;i<180;i++){dr.push({x:Math.random()*W,y:Math.random()*H-H,len:Math.random()*35+10,sp:Math.random()*3.5+2,sw:Math.random()*1.2+0.3,a:0.04+Math.random()*0.09,drift:Math.random()*0.5-0.25,ph:Math.random()*Math.PI*2})}}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    dr.forEach(d=>{
+      const g=ctx.createLinearGradient(d.x,d.y,d.x+d.drift*8,d.y+d.len);
+      g.addColorStop(0,'rgba(0,180,255,0)');g.addColorStop(0.5,`rgba(0,190,255,${d.a})`);g.addColorStop(1,'rgba(100,220,255,0)');
+      ctx.beginPath();ctx.strokeStyle=g;ctx.lineWidth=d.sw;
+      ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+d.drift*4,d.y+d.len);ctx.stroke();
+      d.y+=d.sp;d.x+=Math.sin(d.y*0.012+d.ph)*0.4;
+      if(d.y>H+50){d.y=-50;d.x=Math.random()*W}
+      d.a=0.04+Math.random()*0.08;
     });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',rs);rs();draw();
+})();
 
-    // ====== RECORD DOWNLOAD (optional analytics) ======
-    async function recordDownload(appId){
-      // only record if signed in (optional)
-      try{
-        if(!currentUser) return;
-        const rec = { appId, uid: currentUser.uid, createdAt: serverTimestamp() };
-        await addDoc(collection(db, 'downloads'), rec);
-      }catch(e){ console.warn('recordDownload failed', e); }
-    }
+/* CLOCK */
+function rpt(cx,cy,ang,len){return{x:cx+Math.sin(ang)*len,y:cy-Math.cos(ang)*len}}
+function setHand(id,ang,cx,cy,len){const el=document.getElementById(id);if(!el)return;const p=rpt(cx,cy,ang,len);el.setAttribute('x2',p.x.toFixed(2));el.setAttribute('y2',p.y.toFixed(2))}
+function updateClock(){
+  const n=new Date(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds(),ms=n.getMilliseconds();
+  const sa=(s+ms/1000)*(Math.PI*2/60),ma=(m+s/60)*(Math.PI*2/60),ha=(h%12+m/60)*(Math.PI*2/12);
+  setHand('nh',ha,22,22,10);setHand('nm',ma,22,22,13);setHand('ns',sa,22,22,15);
+  const pad=v=>String(v).padStart(2,'0');
+  document.getElementById('navClock').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+setInterval(updateClock,80);updateClock();
 
-    // ====== SEARCH ======
-    function doSearch(queryText){
-      const q = String(queryText || '').trim().toLowerCase();
-      if(!q) { showToast('Type something to search', true); return; }
-      // find app by name or description or tags
-      const results = apps.filter(a => {
-        return (a.name || '').toLowerCase().includes(q)
-          || (a.description || '').toLowerCase().includes(q)
-          || (a.tags || []).some(t => String(t).toLowerCase().includes(q));
-      });
-      if(results.length === 0){ showToast('No results found', true); return; }
-      // show first result by scrolling and highlight
-      const first = results[0];
-      scrollToApp(first.id);
-      highlightApp(first.id);
-    }
+/* SCROLL */
+window.addEventListener('scroll',()=>document.getElementById('hdr').classList.toggle('scrolled',scrollY>40));
+const io=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    function scrollToApp(appId){
-      const node = document.getElementById('app_' + appId);
-      if(node){
-        node.scrollIntoView({behavior:'smooth', block:'center'});
+/* MOBILE NAV */
+document.getElementById('hamBtn').addEventListener('click',()=>document.getElementById('mobileNav').classList.toggle('open'));
+function closeM(){document.getElementById('mobileNav').classList.remove('open')}
+
+/* TOAST */
+function toast(msg,err){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  t.style.background=err?'var(--cr)':'var(--cg)';t.style.color=err?'#fff':'#010e07';
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.transition='all .4s';t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)'},2400);
+  setTimeout(()=>t.remove(),2800);
+}
+
+/* MODALS */
+const AM=document.getElementById('authModal'),PM=document.getElementById('profileModal'),VM=document.getElementById('viewModal');
+document.getElementById('openAuth').addEventListener('click',()=>AM.classList.add('open'));
+document.getElementById('authClose').addEventListener('click',()=>AM.classList.remove('open'));
+document.getElementById('profileClose').addEventListener('click',()=>PM.classList.remove('open'));
+document.getElementById('openPS').addEventListener('click',()=>PM.classList.add('open'));
+document.getElementById('viewClose').addEventListener('click',()=>VM.classList.remove('open'));
+document.getElementById('viewClose2').addEventListener('click',()=>VM.classList.remove('open'));
+window.addEventListener('click',e=>{
+  if(e.target===AM)AM.classList.remove('open');
+  if(e.target===PM)PM.classList.remove('open');
+  if(e.target===VM)VM.classList.remove('open');
+});
+const tE=document.getElementById('tabEmail'),tG=document.getElementById('tabGoogle'),eV=document.getElementById('emailView'),gV=document.getElementById('googleView');
+tE.addEventListener('click',()=>{eV.style.display='block';gV.style.display='none';tE.classList.add('on');tG.classList.remove('on')});
+tG.addEventListener('click',()=>{eV.style.display='none';gV.style.display='block';tG.classList.add('on');tE.classList.remove('on')});
+document.getElementById('showRegister').addEventListener('click',()=>{document.getElementById('loginView').style.display='none';document.getElementById('registerView').style.display='block'});
+document.getElementById('showLogin').addEventListener('click',()=>{document.getElementById('registerView').style.display='none';document.getElementById('loginView').style.display='block'});
+
+/* APPS LOGIC */
+const APPS_JSON='app.json';
+let apps=[];
+
+function esc(s){return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+
+function renderCard(p,isTop){
+  const el=document.createElement('div');
+  el.className='app-card';
+  el.id='app_'+p.id;
+  const imgSrc=p.image||'';
+  const tags=(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('');
+  el.innerHTML=`
+    ${isTop?'<div class="top-badge">⭐ Featured</div>':''}
+    <div class="ac-thumb">
+      ${imgSrc
+        ?`<img src="${esc(imgSrc)}" alt="${esc(p.name)}" onerror="this.parentNode.innerHTML='<span class=ac-placeholder>📱</span>'">`
+        :'<span class="ac-placeholder">📱</span>'
       }
-    }
+    </div>
+    <div class="ac-body">
+      <div class="ac-name">${esc(p.name)}</div>
+      <div class="ac-desc">${esc(p.description)}</div>
+      ${p.sourceName?`<span class="ac-source">${esc(p.sourceName)}</span>`:''}
+      ${tags?`<div class="ac-tags">${tags}</div>`:''}
+    </div>
+    <div class="ac-actions">
+      <button class="btn-view" data-id="${esc(p.id)}">Details</button>
+      <a class="btn-dl" href="${esc(p.download_link)}" target="_blank" rel="noopener" data-id="${esc(p.id)}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 4v-2h14v2H5z"/></svg>
+        Download
+      </a>
+    </div>
+  `;
+  el.querySelector('.btn-view').addEventListener('click',()=>openView(p.id));
+  el.querySelector('.btn-dl').addEventListener('click',()=>{toast('Starting download…');recordDl(p.id)});
+  return el;
+}
 
-    function highlightApp(appId){
-      const node = document.getElementById('app_' + appId);
-      if(!node) return;
-      const orig = node.style.boxShadow;
-      node.style.boxShadow = '0 30px 60px rgba(0,200,255,0.18)';
-      setTimeout(()=> node.style.boxShadow = orig, 2400);
-    }
+function renderAll(){
+  const topEl=document.getElementById('topApps');
+  const allEl=document.getElementById('appsGrid');
+  topEl.innerHTML='';allEl.innerHTML='';
+  if(!apps.length){
+    allEl.innerHTML='<div class="empty-state"><div class="ei">📭</div><p>No apps found. Check back soon.</p></div>';
+    return;
+  }
+  apps.slice(0,4).forEach(p=>topEl.appendChild(renderCard(p,true)));
+  apps.forEach(p=>allEl.appendChild(renderCard(p,false)));
+}
 
-    // wire search UI
-    searchBtn.addEventListener('click', ()=> doSearch(searchInput.value));
-    searchInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter') doSearch(searchInput.value); });
+function openView(id){
+  const p=apps.find(x=>x.id===id);if(!p)return;
+  document.getElementById('modalTitle').textContent=p.name;
+  document.getElementById('modalDesc').textContent=p.description||'No description available.';
+  const img=document.getElementById('modalImg');
+  img.src=p.image||'';img.alt=p.name;
+  document.getElementById('modalDl').href=p.download_link||'#';
+  const tagsEl=document.getElementById('modalTags');
+  tagsEl.innerHTML=(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('');
+  VM.classList.add('open');
+}
 
-    // ====== AUTH (email/google) - keep as before ======
-    async function emailLogin(){
-      const emailEl = document.getElementById('loginEmail');
-      const passEl = document.getElementById('loginPass');
-      if(!emailEl || !passEl) { showToast('Login elements missing', true); return; }
-      const email = emailEl.value.trim();
-      const pass = passEl.value;
-      try{
-        await signInWithEmailAndPassword(auth, email, pass);
-        authClose();
-        showToast('Signed in');
-      }catch(e){ console.error(e); showToast('Login failed: ' + (e.message || e), true); }
-    }
+async function loadApps(){
+  try{
+    const res=await fetch(APPS_JSON,{cache:'no-store'});
+    if(!res.ok)throw new Error(res.status);
+    const raw=await res.json();
+    apps=(Array.isArray(raw)?raw:[]).map((p,i)=>({
+      id:p.id||p.slug||('app_'+i),
+      name:p.name||p.title||'Unnamed App',
+      description:p.description||p.desc||'',
+      image:p.image||p.img||'',
+      download_link:p.download_link||p.download||p.link||'',
+      sourceName:p.source||p.sourceName||'',
+      tags:Array.isArray(p.tags)?p.tags:(p.tags?String(p.tags).split(',').map(t=>t.trim()):[])
+    }));
+    renderAll();
+  }catch(e){
+    console.error(e);
+    document.getElementById('appsGrid').innerHTML='<div class="empty-state"><div class="ei">⚠️</div><p>Failed to load apps. Ensure app.json is present.</p></div>';
+  }
+}
 
-    async function emailRegister(){
-      const nameEl = document.getElementById('regName');
-      const phoneEl = document.getElementById('regPhone');
-      const emailEl = document.getElementById('regEmail');
-      const passEl = document.getElementById('regPass');
-      if(!nameEl || !phoneEl || !emailEl || !passEl){ showToast('Register elements missing', true); return; }
-      const name = nameEl.value.trim();
-      const phone = phoneEl.value.trim();
-      const email = emailEl.value.trim();
-      const pass = passEl.value;
-      if(pass.length < 6){ showToast('Password must be at least 6 chars', true); return; }
-      try{
-        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        await updateProfile(cred.user, { displayName: name });
-        // create users doc
-        await setDoc(doc(db, 'users', cred.user.uid), { name, email, phone, createdAt: serverTimestamp() }, { merge: true });
-        authClose();
-        showToast('Account created');
-      }catch(e){ console.error(e); showToast('Register failed: ' + (e.message || e), true); }
-    }
+function doSearch(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  if(!q){toast('Type something to search',true);return;}
+  const res=apps.filter(a=>(a.name||'').toLowerCase().includes(q)||(a.description||'').toLowerCase().includes(q)||(a.tags||[]).some(t=>t.toLowerCase().includes(q)));
+  if(!res.length){toast('No results found',true);return;}
+  const node=document.getElementById('app_'+res[0].id);
+  if(node){
+    node.scrollIntoView({behavior:'smooth',block:'center'});
+    const orig=node.style.boxShadow;
+    node.style.transition='box-shadow .3s';
+    node.style.boxShadow='0 0 0 2px var(--c), 0 0 40px rgba(0,180,255,0.25)';
+    setTimeout(()=>node.style.boxShadow=orig,2400);
+  }
+  toast(`Found ${res.length} result${res.length>1?'s':''}`);
+}
 
-    async function googleSignIn(){
-      const provider = new GoogleAuthProvider();
-      try{
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        await setDoc(doc(db, 'users', user.uid), { name: user.displayName, email: user.email, photoURL: user.photoURL, lastSignIn: serverTimestamp() }, { merge: true });
-        authClose(); showToast('Signed in with Google');
-      }catch(e){ console.error(e); showToast('Google sign-in failed: ' + (e.message || e), true); }
-    }
+document.getElementById('searchBtn').addEventListener('click',doSearch);
+document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
 
-    async function doSignOut(){
-      try{ await signOut(auth); showToast('Signed out'); }catch(e){ console.warn(e); }
-    }
+function recordDl(id){/* analytics hook — extend as needed */}
 
-    // monitor auth state
-    onAuthStateChanged(auth, async (user)=>{
-      currentUser = user || null;
-      if(user){
-        if(signedOut) signedOut.style.display='none';
-        if(signedIn) signedIn.style.display='flex';
-        if(profileName) profileName.textContent = user.displayName ? user.displayName.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'User');
-        if(avatar) avatar.textContent = (user.displayName ? user.displayName[0] : (user.email ? user.email[0] : 'U')).toUpperCase();
-      } else {
-        if(signedOut) signedOut.style.display='flex';
-        if(signedIn) signedIn.style.display='none';
-        if(profileName) profileName.textContent = '';
-        if(avatar) avatar.textContent = 'M';
-      }
-    });
+loadApps();
+</script>
 
-    // ====== INIT ======
-    loadAppsJson();
-
-    // expose for debug
-    window.doSearch = doSearch;
-    window.viewApp = viewApp;
-
-  </script>
-
+<!-- FIREBASE -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import{getFirestore,doc,setDoc,getDoc,updateDoc,addDoc,collection,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",authDomain:"minibotix-a1b9a.firebaseapp.com",projectId:"minibotix-a1b9a",storageBucket:"minibotix-a1b9a.firebasestorage.app",messagingSenderId:"771169717230",appId:"1:771169717230:web:44848d73e548d0e0f8dcff"});
+const auth=getAuth(app),db=getFirestore(app),gp=new GoogleAuthProvider();
+let cu=null;const g=id=>document.getElementById(id);
+g('googleSignIn').addEventListener('click',async()=>{try{const r=await signInWithPopup(auth,gp);await setDoc(doc(db,'users',r.user.uid),{name:r.user.displayName,email:r.user.email,photoURL:r.user.photoURL,lastSignIn:serverTimestamp()},{merge:true});document.getElementById('authModal').classList.remove('open');toast('Signed in with Google')}catch(e){toast('Google sign-in failed',true)}});
+g('emailSignIn').addEventListener('click',async()=>{try{await signInWithEmailAndPassword(auth,g('loginEmail').value.trim(),g('loginPassword').value);document.getElementById('authModal').classList.remove('open');toast('Signed in')}catch(e){toast('Sign in failed: '+e.message,true)}});
+g('createAccount').addEventListener('click',async()=>{const name=g('regName').value.trim(),phone=g('regPhone').value.trim(),email=g('regEmail').value.trim(),pass=g('regPass').value,pass2=g('regPass2').value;if(pass.length<6){toast('Password min 6 chars',true);return}if(pass!==pass2){toast('Passwords do not match',true);return}try{const uc=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(uc.user,{displayName:name});await setDoc(doc(db,'users',uc.user.uid),{name,phone,area:'',email,createdAt:serverTimestamp()});document.getElementById('authModal').classList.remove('open');toast('Account created!')}catch(e){toast('Register failed: '+e.message,true)}});
+onAuthStateChanged(auth,async user=>{if(user){cu=user;const ref=doc(db,'users',user.uid),snap=await getDoc(ref);if(!snap.exists())await setDoc(ref,{name:user.displayName||'',phone:'',area:'',email:user.email||'',createdAt:serverTimestamp()});const ud=(await getDoc(ref)).data();g('sou').style.display='none';g('sui').style.display='block';g('pName').textContent=(ud.name||user.email||'User').split(' ')[0];g('pAvatar').src=user.photoURL||'file.svg';g('pfName').value=ud.name||'';g('pfPhone').value=ud.phone||'';g('pfArea').value=ud.area||''}else{cu=null;g('sou').style.display='block';g('sui').style.display='none'}});
+g('saveProfile').addEventListener('click',async()=>{if(!cu){toast('Not signed in',true);return}const name=g('pfName').value.trim(),phone=g('pfPhone').value.trim(),area=g('pfArea').value.trim();try{await updateDoc(doc(db,'users',cu.uid),{name,phone,area,updatedAt:serverTimestamp()});await updateProfile(cu,{displayName:name});g('pName').textContent=name.split(' ')[0];document.getElementById('profileModal').classList.remove('open');toast('Profile saved')}catch(e){toast('Save failed: '+e.message,true)}});
+g('logoutBtn').addEventListener('click',async()=>{await signOut(auth);document.getElementById('profileModal').classList.remove('open');toast('Signed out')});
+</script>
 </body>
 </html>
