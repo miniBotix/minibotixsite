@@ -1,121 +1,887 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="MiniBotix - About Us" />
-  <title>MiniBotix · About Us</title>
-  <link rel="icon" href="file.svg" type="image/svg+xml">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --accent-start:#007bff;
-      --accent-end:#00d4ff;
-      --glass: rgba(255,255,255,0.06);
-      --card-bg: rgba(255,255,255,0.03);
-      --muted: rgba(255,255,255,0.75);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#071126;overflow-x:hidden}
-    a{color:inherit;text-decoration:none}
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>About Us · MiniBotix</title>
+<link rel="icon" href="file.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030912;--bg1:#060e1c;--bg2:#0a1628;--bg3:#0d1e35;
+  --line:rgba(0,160,255,0.08);--line-hi:rgba(0,180,255,0.2);
+  --c:#00b4ff;--c2:#0052cc;--cg:#00ffa3;--co:#ff8c42;--cr:#ff4060;
+  --cp:#b06fff;--cy:#ffe066;
+  --txt:#daeeff;--txt2:#6b8fa8;
+  --glow:0 0 40px rgba(0,160,255,0.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(0,180,255,0.25)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--line-hi);border-radius:2px}
 
-    header.nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);z-index:50;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .nav-left{display:flex;align-items:center;gap:12px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:#fff}
-    .brand img{height:36px;width:36px;object-fit:contain;border-radius:6px}
-    nav.main-nav{display:flex;gap:18px;align-items:center}
-    nav.main-nav a{font-weight:500;color:rgba(255,255,255,0.92);padding:6px 8px;border-radius:6px;transition:all .18s}
-    nav.main-nav a:hover{transform:translateY(-3px);color:#00e0ff}
-    .btn-primary{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));padding:9px 14px;border-radius:999px;border:none;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)}
-    .section{padding:80px 22px;background:transparent}
-    .container{max-width:1100px;margin:0 auto}
-    .section h2{font-size:28px;color:#fff;margin-bottom:12px;text-align:center}
-    .section p.lead{color:rgba(255,255,255,0.85);margin-bottom:30px;text-align:center}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:18px}
-    .card{background:var(--card-bg);padding:22px;border-radius:14px;border:1px solid rgba(255,255,255,0.03);transition:transform .25s ease,box-shadow .25s;cursor:default}
-    .card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
-    .card h3{font-size:20px;margin-bottom:8px;color:#00d4ff}
-    .card p{font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5}
-    footer{padding:28px 22px;background:transparent;text-align:center;color:rgba(255,255,255,0.7)}
-    .hero{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:120px 20px 80px 20px;text-align:center}
-    .hero-card{width:min(900px,94%);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));padding:40px;border-radius:14px;backdrop-filter:blur(6px);box-shadow:0 30px 80px rgba(3,7,20,.6)}
-    .eyebrow{display:inline-block;background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:999px;margin-bottom:12px;font-weight:600;color:#aee9ff}
-  </style>
+/* BG */
+#rain{position:fixed;inset:0;z-index:0;pointer-events:none}
+.gbg{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(var(--line)1px,transparent 1px),linear-gradient(90deg,var(--line)1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 20%,transparent 100%)}
+.rglow{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:1000px;height:700px;
+  background:radial-gradient(ellipse at center,rgba(0,70,200,0.16)0%,transparent 70%);z-index:1;pointer-events:none}
+header,main,footer,section,.page{position:relative;z-index:10}
+
+/* NAVBAR */
+header{position:fixed;top:0;left:0;right:0;height:62px;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+  background:rgba(3,9,18,0.9);backdrop-filter:blur(18px) saturate(1.6);
+  border-bottom:1px solid var(--line);transition:box-shadow .3s}
+header.scrolled{box-shadow:0 4px 50px rgba(0,0,0,.7)}
+.brand{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none}
+.bm{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--c2),var(--c));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;
+  box-shadow:0 4px 18px rgba(0,120,255,0.4);flex-shrink:0}
+.bn{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.bn em{color:var(--c);font-style:normal}
+
+nav.main-nav{display:flex;gap:1px}
+nav.main-nav a{font-size:11.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--txt2);padding:6px 10px;border-radius:6px;transition:color .2s,background .2s;position:relative}
+nav.main-nav a::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  width:0;height:1.5px;background:var(--c);border-radius:1px;transition:width .25s}
+nav.main-nav a:hover{color:var(--c);background:rgba(0,180,255,0.05)}
+nav.main-nav a:hover::after{width:55%}
+nav.main-nav a.active{color:var(--c)}
+nav.main-nav a.active::after{width:55%}
+
+.nr{display:flex;align-items:center;gap:12px}
+.cpill{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line-hi);
+  border-radius:999px;padding:5px 12px;cursor:default;user-select:none}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--cg);flex-shrink:0;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 7px var(--cg)}50%{opacity:.25;box-shadow:none}}
+.csw{width:22px;height:22px;flex-shrink:0}
+#navClock{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--cg)}
+.btn-o{background:transparent;border:1px solid var(--line-hi);padding:7px 14px;border-radius:7px;
+  color:var(--txt2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .2s}
+.btn-o:hover{border-color:var(--c);color:var(--c);background:rgba(0,180,255,0.05)}
+.btn-s{background:linear-gradient(135deg,var(--c2),var(--c));border:none;padding:8px 16px;border-radius:7px;
+  color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;box-shadow:0 4px 18px rgba(0,100,255,0.35);transition:opacity .2s,transform .15s}
+.btn-s:hover{opacity:.88;transform:translateY(-1px)}
+.ham{display:none;width:40px;height:40px;border:1px solid var(--line);border-radius:7px;
+  background:transparent;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.ham span{width:18px;height:1.5px;background:var(--txt2);border-radius:1px;display:block}
+#sui{display:none}
+.apill{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:var(--bg2);
+  border:1px solid var(--line-hi);border-radius:999px;cursor:pointer;transition:background .2s}
+.apill:hover{background:var(--bg3)}
+.apill img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.apill .aname{font-size:12px;font-weight:600}
+.apill .gear{color:var(--txt2);font-size:13px;margin-left:3px}
+
+#mobileNav{display:none;flex-direction:column;gap:2px;position:fixed;top:62px;left:0;right:0;
+  background:rgba(4,10,20,0.98);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);padding:12px 16px 20px;z-index:190}
+#mobileNav.open{display:flex}
+#mobileNav a{padding:11px 12px;border-radius:7px;font-size:13px;font-weight:500;
+  color:var(--txt2);border-left:2px solid transparent;transition:all .2s}
+#mobileNav a:hover{background:var(--bg2);color:var(--c);border-left-color:var(--c)}
+
+/* PAGE HERO */
+.page-hero{padding:120px 28px 72px;text-align:center}
+.page-hero .con{max-width:700px;margin:0 auto}
+.htag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-hi);border-radius:4px;
+  padding:5px 12px;margin-bottom:28px;font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--c);background:rgba(0,180,255,0.04)}
+.htag .hd{width:5px;height:5px;border-radius:50%;background:var(--cg);animation:blink 1.8s infinite}
+.page-hero h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(38px,5vw,64px);
+  letter-spacing:-.03em;line-height:1.05;margin-bottom:20px}
+.page-hero h1 .acc{background:linear-gradient(90deg,var(--c),var(--cg));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-hero p{color:var(--txt2);font-size:16px;line-height:1.72;max-width:560px;margin:0 auto}
+
+/* SEP */
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--line-hi),transparent)}
+
+/* SECTION */
+.section{padding:80px 28px}
+.con{max-width:1140px;margin:0 auto}
+.sl2{display:inline-flex;align-items:center;gap:7px;
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c);border:1px solid var(--line-hi);padding:4px 10px;border-radius:3px;
+  background:rgba(0,180,255,0.04);margin-bottom:16px}
+.sn{color:var(--txt2)}
+h2.sh{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,3.2vw,40px);
+  letter-spacing:-.02em;margin-bottom:12px}
+.lead{color:var(--txt2);font-size:15px;line-height:1.72;max-width:560px;margin-bottom:44px}
+
+/* MISSION BLOCK */
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:0}
+.mg-cell{background:var(--bg1);padding:36px;position:relative;overflow:hidden;transition:background .3s}
+.mg-cell:hover{background:var(--bg2)}
+.mg-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--c2),var(--c));
+  transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.mg-cell:hover::before{transform:scaleX(1)}
+.mg-icon{font-size:28px;margin-bottom:16px}
+.mg-cell h3{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px}
+.mg-cell p{font-size:14px;color:var(--txt2);line-height:1.68}
+.mg-num{position:absolute;bottom:12px;right:16px;font-family:'DM Mono',monospace;
+  font-size:28px;color:rgba(255,255,255,0.025);font-weight:700;line-height:1}
+
+/* STATS */
+.sband{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sc{background:var(--bg1);padding:24px 20px;position:relative;overflow:hidden;transition:background .3s}
+.sc:hover{background:var(--bg2)}
+.sc .sv{font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:var(--c);margin-bottom:4px}
+.sc .sv.g{color:var(--cg)}.sc .sv.o{color:var(--co)}.sc .sv.w{color:#fff}.sc .sv.p{color:var(--cp)}
+.sc .sl3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2)}
+.sc .corner{position:absolute;bottom:8px;right:12px;font-family:'DM Mono',monospace;
+  font-size:26px;color:rgba(255,255,255,0.025);font-weight:700;line-height:1}
+
+/* TEAM GRID */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.team-card{
+  background:var(--bg2);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;
+  position:relative;
+}
+.team-card:hover{transform:translateY(-6px);border-color:var(--line-hi);box-shadow:var(--glow)}
+.team-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:2;
+}
+.team-card:hover::before{transform:scaleX(1)}
+
+/* accent colors per card */
+.tc-blue::before{background:linear-gradient(90deg,var(--c2),var(--c))}
+.tc-green::before{background:linear-gradient(90deg,#009f6a,var(--cg))}
+.tc-orange::before{background:linear-gradient(90deg,#c85a00,var(--co))}
+.tc-purple::before{background:linear-gradient(90deg,#6a00cc,var(--cp))}
+.tc-yellow::before{background:linear-gradient(90deg,#cc8800,var(--cy))}
+.tc-red::before{background:linear-gradient(90deg,#cc0020,var(--cr))}
+
+/* avatar area */
+.tc-header{position:relative;padding:28px 28px 0;display:flex;align-items:flex-start;gap:16px}
+.tc-avatar{
+  width:72px;height:72px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:#fff;
+  position:relative;overflow:hidden;
+}
+.tc-avatar::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),transparent)}
+
+/* per-color avatar bg */
+.tc-blue .tc-avatar{background:linear-gradient(135deg,#0037a0,var(--c))}
+.tc-green .tc-avatar{background:linear-gradient(135deg,#006644,var(--cg))}
+.tc-orange .tc-avatar{background:linear-gradient(135deg,#7d3200,var(--co))}
+.tc-purple .tc-avatar{background:linear-gradient(135deg,#3d0088,var(--cp))}
+.tc-yellow .tc-avatar{background:linear-gradient(135deg,#7a5200,#ffe066)}
+.tc-red .tc-avatar{background:linear-gradient(135deg,#7a0016,var(--cr))}
+
+.tc-meta{flex:1;padding-top:4px}
+.tc-meta h3{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:4px}
+.tc-role{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.tc-blue .tc-role{color:var(--c)}
+.tc-green .tc-role{color:var(--cg)}
+.tc-orange .tc-role{color:var(--co)}
+.tc-purple .tc-role{color:var(--cp)}
+.tc-yellow .tc-role{color:var(--cy)}
+.tc-red .tc-role{color:var(--cr)}
+
+.tc-badge{
+  display:inline-block;font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;
+}
+.tc-blue .tc-badge{color:var(--c);border:1px solid rgba(0,180,255,0.25);background:rgba(0,180,255,0.06)}
+.tc-green .tc-badge{color:var(--cg);border:1px solid rgba(0,255,163,0.25);background:rgba(0,255,163,0.06)}
+.tc-orange .tc-badge{color:var(--co);border:1px solid rgba(255,140,66,0.25);background:rgba(255,140,66,0.06)}
+.tc-purple .tc-badge{color:var(--cp);border:1px solid rgba(176,111,255,0.25);background:rgba(176,111,255,0.06)}
+.tc-yellow .tc-badge{color:var(--cy);border:1px solid rgba(255,224,102,0.25);background:rgba(255,224,102,0.06)}
+.tc-red .tc-badge{color:var(--cr);border:1px solid rgba(255,64,96,0.25);background:rgba(255,64,96,0.06)}
+
+.tc-body{padding:18px 28px}
+.tc-body p{font-size:13px;color:var(--txt2);line-height:1.68;margin-bottom:20px}
+
+/* skills */
+.tc-skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.skill-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.07em;text-transform:uppercase;
+  padding:4px 8px;border-radius:3px;background:rgba(255,255,255,0.03);border:1px solid var(--line);color:var(--txt2)}
+
+/* contact symbols */
+.tc-contacts{
+  display:flex;align-items:center;gap:8px;
+  padding:16px 28px;border-top:1px solid var(--line);
+  background:rgba(0,0,0,0.15);
+}
+.contact-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:8px;border:1px solid var(--line);
+  background:transparent;cursor:pointer;transition:all .22s;color:var(--txt2);
+  text-decoration:none;position:relative;overflow:hidden;
+}
+.contact-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .22s}
+.contact-btn:hover{border-color:transparent;color:#fff;transform:translateY(-2px)}
+.contact-btn:hover::before{opacity:1}
+.contact-btn svg{width:16px;height:16px;position:relative;z-index:1;fill:currentColor}
+
+/* individual hover colors */
+.cb-email:hover::before{background:linear-gradient(135deg,#0052cc,#00b4ff)}
+.cb-github:hover::before{background:linear-gradient(135deg,#1a1a2e,#444)}
+.cb-linkedin:hover::before{background:linear-gradient(135deg,#004182,#0077b5)}
+.cb-twitter:hover::before{background:linear-gradient(135deg,#000,#1a1a1a)}
+.cb-instagram:hover::before{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
+.cb-youtube:hover::before{background:linear-gradient(135deg,#c4302b,#ff0000)}
+.cb-telegram:hover::before{background:linear-gradient(135deg,#006699,#0088cc)}
+.cb-whatsapp:hover::before{background:linear-gradient(135deg,#128c7e,#25d366)}
+.cb-discord:hover::before{background:linear-gradient(135deg,#4752c4,#5865f2)}
+.cb-website:hover::before{background:linear-gradient(135deg,var(--c2),var(--c))}
+.cb-phone:hover::before{background:linear-gradient(135deg,#2d8a4e,var(--cg))}
+.cb-mail2:hover::before{background:linear-gradient(135deg,#c0392b,var(--cr))}
+
+.contact-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--txt2);margin-left:auto}
+
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.val-cell{background:var(--bg1);padding:30px;position:relative;overflow:hidden;transition:background .3s}
+.val-cell:hover{background:var(--bg2)}
+.val-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.val-cell:hover::before{transform:scaleX(1)}
+.vc1::before{background:linear-gradient(90deg,var(--c2),var(--c))}
+.vc2::before{background:linear-gradient(90deg,#009f6a,var(--cg))}
+.vc3::before{background:linear-gradient(90deg,#c85a00,var(--co))}
+.vc4::before{background:linear-gradient(90deg,#6a00cc,var(--cp))}
+.vc5::before{background:linear-gradient(90deg,#cc8800,var(--cy))}
+.vc6::before{background:linear-gradient(90deg,#cc0020,var(--cr))}
+.val-icon{font-size:28px;margin-bottom:14px}
+.val-cell h3{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;margin-bottom:8px}
+.val-cell p{font-size:13px;color:var(--txt2);line-height:1.65}
+
+/* CONTACT CTA */
+.ctbox{background:var(--bg2);border:1px solid var(--line-hi);border-radius:14px;
+  padding:48px;display:flex;align-items:center;justify-content:space-between;
+  gap:32px;flex-wrap:wrap;position:relative;overflow:hidden}
+.ctbox::before{content:'';position:absolute;top:-100px;right:-100px;width:350px;height:350px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,120,255,0.07),transparent 70%);pointer-events:none}
+.ctbox h3{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;margin-bottom:10px}
+.ctbox p{color:var(--txt2);font-size:15px;max-width:450px;line-height:1.68}
+.ctbox a{color:var(--c)}
+
+/* FOOTER */
+footer{padding:26px 28px;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.finfo{font-family:'DM Mono',monospace;font-size:11px;color:var(--txt2)}
+.flinks{display:flex;gap:18px;font-size:12px;color:var(--txt2)}
+.flinks a:hover{color:var(--c)}
+
+/* MODALS */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.78);z-index:500;backdrop-filter:blur(9px)}
+.modal.open{display:flex}
+.mc{width:100%;max-width:420px;background:var(--bg2);border:1px solid var(--line-hi);
+  border-radius:14px;padding:32px;animation:sUp .3s ease}
+@keyframes sUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.mch{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.mc h3{font-family:'Syne',sans-serif;font-weight:700;font-size:20px}
+.mcc{color:var(--txt2);font-size:22px;cursor:pointer;line-height:1;transition:color .2s}
+.mcc:hover{color:#fff}
+.tabs{display:flex;gap:4px;background:var(--bg1);border-radius:8px;padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:8px;border-radius:6px;border:none;background:transparent;color:var(--txt2);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.tab.on{background:linear-gradient(135deg,var(--c2),var(--c));color:#fff;box-shadow:0 2px 14px rgba(0,100,255,0.3)}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+.fg input{width:100%;padding:11px 14px;background:var(--bg1);border:1px solid var(--line-hi);
+  border-radius:7px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(0,180,255,0.08)}
+.ma{display:flex;gap:10px;margin-top:20px}
+.ma .btn-s{flex:1;padding:11px}
+.ma .btn-o{padding:11px 16px;font-size:13px}
+.mnote{font-size:11px;color:var(--txt2);margin-top:12px}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:11px 18px;
+  border-radius:8px;font-size:13px;font-weight:500;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.5);
+  animation:toastIn .3s ease}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.revl{opacity:0;transform:translateX(-30px);transition:opacity .75s ease,transform .75s ease}
+.revl.in{opacity:1;transform:translateX(0)}
+.revr{opacity:0;transform:translateX(30px);transition:opacity .75s ease,transform .75s ease}
+.revr.in{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.18s}.d3{transition-delay:.26s}
+.d4{transition-delay:.34s}.d5{transition-delay:.42s}.d6{transition-delay:.5s}
+
+/* RESPONSIVE */
+@media(max-width:1020px){nav.main-nav{display:none}.ham{display:flex}.mission-grid{grid-template-columns:1fr}.values-grid{grid-template-columns:repeat(2,1fr)}.sband{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.values-grid{grid-template-columns:1fr}.sband{grid-template-columns:1fr}header{padding:0 16px}.section{padding:56px 16px}.page-hero{padding:100px 16px 56px}.ctbox{padding:28px}footer{flex-direction:column;align-items:flex-start}}
+</style>
 </head>
 <body>
+<canvas id="rain"></canvas>
+<div class="gbg"></div>
+<div class="rglow"></div>
 
-  <div class="bg-overlay" aria-hidden="true"></div>
+<!-- NAVBAR -->
+<header id="hdr">
+  <div class="brand" onclick="location.href='index.html'">
+    <div class="bm">M</div>
+    <div class="bn">Mini<em>Botix</em></div>
+  </div>
 
-  <!-- NAVBAR -->
-  <header class="nav">
-    <div class="nav-left">
-      <div class="brand">
-        <img src="file.svg" alt="MiniBotix logo">
-        <div>MiniBotix</div>
+  <nav class="main-nav">
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="componentshop.html">Components</a>
+    <a href="projects.html">Projects</a>
+    <a href="apps.html">Apps</a>
+    <a href="about_us.html" class="active">About</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+
+  <div class="nr">
+    <div class="cpill">
+      <div class="pulse"></div>
+      <div class="csw">
+        <svg viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="19" stroke="rgba(0,180,255,0.18)" stroke-width="1.5"/>
+          <circle cx="22" cy="22" r="1.5" fill="var(--cg)"/>
+          <line id="nh" x1="22" y1="22" x2="22" y2="12" stroke="var(--txt)" stroke-width="2" stroke-linecap="round"/>
+          <line id="nm" x1="22" y1="22" x2="22" y2="9"  stroke="var(--c)"  stroke-width="1.2" stroke-linecap="round"/>
+          <line id="ns" x1="22" y1="22" x2="22" y2="6"  stroke="var(--cg)" stroke-width="0.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span id="navClock">00:00:00</span>
+    </div>
+    <div id="sou"><button class="btn-o" id="openAuth">Sign In</button></div>
+    <div id="sui">
+      <div class="apill" id="openPS">
+        <img id="pAvatar" src="file.svg" alt="">
+        <span class="aname" id="pName">User</span>
+        <span class="gear">⚙</span>
       </div>
     </div>
-    <nav class="main-nav">
-      <a href="index.html">Home</a>
-      <a href="courses.html">Courses</a>
-      <a href="products.html">Products</a>
-      <a href="componentshop.html">Components</a>
-      <a href="projects.html">Projects</a>
-      <a href="apps.html">Free Apps</a>
-      <a href="about.html">About Us</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+    <button class="ham" id="hamBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-card container">
-      <div class="eyebrow">MiniBotix • About Us</div>
-      <h1>Who We Are</h1>
-      <p class="lead">MiniBotix provides practical courses, tested project kits, agricultural & engineering products, and free source code to help students and enthusiasts innovate and build real-world solutions.</p>
-      <button class="btn-primary" onclick="window.location.href='contact.html'">Contact Us</button>
+<div id="mobileNav">
+  <a href="index.html" onclick="closeM()">Home</a>
+  <a href="courses.html" onclick="closeM()">Courses</a>
+  <a href="products.html" onclick="closeM()">Products</a>
+  <a href="componentshop.html" onclick="closeM()">Components</a>
+  <a href="projects.html" onclick="closeM()">Projects</a>
+  <a href="apps.html" onclick="closeM()">Free Apps</a>
+  <a href="about_us.html" onclick="closeM()">About</a>
+  <a href="index.html#contact" onclick="closeM()">Contact</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero reveal">
+  <div class="con">
+    <div class="htag"><span class="hd"></span> About MiniBotix</div>
+    <h1>The Team Behind<br><span class="acc">The Platform</span></h1>
+    <p>We're engineers, educators, and makers who believe hands-on learning is the fastest path from idea to product. Meet the people building MiniBotix.</p>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- MISSION -->
+<section class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">01 /</span> Mission</div>
+      <h2 class="sh">Why We Exist</h2>
+      <p class="lead">MiniBotix was built to close the gap between knowing and doing — practical tools, real hardware, and community support for every builder.</p>
     </div>
-  </section>
-
-  <!-- ABOUT CONTENT -->
-  <section class="section">
-    <div class="container">
-      <h2>Our Mission</h2>
-      <p class="lead">We aim to empower students and hobbyists with the tools, knowledge, and practical experience to build electronics and robotics projects efficiently.</p>
-
-      <div class="grid">
-        <div class="card">
-          <h3>Education</h3>
-          <p>Hands-on courses for beginners to advanced learners, focusing on embedded systems, IoT, robotics, and automation.</p>
-        </div>
-        <div class="card">
-          <h3>Innovation</h3>
-          <p>We provide tested project kits, electronics components, and starter code to spark creativity and innovation.</p>
-        </div>
-        <div class="card">
-          <h3>Support</h3>
-          <p>Students get guidance, documentation, and support to successfully complete projects and experiments.</p>
-        </div>
+    <div class="mission-grid reveal d2">
+      <div class="mg-cell">
+        <div class="mg-icon">🎯</div>
+        <h3>Practical First</h3>
+        <p>Every course, kit, and project is designed so you build something real. Theory follows practice — not the other way around. You'll have working hardware by the end of your first session.</p>
+        <div class="mg-num">01</div>
+      </div>
+      <div class="mg-cell">
+        <div class="mg-icon">🌱</div>
+        <h3>Rooted in Agriculture</h3>
+        <p>We started building IoT solutions for small farms. That experience shaped everything — our sensors, our kits, and our belief that technology should solve real problems, not just look impressive.</p>
+        <div class="mg-num">02</div>
+      </div>
+      <div class="mg-cell">
+        <div class="mg-icon">🔓</div>
+        <h3>Open Knowledge</h3>
+        <p>Free source code, open wiring diagrams, community projects. We share everything we can because the best engineering culture is one where knowledge flows freely between builders.</p>
+        <div class="mg-num">03</div>
+      </div>
+      <div class="mg-cell">
+        <div class="mg-icon">🚀</div>
+        <h3>Built for Scale</h3>
+        <p>Whether you're a student building your first circuit or a startup prototyping your first product, our platform grows with you — from components to full engineering support.</p>
+        <div class="mg-num">04</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section">
-    <div class="container">
-      <h2>Our Team</h2>
-      <p class="lead">A passionate team of engineers, educators, and innovators driving MiniBotix to deliver quality learning experiences.</p>
-      <div class="grid">
-        <div class="card"><h3>Kavin Kumar</h3><p>Founder & Developer – Leads electronics and robotics projects.</p></div>
-        <div class="card"><h3>Team Member 1</h3><p>Course Content & Support – Assists students with projects and kits.</p></div>
-        <div class="card"><h3>Team Member 2</h3><p>Design & Development – Creates innovative electronics and app solutions.</p></div>
+<div class="sep"></div>
+
+<!-- STATS -->
+<section class="section" style="padding:56px 28px">
+  <div class="con">
+    <div class="sband reveal">
+      <div class="sc"><div class="sv">2021</div><div class="sl3">Founded</div><div class="corner">·</div></div>
+      <div class="sc"><div class="sv g">5k+</div><div class="sl3">Students Taught</div><div class="corner">·</div></div>
+      <div class="sc"><div class="sv o">14</div><div class="sl3">Countries Reached</div><div class="corner">·</div></div>
+      <div class="sc"><div class="sv p">6</div><div class="sl3">Core Team Members</div><div class="corner">·</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">02 /</span> Team</div>
+      <h2 class="sh">The People Building This</h2>
+      <p class="lead">Six engineers and educators who care deeply about making technology accessible, practical, and genuinely useful.</p>
+    </div>
+
+    <div class="team-grid">
+
+      <!-- Member 1 -->
+      <div class="team-card tc-blue reveal d1">
+        <div class="tc-header">
+          <div class="tc-avatar">A</div>
+          <div class="tc-meta">
+            <h3>Arjun Krishnan</h3>
+            <div class="tc-role">Founder & Lead Engineer</div>
+            <span class="tc-badge">Full Stack · IoT</span>
+          </div>
+        </div>
+        <div class="tc-body">
+          <p>Built the first MiniBotix irrigation prototype in 2021. Arjun leads product architecture, hardware design, and course curriculum. 8 years in embedded systems across agriculture and robotics.</p>
+          <div class="tc-skills">
+            <span class="skill-tag">ESP32</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">PCB Design</span>
+            <span class="skill-tag">MQTT</span>
+            <span class="skill-tag">FreeRTOS</span>
+          </div>
+        </div>
+        <div class="tc-contacts">
+          <a href="mailto:arjun@minibotix.com" class="contact-btn cb-email" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="https://github.com/" target="_blank" class="contact-btn cb-github" title="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+          <a href="https://linkedin.com/" target="_blank" class="contact-btn cb-linkedin" title="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://twitter.com/" target="_blank" class="contact-btn cb-twitter" title="X / Twitter">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <span class="contact-label">Connect</span>
+        </div>
+      </div>
+
+      <!-- Member 2 -->
+      <div class="team-card tc-green reveal d2">
+        <div class="tc-header">
+          <div class="tc-avatar">P</div>
+          <div class="tc-meta">
+            <h3>Priya Nair</h3>
+            <div class="tc-role">Head of Curriculum</div>
+            <span class="tc-badge">Education · UX</span>
+          </div>
+        </div>
+        <div class="tc-body">
+          <p>Priya structures every learning journey from first concept to final project. Former STEM educator turned course designer — she ensures courses are approachable, logical, and genuinely engaging.</p>
+          <div class="tc-skills">
+            <span class="skill-tag">Instructional Design</span>
+            <span class="skill-tag">Arduino</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">Python</span>
+          </div>
+        </div>
+        <div class="tc-contacts">
+          <a href="mailto:priya@minibotix.com" class="contact-btn cb-email" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="https://instagram.com/" target="_blank" class="contact-btn cb-instagram" title="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="https://youtube.com/" target="_blank" class="contact-btn cb-youtube" title="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </a>
+          <a href="https://linkedin.com/" target="_blank" class="contact-btn cb-linkedin" title="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <span class="contact-label">Connect</span>
+        </div>
+      </div>
+
+      <!-- Member 3 -->
+      <div class="team-card tc-orange reveal d3">
+        <div class="tc-header">
+          <div class="tc-avatar">R</div>
+          <div class="tc-meta">
+            <h3>Rahul Menon</h3>
+            <div class="tc-role">Hardware Engineer</div>
+            <span class="tc-badge">Electronics · PCB</span>
+          </div>
+        </div>
+        <div class="tc-body">
+          <p>Rahul designs every PCB and validates every sensor that ships from MiniBotix. His background in power electronics means our hardware is reliable in the field, not just in the lab.</p>
+          <div class="tc-skills">
+            <span class="skill-tag">KiCad</span>
+            <span class="skill-tag">Altium</span>
+            <span class="skill-tag">STM32</span>
+            <span class="skill-tag">RTOS</span>
+            <span class="skill-tag">Soldering</span>
+          </div>
+        </div>
+        <div class="tc-contacts">
+          <a href="mailto:rahul@minibotix.com" class="contact-btn cb-email" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="https://github.com/" target="_blank" class="contact-btn cb-github" title="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+          <a href="https://wa.me/" target="_blank" class="contact-btn cb-whatsapp" title="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://t.me/" target="_blank" class="contact-btn cb-telegram" title="Telegram">
+            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+          <span class="contact-label">Connect</span>
+        </div>
+      </div>
+
+      <!-- Member 4 -->
+      <div class="team-card tc-purple reveal d4">
+        <div class="tc-header">
+          <div class="tc-avatar">S</div>
+          <div class="tc-meta">
+            <h3>Sneha Pillai</h3>
+            <div class="tc-role">Software & AI Lead</div>
+            <span class="tc-badge">ML · Computer Vision</span>
+          </div>
+        </div>
+        <div class="tc-body">
+          <p>Sneha leads the software side — from computer vision projects to the backend powering MiniBotix. Her robotics arm project has been replicated by over 800 students worldwide.</p>
+          <div class="tc-skills">
+            <span class="skill-tag">OpenCV</span>
+            <span class="skill-tag">TensorFlow</span>
+            <span class="skill-tag">ROS</span>
+            <span class="skill-tag">FastAPI</span>
+            <span class="skill-tag">Docker</span>
+          </div>
+        </div>
+        <div class="tc-contacts">
+          <a href="mailto:sneha@minibotix.com" class="contact-btn cb-email" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="https://github.com/" target="_blank" class="contact-btn cb-github" title="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+          <a href="https://linkedin.com/" target="_blank" class="contact-btn cb-linkedin" title="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://discord.gg/" target="_blank" class="contact-btn cb-discord" title="Discord">
+            <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          </a>
+          <span class="contact-label">Connect</span>
+        </div>
+      </div>
+
+      <!-- Member 5 -->
+      <div class="team-card tc-yellow reveal d5">
+        <div class="tc-header">
+          <div class="tc-avatar">K</div>
+          <div class="tc-meta">
+            <h3>Kiran Raj</h3>
+            <div class="tc-role">Operations & Logistics</div>
+            <span class="tc-badge">Supply Chain · Support</span>
+          </div>
+        </div>
+        <div class="tc-body">
+          <p>Kiran keeps everything running — from component sourcing and inventory to customer support. He's the reason orders ship on time and every PCB review gets a response.</p>
+          <div class="tc-skills">
+            <span class="skill-tag">Procurement</span>
+            <span class="skill-tag">ERP</span>
+            <span class="skill-tag">Customer Success</span>
+            <span class="skill-tag">Logistics</span>
+          </div>
+        </div>
+        <div class="tc-contacts">
+          <a href="mailto:kiran@minibotix.com" class="contact-btn cb-email" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="tel:+919999999999" class="contact-btn cb-phone" title="Phone">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </a>
+          <a href="https://wa.me/" target="_blank" class="contact-btn cb-whatsapp" title="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://linkedin.com/" target="_blank" class="contact-btn cb-linkedin" title="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <span class="contact-label">Connect</span>
+        </div>
+      </div>
+
+      <!-- Member 6 -->
+      <div class="team-card tc-red reveal d6">
+        <div class="tc-header">
+          <div class="tc-avatar">D</div>
+          <div class="tc-meta">
+            <h3>Deepak Varma</h3>
+            <div class="tc-role">Community & Marketing</div>
+            <span class="tc-badge">Growth · Content</span>
+          </div>
+        </div>
+        <div class="tc-body">
+          <p>Deepak built the MiniBotix community from zero — 5,000 students across 14 countries and growing. He produces tutorials, manages partnerships, and keeps the brand sharp and authentic.</p>
+          <div class="tc-skills">
+            <span class="skill-tag">Content Strategy</span>
+            <span class="skill-tag">Video Production</span>
+            <span class="skill-tag">SEO</span>
+            <span class="skill-tag">Community</span>
+          </div>
+        </div>
+        <div class="tc-contacts">
+          <a href="mailto:deepak@minibotix.com" class="contact-btn cb-email" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="https://youtube.com/" target="_blank" class="contact-btn cb-youtube" title="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </a>
+          <a href="https://instagram.com/" target="_blank" class="contact-btn cb-instagram" title="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+          <a href="https://twitter.com/" target="_blank" class="contact-btn cb-twitter" title="X / Twitter">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://discord.gg/" target="_blank" class="contact-btn cb-discord" title="Discord">
+            <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          </a>
+          <span class="contact-label">Connect</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- VALUES -->
+<section class="section">
+  <div class="con">
+    <div class="reveal">
+      <div class="sl2"><span class="sn">03 /</span> Values</div>
+      <h2 class="sh">What We Stand For</h2>
+      <p class="lead">Six principles that guide every decision we make — from how we design courses to how we treat our community.</p>
+    </div>
+    <div class="values-grid reveal d2">
+      <div class="val-cell vc1">
+        <div class="val-icon">⚡</div>
+        <h3>Ship Fast, Fix Fast</h3>
+        <p>We release, iterate, and improve. Perfect is the enemy of shipped. Our students get working tools, not polished promises.</p>
+      </div>
+      <div class="val-cell vc2">
+        <div class="val-icon">🌍</div>
+        <h3>Accessible by Design</h3>
+        <p>Everything we build should be usable by a student in rural India as easily as an engineer in a city lab. We don't design for privilege.</p>
+      </div>
+      <div class="val-cell vc3">
+        <div class="val-icon">🔧</div>
+        <h3>Hands-On Always</h3>
+        <p>We believe you learn 10x faster by building. Every course ends with hardware in your hands, not just knowledge in your head.</p>
+      </div>
+      <div class="val-cell vc4">
+        <div class="val-icon">🤝</div>
+        <h3>Community First</h3>
+        <p>Our Discord, forums, and WhatsApp groups aren't afterthoughts — they're core infrastructure. Support from peers is irreplaceable.</p>
+      </div>
+      <div class="val-cell vc5">
+        <div class="val-icon">📖</div>
+        <h3>Radical Transparency</h3>
+        <p>We share our mistakes, our roadmap, and our source code openly. Trust is built through honesty, not marketing polish.</p>
+      </div>
+      <div class="val-cell vc6">
+        <div class="val-icon">🌱</div>
+        <h3>Long-Term Impact</h3>
+        <p>We measure success in engineers launched, farms automated, and problems solved — not vanity metrics or engagement rates.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    <div class="container">
-      <small>© 2025 MiniBotix · Learn · Build · Innovate</small>
+<div class="sep"></div>
+
+<!-- CONTACT CTA -->
+<section class="section">
+  <div class="con">
+    <div class="ctbox reveal">
+      <div>
+        <h3>Work with us.</h3>
+        <p>Want to collaborate, commission a custom project, or join the team? Reach out at <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> — we respond to every genuine message.</p>
+      </div>
+      <button class="btn-s" style="white-space:nowrap;padding:14px 28px;font-size:14px" onclick="location.href='mailto:minibotix@gmail.com'">Get in Touch →</button>
     </div>
-  </footer>
+  </div>
+</section>
 
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="bm" style="width:28px;height:28px;font-size:12px;border-radius:6px">M</div>
+    <div class="finfo">© 2025 MiniBotix · Learn · Build · Innovate</div>
+  </div>
+  <div class="flinks">
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="products.html">Products</a>
+    <a href="projects.html">Projects</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal">
+  <div class="mc">
+    <div class="mch"><h3>Access MiniBotix</h3><span class="mcc" id="authClose">×</span></div>
+    <div class="tabs">
+      <button class="tab on" id="tabEmail">Email</button>
+      <button class="tab" id="tabGoogle">Google</button>
+    </div>
+    <div id="emailView">
+      <div id="loginView">
+        <div class="fg"><label>Email</label><input id="loginEmail" type="email" placeholder="you@domain.com"></div>
+        <div class="fg"><label>Password</label><input id="loginPassword" type="password" placeholder="Password"></div>
+        <div class="ma"><button class="btn-s" id="emailSignIn">Sign In</button><button class="btn-o" id="showRegister">Register</button></div>
+      </div>
+      <div id="registerView" style="display:none">
+        <div class="fg"><label>Full Name</label><input id="regName" type="text" placeholder="Your name"></div>
+        <div class="fg"><label>Phone</label><input id="regPhone" type="tel" placeholder="+91 9XXXXXXXXX"></div>
+        <div class="fg"><label>Email</label><input id="regEmail" type="email" placeholder="you@domain.com"></div>
+        <div class="fg"><label>Password</label><input id="regPass" type="password" placeholder="Min 6 characters"></div>
+        <div class="fg"><label>Confirm</label><input id="regPass2" type="password" placeholder="Confirm password"></div>
+        <div class="ma"><button class="btn-s" id="createAccount">Create Account</button><button class="btn-o" id="showLogin">Sign In</button></div>
+      </div>
+    </div>
+    <div id="googleView" style="display:none;padding-top:8px">
+      <button id="googleSignIn" class="btn-s" style="width:100%;padding:13px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px">
+        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16.1 19 13 24 13c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.5-3.3-11.2-7.9L6.1 33.4C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.6l6.2 5.2C42.3 35.5 44 30.1 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+    <p class="mnote">Your data is stored securely in Firestore.</p>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profileModal" class="modal">
+  <div class="mc">
+    <div class="mch"><h3>Profile Settings</h3><span class="mcc" id="profileClose">×</span></div>
+    <div class="fg"><label>Name</label><input id="pfName" type="text"></div>
+    <div class="fg"><label>Phone</label><input id="pfPhone" type="tel"></div>
+    <div class="fg"><label>Delivery Area</label><input id="pfArea" type="text"></div>
+    <div class="ma"><button class="btn-s" id="saveProfile">Save Changes</button><button class="btn-o" id="logoutBtn">Logout</button></div>
+  </div>
+</div>
+
+<script>
+/* RAIN */
+(function(){
+  const cv=document.getElementById('rain'),ctx=cv.getContext('2d');
+  let W,H,dr=[];
+  function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;init()}
+  function init(){dr=[];for(let i=0;i<180;i++){dr.push({x:Math.random()*W,y:Math.random()*H-H,len:Math.random()*35+10,sp:Math.random()*3.5+2,sw:Math.random()*1.2+0.3,a:0.04+Math.random()*0.09,drift:Math.random()*0.5-0.25,ph:Math.random()*Math.PI*2})}}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    dr.forEach(d=>{
+      const g=ctx.createLinearGradient(d.x,d.y,d.x+d.drift*8,d.y+d.len);
+      g.addColorStop(0,'rgba(0,180,255,0)');g.addColorStop(0.5,`rgba(0,190,255,${d.a})`);g.addColorStop(1,'rgba(100,220,255,0)');
+      ctx.beginPath();ctx.strokeStyle=g;ctx.lineWidth=d.sw;
+      ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+d.drift*4,d.y+d.len);ctx.stroke();
+      d.y+=d.sp;d.x+=Math.sin(d.y*0.012+d.ph)*0.4;
+      if(d.y>H+50){d.y=-50;d.x=Math.random()*W}
+      d.a=0.04+Math.random()*0.08;
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',rs);rs();draw();
+})();
+
+/* CLOCK */
+function rpt(cx,cy,ang,len){return{x:cx+Math.sin(ang)*len,y:cy-Math.cos(ang)*len}}
+function setHand(id,ang,cx,cy,len){const el=document.getElementById(id);if(!el)return;const p=rpt(cx,cy,ang,len);el.setAttribute('x2',p.x.toFixed(2));el.setAttribute('y2',p.y.toFixed(2))}
+function updateClock(){
+  const n=new Date(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds(),ms=n.getMilliseconds();
+  const sa=(s+ms/1000)*(Math.PI*2/60),ma=(m+s/60)*(Math.PI*2/60),ha=(h%12+m/60)*(Math.PI*2/12);
+  setHand('nh',ha,22,22,10);setHand('nm',ma,22,22,13);setHand('ns',sa,22,22,15);
+  const pad=v=>String(v).padStart(2,'0');
+  document.getElementById('navClock').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+setInterval(updateClock,80);updateClock();
+
+/* SCROLL */
+window.addEventListener('scroll',()=>document.getElementById('hdr').classList.toggle('scrolled',scrollY>40));
+const io=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.08});
+document.querySelectorAll('.reveal,.revl,.revr').forEach(el=>io.observe(el));
+
+/* MOBILE NAV */
+document.getElementById('hamBtn').addEventListener('click',()=>document.getElementById('mobileNav').classList.toggle('open'));
+function closeM(){document.getElementById('mobileNav').classList.remove('open')}
+
+/* MODALS */
+const AM=document.getElementById('authModal'),PM=document.getElementById('profileModal');
+document.getElementById('openAuth').addEventListener('click',()=>AM.classList.add('open'));
+document.getElementById('authClose').addEventListener('click',()=>AM.classList.remove('open'));
+document.getElementById('profileClose').addEventListener('click',()=>PM.classList.remove('open'));
+document.getElementById('openPS').addEventListener('click',()=>PM.classList.add('open'));
+window.addEventListener('click',e=>{if(e.target===AM)AM.classList.remove('open');if(e.target===PM)PM.classList.remove('open')});
+const tE=document.getElementById('tabEmail'),tG=document.getElementById('tabGoogle'),eV=document.getElementById('emailView'),gV=document.getElementById('googleView');
+tE.addEventListener('click',()=>{eV.style.display='block';gV.style.display='none';tE.classList.add('on');tG.classList.remove('on')});
+tG.addEventListener('click',()=>{eV.style.display='none';gV.style.display='block';tG.classList.add('on');tE.classList.remove('on')});
+document.getElementById('showRegister').addEventListener('click',()=>{document.getElementById('loginView').style.display='none';document.getElementById('registerView').style.display='block'});
+document.getElementById('showLogin').addEventListener('click',()=>{document.getElementById('registerView').style.display='none';document.getElementById('loginView').style.display='block'});
+function toast(msg,err){const t=document.createElement('div');t.className='toast';t.textContent=msg;t.style.background=err?'var(--cr)':'var(--cg)';t.style.color=err?'#fff':'#010e07';document.body.appendChild(t);setTimeout(()=>{t.style.transition='all .4s';t.style.opacity='0';t.style.transform='translateX(-50%) translateY(10px)'},2400);setTimeout(()=>t.remove(),2800)}
+</script>
+
+<!-- FIREBASE -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import{getFirestore,doc,setDoc,getDoc,updateDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",authDomain:"minibotix-a1b9a.firebaseapp.com",projectId:"minibotix-a1b9a",storageBucket:"minibotix-a1b9a.firebasestorage.app",messagingSenderId:"771169717230",appId:"1:771169717230:web:44848d73e548d0e0f8dcff"});
+const auth=getAuth(app),db=getFirestore(app),gp=new GoogleAuthProvider();
+let cu=null;const g=id=>document.getElementById(id);
+g('googleSignIn').addEventListener('click',async()=>{try{await signInWithPopup(auth,gp);AM.classList.remove('open')}catch(e){toast('Google sign-in failed',true)}});
+g('emailSignIn').addEventListener('click',async()=>{try{await signInWithEmailAndPassword(auth,g('loginEmail').value.trim(),g('loginPassword').value);document.getElementById('authModal').classList.remove('open');toast('Signed in')}catch(e){toast('Sign in failed: '+e.message,true)}});
+g('createAccount').addEventListener('click',async()=>{const name=g('regName').value.trim(),phone=g('regPhone').value.trim(),email=g('regEmail').value.trim(),pass=g('regPass').value,pass2=g('regPass2').value;if(pass.length<6){toast('Password min 6 chars',true);return}if(pass!==pass2){toast('Passwords do not match',true);return}try{const uc=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(uc.user,{displayName:name});await setDoc(doc(db,'users',uc.user.uid),{name,phone,area:'',email,createdAt:serverTimestamp()});document.getElementById('authModal').classList.remove('open');toast('Account created!')}catch(e){toast('Register failed: '+e.message,true)}});
+onAuthStateChanged(auth,async user=>{if(user){cu=user;const ref=doc(db,'users',user.uid),snap=await getDoc(ref);if(!snap.exists())await setDoc(ref,{name:user.displayName||'',phone:'',area:'',email:user.email||'',createdAt:serverTimestamp()});const ud=(await getDoc(ref)).data();g('sou').style.display='none';g('sui').style.display='block';g('pName').textContent=(ud.name||user.email||'User').split(' ')[0];g('pAvatar').src=user.photoURL||'file.svg';g('pfName').value=ud.name||'';g('pfPhone').value=ud.phone||'';g('pfArea').value=ud.area||''}else{cu=null;g('sou').style.display='block';g('sui').style.display='none'}});
+g('saveProfile').addEventListener('click',async()=>{if(!cu){toast('Not signed in',true);return}const name=g('pfName').value.trim(),phone=g('pfPhone').value.trim(),area=g('pfArea').value.trim();try{await updateDoc(doc(db,'users',cu.uid),{name,phone,area,updatedAt:serverTimestamp()});await updateProfile(cu,{displayName:name});g('pName').textContent=name.split(' ')[0];document.getElementById('profileModal').classList.remove('open');toast('Profile saved')}catch(e){toast('Save failed: '+e.message,true)}});
+g('logoutBtn').addEventListener('click',async()=>{await signOut(auth);document.getElementById('profileModal').classList.remove('open');toast('Signed out')});
+</script>
 </body>
 </html>
