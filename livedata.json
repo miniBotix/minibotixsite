@@ -1,0 +1,10 @@
+{
+  "courses": 12,        → shows as "12" in panel, "12+" in stats band
+  "members": 47,        → shows as "47+" (or "1.2k+" if over 1000)
+  "uptime": "99.4%",    → uptime field in panel
+  "bar_embedded": 72,   → Embedded Systems bar %
+  "bar_iot": 58,        → IoT Agriculture bar %
+  "bar_robotics": 44,   → Robotics bar %
+  "course_completion": 68,  → blue ring
+  "project_success": 82     → green ring
+}
