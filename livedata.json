@@ -1,10 +1,24 @@
 {
-  "courses": 12,        → shows as "12" in panel, "12+" in stats band
-  "members": 10,        → shows as "47+" (or "1.2k+" if over 1000)
-  "uptime": "99.4%",    → uptime field in panel
-  "bar_embedded": 79,   → Embedded Systems bar %
-  "bar_iot": 29,        → IoT Agriculture bar %
-  "bar_robotics": 44,   → Robotics bar %
-  "course_completion": 68,  → blue ring
-  "project_success": 82     → green ring
+  "courses"           : 50,
+  "members"           : 5200,
+  "projects"          : 120,
+  "components"        : 300,
+  "uptime"            : "98.7%",
+
+  "course_completion" : 75,
+  "project_success"   : 80,
+
+  "bar_embedded"      : 88,
+  "bar_iot"           : 74,
+  "bar_robotics"      : 61,
+
+  "members_list": [
+    { "name": "Kavi M",     "role": "Founder",    "badge": "Admin",    "joined": "Day 1"   },
+    { "name": "Arjun S",    "role": "Developer",  "badge": "Pro",      "joined": "3d ago"  },
+    { "name": "Priya R",    "role": "Instructor", "badge": "Advanced", "joined": "5d ago"  },
+    { "name": "Suresh K",   "role": "Student",    "badge": "IoT",      "joined": "1w ago"  },
+    { "name": "Deepa T",    "role": "Student",    "badge": "Beginner", "joined": "2d ago"  },
+    { "name": "Ramesh V",   "role": "Student",    "badge": "Beginner", "joined": "12h ago" },
+    { "name": "Nandhini A", "role": "Student",    "badge": "IoT",      "joined": "4d ago"  }
+  ]
 }
