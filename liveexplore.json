@@ -1,0 +1,65 @@
+{
+  "live_apps": [
+    {
+      "name": "Color Detection",
+      "desc": "Real-time HSV color detection using OpenCV — point your webcam at any object and watch it detect colors live.",
+      "category": "Computer Vision",
+      "video": "https://www.youtube.com/embed/YOUR_VIDEO_ID",
+      "demo_url": "",
+      "tags": ["OpenCV", "Python", "Webcam"]
+    },
+    {
+      "name": "ThingSpeak Sender",
+      "desc": "Push live sensor readings from NodeMCU to ThingSpeak with retry logic, data buffering, and real-time graph.",
+      "category": "IoT",
+      "video": "https://www.youtube.com/embed/YOUR_VIDEO_ID",
+      "demo_url": "",
+      "tags": ["NodeMCU", "IoT", "ESP8266"]
+    }
+  ],
+
+  "upcoming": [
+    {
+      "name": "AI Plant Disease Detector",
+      "desc": "Upload a photo of your crop — AI identifies the disease and suggests treatment in seconds.",
+      "eta": "April 2025",
+      "progress": 65,
+      "tags": ["AI", "Agriculture", "Python"]
+    },
+    {
+      "name": "Smart Irrigation App",
+      "desc": "Mobile-friendly dashboard to monitor and control your irrigation system remotely via ESP32.",
+      "eta": "May 2025",
+      "progress": 40,
+      "tags": ["IoT", "Mobile", "ESP32"]
+    },
+    {
+      "name": "Robotic Arm Simulator",
+      "desc": "Browser-based 3D simulator to program robotic arm movements before deploying to real hardware.",
+      "eta": "June 2025",
+      "progress": 20,
+      "tags": ["Robotics", "3D", "WebGL"]
+    }
+  ],
+
+  "news": [
+    {
+      "date": "Mar 11, 2025",
+      "title": "Embedded Systems 101 — New Module Added",
+      "body": "We've added a full module on interrupt-driven programming with real hardware examples and wiring guides.",
+      "tag": "Course Update"
+    },
+    {
+      "date": "Mar 5, 2025",
+      "title": "ESP32 Modules Restocked",
+      "body": "Limited stock of ESP32-WROOM and ESP32-CAM modules now available. Order fast!",
+      "tag": "Stock"
+    },
+    {
+      "date": "Feb 28, 2025",
+      "title": "Free PCB Review Service Launched",
+      "body": "Send your Gerber files to minibotix@gmail.com — reviewed free within 48 hours.",
+      "tag": "Free Service"
+    }
+  ]
+}
