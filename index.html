@@ -238,73 +238,12 @@ h2.sh{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,3.5vw,4
   text-transform:uppercase;color:var(--c);display:inline-flex;align-items:center;gap:6px;transition:gap .25s}
 .card:hover .clink{gap:10px}
 
-/* ── LIVE EXPLORE SECTION ── */
-#live-explore{padding:96px 28px}
-.live-header{display:flex;align-items:center;gap:12px;margin-bottom:40px}
-.live-ping{
-  display:inline-flex;align-items:center;gap:7px;
-  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--cg);border:1px solid rgba(0,255,163,0.2);padding:4px 12px;border-radius:3px;
-  background:rgba(0,255,163,0.04)
-}
-.live-ping::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--cg);animation:blink 1.4s infinite}
 
-/* LIVE GRID */
-.live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;
-  background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:32px}
-.live-cell{background:var(--bg1);padding:28px 24px;position:relative;overflow:hidden;transition:background .3s}
-.live-cell:hover{background:var(--bg2)}
-.lc-icon{font-size:28px;margin-bottom:14px}
-.lc-val{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:38px;
-  letter-spacing:-.03em;margin-bottom:4px;
-  background:linear-gradient(90deg,var(--c),var(--cg));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  transition:all .5s
-}
-.lc-val.o{background:linear-gradient(90deg,var(--co),#ffcc44);-webkit-background-clip:text;background-clip:text}
-.lc-val.p{background:linear-gradient(90deg,var(--cp),var(--c));-webkit-background-clip:text;background-clip:text}
-.lc-val.g{background:linear-gradient(90deg,var(--cg),#00d4ff);-webkit-background-clip:text;background-clip:text}
-.lc-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--txt2);margin-bottom:6px}
-.lc-sub{font-size:12px;color:var(--txt2);line-height:1.55}
-.lc-bar{height:2px;background:rgba(0,180,255,0.1);border-radius:1px;margin-top:14px;overflow:hidden}
-.lc-bar-fill{height:100%;background:linear-gradient(90deg,var(--c2),var(--c));border-radius:1px;
-  transition:width 1.8s cubic-bezier(.4,0,.2,1);width:0}
 .lc-bar-fill.g{background:linear-gradient(90deg,#009f6a,var(--cg))}
 .lc-bar-fill.o{background:linear-gradient(90deg,#c85a00,var(--co))}
 .lc-bar-fill.p{background:linear-gradient(90deg,#6800cc,var(--cp))}
-.lc-corner{position:absolute;top:16px;right:16px;font-family:'DM Mono',monospace;font-size:8px;
-  letter-spacing:.1em;text-transform:uppercase;color:rgba(0,180,255,0.18)}
 
-/* MEMBERS TABLE */
-.members-wrap{background:var(--bg2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.members-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;
-  border-bottom:1px solid var(--line);background:rgba(255,255,255,0.015)}
-.members-head h4{font-family:'Syne',sans-serif;font-weight:700;font-size:15px}
-.members-head .live-dot{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;color:var(--cg)}
-.members-head .live-dot::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--cg);animation:blink 1.6s infinite}
-#membersList{padding:6px 0}
-.member-row{display:flex;align-items:center;gap:14px;padding:11px 22px;
-  border-bottom:1px solid var(--line);transition:background .2s;cursor:default}
-.member-row:last-child{border-bottom:none}
-.member-row:hover{background:rgba(0,180,255,0.03)}
-.mr-av{width:34px;height:34px;border-radius:50%;background:var(--bg3);
-  display:flex;align-items:center;justify-content:center;font-size:14px;
-  border:1px solid var(--line-hi);flex-shrink:0;font-family:'Syne',sans-serif;font-weight:700;color:var(--c)}
-.mr-info{flex:1}
-.mr-name{font-size:13px;font-weight:600;color:var(--txt);line-height:1.3}
-.mr-role{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt2)}
-.mr-badge{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;
-  padding:3px 7px;border-radius:3px;border:1px solid var(--line-hi);color:var(--c)}
-.mr-badge.g{color:var(--cg);border-color:rgba(0,255,163,0.2)}
-.mr-badge.o{color:var(--co);border-color:rgba(255,140,66,0.2)}
-.mr-badge.p{color:var(--cp);border-color:rgba(176,111,255,0.2)}
-.mr-when{font-family:'DM Mono',monospace;font-size:9px;color:var(--txt2);flex-shrink:0}
 
-/* Loading skeleton */
-.skel{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);
-  background-size:200%;animation:shimmer 1.4s infinite;border-radius:4px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* CONTACT */
 .ctbox{background:var(--bg2);border:1px solid var(--line-hi);border-radius:14px;
@@ -376,7 +315,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   .live-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:580px){
-  .sband{grid-template-columns:1fr}.live-grid{grid-template-columns:1fr}
+  .sband{grid-template-columns:1fr}
   header{padding:0 16px}.section{padding:64px 16px}
   #home{padding:90px 16px 60px}#live-explore{padding:64px 16px}
   .hero h1{font-size:36px}.ctbox{padding:28px}
@@ -408,7 +347,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
     <a href="#components">Components</a>
     <a href="#projects">Projects</a>
     <a href="#apps">Apps</a>
-    <a href="#live-explore" class="live-link">Live Explore</a>
+    <a href="liveexplore.html" class="live-link">Live Explore</a>
     <a href="about_us.html">About</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -447,7 +386,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   <a href="#components" onclick="closeM()">Components</a>
   <a href="#projects" onclick="closeM()">Projects</a>
   <a href="#apps" onclick="closeM()">Free Apps</a>
-  <a href="#live-explore" onclick="closeM()" class="live-mob">⚡ Live Explore</a>
+  <a href="liveexplore.html" onclick="closeM()" class="live-mob">⚡ Live Explore</a>
   <a href="about_us.html" onclick="closeM()">About</a>
   <a href="#contact" onclick="closeM()">Contact</a>
 </div>
@@ -525,9 +464,9 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
             <svg viewBox="0 0 64 64">
               <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,180,255,0.1)" stroke-width="6"/>
               <circle cx="32" cy="32" r="26" fill="none" stroke="var(--c)" stroke-width="6"
-                stroke-dasharray="163.36" id="ring1Fill" stroke-dashoffset="40.84" stroke-linecap="round"/>
+                stroke-dasharray="163.36" id="ring1Fill" stroke-dashoffset="163.36" stroke-linecap="round"/>
             </svg>
-            <div class="rst" style="color:var(--c);font-size:11px" id="ring1Txt">75%</div>
+            <div class="rst" style="color:var(--c);font-size:11px" id="ring1Txt">—</div>
           </div>
           <div class="rcl">Course Completion</div>
         </div>
@@ -536,9 +475,9 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
             <svg viewBox="0 0 64 64">
               <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,255,163,0.1)" stroke-width="6"/>
               <circle cx="32" cy="32" r="26" fill="none" stroke="var(--cg)" stroke-width="6"
-                stroke-dasharray="163.36" id="ring2Fill" stroke-dashoffset="32.67" stroke-linecap="round"/>
+                stroke-dasharray="163.36" id="ring2Fill" stroke-dashoffset="163.36" stroke-linecap="round"/>
             </svg>
-            <div class="rst" style="color:var(--cg);font-size:11px" id="ring2Txt">80%</div>
+            <div class="rst" style="color:var(--cg);font-size:11px" id="ring2Txt">—</div>
           </div>
           <div class="rcl">Project Success</div>
         </div>
@@ -547,16 +486,16 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
       <!-- Bars -->
       <div class="dpb">
         <div class="br">
-          <div class="bm2"><span>Embedded Systems</span><span style="color:var(--c)" id="bar1Lbl">88%</span></div>
-          <div class="bt"><div class="bf bfc" style="width:0" id="bar1" data-w="88%"></div></div>
+          <div class="bm2"><span>Embedded Systems</span><span style="color:var(--c)" id="bar1Lbl">—</span></div>
+          <div class="bt"><div class="bf bfc" style="width:0" id="bar1" data-w=""></div></div>
         </div>
         <div class="br">
-          <div class="bm2"><span>IoT Agriculture</span><span style="color:var(--cg)" id="bar2Lbl">74%</span></div>
-          <div class="bt"><div class="bf bfg" style="width:0" id="bar2" data-w="74%"></div></div>
+          <div class="bm2"><span>IoT Agriculture</span><span style="color:var(--cg)" id="bar2Lbl">—</span></div>
+          <div class="bt"><div class="bf bfg" style="width:0" id="bar2" data-w=""></div></div>
         </div>
         <div class="br">
-          <div class="bm2"><span>Robotics</span><span style="color:var(--co)" id="bar3Lbl">61%</span></div>
-          <div class="bt"><div class="bf bfo" style="width:0" id="bar3" data-w="61%"></div></div>
+          <div class="bm2"><span>Robotics</span><span style="color:var(--co)" id="bar3Lbl">—</span></div>
+          <div class="bt"><div class="bf bfo" style="width:0" id="bar3" data-w=""></div></div>
         </div>
       </div>
 
@@ -723,53 +662,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   </div>
 </section>
 
-<div class="sep"></div>
 
-<!-- ██ LIVE EXPLORE ██ -->
-<section id="live-explore">
-  <div class="con">
-    <div class="reveal">
-      <div class="live-header">
-        <div class="live-ping">Live Data</div>
-        <div class="sl2" style="margin-bottom:0"><span class="sn">06 /</span> Live Explore</div>
-      </div>
-      <h2 class="sh">Platform <span style="background:linear-gradient(90deg,var(--c),var(--cg));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">at a Glance</span></h2>
-      <p class="lead">Real numbers pulled from <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--c);background:rgba(0,180,255,0.07);padding:2px 6px;border-radius:3px">livedata.json</code> — updated whenever you refresh. Add your data to see it here.</p>
-    </div>
-
-    <!-- STAT CARDS -->
-    <div class="live-grid reveal d1" id="liveGrid">
-      <!-- filled by JS -->
-      <div class="live-cell"><div class="lc-icon">📚</div><div class="lc-val skel" style="width:80px;height:38px"></div><div class="lc-label">Courses</div><div class="lc-bar"><div class="lc-bar-fill" id="lb1"></div></div></div>
-      <div class="live-cell"><div class="lc-icon">👥</div><div class="lc-val skel" style="width:80px;height:38px"></div><div class="lc-label">Members</div><div class="lc-bar"><div class="lc-bar-fill g" id="lb2"></div></div></div>
-      <div class="live-cell"><div class="lc-icon">⚙️</div><div class="lc-val skel" style="width:80px;height:38px"></div><div class="lc-label">Projects</div><div class="lc-bar"><div class="lc-bar-fill o" id="lb3"></div></div></div>
-      <div class="live-cell"><div class="lc-icon">🔌</div><div class="lc-val skel" style="width:80px;height:38px"></div><div class="lc-label">Components</div><div class="lc-bar"><div class="lc-bar-fill p" id="lb4"></div></div></div>
-    </div>
-
-    <!-- MEMBERS TABLE -->
-    <div class="members-wrap reveal d2">
-      <div class="members-head">
-        <h4>Community Members</h4>
-        <div class="live-dot">Live · from livedata.json</div>
-      </div>
-      <div id="membersList">
-        <!-- skeleton rows -->
-        <div class="member-row">
-          <div class="mr-av skel" style="border:none"></div>
-          <div class="mr-info"><div class="skel" style="height:12px;width:120px;margin-bottom:5px"></div><div class="skel" style="height:9px;width:70px"></div></div>
-        </div>
-        <div class="member-row">
-          <div class="mr-av skel" style="border:none"></div>
-          <div class="mr-info"><div class="skel" style="height:12px;width:100px;margin-bottom:5px"></div><div class="skel" style="height:9px;width:60px"></div></div>
-        </div>
-        <div class="member-row">
-          <div class="mr-av skel" style="border:none"></div>
-          <div class="mr-info"><div class="skel" style="height:12px;width:140px;margin-bottom:5px"></div><div class="skel" style="height:9px;width:80px"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <div class="sep"></div>
 
@@ -804,7 +697,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
     <a href="#products">Products</a>
     <a href="#projects">Projects</a>
     <a href="#apps">Apps</a>
-    <a href="#live-explore">Live</a>
+    <a href="liveexplore.html">Live</a>
     <a href="#contact">Contact</a>
     <a href="about_us.html">About</a>
   </div>
@@ -961,18 +854,7 @@ function toast(msg,err){
      ]
    }
 ════════════════════════════════════════════ */
-const FALLBACK={
-  courses:50,members:5200,projects:120,components:300,
-  uptime:'98.7%',course_completion:75,project_success:80,
-  bar_embedded:88,bar_iot:74,bar_robotics:61,
-  members_list:[
-    {name:'Kavi M',role:'Student',badge:'Beginner',joined:'2d ago'},
-    {name:'Arjun S',role:'Developer',badge:'Pro',joined:'1w ago'},
-    {name:'Priya R',role:'Instructor',badge:'Admin',joined:'3d ago'},
-    {name:'Suresh K',role:'Student',badge:'IoT',joined:'5h ago'},
-    {name:'Deepa T',role:'Researcher',badge:'Advanced',joined:'1d ago'},
-  ]
-};
+/* No hardcoded fallback — all values come from livedata.json */
 
 function fmt(n){if(n>=1000)return(n/1000).toFixed(1).replace('.0','')+'k+';return n+'+'}
 function badgeCls(b){const l=(b||'').toLowerCase();if(l.includes('admin')||l.includes('pro'))return 'g';if(l.includes('advanced')||l.includes('iot'))return 'o';if(l.includes('instructor'))return 'p';return ''}
@@ -980,25 +862,25 @@ function badgeCls(b){const l=(b||'').toLowerCase();if(l.includes('admin')||l.inc
 function applyLiveData(d){
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
 
-  /* Hero KPIs */
+  /* ── Hero KPIs (50+, 5.2k+, 120+, 98.7%) ── */
   set('hKpi1', fmt(d.courses));
   set('hKpi2', fmt(d.members));
-  set('hKpi3', d.projects+'+');
-  set('hKpi4', d.uptime||'99%');
+  set('hKpi3', (d.projects||0)+'+');
+  set('hKpi4', d.uptime||'—');
 
-  /* Dashboard panel top metrics */
-  set('dpCourses', d.courses);
-  set('dpUptime',  d.uptime||'99%');
+  /* ── Dashboard panel top row ── */
+  set('dpCourses', d.courses||'—');
+  set('dpUptime',  d.uptime||'—');
   set('dpMembers', fmt(d.members));
 
-  /* Stats band */
-  set('sBand1', d.courses+'+');
+  /* ── Stats band below hero ── */
+  set('sBand1', (d.courses||0)+'+');
   set('sBand2', fmt(d.members));
-  set('sBand3', d.projects+'+');
-  set('sBand4', d.components+'+');
+  set('sBand3', (d.projects||0)+'+');
+  set('sBand4', (d.components||0)+'+');
 
-  /* Rings */
-  const cc=Number(d.course_completion)||75, ps=Number(d.project_success)||80;
+  /* ── Rings ── */
+  const cc=Number(d.course_completion)||0, ps=Number(d.project_success)||0;
   const circ=163.36;
   const r1=document.getElementById('ring1Fill'),r2=document.getElementById('ring2Fill');
   if(r1)r1.setAttribute('stroke-dashoffset',(circ*(1-cc/100)).toFixed(2));
@@ -1006,75 +888,42 @@ function applyLiveData(d){
   set('ring1Txt', cc+'%');
   set('ring2Txt', ps+'%');
 
-  /* Dashboard progress bars — update data-w AND animate after short delay */
-  const be=Number(d.bar_embedded)||88, bi=Number(d.bar_iot)||74, br=Number(d.bar_robotics)||61;
-  ['bar1','bar2','bar3'].forEach((id,i)=>{
-    const el=document.getElementById(id); if(!el)return;
-    const w=[be,bi,br][i]+'%';
-    el.dataset.w=w; el.style.width='0'; /* reset so transition fires */
-  });
+  /* ── Progress bars ── */
+  const be=Number(d.bar_embedded)||0, bi=Number(d.bar_iot)||0, br=Number(d.bar_robotics)||0;
   set('bar1Lbl', be+'%');
   set('bar2Lbl', bi+'%');
   set('bar3Lbl', br+'%');
-  /* Slight delay so CSS transition is visible */
+  ['bar1','bar2','bar3'].forEach((id,i)=>{
+    const el=document.getElementById(id); if(!el)return;
+    el.dataset.w=[be,bi,br][i]+'%'; el.style.width='0';
+  });
   setTimeout(()=>{
     ['bar1','bar2','bar3'].forEach(id=>{
       const el=document.getElementById(id); if(el)el.style.width=el.dataset.w;
     });
-  }, 500);
-
-  /* Live Explore grid */
-  const maxMap={courses:100,members:10000,projects:300,components:500};
-  const grid=document.getElementById('liveGrid');
-  grid.innerHTML=[
-    {icon:'📚',val:d.courses+'+',label:'Courses',sub:'Active learning tracks',bar:Math.min(100,d.courses/maxMap.courses*100),cls:''},
-    {icon:'👥',val:fmt(d.members),label:'Members',sub:'Learners & builders worldwide',bar:Math.min(100,d.members/maxMap.members*100),cls:'g'},
-    {icon:'⚙️',val:d.projects+'+',label:'Projects',sub:'Open source project kits',bar:Math.min(100,d.projects/maxMap.projects*100),cls:'o'},
-    {icon:'🔌',val:d.components+'+',label:'Components',sub:'Tested electronic parts',bar:Math.min(100,d.components/maxMap.components*100),cls:'p'},
-  ].map((c,i)=>`
-    <div class="live-cell">
-      <div class="lc-corner">MB-0${i+1}</div>
-      <div class="lc-icon">${c.icon}</div>
-      <div class="lc-val ${c.cls}" id="lcv${i}">${c.val}</div>
-      <div class="lc-label">${c.label}</div>
-      <div class="lc-sub">${c.sub}</div>
-      <div class="lc-bar"><div class="lc-bar-fill ${c.cls}" style="width:0" data-w="${c.bar.toFixed(1)}%"></div></div>
-    </div>`).join('');
-
-  /* Animate live bars after a tick */
-  setTimeout(()=>{grid.querySelectorAll('.lc-bar-fill').forEach(b=>{b.style.width=b.dataset.w})},600);
-
-  /* Members list */
-  const list=d.members_list||[];
-  const mlEl=document.getElementById('membersList');
-  if(!list.length){mlEl.innerHTML='<div style="padding:20px 22px;font-size:13px;color:var(--txt2)">No members listed in livedata.json yet.</div>';return}
-  mlEl.innerHTML=list.map(m=>{
-    const initials=(m.name||'?').split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
-    const bc=badgeCls(m.badge);
-    return`<div class="member-row">
-      <div class="mr-av">${initials}</div>
-      <div class="mr-info">
-        <div class="mr-name">${m.name||'Unknown'}</div>
-        <div class="mr-role">${m.role||'Member'}</div>
-      </div>
-      ${m.badge?`<div class="mr-badge ${bc}">${m.badge}</div>`:''}
-      <div class="mr-when">${m.joined||''}</div>
-    </div>`;
-  }).join('');
+  },500);
 }
 
-/* Fetch livedata.json → fallback to built-in data */
+/* Fetch livedata.json — values come ONLY from this file */
 (async function loadLiveData(){
-  let data=FALLBACK;
   try{
     const r=await fetch('livedata.json',{cache:'no-store'});
-    if(r.ok){
-      const j=await r.json();
-      /* Merge: JSON values override fallback, missing keys use fallback */
-      data={...FALLBACK,...j,members_list:j.members_list||FALLBACK.members_list};
-    }
-  }catch(e){/* use fallback silently */}
-  applyLiveData(data);
+    if(!r.ok)throw new Error('not found');
+    const d=await r.json();
+    applyLiveData(d);
+  }catch(e){
+    /* livedata.json missing — show clear error state */
+    ['hKpi1','hKpi2','hKpi3','hKpi4'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.textContent='—';el.style.color='var(--cr)';el.title='livedata.json not found'}
+    });
+    ['dpCourses','dpUptime','dpMembers'].forEach(id=>{
+      const el=document.getElementById(id);if(el)el.textContent='—';
+    });
+    ['sBand1','sBand2','sBand3','sBand4'].forEach(id=>{
+      const el=document.getElementById(id);if(el)el.textContent='—';
+    });
+  }
 })();
 </script>
 
