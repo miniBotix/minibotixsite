@@ -1,0 +1,44 @@
+[
+  {
+    "id"         : "MBX-001",
+    "name"       : "Kavinmayil M",
+    "role"       : "Founder & Developer",
+    "department" : "Robotics & Embedded Systems",
+    "blood_group": "O+",
+    "member_since": "2025",
+    "phone"      : "+91 80720 28617",
+    "email"      : "kavinmayil123@gmail.com",
+    "address"    : "1/1471, Poonga Nagar, K.Chettipalayam, Tirupur, Tamil Nadu - 641201",
+    "image"      : "emp/MBX-001.jpg",
+    "skills"     : ["Embedded C", "Python", "PCB Design", "IoT", "Robotics"],
+    "status"     : "active"
+  },
+  {
+    "id"         : "MBX-002",
+    "name"       : "Employee Two",
+    "role"       : "Hardware Engineer",
+    "department" : "Electronics & PCB",
+    "blood_group": "A+",
+    "member_since": "2025",
+    "phone"      : "+91 XXXXXXXXXX",
+    "email"      : "emp2@minibotix.online",
+    "address"    : "Your Address Here, Tirupur, Tamil Nadu",
+    "image"      : "emp/MBX-002.jpg",
+    "skills"     : ["PCB Design", "Soldering", "Arduino", "Eagle CAD"],
+    "status"     : "active"
+  },
+  {
+    "id"         : "MBX-003",
+    "name"       : "Employee Three",
+    "role"       : "Software Developer",
+    "department" : "Web & Applications",
+    "blood_group": "B+",
+    "member_since": "2025",
+    "phone"      : "+91 XXXXXXXXXX",
+    "email"      : "emp3@minibotix.online",
+    "address"    : "Your Address Here, Tirupur, Tamil Nadu",
+    "image"      : "emp/MBX-003.jpg",
+    "skills"     : ["HTML", "CSS", "JavaScript", "Python", "Firebase"],
+    "status"     : "active"
+  }
+]
