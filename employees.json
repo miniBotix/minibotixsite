@@ -9,7 +9,7 @@
     "phone"      : "+91 80720 28617",
     "email"      : "kavinmayil123@gmail.com",
     "address"    : "1/1471, Poonga Nagar, K.Chettipalayam, Tirupur, Tamil Nadu - 641201",
-    "image"      : "emp/MBX-001.jpg",
+    "image"      : "MBX001.png",
     "skills"     : ["Embedded C", "Python", "PCB Design", "IoT", "Robotics"],
     "status"     : "active"
   },
