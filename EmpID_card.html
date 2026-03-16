@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>MiniBotix · ID Card Generator</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:#060c18;color:#daeeff;margin:0;padding:0;min-height:100vh}
+
+/* HEADER */
+.screen-header{background:#04090f;border-bottom:1px solid rgba(0,180,255,0.1);
+  padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.sh-left{display:flex;align-items:center;gap:12px}
+.sh-logo{width:34px;height:34px;border-radius:8px;overflow:hidden;
+  background:linear-gradient(135deg,#003fa0,#00aaff);display:flex;align-items:center;justify-content:center}
+.sh-logo img{width:100%;height:100%;object-fit:cover}
+.sh-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px}
+.sh-title em{color:#00aaff;font-style:normal}
+.sh-badge{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:#00ffa3;border:1px solid rgba(0,255,163,0.2);padding:3px 8px;border-radius:4px}
+.sh-actions{display:flex;gap:8px}
+.btn-primary{background:linear-gradient(135deg,#003fa0,#00aaff);border:none;
+  padding:10px 22px;border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,100,255,0.3);transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.btn-sec{background:transparent;border:1px solid rgba(0,180,255,0.2);
+  padding:10px 18px;border-radius:8px;color:#6b8fa8;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-sec:hover{border-color:#00aaff;color:#00aaff}
+.screen-info{padding:10px 28px;font-family:'DM Mono',monospace;font-size:10px;color:#3a5a72;
+  border-bottom:1px solid rgba(0,180,255,0.05);background:#04090f}
+
+/* CARDS WRAPPER */
+.cards-screen{padding:40px 28px;display:flex;flex-wrap:wrap;gap:40px;justify-content:center}
+
+/* CARD SET */
+.card-set{display:flex;flex-direction:column;align-items:center;gap:10px}
+.card-set-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:#2a4a62}
+.card-hint{font-family:'DM Mono',monospace;font-size:8px;color:#1a3050;letter-spacing:.06em}
+.btn-print-one{background:transparent;border:1px solid rgba(0,180,255,0.12);
+  padding:6px 14px;border-radius:6px;color:#2a4a62;font-family:'DM Sans',sans-serif;
+  font-size:10px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-print-one:hover{border-color:#00aaff;color:#00aaff}
+
+/* FLIP CARD — CR80 Portrait: 54mm × 85.6mm, screen scale ~204px × 323px */
+.flip-card{width:204px;height:323px;perspective:900px;cursor:pointer}
+.flip-card:hover .flip-inner,.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-inner{position:relative;width:100%;height:100%;
+  transition:transform .65s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.flip-front,.flip-back{position:absolute;inset:0;border-radius:14px;overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:0 16px 56px rgba(0,0,0,.85),0 0 0 1px rgba(0,180,255,0.14)}
+.flip-back{transform:rotateY(180deg)}
+
+/* ════════════ FRONT FACE ════════════ */
+.card-front{width:100%;height:100%;
+  background:linear-gradient(180deg,#050d1e 0%,#071428 100%);
+  display:flex;flex-direction:column;font-family:'DM Sans',sans-serif;
+  position:relative;overflow:hidden}
+
+.cf-stripe{height:72px;flex-shrink:0;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#001540 0%,#0038a0 55%,#0090e0 100%)}
+.cf-stripe::after{content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,transparent 1px);
+  background-size:10px 10px}
+.cf-org{position:absolute;top:10px;left:12px;z-index:1}
+.cf-org-name{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#fff;line-height:1}
+.cf-org-sub{font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:3px}
+.cf-id-pill{position:absolute;top:8px;right:10px;z-index:1;
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.06em;
+  background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.18);
+  color:rgba(255,255,255,.95);padding:3px 7px;border-radius:4px}
+
+.cf-photo-wrap{display:flex;justify-content:center;
+  margin-top:-26px;margin-bottom:6px;flex-shrink:0;position:relative;z-index:2}
+.cf-photo-ring{width:56px;height:56px;border-radius:50%;padding:2px;
+  background:linear-gradient(135deg,#003fa0,#00aaff,#00ffa3);
+  box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 0 3px rgba(0,180,255,0.08)}
+.cf-photo-inner{width:100%;height:100%;border-radius:50%;overflow:hidden;
+  background:#091525;border:2px solid #050d1e}
+.cf-photo-inner img{width:100%;height:100%;object-fit:cover;display:block}
+.cf-photo-inner .cini{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#00aaff;background:#091525}
+.cf-active{position:absolute;bottom:2px;right:calc(50% - 28px + 2px);
+  width:10px;height:10px;border-radius:50%;
+  background:#00ffa3;border:2px solid #050d1e;box-shadow:0 0 7px #00ffa3}
+
+.cf-name{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;
+  text-align:center;padding:0 10px;line-height:1.2;color:#d8eeff;letter-spacing:-.01em;margin-bottom:2px}
+.cf-role{font-size:9px;font-weight:600;color:#00aaff;text-align:center;letter-spacing:.02em}
+.cf-dept{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:.1em;
+  text-transform:uppercase;color:#2a4a62;text-align:center;margin-top:2px}
+
+.cf-cells{display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:rgba(0,100,200,0.08);margin:10px 10px 0;border-radius:8px;overflow:hidden}
+.cf-cell{background:#071428;padding:7px 8px}
+.cc-lbl{font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#1a3050;margin-bottom:2px}
+.cc-val{font-size:9px;font-weight:600;color:#9ab8d0;line-height:1.2}
+.cc-val.blood{color:#ff3a5c;font-weight:800;font-size:12px}
+.cc-val.on{color:#00ffa3;display:flex;align-items:center;gap:3px}
+.cc-val.on::before{content:'';width:4px;height:4px;border-radius:50%;
+  background:#00ffa3;flex-shrink:0;animation:glow2 2s infinite}
+@keyframes glow2{0%,100%{opacity:1}50%{opacity:.3}}
+
+.cf-qr-row{display:flex;align-items:center;gap:8px;margin:8px 10px 0;
+  background:#071428;border-radius:8px;padding:8px;border:1px solid rgba(0,180,255,0.07)}
+.cf-qr-box{flex-shrink:0;background:#fff;padding:3px;border-radius:4px}
+.cf-qr-box canvas,.cf-qr-box img{display:block}
+.cf-qr-scan{font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:#1a3050;line-height:1.5}
+.cf-qr-url{font-family:'DM Mono',monospace;font-size:5px;color:#0d2a44;
+  word-break:break-all;line-height:1.4;margin-top:2px}
+
+.cf-addr{font-size:6px;color:#1a3050;padding:5px 10px 0;line-height:1.5;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
+.cf-foot{margin-top:auto;padding:6px 10px 8px;display:flex;align-items:center;
+  justify-content:space-between;border-top:1px solid rgba(0,180,255,0.06)}
+.cf-foot-txt{font-family:'DM Mono',monospace;font-size:5px;letter-spacing:.1em;
+  text-transform:uppercase;color:#0d2030}
+.cf-foot-dot{width:5px;height:5px;border-radius:50%;background:#00ffa3;
+  box-shadow:0 0 4px #00ffa3;animation:glow2 2s infinite}
+
+/* ════════════ BACK FACE ════════════ */
+.card-back{width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;font-family:'DM Sans',sans-serif;position:relative;overflow:hidden}
+
+/* Theme backgrounds */
+.back-founder  {background:linear-gradient(160deg,#0a0800,#1c1200,#0f0a00,#1a1400)}
+.back-manager  {background:linear-gradient(160deg,#000a1a,#001530,#000e20,#001428)}
+.back-developer{background:linear-gradient(160deg,#030a08,#051510,#030e0a,#051408)}
+.back-supervisor{background:linear-gradient(160deg,#0a0505,#1a0808,#100505,#180a0a)}
+.back-default  {background:linear-gradient(160deg,#050a18,#0a1428)}
+
+/* Decorative rings */
+.back-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  border-radius:50%;pointer-events:none;border:1px solid currentColor;opacity:.07}
+.ring1{width:280px;height:280px}
+.ring2{width:210px;height:210px}
+.ring3{width:145px;height:145px}
+
+/* Shimmer */
+.back-holo{position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:linear-gradient(130deg,transparent 20%,rgba(255,255,255,0.015) 50%,transparent 80%)}
+
+/* Logo block */
+.back-logo-wrap{margin-top:20px;display:flex;flex-direction:column;align-items:center;
+  gap:6px;position:relative;z-index:2}
+.back-logo-img{width:50px;height:50px;border-radius:12px;overflow:hidden;
+  box-shadow:0 6px 24px rgba(0,0,0,.7)}
+.back-logo-img img{width:100%;height:100%;object-fit:cover}
+.back-org-name{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;
+  letter-spacing:-.01em;text-align:center}
+.back-org-sub{font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.22em;
+  text-transform:uppercase;text-align:center;opacity:.5;margin-top:1px}
+
+.back-hdiv{height:1px;width:75%;margin:10px auto;opacity:.15}
+
+/* Animal */
+.back-animal{flex:1;display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:2;padding:0 12px;width:100%}
+
+/* Role label */
+.back-role-lbl{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.26em;
+  text-transform:uppercase;text-align:center;position:relative;z-index:2;
+  opacity:.65;margin-bottom:4px}
+
+/* Back footer */
+.back-foot{width:100%;padding:8px 14px 10px;display:flex;align-items:center;
+  justify-content:space-between;border-top:1px solid rgba(255,255,255,0.05);
+  position:relative;z-index:2}
+.bf-txt{font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.4}
+.bf-name{font-family:'DM Mono',monospace;font-size:8px;font-weight:500;letter-spacing:.06em}
+
+/* ════════════ PRINT ════════════ */
+@media print{
+  body{background:#fff;margin:0;padding:0}
+  .screen-header,.screen-info,.card-set-label,.card-hint,.btn-print-one{display:none!important}
+  .cards-screen{padding:4mm;gap:5mm;background:#fff}
+  .card-set{break-inside:avoid}
+  /* Show front+back side by side */
+  .flip-card{width:auto;height:auto;perspective:none}
+  .flip-inner{transform:none!important;position:static;display:flex;flex-direction:row;
+    gap:3mm;width:auto;height:auto}
+  .flip-front,.flip-back{position:static;width:54mm;height:85.6mm;flex-shrink:0;
+    backface-visibility:visible;-webkit-backface-visibility:visible;transform:none!important;
+    border-radius:3mm}
+  .cf-stripe,.back-founder,.back-manager,.back-developer,.back-supervisor,.back-default,
+  .card-front,.card-back{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* Loading */
+.loading{padding:80px;text-align:center;color:#1a3050}
+.spin{display:inline-block;width:32px;height:32px;border:2px solid #0a1a2a;
+  border-top-color:#00aaff;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="screen-header">
+  <div class="sh-left">
+    <div class="sh-logo">
+      <img src="logo.svg" alt="M" onerror="this.parentNode.innerHTML='<span style=font-family:Syne,sans-serif;font-weight:800;font-size:14px;color:#fff>M</span>'">
+    </div>
+    <div>
+      <div class="sh-title">Mini<em>Botix</em> · ID Card Generator</div>
+    </div>
+    <div class="sh-badge">Click card to flip</div>
+  </div>
+  <div class="sh-actions">
+    <button class="btn-sec" onclick="location.href='employees.html'">← Directory</button>
+    <button class="btn-sec" onclick="flipAll()">↻ Flip All</button>
+    <button class="btn-primary" onclick="window.print()">🖨 Print All Cards</button>
+  </div>
+</div>
+<div class="screen-info" id="screenInfo">Loading from employees.json…</div>
+
+<div class="cards-screen" id="cardsWrap">
+  <div class="loading"><div class="spin"></div><br>Loading…</div>
+</div>
+
+<script>
+const BASE_URL = 'https://minibotix.online/';
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function ini(n){return(n||'?').split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase()}
+function empUrl(id){return BASE_URL+id.replace('-','')}
+
+/* ── ROLE → THEME ── */
+function roleTheme(role){
+  const r=(role||'').toLowerCase();
+  if(r.includes('founder'))    return{cls:'back-founder',   c:'#c9a84c',a:'#f0d060',lbl:'FOUNDER',   animal:'lion'}
+  if(r.includes('manage'))     return{cls:'back-manager',   c:'#2a88ff',a:'#70b8ff',lbl:'MANAGER',   animal:'eagle'}
+  if(r.includes('develop')||r.includes('engineer'))
+                               return{cls:'back-developer', c:'#00b87a',a:'#00ffa3',lbl:'DEVELOPER', animal:'horse'}
+  if(r.includes('supervis'))   return{cls:'back-supervisor',c:'#e05050',a:'#ff8888',lbl:'SUPERVISOR',animal:'elephant'}
+  if(r.includes('design'))     return{cls:'back-manager',   c:'#2a88ff',a:'#70b8ff',lbl:'DESIGNER',  animal:'eagle'}
+  return{cls:'back-default',c:'#5a80a0',a:'#8ab0d0',lbl:(role||'MEMBER').toUpperCase().slice(0,12),animal:'none'}
+}
+
+/* ── ANIMAL SVGs ── */
+/* Each uses C=color A=accent placeholders, replaced at runtime */
+
+const LION = (c,a)=>`<svg width="108" height="108" viewBox="0 0 108 108" fill="none">
+  <circle cx="54" cy="50" r="32" stroke="${a}" stroke-width="1" opacity=".12"/>
+  <circle cx="54" cy="50" r="26" stroke="${a}" stroke-width="1" opacity=".18"/>
+  <!-- mane rays -->
+  <g stroke="${a}" stroke-width="2.2" stroke-linecap="round" opacity=".55">
+    <line x1="54" y1="12" x2="54" y2="20"/><line x1="54" y1="80" x2="54" y2="88"/>
+    <line x1="16" y1="50" x2="24" y2="50"/><line x1="84" y1="50" x2="92" y2="50"/>
+    <line x1="28" y1="24" x2="34" y2="30"/><line x1="74" y1="24" x2="80" y2="30"/>
+    <line x1="28" y1="76" x2="34" y2="70"/><line x1="74" y1="76" x2="80" y2="70"/>
+    <line x1="20" y1="36" x2="27" y2="40"/><line x1="81" y1="36" x2="88" y2="40"/>
+    <line x1="20" y1="64" x2="27" y2="60"/><line x1="81" y1="64" x2="88" y2="60"/>
+  </g>
+  <!-- mane arc -->
+  <path d="M33 50 Q36 36 46 30 Q54 26 62 30 Q72 36 75 50 Q72 64 62 70 Q54 74 46 70 Q36 64 33 50Z"
+    fill="${c}" opacity=".1" stroke="${a}" stroke-width="1" opacity=".3"/>
+  <!-- face -->
+  <circle cx="54" cy="49" r="18" fill="${c}" opacity=".12"/>
+  <!-- ears -->
+  <path d="M38 33 L33 22 L44 28Z" fill="${a}" opacity=".5"/>
+  <path d="M70 33 L75 22 L64 28Z" fill="${a}" opacity=".5"/>
+  <!-- crown -->
+  <path d="M42 29 L46 18 L54 24 L62 18 L66 29" stroke="${a}" stroke-width="1.8" fill="none" stroke-linejoin="round" opacity=".7"/>
+  <!-- eyes -->
+  <ellipse cx="46" cy="45" rx="4" ry="5" fill="${a}" opacity=".9"/>
+  <ellipse cx="62" cy="45" rx="4" ry="5" fill="${a}" opacity=".9"/>
+  <ellipse cx="46" cy="46" rx="1.6" ry="2.5" fill="#000"/>
+  <ellipse cx="62" cy="46" rx="1.6" ry="2.5" fill="#000"/>
+  <circle cx="47" cy="44.5" r=".7" fill="#fff" opacity=".9"/>
+  <circle cx="63" cy="44.5" r=".7" fill="#fff" opacity=".9"/>
+  <!-- nose + mouth -->
+  <path d="M51 54 Q54 57 57 54" stroke="${a}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="54" y1="54" x2="54" y2="58" stroke="${a}" stroke-width="1" stroke-linecap="round"/>
+  <path d="M49 58 Q54 62 59 58" stroke="${a}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- whiskers -->
+  <line x1="32" y1="52" x2="46" y2="54" stroke="${a}" stroke-width=".7" opacity=".4"/>
+  <line x1="32" y1="55" x2="46" y2="56" stroke="${a}" stroke-width=".7" opacity=".3"/>
+  <line x1="62" y1="54" x2="76" y2="52" stroke="${a}" stroke-width=".7" opacity=".4"/>
+  <line x1="62" y1="56" x2="76" y2="55" stroke="${a}" stroke-width=".7" opacity=".3"/>
+</svg>`
+
+const EAGLE = (c,a)=>`<svg width="108" height="108" viewBox="0 0 108 108" fill="none">
+  <!-- wings -->
+  <path d="M54 56 Q28 38 6 46 Q18 50 17 62 Q36 54 54 60Z" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.2" opacity=".55"/>
+  <path d="M54 56 Q80 38 102 46 Q90 50 91 62 Q72 54 54 60Z" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.2" opacity=".55"/>
+  <!-- feather lines -->
+  <path d="M17 62 Q30 56 46 57" stroke="${a}" stroke-width=".7" opacity=".35"/>
+  <path d="M13 54 Q26 48 42 50" stroke="${a}" stroke-width=".7" opacity=".25"/>
+  <path d="M91 62 Q78 56 62 57" stroke="${a}" stroke-width=".7" opacity=".35"/>
+  <path d="M95 54 Q82 48 66 50" stroke="${a}" stroke-width=".7" opacity=".25"/>
+  <!-- body -->
+  <ellipse cx="54" cy="64" rx="10" ry="14" fill="${c}" opacity=".15"/>
+  <!-- head -->
+  <circle cx="54" cy="37" r="13" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.4" opacity=".45"/>
+  <ellipse cx="54" cy="31" rx="8" ry="6" fill="${a}" opacity=".1"/>
+  <!-- eye -->
+  <circle cx="59" cy="35" r="4" fill="${a}" opacity=".9"/>
+  <circle cx="59" cy="35" r="2" fill="#000"/>
+  <circle cx="60" cy="34" r=".7" fill="#fff" opacity=".8"/>
+  <!-- beak -->
+  <path d="M62 40 L71 44 L62 44Z" fill="${a}" opacity=".8"/>
+  <!-- tail -->
+  <path d="M48 74 L43 92 M54 76 L54 94 M60 74 L65 92" stroke="${a}" stroke-width="1.4" stroke-linecap="round" opacity=".45"/>
+  <!-- talons -->
+  <path d="M46 78 Q42 83 38 80 M46 78 Q44 85 41 87 M46 78 Q49 84 47 88" stroke="${a}" stroke-width=".9" stroke-linecap="round" opacity=".35"/>
+  <path d="M62 78 Q66 83 70 80 M62 78 Q64 85 67 87 M62 78 Q59 84 61 88" stroke="${a}" stroke-width=".9" stroke-linecap="round" opacity=".35"/>
+</svg>`
+
+const HORSE = (c,a)=>`<svg width="108" height="108" viewBox="0 0 108 108" fill="none">
+  <!-- body -->
+  <ellipse cx="52" cy="72" rx="26" ry="17" fill="${c}" opacity=".15" stroke="${a}" stroke-width="1.2" opacity=".35"/>
+  <!-- neck -->
+  <path d="M60 57 Q68 50 65 37 Q62 29 56 25" stroke="${a}" stroke-width="2.8" stroke-linecap="round" fill="none" opacity=".55"/>
+  <!-- head -->
+  <ellipse cx="52" cy="23" rx="10" ry="13" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.4" opacity=".45" transform="rotate(-18 52 23)"/>
+  <!-- ear -->
+  <path d="M45 13 L42 4 L50 11Z" fill="${a}" opacity=".6"/>
+  <!-- eye -->
+  <circle cx="58" cy="21" r="3.5" fill="${a}" opacity=".9"/>
+  <circle cx="58" cy="21" r="1.8" fill="#000"/>
+  <circle cx="58.8" cy="20.2" r=".7" fill="#fff" opacity=".8"/>
+  <!-- nostril -->
+  <ellipse cx="47" cy="33" rx="1.8" ry="1.1" fill="${a}" opacity=".4" transform="rotate(-18 47 33)"/>
+  <!-- mane -->
+  <path d="M52 11 Q47 20 45 30 Q44 39 45 46" stroke="${a}" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".45"/>
+  <path d="M54 10 Q50 19 48 29" stroke="${a}" stroke-width="1.4" fill="none" opacity=".3"/>
+  <!-- legs -->
+  <line x1="38" y1="85" x2="35" y2="106" stroke="${a}" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
+  <line x1="46" y1="87" x2="44" y2="107" stroke="${a}" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
+  <line x1="58" y1="87" x2="60" y2="107" stroke="${a}" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
+  <line x1="66" y1="85" x2="70" y2="106" stroke="${a}" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
+  <!-- hooves -->
+  <rect x="32" y="104" width="6" height="3" rx="1.5" fill="${a}" opacity=".5"/>
+  <rect x="41" y="105" width="6" height="3" rx="1.5" fill="${a}" opacity=".5"/>
+  <rect x="57" y="105" width="6" height="3" rx="1.5" fill="${a}" opacity=".5"/>
+  <rect x="67" y="104" width="6" height="3" rx="1.5" fill="${a}" opacity=".5"/>
+  <!-- tail -->
+  <path d="M77 70 Q90 62 88 73 Q86 80 80 77" stroke="${a}" stroke-width="1.8" stroke-linecap="round" fill="none" opacity=".4"/>
+</svg>`
+
+const ELEPHANT = (c,a)=>`<svg width="108" height="108" viewBox="0 0 108 108" fill="none">
+  <!-- body -->
+  <ellipse cx="58" cy="74" rx="30" ry="22" fill="${c}" opacity=".15" stroke="${a}" stroke-width="1.4" opacity=".35"/>
+  <!-- head -->
+  <circle cx="48" cy="44" r="20" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.4" opacity=".4"/>
+  <!-- ear -->
+  <ellipse cx="26" cy="42" rx="11" ry="15" fill="${c}" opacity=".14" stroke="${a}" stroke-width="1.2" opacity=".4"/>
+  <ellipse cx="26" cy="42" rx="6" ry="9" fill="${c}" opacity=".08"/>
+  <!-- eye -->
+  <circle cx="56" cy="38" r="4" fill="${a}" opacity=".9"/>
+  <circle cx="56" cy="38" r="2" fill="#000"/>
+  <circle cx="57" cy="37" r=".7" fill="#fff" opacity=".8"/>
+  <!-- trunk -->
+  <path d="M37 55 Q27 66 29 79 Q30 87 37 89" stroke="${a}" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".45"/>
+  <path d="M35 89 Q33 93 37 94 Q41 94 39 90" stroke="${a}" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"/>
+  <!-- tusk -->
+  <path d="M41 58 Q33 65 29 73" stroke="${a}" stroke-width="1.8" stroke-linecap="round" opacity=".3"/>
+  <!-- legs -->
+  <rect x="32" y="89" width="11" height="17" rx="5.5" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.1" opacity=".4"/>
+  <rect x="47" y="91" width="11" height="17" rx="5.5" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.1" opacity=".4"/>
+  <rect x="63" y="91" width="11" height="17" rx="5.5" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.1" opacity=".4"/>
+  <rect x="77" y="89" width="11" height="17" rx="5.5" fill="${c}" opacity=".18" stroke="${a}" stroke-width="1.1" opacity=".4"/>
+  <!-- tail -->
+  <path d="M88 74 Q98 69 96 77 Q94 83 90 81" stroke="${a}" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".35"/>
+</svg>`
+
+function getAnimal(name, c, a){
+  if(name==='lion')     return LION(c,a)
+  if(name==='eagle')    return EAGLE(c,a)
+  if(name==='horse')    return HORSE(c,a)
+  if(name==='elephant') return ELEPHANT(c,a)
+  return `<div style="font-size:40px;opacity:.3;text-align:center">🤖</div>`
+}
+
+/* ── BUILD CARD ── */
+function buildCard(emp, idx){
+  const url  = empUrl(emp.id)
+  const qrId = 'qr-'+emp.id.replace(/[^a-zA-Z0-9]/g,'')
+  const t    = roleTheme(emp.role)
+  const ani  = getAnimal(t.animal, t.c, t.a)
+
+  return`
+  <div class="card-set">
+    <div class="card-set-label">${esc(emp.id)} · ${esc(emp.name)}</div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+
+        <!-- FRONT -->
+        <div class="flip-front">
+          <div class="card-front">
+            <div class="cf-stripe">
+              <div class="cf-org">
+                <div class="cf-org-name">MiniBotix</div>
+                <div class="cf-org-sub">Official Employee Identity</div>
+              </div>
+              <div class="cf-id-pill">${esc(emp.id)}</div>
+            </div>
+
+            <div class="cf-photo-wrap">
+              <div class="cf-photo-ring">
+                <div class="cf-photo-inner">
+                  <img src="${esc(emp.image||'')}" alt="${esc(emp.name)}"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <div class="cini" style="display:none">${ini(emp.name)}</div>
+                </div>
+              </div>
+              ${emp.status==='active'?'<div class="cf-active"></div>':''}
+            </div>
+
+            <div class="cf-name">${esc(emp.name)}</div>
+            <div class="cf-role">${esc(emp.role)}</div>
+            <div class="cf-dept">${esc(emp.department)}</div>
+
+            <div class="cf-cells">
+              <div class="cf-cell">
+                <div class="cc-lbl">Blood</div>
+                <div class="cc-val blood">${esc(emp.blood_group||'—')}</div>
+              </div>
+              <div class="cf-cell">
+                <div class="cc-lbl">Since</div>
+                <div class="cc-val">${esc(emp.member_since||'—')}</div>
+              </div>
+              <div class="cf-cell">
+                <div class="cc-lbl">Department</div>
+                <div class="cc-val" style="font-size:7.5px">${esc(emp.department||'—')}</div>
+              </div>
+              <div class="cf-cell">
+                <div class="cc-lbl">Status</div>
+                <div class="cc-val on">${emp.status==='active'?'Active':'Inactive'}</div>
+              </div>
+            </div>
+
+            <div class="cf-qr-row">
+              <div class="cf-qr-box" id="${qrId}"></div>
+              <div>
+                <div class="cf-qr-scan">Scan to verify</div>
+                <div class="cf-qr-url">${esc(url)}</div>
+              </div>
+            </div>
+
+            <div class="cf-addr">${esc(emp.address)}</div>
+
+            <div class="cf-foot">
+              <div class="cf-foot-txt">minibotix.online</div>
+              <div class="cf-foot-dot"></div>
+              <div class="cf-foot-txt">© 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="flip-back">
+          <div class="card-back ${t.cls}" style="color:${t.a}">
+            <div class="back-holo"></div>
+            <div class="back-ring ring1" style="color:${t.a}"></div>
+            <div class="back-ring ring2" style="color:${t.a}"></div>
+            <div class="back-ring ring3" style="color:${t.a}"></div>
+
+            <div class="back-logo-wrap">
+              <div class="back-logo-img">
+                <img src="logo.svg" alt="MiniBotix"
+                  onerror="this.parentNode.style.background='linear-gradient(135deg,#003fa0,#00aaff)';this.style.display='none'">
+              </div>
+              <div class="back-org-name" style="color:${t.a}">MiniBotix</div>
+              <div class="back-org-sub" style="color:${t.c}">Learn · Build · Innovate</div>
+            </div>
+
+            <div class="back-hdiv" style="background:${t.a}"></div>
+
+            <div class="back-animal">${ani}</div>
+
+            <div class="back-role-lbl" style="color:${t.a}">${t.lbl}</div>
+
+            <div class="back-foot" style="border-color:${t.c}22">
+              <div class="bf-txt" style="color:${t.c}">${esc(emp.id)}</div>
+              <div class="bf-name" style="color:${t.a}">${esc(emp.name.split(' ')[0])}</div>
+              <div class="bf-txt" style="color:${t.c}">2025</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card-hint">↻ Click card to flip</div>
+    <button class="btn-print-one" onclick="window.print()">🖨 Print</button>
+  </div>`
+}
+
+/* FLIP ALL */
+let allFlipped=false
+function flipAll(){
+  allFlipped=!allFlipped
+  document.querySelectorAll('.flip-card').forEach(c=>c.classList.toggle('flipped',allFlipped))
+}
+
+/* LOAD */
+;(async function(){
+  try{
+    const r=await fetch('employees.json',{cache:'no-store'})
+    if(!r.ok) throw new Error('employees.json not found')
+    const list=await r.json()
+
+    document.getElementById('screenInfo').textContent=
+      `${list.length} employee${list.length!==1?'s':''} loaded · Hover or click any card to see the back · QR → ${BASE_URL}MBX001 etc`
+
+    document.getElementById('cardsWrap').innerHTML=list.map((e,i)=>buildCard(e,i)).join('')
+
+    setTimeout(()=>{
+      list.forEach(emp=>{
+        const el=document.getElementById('qr-'+emp.id.replace(/[^a-zA-Z0-9]/g,''))
+        if(!el) return
+        try{new QRCode(el,{text:empUrl(emp.id),width:52,height:52,
+          colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}
+        catch(e){}
+      })
+    },200)
+
+  }catch(e){
+    document.getElementById('cardsWrap').innerHTML=
+      `<div style="padding:80px;text-align:center;color:#1a3050">
+        <div style="font-size:32px;margin-bottom:12px">⚠️</div>
+        <div style="font-size:14px">${esc(e.message)}</div>
+      </div>`
+    document.getElementById('screenInfo').textContent='Error: '+e.message
+  }
+})()
+</script>
+</body>
+</html>
