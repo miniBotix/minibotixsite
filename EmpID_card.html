@@ -133,22 +133,22 @@ body{font-family:'DM Sans',sans-serif;background:#060c18;color:#daeeff;margin:0;
   align-items:center;font-family:'DM Sans',sans-serif;position:relative;overflow:hidden}
 
 /* Theme backgrounds */
-.back-founder  {background:linear-gradient(160deg,#0a0800,#1c1200,#0f0a00,#1a1400)}
-.back-manager  {background:linear-gradient(160deg,#000a1a,#001530,#000e20,#001428)}
-.back-developer{background:linear-gradient(160deg,#030a08,#051510,#030e0a,#051408)}
-.back-supervisor{background:linear-gradient(160deg,#0a0505,#1a0808,#100505,#180a0a)}
-.back-default  {background:linear-gradient(160deg,#050a18,#0a1428)}
+.back-founder  {background:#000000}
+.back-manager  {background:#000000}
+.back-developer{background:#000000}
+.back-supervisor{background:#000000}
+.back-default  {background:#000000}
 
 /* Decorative rings */
 .back-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  border-radius:50%;pointer-events:none;border:1px solid currentColor;opacity:.07}
+  border-radius:50%;pointer-events:none;border:1px solid currentColor;opacity:.12}
 .ring1{width:280px;height:280px}
 .ring2{width:210px;height:210px}
 .ring3{width:145px;height:145px}
 
 /* Shimmer */
 .back-holo{position:absolute;inset:0;pointer-events:none;z-index:1;
-  background:linear-gradient(130deg,transparent 20%,rgba(255,255,255,0.015) 50%,transparent 80%)}
+  background:linear-gradient(130deg,transparent 20%,rgba(255,255,255,0.025) 50%,transparent 80%)}
 
 /* Logo block */
 .back-logo-wrap{margin-top:14px;display:flex;flex-direction:column;align-items:center;
@@ -159,9 +159,9 @@ body{font-family:'DM Sans',sans-serif;background:#060c18;color:#daeeff;margin:0;
 .back-org-name{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;
   letter-spacing:-.01em;text-align:center}
 .back-org-sub{font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.22em;
-  text-transform:uppercase;text-align:center;opacity:.5;margin-top:1px}
+  text-transform:uppercase;text-align:center;opacity:.75;margin-top:1px}
 
-.back-hdiv{height:1px;width:70%;margin:6px auto;opacity:.15}
+.back-hdiv{height:1px;width:70%;margin:6px auto;opacity:.35}
 
 /* Animal */
 .back-animal{flex:1;display:flex;align-items:center;justify-content:center;
@@ -170,11 +170,11 @@ body{font-family:'DM Sans',sans-serif;background:#060c18;color:#daeeff;margin:0;
 /* Role label */
 .back-role-lbl{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.26em;
   text-transform:uppercase;text-align:center;position:relative;z-index:2;
-  opacity:.65;margin-bottom:2px}
+  opacity:.9;margin-bottom:2px}
 
 /* Back footer */
 .back-foot{width:100%;padding:8px 14px 10px;display:flex;align-items:center;
-  justify-content:space-between;border-top:1px solid rgba(255,255,255,0.05);
+  justify-content:space-between;border-top:1px solid rgba(255,255,255,0.12);
   position:relative;z-index:2}
 .bf-txt{font-family:'DM Mono',monospace;font-size:5.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.4}
 .bf-name{font-family:'DM Mono',monospace;font-size:8px;font-weight:500;letter-spacing:.06em}
@@ -273,9 +273,18 @@ function getAnimal(name, c, a, themeCls){
   const src = ANIMAL_FILES[name];
   if(!src) return `<div style="font-size:36px;opacity:.2">🤖</div>`;
   const filt = ANIMAL_FILTER[themeCls] || ANIMAL_FILTER['back-default'];
+  // Add a subtle glow matching the accent color
+  const glowColor = {
+    'back-founder':    '#c9a84c',
+    'back-manager':    '#2a88ff',
+    'back-developer':  '#00b87a',
+    'back-supervisor': '#e05050',
+    'back-default':    '#5a80a0',
+  }[themeCls] || '#888';
+  const glowFilter = filt + ` drop-shadow(0 0 10px ${glowColor}99)`;
   return `<img src="${src}"
     style="width:118px;height:118px;object-fit:contain;
-           filter:${filt};
+           filter:${glowFilter};
            mix-blend-mode:screen;
            display:block;"
     alt="${name}" />`;
