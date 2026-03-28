@@ -238,13 +238,6 @@ h2.sh{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,3.5vw,4
   text-transform:uppercase;color:var(--c);display:inline-flex;align-items:center;gap:6px;transition:gap .25s}
 .card:hover .clink{gap:10px}
 
-
-.lc-bar-fill.g{background:linear-gradient(90deg,#009f6a,var(--cg))}
-.lc-bar-fill.o{background:linear-gradient(90deg,#c85a00,var(--co))}
-.lc-bar-fill.p{background:linear-gradient(90deg,#6800cc,var(--cp))}
-
-
-
 /* CONTACT */
 .ctbox{background:var(--bg2);border:1px solid var(--line-hi);border-radius:14px;
   padding:48px;display:flex;align-items:center;justify-content:space-between;
@@ -308,7 +301,6 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
 /* RESPONSIVE */
 @media(max-width:1020px){
   .hi{grid-template-columns:1fr}
-  /* dp stays visible — just moves below hero text */
   .dp{width:100%;max-width:500px;margin:0 auto;animation:none}
   nav.main-nav{display:none}.ham{display:flex}
   .sband{grid-template-columns:repeat(2,1fr)}
@@ -332,7 +324,6 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
 <header id="hdr">
   <div class="brand" onclick="scrollTo({top:0,behavior:'smooth'})">
     <div class="bm" id="brandMark">
-      <!-- logo.svg loaded by JS; fallback = "M" text -->
       <img id="logoImg" src="logo.svg" alt="MiniBotix"
            onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">
       <span id="logoFallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff">M</span>
@@ -662,8 +653,6 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   </div>
 </section>
 
-
-
 <div class="sep"></div>
 
 <!-- ██ CONTACT ██ -->
@@ -712,7 +701,6 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
     </div>
     <div class="tabs">
       <button class="tab on" id="tabEmail">Email</button>
-      <button class="tab" id="tabGoogle">Google</button>
     </div>
     <div id="emailView">
       <div id="loginView">
@@ -729,13 +717,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
         <div class="ma"><button class="btn-s" id="createAccount">Create Account</button><button class="btn-o" id="showLogin">Sign In</button></div>
       </div>
     </div>
-    <div id="googleView" style="display:none;padding-top:8px">
-      <button id="googleSignIn" class="btn-s" style="width:100%;padding:13px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px">
-        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.6 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16.1 19 13 24 13c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.5-3.3-11.2-7.9L6.1 33.4C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.6l6.2 5.2C42.3 35.5 44 30.1 44 24c0-1.3-.1-2.6-.4-3.9z"/></svg>
-        Continue with Google
-      </button>
-    </div>
-    <p class="mnote">Your data is stored securely in Firestore.</p>
+    <p class="mnote">Your data is stored securely in our MySQL database.</p>
   </div>
 </div>
 
@@ -745,7 +727,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
     <div class="mch"><h3>Profile Settings</h3><button class="mcc" id="profileClose">×</button></div>
     <div class="fg"><label>Name</label><input id="pfName" type="text"></div>
     <div class="fg"><label>Phone</label><input id="pfPhone" type="tel"></div>
-    <div class="fg"><label>Delivery Area</label><input id="pfArea" type="text"></div>
+    <div class="fg"><label>Address</label><input id="pfArea" type="text"></div>
     <div class="ma">
       <button class="btn-s" id="saveProfile">Save Changes</button>
       <button class="btn-o" id="logoutBtn">Logout</button>
@@ -800,7 +782,6 @@ setInterval(rotateTick,4500);
 /* ── SCROLL REVEAL ── */
 const io=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.1});
 document.querySelectorAll('.reveal,.revl,.revr').forEach(el=>io.observe(el));
-/* bars animated by applyLiveData after JSON loads */
 window.addEventListener('scroll',()=>document.getElementById('hdr').classList.toggle('scrolled',scrollY>40));
 
 /* ── MOBILE NAV ── */
@@ -819,10 +800,6 @@ document.getElementById('authClose').addEventListener('click',()=>closeModal(AM)
 document.getElementById('profileClose').addEventListener('click',()=>closeModal(PM));
 document.getElementById('openPS').addEventListener('click',()=>openM(PM));
 window.addEventListener('click',e=>{if(e.target===AM)closeModal(AM);if(e.target===PM)closeModal(PM)});
-const tE=document.getElementById('tabEmail'),tG=document.getElementById('tabGoogle');
-const eV=document.getElementById('emailView'),gV=document.getElementById('googleView');
-tE.addEventListener('click',()=>{eV.style.display='block';gV.style.display='none';tE.classList.add('on');tG.classList.remove('on')});
-tG.addEventListener('click',()=>{eV.style.display='none';gV.style.display='block';tG.classList.add('on');tE.classList.remove('on')});
 document.getElementById('showRegister').addEventListener('click',()=>{document.getElementById('loginView').style.display='none';document.getElementById('registerView').style.display='block'});
 document.getElementById('showLogin').addEventListener('click',()=>{document.getElementById('registerView').style.display='none';document.getElementById('loginView').style.display='block'});
 
@@ -834,77 +811,7 @@ function toast(msg,err){
   setTimeout(()=>t.remove(),2800);
 }
 
-/* ════════════════════════════════════════════
-   LIVE DATA — loads from livedata.json
-   Expected format:
-   {
-     "courses": 50,
-     "members": 5200,
-     "projects": 120,
-     "components": 300,
-     "uptime": "98.7%",
-     "course_completion": 75,
-     "project_success": 80,
-     "bar_embedded": 88,
-     "bar_iot": 74,
-     "bar_robotics": 61,
-     "members_list": [
-       { "name": "Kavi M", "role": "Student", "badge": "Beginner", "joined": "2d ago" },
-       ...
-     ]
-   }
-════════════════════════════════════════════ */
-/* No hardcoded fallback — all values come from livedata.json */
-
-function fmt(n){if(n>=1000)return(n/1000).toFixed(1).replace('.0','')+'k+';return n+'+'}
-function badgeCls(b){const l=(b||'').toLowerCase();if(l.includes('admin')||l.includes('pro'))return 'g';if(l.includes('advanced')||l.includes('iot'))return 'o';if(l.includes('instructor'))return 'p';return ''}
-
-function applyLiveData(d){
-  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-
-  /* ── Hero KPIs (50+, 5.2k+, 120+, 98.7%) ── */
-  set('hKpi1', fmt(d.courses));
-  set('hKpi2', fmt(d.members));
-  set('hKpi3', (d.projects||0)+'+');
-  set('hKpi4', d.uptime||'—');
-
-  /* ── Dashboard panel top row ── */
-  set('dpCourses', d.courses||'—');
-  set('dpUptime',  d.uptime||'—');
-  set('dpMembers', fmt(d.members));
-
-  /* ── Stats band below hero ── */
-  set('sBand1', (d.courses||0)+'+');
-  set('sBand2', fmt(d.members));
-  set('sBand3', (d.projects||0)+'+');
-  set('sBand4', (d.components||0)+'+');
-
-  /* ── Rings ── */
-  const cc=Number(d.course_completion)||0, ps=Number(d.project_success)||0;
-  const circ=163.36;
-  const r1=document.getElementById('ring1Fill'),r2=document.getElementById('ring2Fill');
-  if(r1)r1.setAttribute('stroke-dashoffset',(circ*(1-cc/100)).toFixed(2));
-  if(r2)r2.setAttribute('stroke-dashoffset',(circ*(1-ps/100)).toFixed(2));
-  set('ring1Txt', cc+'%');
-  set('ring2Txt', ps+'%');
-
-  /* ── Progress bars ── */
-  const be=Number(d.bar_embedded)||0, bi=Number(d.bar_iot)||0, br=Number(d.bar_robotics)||0;
-  set('bar1Lbl', be+'%');
-  set('bar2Lbl', bi+'%');
-  set('bar3Lbl', br+'%');
-  ['bar1','bar2','bar3'].forEach((id,i)=>{
-    const el=document.getElementById(id); if(!el)return;
-    el.dataset.w=[be,bi,br][i]+'%'; el.style.width='0';
-  });
-  setTimeout(()=>{
-    ['bar1','bar2','bar3'].forEach(id=>{
-      const el=document.getElementById(id); if(el)el.style.width=el.dataset.w;
-    });
-  },500);
-}
-
-/* Fetch livedata.json — values come ONLY from this file */
+/* Fetch livedata.json */
 (async function loadLiveData(){
   try{
     const r=await fetch('livedata.json',{cache:'no-store'});
@@ -912,55 +819,216 @@ function applyLiveData(d){
     const d=await r.json();
     applyLiveData(d);
   }catch(e){
-    /* livedata.json missing — show clear error state */
-    ['hKpi1','hKpi2','hKpi3','hKpi4'].forEach(id=>{
-      const el=document.getElementById(id);
-      if(el){el.textContent='—';el.style.color='var(--cr)';el.title='livedata.json not found'}
-    });
-    ['dpCourses','dpUptime','dpMembers'].forEach(id=>{
-      const el=document.getElementById(id);if(el)el.textContent='—';
-    });
-    ['sBand1','sBand2','sBand3','sBand4'].forEach(id=>{
-      const el=document.getElementById(id);if(el)el.textContent='—';
-    });
+    ['hKpi1','hKpi2','hKpi3','hKpi4'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='—';}});
   }
 })();
+
+function applyLiveData(d){
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('hKpi1',d.courses||'—');
+  set('hKpi2',(d.members||0)+'k+');
+  set('hKpi3',(d.projects||0)+'+');
+  set('hKpi4',d.uptime||'—');
+  set('dpCourses',d.courses||'—');
+  set('dpUptime',d.uptime||'—');
+  set('dpMembers',(d.members||0)+'k+');
+  set('sBand1',(d.courses||0)+'+');
+  set('sBand2',(d.members||0)+'k+');
+  set('sBand3',(d.projects||0)+'+');
+  set('sBand4',(d.components||0)+'+');
+}
 </script>
 
-<!-- ██ FIREBASE ██ -->
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import{getFirestore,doc,setDoc,getDoc,updateDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-const app=initializeApp({apiKey:"AIzaSyDWmliHHP7UR1pmM6CNjY6o_NvF-hYJWpY",authDomain:"minibotix-a1b9a.firebaseapp.com",projectId:"minibotix-a1b9a",storageBucket:"minibotix-a1b9a.firebasestorage.app",messagingSenderId:"771169717230",appId:"1:771169717230:web:44848d73e548d0e0f8dcff"});
-const auth=getAuth(app),db=getFirestore(app),gp=new GoogleAuthProvider();
-let cu=null;const g=id=>document.getElementById(id);
-g('googleSignIn').addEventListener('click',async()=>{try{await signInWithPopup(auth,gp);document.getElementById('authModal').classList.remove('open')}catch(e){toast('Google sign-in failed',true)}});
-g('emailSignIn').addEventListener('click',async()=>{try{await signInWithEmailAndPassword(auth,g('loginEmail').value.trim(),g('loginPassword').value);document.getElementById('authModal').classList.remove('open');toast('Signed in')}catch(e){toast('Sign in failed: '+e.message,true)}});
-g('createAccount').addEventListener('click',async()=>{
-  const name=g('regName').value.trim(),phone=g('regPhone').value.trim(),email=g('regEmail').value.trim(),pass=g('regPass').value,pass2=g('regPass2').value;
-  if(pass.length<6){toast('Password min 6 characters',true);return}
-  if(pass!==pass2){toast('Passwords do not match',true);return}
-  try{const uc=await createUserWithEmailAndPassword(auth,email,pass);await updateProfile(uc.user,{displayName:name});await setDoc(doc(db,'users',uc.user.uid),{name,phone,area:'',email,createdAt:serverTimestamp()});document.getElementById('authModal').classList.remove('open');toast('Account created!')}
-  catch(e){toast('Register failed: '+e.message,true)}
+<!-- ██ CUSTOM AUTH (MySQL) ██ -->
+<script>
+const API_URL = 'http://localhost:5000/api';
+// FOR PRODUCTION: Change to 'https://api.minibotix.online/api'
+
+const g = id => document.getElementById(id);
+
+// ===== ON PAGE LOAD =====
+window.addEventListener('load', () => {
+  checkAuthStatus();
 });
-onAuthStateChanged(auth,async user=>{
-  if(user){cu=user;const ref=doc(db,'users',user.uid),snap=await getDoc(ref);
-    if(!snap.exists())await setDoc(ref,{name:user.displayName||'',phone:'',area:'',email:user.email||'',createdAt:serverTimestamp()});
-    const ud=(await getDoc(ref)).data();
-    g('sou').style.display='none';g('sui').style.display='block';
-    g('pName').textContent=(ud.name||user.email||'User').split(' ')[0];
-    g('pAvatar').src=user.photoURL||'logo.svg';
-    g('pfName').value=ud.name||'';g('pfPhone').value=ud.phone||'';g('pfArea').value=ud.area||'';
-  }else{cu=null;g('sou').style.display='block';g('sui').style.display='none'}
+
+// ===== CHECK IF USER LOGGED IN =====
+function checkAuthStatus() {
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+  
+  if (token && user) {
+    const userData = JSON.parse(user);
+    showLoggedIn(userData);
+  } else {
+    showLoggedOut();
+  }
+}
+
+// ===== SHOW LOGGED IN UI =====
+function showLoggedIn(user) {
+  g('sou').style.display = 'none';
+  g('sui').style.display = 'block';
+  g('pName').textContent = user.name ? user.name.split(' ')[0] : 'User';
+  g('pAvatar').src = 'logo.svg';
+}
+
+// ===== SHOW LOGGED OUT UI =====
+function showLoggedOut() {
+  g('sou').style.display = 'block';
+  g('sui').style.display = 'none';
+}
+
+// ===== REGISTER NEW USER =====
+g('createAccount').addEventListener('click', async () => {
+  const name = g('regName').value.trim();
+  const phone = g('regPhone').value.trim();
+  const email = g('regEmail').value.trim();
+  const pass = g('regPass').value;
+  const pass2 = g('regPass2').value;
+
+  if (!name || !email || !phone || !pass) {
+    toast('All fields required', true);
+    return;
+  }
+
+  if (pass.length < 6) {
+    toast('Password must be at least 6 characters', true);
+    return;
+  }
+
+  if (pass !== pass2) {
+    toast('Passwords do not match', true);
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        phone: phone,
+        address: '',
+        password: pass
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast('✅ Account created! Now sign in.');
+      g('regName').value = '';
+      g('regEmail').value = '';
+      g('regPhone').value = '';
+      g('regPass').value = '';
+      g('regPass2').value = '';
+      g('loginView').style.display = 'block';
+      g('registerView').style.display = 'none';
+    } else {
+      toast('❌ ' + data.error, true);
+    }
+  } catch (error) {
+    toast('❌ Error: ' + error.message, true);
+  }
 });
-g('saveProfile').addEventListener('click',async()=>{
-  if(!cu){toast('Not signed in',true);return}
-  const name=g('pfName').value.trim(),phone=g('pfPhone').value.trim(),area=g('pfArea').value.trim();
-  try{await updateDoc(doc(db,'users',cu.uid),{name,phone,area,updatedAt:serverTimestamp()});await updateProfile(cu,{displayName:name});g('pName').textContent=name.split(' ')[0];document.getElementById('profileModal').classList.remove('open');toast('Profile saved')}
-  catch(e){toast('Save failed: '+e.message,true)}
+
+// ===== LOGIN USER =====
+g('emailSignIn').addEventListener('click', async () => {
+  const email = g('loginEmail').value.trim();
+  const password = g('loginPassword').value;
+
+  if (!email || !password) {
+    toast('Email and password required', true);
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      toast('✅ Signed in!');
+      AM.classList.remove('open');
+      showLoggedIn(data.user);
+      
+      g('loginEmail').value = '';
+      g('loginPassword').value = '';
+    } else {
+      toast('❌ ' + data.error, true);
+    }
+  } catch (error) {
+    toast('❌ Error: ' + error.message, true);
+  }
 });
-g('logoutBtn').addEventListener('click',async()=>{await signOut(auth);document.getElementById('profileModal').classList.remove('open');toast('Signed out')});
+
+// ===== SAVE PROFILE =====
+g('saveProfile').addEventListener('click', async () => {
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+    toast('Not signed in', true);
+    return;
+  }
+
+  const name = g('pfName').value.trim();
+  const phone = g('pfPhone').value.trim();
+  const area = g('pfArea').value.trim();
+
+  try {
+    const response = await fetch(`${API_URL}/user/profile`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        name: name,
+        phone: phone,
+        address: area
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast('✅ Profile saved!');
+      
+      const user = JSON.parse(localStorage.getItem('user'));
+      user.name = name;
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      g('pName').textContent = name.split(' ')[0];
+      PM.classList.remove('open');
+    } else {
+      toast('❌ ' + data.error, true);
+    }
+  } catch (error) {
+    toast('❌ Error: ' + error.message, true);
+  }
+});
+
+// ===== LOGOUT =====
+g('logoutBtn').addEventListener('click', () => {
+  if (confirm('Are you sure you want to logout?')) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    toast('Signed out');
+    PM.classList.remove('open');
+    showLoggedOut();
+  }
+});
 </script>
 </body>
 </html>
