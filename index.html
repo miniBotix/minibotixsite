@@ -403,96 +403,77 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
       </div>
     </div>
 
-    <!-- DASHBOARD PANEL -->
+    <!-- CLOCK & METRICS PANEL -->
     <div class="dp revr d1">
-      <div class="dph">
-        <div class="dpdots"><span></span><span></span><span></span></div>
-        <div class="dpt">MiniBotix · Live Overview</div>
-        <div class="pulse"></div>
-      </div>
-      <div class="dpm">
-        <div class="dpmc"><div class="mv c" id="dpCourses">—</div><div class="ml">Courses</div></div>
-        <div class="dpmc"><div class="mv g" id="dpUptime">—</div><div class="ml">Uptime</div></div>
-        <div class="dpmc"><div class="mv o" id="dpMembers">—</div><div class="ml">Members</div></div>
-      </div>
-
-      <!-- Analog Clock -->
-      <div class="cs">
-        <div class="aw">
-          <svg viewBox="0 0 84 84" fill="none">
-            <circle cx="42" cy="42" r="40" stroke="var(--line-hi)" stroke-width="1"/>
-            <g stroke="var(--txt2)" stroke-width="1.5" stroke-linecap="round">
-              <line x1="42" y1="4" x2="42" y2="10"/><line x1="42" y1="74" x2="42" y2="80"/>
-              <line x1="4" y1="42" x2="10" y2="42"/><line x1="74" y1="42" x2="80" y2="42"/>
+      <!-- Large Analog Clock -->
+      <div style="padding:24px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;align-items:center">
+        <div style="width:200px;height:200px;position:relative;margin-bottom:20px">
+          <svg viewBox="0 0 200 200" fill="none" style="width:100%;height:100%">
+            <defs>
+              <style>
+                #clockBg { filter: drop-shadow(0 0 30px rgba(0,180,255,0.2)); }
+              </style>
+            </defs>
+            <g id="clockBg">
+              <circle cx="100" cy="100" r="95" stroke="var(--line-hi)" stroke-width="2" fill="rgba(3,9,18,0.6)"/>
+              <!-- Hour marks -->
+              <g stroke="var(--txt2)" stroke-width="2" stroke-linecap="round">
+                <line x1="100" y1="10" x2="100" y2="25"/><line x1="100" y1="175" x2="100" y2="190"/>
+                <line x1="10" y1="100" x2="25" y2="100"/><line x1="175" y1="100" x2="190" y2="100"/>
+              </g>
+              <!-- Minute marks -->
+              <g stroke="rgba(0,180,255,0.15)" stroke-width="1">
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(30 100 100)"/>
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(60 100 100)"/>
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(120 100 100)"/>
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(150 100 100)"/>
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(210 100 100)"/>
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(240 100 100)"/>
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(300 100 100)"/>
+                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(330 100 100)"/>
+              </g>
+              <!-- Hour hand -->
+              <line id="clockHour" x1="100" y1="100" x2="100" y2="55" stroke="var(--txt)" stroke-width="4" stroke-linecap="round"/>
+              <!-- Minute hand -->
+              <line id="clockMinute" x1="100" y1="100" x2="100" y2="30" stroke="var(--c)" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Second hand -->
+              <line id="clockSecond" x1="100" y1="100" x2="100" y2="20" stroke="var(--cg)" stroke-width="1.5" stroke-linecap="round"/>
+              <!-- Center dot -->
+              <circle cx="100" cy="100" r="5" fill="var(--bg2)" stroke="var(--cg)" stroke-width="2"/>
             </g>
-            <g stroke="rgba(0,180,255,0.15)" stroke-width="0.8">
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(30 42 42)"/>
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(60 42 42)"/>
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(120 42 42)"/>
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(150 42 42)"/>
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(210 42 42)"/>
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(240 42 42)"/>
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(300 42 42)"/>
-              <line x1="42" y1="4" x2="42" y2="8" transform="rotate(330 42 42)"/>
-            </g>
-            <line id="ph" x1="42" y1="42" x2="42" y2="22" stroke="var(--txt)" stroke-width="2.5" stroke-linecap="round"/>
-            <line id="pm" x1="42" y1="42" x2="42" y2="12" stroke="var(--c)"   stroke-width="1.5" stroke-linecap="round"/>
-            <line id="ps" x1="42" y1="42" x2="42" y2="8"  stroke="var(--cg)"  stroke-width="0.9" stroke-linecap="round"/>
-            <circle cx="42" cy="42" r="3" fill="var(--bg2)" stroke="var(--cg)" stroke-width="1.2"/>
           </svg>
         </div>
-        <div class="ci2">
-          <div class="cil">Local Time</div>
-          <div id="dTime">00:00:00</div>
-          <div id="dDate">Loading…</div>
+        <div style="text-align:center">
+          <div style="font-family:'DM Mono',monospace;font-size:24px;font-weight:600;color:var(--cg);letter-spacing:.05em" id="bigClockTime">00:00:00</div>
+          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--txt2);letter-spacing:.08em;text-transform:uppercase;margin-top:8px" id="bigClockDate">Loading…</div>
         </div>
       </div>
 
-      <!-- Rings -->
-      <div class="rr">
-        <div class="rc">
-          <div class="rsv">
-            <svg viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,180,255,0.1)" stroke-width="6"/>
-              <circle cx="32" cy="32" r="26" fill="none" stroke="var(--c)" stroke-width="6"
-                stroke-dasharray="163.36" id="ring1Fill" stroke-dashoffset="163.36" stroke-linecap="round"/>
-            </svg>
-            <div class="rst" style="color:var(--c);font-size:11px" id="ring1Txt">—</div>
-          </div>
-          <div class="rcl">Course Completion</div>
+      <!-- Metrics Grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-bottom:1px solid var(--line)">
+        <div style="background:var(--bg2);padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--c);margin-bottom:4px" id="metricCourses">—</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2)">Courses</div>
         </div>
-        <div class="rc">
-          <div class="rsv">
-            <svg viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(0,255,163,0.1)" stroke-width="6"/>
-              <circle cx="32" cy="32" r="26" fill="none" stroke="var(--cg)" stroke-width="6"
-                stroke-dasharray="163.36" id="ring2Fill" stroke-dashoffset="163.36" stroke-linecap="round"/>
-            </svg>
-            <div class="rst" style="color:var(--cg);font-size:11px" id="ring2Txt">—</div>
-          </div>
-          <div class="rcl">Project Success</div>
+        <div style="background:var(--bg2);padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--cg);margin-bottom:4px" id="metricMembers">—</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2)">Members</div>
+        </div>
+        <div style="background:var(--bg2);padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--co);margin-bottom:4px" id="metricProjects">—</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2)">Projects</div>
+        </div>
+        <div style="background:var(--bg2);padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff;margin-bottom:4px" id="metricUptime">—</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2)">Uptime</div>
         </div>
       </div>
 
-      <!-- Bars -->
-      <div class="dpb">
-        <div class="br">
-          <div class="bm2"><span>Embedded Systems</span><span style="color:var(--c)" id="bar1Lbl">—</span></div>
-          <div class="bt"><div class="bf bfc" style="width:0" id="bar1" data-w=""></div></div>
+      <!-- Footer -->
+      <div style="padding:12px;text-align:center;border-top:1px solid var(--line)">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--txt2);letter-spacing:.1em;text-transform:uppercase">
+          <span style="color:var(--cg);font-weight:600">✓</span> All systems operational
         </div>
-        <div class="br">
-          <div class="bm2"><span>IoT Agriculture</span><span style="color:var(--cg)" id="bar2Lbl">—</span></div>
-          <div class="bt"><div class="bf bfg" style="width:0" id="bar2" data-w=""></div></div>
-        </div>
-        <div class="br">
-          <div class="bm2"><span>Robotics</span><span style="color:var(--co)" id="bar3Lbl">—</span></div>
-          <div class="bt"><div class="bf bfo" style="width:0" id="bar3" data-w=""></div></div>
-        </div>
-      </div>
-
-      <div class="dptick">
-        <div class="td"></div>
-        <span id="ticker">System nominal · All services operational</span>
       </div>
     </div>
   </div>
@@ -665,7 +646,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
     <div class="ctbox reveal d2">
       <div>
         <h3>We're here to help.</h3>
-        <p>Send your PCB files to <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> for a free review. Questions about courses, products, or custom builds? Our team responds within 24 hours — usually much sooner.</p>
+        <p>Send your PCB files to <a href="/cdn-cgi/l/email-protection#264b4f484f4449524f5e66414b474f4a0845494b"><span class="__cf_email__" data-cfemail="39545057505b564d5041795e54585055175a5654">[email&#160;protected]</span></a> for a free review. Questions about courses, products, or custom builds? Our team responds within 24 hours — usually much sooner.</p>
       </div>
       <button class="btn-s" style="white-space:nowrap;padding:14px 28px;font-size:14px" onclick="location.href='mailto:minibotix@gmail.com'">Send Message →</button>
     </div>
@@ -736,7 +717,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
 </div>
 
 <!-- ██ SCRIPTS ██ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── RAIN ── */
 (function(){
   const cv=document.getElementById('rain'),ctx=cv.getContext('2d');
@@ -755,29 +736,36 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   window.addEventListener('resize',rs);rs();draw();
 })();
 
-/* ── CLOCK ── */
-function rpt(cx,cy,ang,len){return{x:cx+Math.sin(ang)*len,y:cy-Math.cos(ang)*len}}
-function setHand(id,ang,cx,cy,len){const el=document.getElementById(id);if(!el)return;const p=rpt(cx,cy,ang,len);el.setAttribute('x2',p.x.toFixed(2));el.setAttribute('y2',p.y.toFixed(2))}
-function updateClocks(){
+/* ── LARGE CLOCK ── */
+function setClockHands(){
   const n=new Date(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds(),ms=n.getMilliseconds();
   const sa=(s+ms/1000)*(Math.PI*2/60),ma=(m+s/60)*(Math.PI*2/60),ha=(h%12+m/60)*(Math.PI*2/12);
-  setHand('nh',ha,22,22,10);setHand('nm',ma,22,22,13);setHand('ns',sa,22,22,15);
-  setHand('ph',ha,42,42,20);setHand('pm',ma,42,42,30);setHand('ps',sa,42,42,34);
+  
+  // For 200x200 viewBox (center at 100,100)
+  function setHand(id,angle,len){
+    const el=document.getElementById(id);
+    if(!el)return;
+    const x2=100+Math.sin(angle)*len;
+    const y2=100-Math.cos(angle)*len;
+    el.setAttribute('x2',x2.toFixed(2));
+    el.setAttribute('y2',y2.toFixed(2));
+  }
+  
+  setHand('clockHour',ha,45);
+  setHand('clockMinute',ma,70);
+  setHand('clockSecond',sa,80);
+  
   const pad=v=>String(v).padStart(2,'0');
-  const ts=`${pad(h)}:${pad(m)}:${pad(s)}`;
-  document.getElementById('navClock').textContent=ts;
-  document.getElementById('dTime').textContent=ts;
+  document.getElementById('bigClockTime').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
+  
   const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('dDate').textContent=`${days[n.getDay()]}, ${months[n.getMonth()]} ${n.getDate()}`;
+  document.getElementById('bigClockDate').textContent=`${days[n.getDay()]}, ${months[n.getMonth()]} ${n.getDate()}`;
 }
-setInterval(updateClocks,80);updateClocks();
+setInterval(setClockHands,80);
+setClockHands();
 
-/* ── TICKER ── */
-const ticks=['System nominal · All services operational','New batch: Embedded Systems 101 · Enrolling now','Components in stock · Ships within 48h','ESP32 modules restocked · Limited units','Free PCB review — send files to minibotix@gmail.com','Robotics & Automation · Advanced track now open','IoT Agriculture course — new module added'];
-let ti=0;
-function rotateTick(){const el=document.getElementById('ticker');if(!el)return;el.style.opacity='0';setTimeout(()=>{ti=(ti+1)%ticks.length;el.textContent=ticks[ti];el.style.opacity='1'},380)}
-setInterval(rotateTick,4500);
+// Removed ticker rotation - simplified metrics display
 
 /* ── SCROLL REVEAL ── */
 const io=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.1});
@@ -819,19 +807,27 @@ function toast(msg,err){
     const d=await r.json();
     applyLiveData(d);
   }catch(e){
-    ['hKpi1','hKpi2','hKpi3','hKpi4'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='—';}});
+    console.log('livedata.json not found, using defaults');
+    applyLiveData({courses:50,members:5200,projects:120,uptime:'98.7%'});
   }
 })();
 
 function applyLiveData(d){
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  
+  // Update hero stats
   set('hKpi1',d.courses||'—');
   set('hKpi2',(d.members||0)+'k+');
   set('hKpi3',(d.projects||0)+'+');
   set('hKpi4',d.uptime||'—');
-  set('dpCourses',d.courses||'—');
-  set('dpUptime',d.uptime||'—');
-  set('dpMembers',(d.members||0)+'k+');
+  
+  // Update clock panel metrics
+  set('metricCourses',d.courses||'—');
+  set('metricMembers',(d.members||0)+'k+');
+  set('metricProjects',(d.projects||0)+'+');
+  set('metricUptime',d.uptime||'—');
+  
+  // Update stats band
   set('sBand1',(d.courses||0)+'+');
   set('sBand2',(d.members||0)+'k+');
   set('sBand3',(d.projects||0)+'+');
@@ -1020,15 +1016,4 @@ g('saveProfile').addEventListener('click', async () => {
 });
 
 // ===== LOGOUT =====
-g('logoutBtn').addEventListener('click', () => {
-  if (confirm('Are you sure you want to logout?')) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    toast('Signed out');
-    PM.classList.remove('open');
-    showLoggedOut();
-  }
-});
-</script>
-</body>
-</html>
+g('logoutBtn').addEventListener('click', () =>
