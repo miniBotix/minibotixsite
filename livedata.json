@@ -11,14 +11,4 @@
   "bar_embedded"      : 88,
   "bar_iot"           : 74,
   "bar_robotics"      : 61,
-
-  "members_list": [
-    { "name": "Kavi M",     "role": "Founder",    "badge": "Admin",    "joined": "Day 1"   },
-    { "name": "Arjun S",    "role": "Developer",  "badge": "Pro",      "joined": "3d ago"  },
-    { "name": "Priya R",    "role": "Instructor", "badge": "Advanced", "joined": "5d ago"  },
-    { "name": "Suresh K",   "role": "Student",    "badge": "IoT",      "joined": "1w ago"  },
-    { "name": "Deepa T",    "role": "Student",    "badge": "Beginner", "joined": "2d ago"  },
-    { "name": "Ramesh V",   "role": "Student",    "badge": "Beginner", "joined": "12h ago" },
-    { "name": "Nandhini A", "role": "Student",    "badge": "IoT",      "joined": "4d ago"  }
-  ]
 }
