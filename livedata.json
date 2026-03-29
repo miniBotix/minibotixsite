@@ -1,8 +1,8 @@
 {
-  "courses": 50,
-  "members": 5200,
-  "projects": 120,
-  "components": 300,
+  "courses": 16,
+  "members": 7,
+  "projects": 13,
+  "components": 28,
   "uptime": "98.7%",
   "course_completion": 75,
   "project_success": 80,
