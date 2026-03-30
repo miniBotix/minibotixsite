@@ -58,26 +58,20 @@ nav.main-nav a::after{content:'';position:absolute;bottom:2px;left:50%;transform
   width:0;height:1.5px;background:var(--c);border-radius:1px;transition:width .25s}
 nav.main-nav a:hover{color:var(--c);background:rgba(0,180,255,0.05)}
 nav.main-nav a:hover::after{width:55%}
-/* Live Explore special pill */
 nav.main-nav a.live-link{
-  color:var(--cg);
-  display:flex;align-items:center;gap:5px;
-  border:1px solid rgba(0,255,163,0.2);
-  border-radius:6px;
-  background:rgba(0,255,163,0.04);
-  padding:6px 10px
+  color:var(--cg);display:flex;align-items:center;gap:5px;
+  border:1px solid rgba(0,255,163,0.2);border-radius:6px;
+  background:rgba(0,255,163,0.04);padding:6px 10px
 }
 nav.main-nav a.live-link::before{
   content:'';width:5px;height:5px;border-radius:50%;
-  background:var(--cg);flex-shrink:0;
-  animation:blink 1.6s infinite
+  background:var(--cg);flex-shrink:0;animation:blink 1.6s infinite
 }
 nav.main-nav a.live-link::after{display:none}
 nav.main-nav a.live-link:hover{background:rgba(0,255,163,0.08);border-color:rgba(0,255,163,0.35)}
 
 .nr{display:flex;align-items:center;gap:12px}
 
-/* Clock pill */
 .cpill{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line-hi);
   border-radius:999px;padding:5px 12px;cursor:default;user-select:none}
 .pulse{width:6px;height:6px;border-radius:50%;background:var(--cg);flex-shrink:0;animation:blink 2s infinite}
@@ -105,7 +99,6 @@ nav.main-nav a.live-link:hover{background:rgba(0,255,163,0.08);border-color:rgba
 .apill .aname{font-size:12px;font-weight:600}
 .apill .gear{color:var(--txt2);font-size:13px;margin-left:3px}
 
-/* MOBILE NAV */
 #mobileNav{display:none;flex-direction:column;gap:2px;position:fixed;top:62px;left:0;right:0;
   background:rgba(4,10,20,0.98);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--line);padding:12px 16px 20px;z-index:190}
@@ -135,58 +128,10 @@ nav.main-nav a.live-link:hover{background:rgba(0,255,163,0.08);border-color:rgba
 .kpi .kv.g{color:var(--cg)}.kpi .kv.o{color:var(--co)}
 .kpi .kl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-top:2px}
 
-/* DASH PANEL */
+/* CLOCK & METRICS PANEL */
 .dp{background:var(--bg2);border:1px solid var(--line-hi);border-radius:14px;overflow:hidden;
   box-shadow:var(--glow),0 40px 90px rgba(0,0,0,.75);animation:float 7s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.dph{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;
-  background:rgba(255,255,255,0.02);border-bottom:1px solid var(--line)}
-.dpdots{display:flex;gap:5px}
-.dpdots span{width:9px;height:9px;border-radius:50%}
-.dpdots span:nth-child(1){background:#ff5f57}
-.dpdots span:nth-child(2){background:#febc2e}
-.dpdots span:nth-child(3){background:#28c840}
-.dpt{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--txt2);text-transform:uppercase}
-.dpm{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
-.dpmc{background:var(--bg2);padding:14px 12px}
-.mv{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;transition:all .5s}
-.mv.c{color:var(--c)}.mv.g{color:var(--cg)}.mv.o{color:var(--co)}
-.ml{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt2);margin-top:2px}
-
-/* Clock */
-.cs{display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid var(--line)}
-.aw{position:relative;width:84px;height:84px;flex-shrink:0}
-.aw svg{width:84px;height:84px}
-.ci2{flex:1}
-.cil{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);margin-bottom:5px}
-#dTime{font-family:'DM Mono',monospace;font-size:19px;font-weight:500;color:var(--cg);line-height:1}
-#dDate{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt2);margin-top:5px}
-
-/* Rings */
-.rr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
-.rc{background:var(--bg2);padding:14px 10px;display:flex;flex-direction:column;align-items:center}
-.rsv{position:relative;width:64px;height:64px}
-.rsv svg{width:64px;height:64px;transform:rotate(-90deg)}
-.rst{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:'DM Mono',monospace;font-size:12px;font-weight:500}
-.rcl{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);margin-top:7px;text-align:center}
-
-/* Bars */
-.dpb{padding:13px 14px 0}
-.br{margin-bottom:9px}
-.bm2{display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px}
-.bm2 span:first-child{color:var(--txt2)}
-.bt{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
-.bf{height:100%;border-radius:2px;transition:width 2s cubic-bezier(.4,0,.2,1)}
-.bfc{background:linear-gradient(90deg,var(--c2),var(--c))}
-.bfg{background:linear-gradient(90deg,#009f6a,var(--cg))}
-.bfo{background:linear-gradient(90deg,#c85a00,var(--co))}
-
-/* Ticker */
-.dptick{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--line);
-  font-family:'DM Mono',monospace;font-size:9px}
-.td{width:5px;height:5px;border-radius:50%;background:var(--cg);animation:blink 1.5s infinite;flex-shrink:0}
-#ticker{color:var(--cg);transition:opacity .35s}
 
 /* ── SECTIONS ── */
 .section{padding:96px 28px}
@@ -304,12 +249,11 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   .dp{width:100%;max-width:500px;margin:0 auto;animation:none}
   nav.main-nav{display:none}.ham{display:flex}
   .sband{grid-template-columns:repeat(2,1fr)}
-  .live-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:580px){
   .sband{grid-template-columns:1fr}
   header{padding:0 16px}.section{padding:64px 16px}
-  #home{padding:90px 16px 60px}#live-explore{padding:64px 16px}
+  #home{padding:90px 16px 60px}
   .hero h1{font-size:36px}.ctbox{padding:28px}
   footer{flex-direction:column;align-items:flex-start}
 }
@@ -324,8 +268,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
 <header id="hdr">
   <div class="brand" onclick="scrollTo({top:0,behavior:'smooth'})">
     <div class="bm" id="brandMark">
-      <img id="logoImg" src="logo.svg" alt="MiniBotix"
-           onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">
+      <img id="logoImg" src="logo.svg" alt="MiniBotix" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">
       <span id="logoFallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff">M</span>
     </div>
     <div class="bn">Mini<em>Botix</em></div>
@@ -387,17 +330,15 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   <div class="hi">
     <div class="revl">
       <div class="htag"><span class="hd"></span> MiniBotix · All Systems Online</div>
-      <h1 class="hero">
-        Learn ·<br>Build ·<br><span class="acc">Innovate</span>
-      </h1>
-      <p class="hsub">Practical courses, agricultural &amp; engineering products, tested project kits, electronic components, and free source code — one platform, endless possibilities.</p>
+      <h1 class="hero">Learn ·<br>Build ·<br><span class="acc">Innovate</span></h1>
+      <p class="hsub">Practical courses, agricultural & engineering products, tested project kits, electronic components, and free source code — one platform, endless possibilities.</p>
       <div class="hbtns">
         <button class="btn-s" id="toCourses">Explore Courses →</button>
         <button class="btn-o" id="toProducts">Shop Products</button>
       </div>
       <div class="kpi-row">
         <div class="kpi"><div class="kv" id="hKpi1">—</div><div class="kl">Courses</div></div>
-        <div class="kpi"><div class="kv g" id="hKpi2">—</div><div class="kl">Students</div></div>
+        <div class="kpi"><div class="kv g" id="hKpi2">—</div><div class="kl">Members</div></div>
         <div class="kpi"><div class="kv o" id="hKpi3">—</div><div class="kl">Projects</div></div>
         <div class="kpi"><div class="kv" id="hKpi4">—</div><div class="kl">Uptime</div></div>
       </div>
@@ -405,42 +346,28 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
 
     <!-- CLOCK & METRICS PANEL -->
     <div class="dp revr d1">
-      <!-- Large Analog Clock -->
       <div style="padding:24px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;align-items:center">
         <div style="width:200px;height:200px;position:relative;margin-bottom:20px">
           <svg viewBox="0 0 200 200" fill="none" style="width:100%;height:100%">
-            <defs>
-              <style>
-                #clockBg { filter: drop-shadow(0 0 30px rgba(0,180,255,0.2)); }
-              </style>
-            </defs>
-            <g id="clockBg">
-              <circle cx="100" cy="100" r="95" stroke="var(--line-hi)" stroke-width="2" fill="rgba(3,9,18,0.6)"/>
-              <!-- Hour marks -->
-              <g stroke="var(--txt2)" stroke-width="2" stroke-linecap="round">
-                <line x1="100" y1="10" x2="100" y2="25"/><line x1="100" y1="175" x2="100" y2="190"/>
-                <line x1="10" y1="100" x2="25" y2="100"/><line x1="175" y1="100" x2="190" y2="100"/>
-              </g>
-              <!-- Minute marks -->
-              <g stroke="rgba(0,180,255,0.15)" stroke-width="1">
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(30 100 100)"/>
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(60 100 100)"/>
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(120 100 100)"/>
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(150 100 100)"/>
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(210 100 100)"/>
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(240 100 100)"/>
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(300 100 100)"/>
-                <line x1="100" y1="8" x2="100" y2="18" transform="rotate(330 100 100)"/>
-              </g>
-              <!-- Hour hand -->
-              <line id="clockHour" x1="100" y1="100" x2="100" y2="55" stroke="var(--txt)" stroke-width="4" stroke-linecap="round"/>
-              <!-- Minute hand -->
-              <line id="clockMinute" x1="100" y1="100" x2="100" y2="30" stroke="var(--c)" stroke-width="2.5" stroke-linecap="round"/>
-              <!-- Second hand -->
-              <line id="clockSecond" x1="100" y1="100" x2="100" y2="20" stroke="var(--cg)" stroke-width="1.5" stroke-linecap="round"/>
-              <!-- Center dot -->
-              <circle cx="100" cy="100" r="5" fill="var(--bg2)" stroke="var(--cg)" stroke-width="2"/>
+            <circle cx="100" cy="100" r="95" stroke="var(--line-hi)" stroke-width="2" fill="rgba(3,9,18,0.6)"/>
+            <g stroke="var(--txt2)" stroke-width="2" stroke-linecap="round">
+              <line x1="100" y1="10" x2="100" y2="25"/><line x1="100" y1="175" x2="100" y2="190"/>
+              <line x1="10" y1="100" x2="25" y2="100"/><line x1="175" y1="100" x2="190" y2="100"/>
             </g>
+            <g stroke="rgba(0,180,255,0.15)" stroke-width="1">
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(30 100 100)"/>
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(60 100 100)"/>
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(120 100 100)"/>
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(150 100 100)"/>
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(210 100 100)"/>
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(240 100 100)"/>
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(300 100 100)"/>
+              <line x1="100" y1="8" x2="100" y2="18" transform="rotate(330 100 100)"/>
+            </g>
+            <line id="clockHour" x1="100" y1="100" x2="100" y2="55" stroke="var(--txt)" stroke-width="4" stroke-linecap="round"/>
+            <line id="clockMinute" x1="100" y1="100" x2="100" y2="30" stroke="var(--c)" stroke-width="2.5" stroke-linecap="round"/>
+            <line id="clockSecond" x1="100" y1="100" x2="100" y2="20" stroke="var(--cg)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="100" cy="100" r="5" fill="var(--bg2)" stroke="var(--cg)" stroke-width="2"/>
           </svg>
         </div>
         <div style="text-align:center">
@@ -449,7 +376,6 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
         </div>
       </div>
 
-      <!-- Metrics Grid -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-bottom:1px solid var(--line)">
         <div style="background:var(--bg2);padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center">
           <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--c);margin-bottom:4px" id="metricCourses">—</div>
@@ -469,7 +395,6 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
         </div>
       </div>
 
-      <!-- Footer -->
       <div style="padding:12px;text-align:center;border-top:1px solid var(--line)">
         <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--txt2);letter-spacing:.1em;text-transform:uppercase">
           <span style="color:var(--cg);font-weight:600">✓</span> All systems operational
@@ -486,8 +411,8 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   <div class="con">
     <div class="sband reveal">
       <div class="sc"><div class="sv" id="sBand1">—</div><div class="sl3">Courses</div><div class="corner">01</div></div>
-      <div class="sc"><div class="sv g" id="sBand2">—</div><div class="sl3">Students</div><div class="corner">02</div></div>
-      <div class="sc"><div class="sv o" id="sBand3">—</div><div class="sl3">Project Kits</div><div class="corner">03</div></div>
+      <div class="sc"><div class="sv g" id="sBand2">—</div><div class="sl3">Members</div><div class="corner">02</div></div>
+      <div class="sc"><div class="sv o" id="sBand3">—</div><div class="sl3">Projects</div><div class="corner">03</div></div>
       <div class="sc"><div class="sv w" id="sBand4">—</div><div class="sl3">Components</div><div class="corner">04</div></div>
     </div>
   </div>
@@ -518,7 +443,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
       </article>
       <article class="card">
         <div class="badge o">Advanced</div><div class="ci3">🤖</div>
-        <h3>Robotics &amp; Automation</h3>
+        <h3>Robotics & Automation</h3>
         <p>Design, control and automate robotic arms and vehicles using microcontrollers, servos, and computer vision.</p>
         <a href="courses.html" class="clink">Open Course →</a>
       </article>
@@ -533,7 +458,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   <div class="con">
     <div class="reveal">
       <div class="sl2"><span class="sn">02 /</span> Products</div>
-      <h2 class="sh">Agriculture &amp; Engineering</h2>
+      <h2 class="sh">Agriculture & Engineering</h2>
       <p class="lead">Tested devices, sensors, and engineering kits shipped with full documentation, wiring guides, and dedicated support.</p>
     </div>
     <div class="cards reveal d2">
@@ -566,7 +491,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
     <div class="cards reveal d2">
       <div class="card"><div class="badge">Wi-Fi + BT</div><div class="ci3">📡</div>
         <h3>ESP32 / ESP8266 Modules</h3>
-        <p>Dual-core Wi-Fi &amp; Bluetooth microcontrollers. The industry-standard choice for IoT — tested before shipping.</p>
+        <p>Dual-core Wi-Fi & Bluetooth microcontrollers. The industry-standard choice for IoT — tested before shipping.</p>
         <a href="componentshop.html" class="clink">Component Store →</a></div>
       <div class="card"><div class="badge">Calibrated</div><div class="ci3">🔬</div>
         <h3>Sensor Modules</h3>
@@ -614,7 +539,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   <div class="con">
     <div class="reveal">
       <div class="sl2"><span class="sn">05 /</span> Free Apps</div>
-      <h2 class="sh">Free Apps &amp; Source Code</h2>
+      <h2 class="sh">Free Apps & Source Code</h2>
       <p class="lead">Download starter apps and example source to bootstrap your learning. Open-source tools for every student.</p>
     </div>
     <div class="cards reveal d2">
@@ -641,12 +566,12 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   <div class="con">
     <div class="reveal">
       <div class="sl2"><span class="sn">07 /</span> Contact</div>
-      <h2 class="sh">Contact &amp; Support</h2>
+      <h2 class="sh">Contact & Support</h2>
     </div>
     <div class="ctbox reveal d2">
       <div>
         <h3>We're here to help.</h3>
-        <p>Send your PCB files to <a href="/cdn-cgi/l/email-protection#264b4f484f4449524f5e66414b474f4a0845494b"><span class="__cf_email__" data-cfemail="39545057505b564d5041795e54585055175a5654">[email&#160;protected]</span></a> for a free review. Questions about courses, products, or custom builds? Our team responds within 24 hours — usually much sooner.</p>
+        <p>Send your PCB files to <a href="mailto:minibotix@gmail.com">minibotix@gmail.com</a> for a free review. Questions about courses, products, or custom builds? Our team responds within 24 hours — usually much sooner.</p>
       </div>
       <button class="btn-s" style="white-space:nowrap;padding:14px 28px;font-size:14px" onclick="location.href='mailto:minibotix@gmail.com'">Send Message →</button>
     </div>
@@ -657,8 +582,7 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
 <footer>
   <div class="fbrand">
     <div class="bm" style="width:28px;height:28px;border-radius:6px;overflow:hidden">
-      <img src="logo.svg" alt="M" style="width:100%;height:100%;object-fit:cover"
-           onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:Syne,sans-serif;font-weight:800;font-size:12px;color:#fff\'>M</span>'">
+      <img src="logo.svg" alt="M" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:Syne,sans-serif;font-weight:800;font-size:12px;color:#fff\'>M</span>'">
     </div>
     <div class="finfo">© 2025 MiniBotix · Learn · Build · Innovate</div>
   </div>
@@ -717,8 +641,8 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
 </div>
 
 <!-- ██ SCRIPTS ██ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ── RAIN ── */
+<script>
+/* ── RAIN CANVAS ── */
 (function(){
   const cv=document.getElementById('rain'),ctx=cv.getContext('2d');
   let W,H,dr=[];
@@ -736,38 +660,46 @@ footer{padding:26px 28px;border-top:1px solid var(--line);
   window.addEventListener('resize',rs);rs();draw();
 })();
 
-/* ── LARGE CLOCK ── */
-function setClockHands(){
+/* ── NAVBAR & LARGE CLOCK ── */
+function updateAllClocks(){
   const n=new Date(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds(),ms=n.getMilliseconds();
   const sa=(s+ms/1000)*(Math.PI*2/60),ma=(m+s/60)*(Math.PI*2/60),ha=(h%12+m/60)*(Math.PI*2/12);
   
-  // For 200x200 viewBox (center at 100,100)
-  function setHand(id,angle,len){
+  // Helper to set line element position
+  function setLine(id,cx,cy,angle,len){
     const el=document.getElementById(id);
     if(!el)return;
-    const x2=100+Math.sin(angle)*len;
-    const y2=100-Math.cos(angle)*len;
+    const x2=cx+Math.sin(angle)*len;
+    const y2=cy-Math.cos(angle)*len;
     el.setAttribute('x2',x2.toFixed(2));
     el.setAttribute('y2',y2.toFixed(2));
   }
   
-  setHand('clockHour',ha,45);
-  setHand('clockMinute',ma,70);
-  setHand('clockSecond',sa,80);
+  // Navbar clock (small)
+  setLine('nh',22,22,ha,10);
+  setLine('nm',22,22,ma,13);
+  setLine('ns',22,22,sa,15);
   
+  // Large hero clock (200x200 viewBox, center 100,100)
+  setLine('clockHour',100,100,ha,45);
+  setLine('clockMinute',100,100,ma,70);
+  setLine('clockSecond',100,100,sa,80);
+  
+  // Update time display
   const pad=v=>String(v).padStart(2,'0');
-  document.getElementById('bigClockTime').textContent=`${pad(h)}:${pad(m)}:${pad(s)}`;
+  const ts=`${pad(h)}:${pad(m)}:${pad(s)}`;
+  document.getElementById('navClock').textContent=ts;
+  document.getElementById('bigClockTime').textContent=ts;
   
+  // Update date
   const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   document.getElementById('bigClockDate').textContent=`${days[n.getDay()]}, ${months[n.getMonth()]} ${n.getDate()}`;
 }
-setInterval(setClockHands,80);
-setClockHands();
+setInterval(updateAllClocks,80);
+updateAllClocks();
 
-// Removed ticker rotation - simplified metrics display
-
-/* ── SCROLL REVEAL ── */
+/* ── SCROLL & REVEAL ── */
 const io=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.1});
 document.querySelectorAll('.reveal,.revl,.revr').forEach(el=>io.observe(el));
 window.addEventListener('scroll',()=>document.getElementById('hdr').classList.toggle('scrolled',scrollY>40));
@@ -799,7 +731,7 @@ function toast(msg,err){
   setTimeout(()=>t.remove(),2800);
 }
 
-/* Fetch livedata.json */
+/* Load and apply live data */
 (async function loadLiveData(){
   try{
     const r=await fetch('livedata.json',{cache:'no-store'});
@@ -807,27 +739,21 @@ function toast(msg,err){
     const d=await r.json();
     applyLiveData(d);
   }catch(e){
-    console.log('livedata.json not found, using defaults');
-    applyLiveData({courses:50,members:5200,projects:120,uptime:'98.7%'});
+    console.log('livedata.json not found');
+    applyLiveData({courses:50,members:5200,projects:120,uptime:'98.7%',components:300});
   }
 })();
 
 function applyLiveData(d){
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-  
-  // Update hero stats
   set('hKpi1',d.courses||'—');
   set('hKpi2',(d.members||0)+'k+');
   set('hKpi3',(d.projects||0)+'+');
   set('hKpi4',d.uptime||'—');
-  
-  // Update clock panel metrics
   set('metricCourses',d.courses||'—');
   set('metricMembers',(d.members||0)+'k+');
   set('metricProjects',(d.projects||0)+'+');
   set('metricUptime',d.uptime||'—');
-  
-  // Update stats band
   set('sBand1',(d.courses||0)+'+');
   set('sBand2',(d.members||0)+'k+');
   set('sBand3',(d.projects||0)+'+');
@@ -838,29 +764,20 @@ function applyLiveData(d){
 <!-- ██ CUSTOM AUTH (MySQL) ██ -->
 <script>
 const API_URL = 'http://localhost:5000/api';
-// FOR PRODUCTION: Change to 'https://api.minibotix.online/api'
-
 const g = id => document.getElementById(id);
 
-// ===== ON PAGE LOAD =====
-window.addEventListener('load', () => {
-  checkAuthStatus();
-});
+window.addEventListener('load', () => { checkAuthStatus(); });
 
-// ===== CHECK IF USER LOGGED IN =====
 function checkAuthStatus() {
   const token = localStorage.getItem('token');
   const user = localStorage.getItem('user');
-  
   if (token && user) {
-    const userData = JSON.parse(user);
-    showLoggedIn(userData);
+    showLoggedIn(JSON.parse(user));
   } else {
     showLoggedOut();
   }
 }
 
-// ===== SHOW LOGGED IN UI =====
 function showLoggedIn(user) {
   g('sou').style.display = 'none';
   g('sui').style.display = 'block';
@@ -868,13 +785,11 @@ function showLoggedIn(user) {
   g('pAvatar').src = 'logo.svg';
 }
 
-// ===== SHOW LOGGED OUT UI =====
 function showLoggedOut() {
   g('sou').style.display = 'block';
   g('sui').style.display = 'none';
 }
 
-// ===== REGISTER NEW USER =====
 g('createAccount').addEventListener('click', async () => {
   const name = g('regName').value.trim();
   const phone = g('regPhone').value.trim();
@@ -882,36 +797,17 @@ g('createAccount').addEventListener('click', async () => {
   const pass = g('regPass').value;
   const pass2 = g('regPass2').value;
 
-  if (!name || !email || !phone || !pass) {
-    toast('All fields required', true);
-    return;
-  }
-
-  if (pass.length < 6) {
-    toast('Password must be at least 6 characters', true);
-    return;
-  }
-
-  if (pass !== pass2) {
-    toast('Passwords do not match', true);
-    return;
-  }
+  if (!name || !email || !phone || !pass) { toast('All fields required', true); return; }
+  if (pass.length < 6) { toast('Password min 6 characters', true); return; }
+  if (pass !== pass2) { toast('Passwords do not match', true); return; }
 
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        phone: phone,
-        address: '',
-        password: pass
-      })
+      body: JSON.stringify({ name, email, phone, address: '', password: pass })
     });
-
     const data = await response.json();
-
     if (response.ok) {
       toast('✅ Account created! Now sign in.');
       g('regName').value = '';
@@ -921,62 +817,38 @@ g('createAccount').addEventListener('click', async () => {
       g('regPass2').value = '';
       g('loginView').style.display = 'block';
       g('registerView').style.display = 'none';
-    } else {
-      toast('❌ ' + data.error, true);
-    }
-  } catch (error) {
-    toast('❌ Error: ' + error.message, true);
-  }
+    } else { toast('❌ ' + data.error, true); }
+  } catch (error) { toast('❌ Error: ' + error.message, true); }
 });
 
-// ===== LOGIN USER =====
 g('emailSignIn').addEventListener('click', async () => {
   const email = g('loginEmail').value.trim();
   const password = g('loginPassword').value;
 
-  if (!email || !password) {
-    toast('Email and password required', true);
-    return;
-  }
+  if (!email || !password) { toast('Email and password required', true); return; }
 
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
+      body: JSON.stringify({ email, password })
     });
-
     const data = await response.json();
-
     if (response.ok) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      
       toast('✅ Signed in!');
       AM.classList.remove('open');
       showLoggedIn(data.user);
-      
       g('loginEmail').value = '';
       g('loginPassword').value = '';
-    } else {
-      toast('❌ ' + data.error, true);
-    }
-  } catch (error) {
-    toast('❌ Error: ' + error.message, true);
-  }
+    } else { toast('❌ ' + data.error, true); }
+  } catch (error) { toast('❌ Error: ' + error.message, true); }
 });
 
-// ===== SAVE PROFILE =====
 g('saveProfile').addEventListener('click', async () => {
   const token = localStorage.getItem('token');
-  
-  if (!token) {
-    toast('Not signed in', true);
-    return;
-  }
+  if (!token) { toast('Not signed in', true); return; }
 
   const name = g('pfName').value.trim();
   const phone = g('pfPhone').value.trim();
@@ -985,35 +857,30 @@ g('saveProfile').addEventListener('click', async () => {
   try {
     const response = await fetch(`${API_URL}/user/profile`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        name: name,
-        phone: phone,
-        address: area
-      })
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ name, phone, address: area })
     });
-
     const data = await response.json();
-
     if (response.ok) {
       toast('✅ Profile saved!');
-      
       const user = JSON.parse(localStorage.getItem('user'));
       user.name = name;
       localStorage.setItem('user', JSON.stringify(user));
-      
       g('pName').textContent = name.split(' ')[0];
       PM.classList.remove('open');
-    } else {
-      toast('❌ ' + data.error, true);
-    }
-  } catch (error) {
-    toast('❌ Error: ' + error.message, true);
-  }
+    } else { toast('❌ ' + data.error, true); }
+  } catch (error) { toast('❌ Error: ' + error.message, true); }
 });
 
-// ===== LOGOUT =====
-g('logoutBtn').addEventListener('click', () =>
+g('logoutBtn').addEventListener('click', () => {
+  if (confirm('Are you sure you want to logout?')) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    toast('Signed out');
+    PM.classList.remove('open');
+    showLoggedOut();
+  }
+});
+</script>
+</body>
+</html>
